@@ -41,6 +41,6 @@ function updatePage(hashChangeEvent) {
 	} else if (page) {
 		window.history.back();
 	} else {
-		window.location.hash = pages[0].id;
+		window.location.replace(window.location.protocol + '//' + window.location.pathname + '#' + pages[0].id);
 	}
 }
