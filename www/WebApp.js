@@ -17,7 +17,7 @@ function load() {
 	});
 
 	// Setup page change listener:
-	window.addEventListener("hashchange", updatePage);
+	window.addEventListener('hashchange', updatePage);
 	updatePage({'type': 'hashchange', 'newURL': null, 'oldURL': null}); // Required to set initial page.
 }
 
@@ -35,12 +35,38 @@ function updatePage(hashChangeEvent) {
 	}
 
 	if (newPage) {
-		if (page) page.style.display = 'none';
-		newPage.style.display = '';
+		if (page) {
+			fadeOut(page, null, function() {
+				fadeIn(newPage, null, null);
+			});
+		} else fadeIn(newPage, null, null);
 		page = newPage;
-	} else if (page) {
-		window.history.back();
-	} else {
-		window.location.replace(window.location.protocol + '//' + window.location.pathname + '#' + pages[0].id);
-	}
+	} else if (page) window.history.back();
+	else window.location.replace(window.location.protocol + '//' + window.location.pathname + '#' + pages[0].id);
+}
+
+function fadeOut(element, display, callback){
+	element.style.opacity = 1;
+	(function fade() {
+		if ((element.style.opacity -= .2) < 0) {
+			element.style.display = display || 'none';
+			if (typeof callback === 'function') callback();
+		} else {
+			requestAnimationFrame(fade);
+		}
+	})();
+}
+
+function fadeIn(element, display, callback){
+	element.style.opacity = 0;
+	element.style.display = display || 'block';
+	(function fade() {
+		var val = parseFloat(element.style.opacity);
+		if ((val += .2) > 1) {
+			if (typeof callback === 'function') callback();
+		} else {
+			element.style.opacity = val;
+			requestAnimationFrame(fade);
+		}
+	})();
 }
