@@ -5,9 +5,10 @@ var WebAppClass = function() {
 	this.getDebugOn = function() {return isDebugOn;};
 	this.setDebugOn = function(state) {isDebugOn = state;};
 
-	var isFadeOn = true;
-	this.getFadeOn = function() {return isFadeOn;};
-	this.setFadeOn = function(state) {isFadeOn = state;};
+	var isTransitionOn = true;
+	this.getTransitionOn = function() {return isTransitionOn;};
+	this.setTransitionOn = function(state) {isTransitionOn = state;};
+	var isTransitionRunning = false;
 
 	var pageStack = null;
 	var currentPage = null;
@@ -73,14 +74,19 @@ var WebAppClass = function() {
 	}
 
 	function switchElement(currentElement, nextElement) {
-		if (isFadeOn) {
-			if (currentElement) {
-				fadeOut(currentElement, function() {
-					fadeIn(nextElement, null);
-				});
-			} else fadeIn(nextElement, null);
+		if (isTransitionOn) {
+			if (isTransitionRunning) {
+				setTimeout(function() {switchElement(currentElement, nextElement);}, 100);
+			} else {
+				isTransitionRunning = true;
+				if (currentElement) {
+					fadeOut(currentElement, function() {
+						fadeIn(nextElement, function() {isTransitionRunning = false;});
+					});
+				} else fadeIn(nextElement, function() {isTransitionRunning = false;});
+			}
 		} else {
-			if (currentElement) hideElement(currentElement)
+			if (currentElement) hideElement(currentElement);
 			showElement(nextElement);
 		}
 	}
