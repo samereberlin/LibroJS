@@ -3,8 +3,9 @@
 var isDebugOn = true;
 var isFadeOn = true;
 
-var pages = [];
+var pageStack = {};
 var currentPage = null;
+var defaultPage = null;
 
 document.addEventListener('DOMContentLoaded', load);
 
@@ -13,11 +14,12 @@ function load() {
 
 	// Setup page elements:
 	Array.prototype.forEach.call(document.body.children, function (node) {
-		if (node.classList.contains('page')) {
+		if (node.classList.contains('page') && node.id) {
 			node.styleDisplay = node.style.display;
 			node.style.opacity = node.styleOpacity;
 			node.style.display = 'none';
-			pages[pages.length] = node;
+			pageStack[node.id] = node;
+			if (!defaultPage) defaultPage = node.id;
 		}
 	});
 
@@ -32,19 +34,9 @@ function updatePage(hashChangeEvent) {
 	// Parse page URL (hash/search) data:
 	var nextSearch = (window.location.hash.indexOf('?') >= 0)? window.location.hash.substring(window.location.hash.indexOf('?') + 1): null;
 	var nextHash = (window.location.hash.length > 1)? window.location.hash.substring(1, (nextSearch? window.location.hash.indexOf('?'): window.location.hash.length)): null;
+	var nextPage = (nextHash && pageStack[nextHash])? pageStack[nextHash]: null;
 
-	// Query for the requested page (pageHash):
-	var nextPage = null;
-	if (nextHash) {
-		for (var i = 0; i < pages.length; i++) {
-			if (pages[i].id === nextHash) {
-				nextPage = pages[i];
-				break;
-			}
-		}
-	}
-
-	// Parse the requested parameters (pageSearch):
+	// Parse the requested parameters (nextSearch):
 	var nextParams = {};
 	if (nextSearch) {
 		var indexOfEqual = null;
@@ -74,7 +66,7 @@ function updatePage(hashChangeEvent) {
 			currentPage = nextPage;
 		}
 	} else if (currentPage) window.history.back();
-	else window.location.replace(window.location.protocol + '//' + window.location.pathname + '#' + pages[0].id);
+	else window.location.replace(window.location.protocol + '//' + window.location.pathname + '#' + defaultPage);
 }
 
 function fadeOut(element, callback) {
