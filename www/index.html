@@ -18,14 +18,45 @@
 	<p>This is a lightweight (simple and efficient) WEB application framework (library for HTML5 projects), which allow us to fit multiple pages into a single HTML file (following the "Single-page application" concept).</p>
 	<p>If you are viewing this page (firstPage), it means that the current browser URL ends with "/index.html#firstPage"</p>
 	<a href="#secondPage">go to the second page</a>
+	<p id="firstPageLog" style="font-family: monospace; color: gray;"></p>
 </div>
 
 <div class="page" id="secondPage">
 	<h1>Second Page</h1>
 	<p>If you are viewing this page (secondPage), it means that the current browser URL ends with "/index.html#secondPage"</p>
 	<a href="#firstPage">go to the first page</a>
+	<p id="secondPageLog" style="font-family: monospace; color: gray;"></p>
 </div>
 
 <script src="WebApp.js"></script>
+<script>
+
+// Set firstPage callbacks:
+var firstPageElement = document.getElementById('firstPage');
+var firstPageLogElement = document.getElementById('firstPageLog');
+firstPageElement.onLoad = function() {
+	firstPageLogElement.innerHTML = firstPageLogElement.innerHTML + '<br>' + (new Date().toLocaleString()) + ': firstPage.onLoad()';
+};
+firstPageElement.onShow = function() {
+	firstPageLogElement.innerHTML = firstPageLogElement.innerHTML + '<br>' + (new Date().toLocaleString()) + ': firstPage.onShow()';
+};
+firstPageElement.onHide = function() {
+	firstPageLogElement.innerHTML = firstPageLogElement.innerHTML + '<br>' + (new Date().toLocaleString()) + ': firstPage.onHide()';
+};
+
+//Set secondPage callbacks:
+var secondPageElement = document.getElementById('secondPage');
+var secondPageLogElement = document.getElementById('secondPageLog');
+secondPageElement.onLoad = function() {
+	secondPageLogElement.innerHTML = secondPageLogElement.innerHTML + '<br>' + (new Date().toLocaleString()) + ': secondPage.onLoad()';
+};
+secondPageElement.onShow = function() {
+	secondPageLogElement.innerHTML = secondPageLogElement.innerHTML + '<br>' + (new Date().toLocaleString()) + ': secondPage.onShow()';
+};
+secondPageElement.onHide = function() {
+	secondPageLogElement.innerHTML = secondPageLogElement.innerHTML + '<br>' + (new Date().toLocaleString()) + ': secondPage.onHide()';
+};
+
+</script>
 </body>
 </html>
