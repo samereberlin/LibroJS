@@ -21,4 +21,4 @@ The minimum HTML code required to use WebApp framework is:
 </body>
 ```
 
-which creates a WebApp with two pages, where the fist is accessible through URL `../index.html#firstPage` and the second `../index.html#secondPage` ([live preview](https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_minimum.html#firstPage)).
+which creates a WebApp with two pages, where the fist is accessible through URL `../index.html#firstPage` and the second `../index.html#secondPage` (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_minimum.html#firstPage" target="_blank">live preview</a>).
