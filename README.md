@@ -4,6 +4,8 @@ This is a lightweight (simple and efficient) WEB application framework (library 
 The minimum HTML code required to use WebApp framework is:
 
 ```html
+<body>
+
 <div class="page" id="firstPage">
 	<h1>First Page</h1>
 	<a href="#secondPage">go to the second page</a>
@@ -15,6 +17,8 @@ The minimum HTML code required to use WebApp framework is:
 </div>
 
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+
+</body>
 ```
 
-which creates a "two pages" WebApp, where the fist page is accessible through URL `../index.html#firstPage` and the second page `../index.html#secondPage`.
+which creates a WebApp with two pages, where the fist is accessible through URL `../index.html#firstPage` and the second `../index.html#secondPage` ([live preview](https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_minimum.html#firstPage)).
