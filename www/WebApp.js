@@ -8,7 +8,6 @@ var WebAppClass = function() {
 	var isTransitionOn = true;
 	this.getTransitionOn = function() {return isTransitionOn;};
 	this.setTransitionOn = function(state) {isTransitionOn = state;};
-	var isTransitionRunning = false;
 
 	var pageStack = null;
 	var currentPage = null;
@@ -26,13 +25,23 @@ var WebAppClass = function() {
 			Array.prototype.forEach.call(document.body.children, function (node) {
 				if (node.classList.contains('page') && node.id) {
 					node.styleDisplay = node.style.display;
-					node.style.opacity = node.styleOpacity;
 					node.style.display = 'none';
 					pageStack[node.id] = node;
 					if (!defaultPageId) defaultPageId = node.id;
 					if (typeof node['onLoad'] === 'function') node.onLoad();
 				}
 			});
+
+			// Setup CSS style effects:
+			var style = document.createElement('style');
+			style.type = 'text/css';
+			style.innerHTML = '\
+				@keyframes fadein {from { opacity: 0; }	to { opacity: 1; }}\
+				@keyframes fadeout {from { opacity: 1; } to { opacity: 0; }}\
+				.fadeout {opacity: 0; animation-duration: 125ms; animation-name: fadeout;}\
+				.fadein { opacity: 1; animation-duration: 225ms; animation-name: fadein;}\
+			';
+			document.getElementsByTagName('head')[0].appendChild(style);
 
 			// Setup page change listener:
 			window.addEventListener('hashchange', updatePage);
@@ -75,16 +84,9 @@ var WebAppClass = function() {
 
 	function switchElement(currentElement, nextElement) {
 		if (isTransitionOn) {
-			if (isTransitionRunning) {
-				setTimeout(function() {switchElement(currentElement, nextElement);}, 100);
-			} else {
-				isTransitionRunning = true;
-				if (currentElement) {
-					fadeOut(currentElement, function() {
-						fadeIn(nextElement, function() {isTransitionRunning = false;});
-					});
-				} else fadeIn(nextElement, function() {isTransitionRunning = false;});
-			}
+			if (currentElement) hideElement(currentElement);
+			nextElement.className += ' fadein';
+			showElement(nextElement);
 		} else {
 			if (currentElement) hideElement(currentElement);
 			showElement(nextElement);
@@ -99,33 +101,7 @@ var WebAppClass = function() {
 	function hideElement(element) {
 		if (typeof element['onHide'] === 'function') element.onHide();
 		element.style.display = 'none';
-	}
-
-	function fadeIn(element, callback) {
-		element.style.opacity = 0;
-		showElement(element);
-		(function fade() {
-			var val = parseFloat(element.style.opacity);
-			if ((val += .2) > (element['styleOpacity'] || 1)) {
-				element.style.opacity = element['styleOpacity'] || 1;
-				if (typeof callback === 'function') callback();
-			} else {
-				element.style.opacity = val;
-				requestAnimationFrame(fade);
-			}
-		})();
-	}
-
-	function fadeOut(element, callback) {
-		(function fade() {
-			if ((element.style.opacity -= .2) < 0) {
-				hideElement(element);
-				element.style.opacity = element['styleOpacity'] || 1;
-				if (typeof callback === 'function') callback();
-			} else {
-				requestAnimationFrame(fade);
-			}
-		})();
+		element.className = element.className.replace( /(?:^|\s)fadein(?!\S)/g , '' );
 	}
 
 };
