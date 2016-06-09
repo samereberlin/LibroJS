@@ -5,10 +5,15 @@ var WebAppClass = function() {
 	this.getDebugOn = function() {return isDebugOn;};
 	this.setDebugOn = function(state) {isDebugOn = state;};
 
+	var isSlideModeOn = false;
+	this.getSlideModeOn = function() {return isSlideModeOn;};
+	this.setSlideModeOn = function(state) {isSlideModeOn = state;};
+
 	var isTransitionOn = true;
 	this.getTransitionOn = function() {return isTransitionOn;};
 	this.setTransitionOn = function(state) {isTransitionOn = state;};
 
+	var pageList = null;
 	var pageStack = null;
 	var currentPage = null;
 
@@ -27,19 +32,29 @@ var WebAppClass = function() {
 					node.styleDisplay = node.style.display;
 					node.style.display = 'none';
 					pageStack[node.id] = node;
-					if (!defaultPageId) defaultPageId = node.id;
 					if (typeof node['onLoad'] === 'function') node.onLoad();
 				}
 			});
+			pageList = Object.keys(pageStack);
+			defaultPageId = pageList[0];
 
 			// Setup CSS style effects:
 			var style = document.createElement('style');
 			style.type = 'text/css';
 			style.innerHTML = '\
-				@keyframes fadein {from { opacity: 0; }	to { opacity: 1; }}\
-				@keyframes fadeout {from { opacity: 1; } to { opacity: 0; }}\
+				@keyframes fadein {from {opacity: 0;} to {opacity: 1;}}\
+				@keyframes fadeout {from {opacity: 1;} to {opacity: 0;}}\
 				.fadeout {opacity: 0; animation-duration: 125ms; animation-name: fadeout;}\
-				.fadein { opacity: 1; animation-duration: 225ms; animation-name: fadein;}\
+				.fadein {opacity: 1; animation-duration: 225ms; animation-name: fadein;}\
+				@keyframes slideinfromright {from {transform: translateX(100%);} to {transform: translateX(0);}}\
+				@keyframes slideinfromleft {from {transform: translateX(-100%);} to {transform: translateX(0);}}\
+				@keyframes slideouttoleft {from {transform: translateX(0);} to {transform: translateX(-100%);}}\
+				@keyframes slideouttoright {from {transform: translateX(0);} to {transform: translateX(100%);}}\
+				.slideout, .slidein, .slideoutrev, .slideinrev {animation-timing-function: ease-out; animation-duration: 350ms;}\
+				.slideout {transform: translateX(-100%); animation-name: slideouttoleft;}\
+				.slidein {transform: translateX(0); animation-name: slideinfromright;}\
+				.slideoutrev {transform: translateX(100%); animation-name: slideouttoright;}\
+				.slideinrev {transform: translateX(0); animation-name: slideinfromleft;}\
 			';
 			document.getElementsByTagName('head')[0].appendChild(style);
 
@@ -85,7 +100,10 @@ var WebAppClass = function() {
 	function switchElement(currentElement, nextElement) {
 		if (isTransitionOn) {
 			if (currentElement) hideElement(currentElement);
-			nextElement.className += ' fadein';
+			if (isSlideModeOn) {
+				var slideClass = (currentElement && pageList.indexOf(currentElement.id) > pageList.indexOf(nextElement.id))? ' slideinrev': ' slidein';
+				nextElement.className += slideClass;
+			} else nextElement.className += ' fadein';
 			showElement(nextElement);
 		} else {
 			if (currentElement) hideElement(currentElement);
@@ -101,7 +119,7 @@ var WebAppClass = function() {
 	function hideElement(element) {
 		if (typeof element['onHide'] === 'function') element.onHide();
 		element.style.display = 'none';
-		element.className = element.className.replace( /(?:^|\s)fadein(?!\S)/g , '' );
+		element.className = element.className.replace( /(?:^|\s)fadein|slidein|slideinrev(?!\S)/g , '' );
 	}
 
 };
