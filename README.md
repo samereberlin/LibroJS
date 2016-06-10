@@ -60,7 +60,7 @@ Where:
 
 
 #### Default Application Page:
-The default application page is the first _body's child_ class _page_ element, which means that the first request to the basic URL _../index.html_ (without page specification) or invalid URL _../index.html#nonexistentPage_ (invalid page specification) will be redirected to _../index.html#firstPage_. But if for your convenience you need to set any other further element, it can be accomplished by _WebApp.setDefaultPageId('secondPage')_ function API, as the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_setDefaultPageId.html#secondPage" target="_blank">live preview</a>):
+The default application page is the first _body's child_ class _page_ element, which means that the first request to the basic URL _../index.html_ (without page specification) or invalid URL _../index.html#nonexistentPage_ (invalid page specification) will be redirected to _../index.html#firstPage_. If for you need to set any other element, use _WebApp.setDefaultPageId('secondPage')_ function API, as the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_setDefaultPageId.html#secondPage" target="_blank">live preview</a>):
 
 
 ```html
@@ -140,8 +140,50 @@ Global elements are components that must always be displayed (common between the
 ```
 
 
-####Transitions (fade/slide):
-Coming soon... (not documented yet, but already implemented and explained into index.html template)
+####Page Transitions:
+A basic page transition (fade in style) is enabled by default, but if you need to disable it, use _WebApp.setTransitionOn(false)_ function API. And if you prefer slide Left/Right transition, instead of traditional fade effect, use _WebApp.setSlideModeOn(true)_ function API. Both transition effects can be observed in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_setTransitionOn.html#firstPage" target="_blank">live preview</a>):
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WebApp</title>
+</head>
+
+<body>
+
+<div style="border: 1px solid gray; padding: .4em;">
+	Transition settings:
+	<label style="padding-left: 1em; white-space:nowrap;">
+		<input type="checkbox" onchange="WebApp.setTransitionOn(this.checked); document.getElementById('slideModeSet').disabled = !this.checked;" checked>
+		Enable Transition.
+	</label>
+	<label style="padding-left: 1em; white-space:nowrap;">
+		<input type="checkbox" onchange="WebApp.setSlideModeOn(this.checked);" id="slideModeSet">
+		Enable SlideMode.
+	</label>
+</div>
+
+<div class="page" id="firstPage">
+	<h1>First Page</h1>
+	<a href="#secondPage">go to the second page</a>
+</div>
+
+<div class="page" id="secondPage">
+	<h1>Second Page</h1>
+	<a href="#firstPage">go to the first page</a>
+</div>
+
+<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+
+</body>
+
+</html>
+```
+
+**Important Note:** Slide transition direction depends on the page ordering. If switching from the first to the second page, the slide occurs from the right to the left side. And if switching back from the second to the first page, the slide occurs from the left to the right side.
 
 
 ####Application life cycle callbacks:
