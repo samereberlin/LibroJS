@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WebApp</title>
+</head>
+
+<body>
+
+<div style="border: 1px solid gray; padding: .4em;">
+    This is a global element, displayed above every page.
+</div>
+
+<div class="page" id="firstPage">
+	<h1>First Page</h1>
+	<a href="#secondPage">go to the second page</a>
+</div>
+
+<div class="page" id="secondPage">
+	<h1>Second Page</h1>
+	<a href="#firstPage">go to the first page</a>
+</div>
+
+<div>
+    <br>This is another global element,
+    <br>displayed below every page.
+</div>
+
+<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+
+</body>
+
+</html>
