@@ -60,7 +60,7 @@ Where:
 
 
 #### Default Application Page:
-The default application page is the first _body's child_ class _page_ element, which means that the first request to the basic URL _../index.html_ (without page specification) or invalid URL _../index.html#nonexistentPage_ (invalid page specification) will be redirected to _../index.html#firstPage_. But if for your convenience you need to set any other further element, it can be accomplished by _WebApp.setDefaultPageId('seconPage')_ function API, as the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_setDefaultPageId.html#secondPage" target="_blank">live preview</a>):
+The default application page is the first _body's child_ class _page_ element, which means that the first request to the basic URL _../index.html_ (without page specification) or invalid URL _../index.html#nonexistentPage_ (invalid page specification) will be redirected to _../index.html#firstPage_. But if for your convenience you need to set any other further element, it can be accomplished by _WebApp.setDefaultPageId('secondPage')_ function API, as the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_setDefaultPageId.html#secondPage" target="_blank">live preview</a>):
 
 
 ```html
@@ -100,7 +100,7 @@ The default application page is the first _body's child_ class _page_ element, w
 
 
 ####Global elements:
-Global elements are components that must always be displayed (common between the pages, e.g.: toolbar, statusbar, menus, etc). To define an element as global, placed it as a _body's child_ element (exactly as a regular page), but without the class _page_ (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_globalelement.html#firstPage" target="_blank">live preview</a>):
+Global elements are components that must always be displayed (common between the pages, e.g.: toolbar, statusbar, menus, etc). To define an element as global, place it as a _body's child_ element (exactly as a regular page), but without the class _page_, as the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_globalelement.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <!DOCTYPE html>
@@ -140,11 +140,11 @@ Global elements are components that must always be displayed (common between the
 ```
 
 
-####Application life cycle callbacks:
+####Transitions (fade/slide):
 Coming soon... (not documented yet, but already implemented and explained into index.html template)
 
 
-####Transitions (fade/slide):
+####Application life cycle callbacks:
 Coming soon... (not documented yet, but already implemented and explained into index.html template)
 
 
