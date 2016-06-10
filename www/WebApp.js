@@ -36,7 +36,7 @@ var WebAppClass = function() {
 				}
 			});
 			pageList = Object.keys(pageStack);
-			defaultPageId = pageList[0];
+			if (!defaultPageId) defaultPageId = pageList[0];
 
 			// Setup CSS style effects:
 			var style = document.createElement('style');

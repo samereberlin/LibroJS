@@ -24,16 +24,83 @@ The following HTML crumb is the minimum code required to use WebApp framework. A
 ```
 
 Where:
-- `<div class="page" id="firstPage">` is the element required for page creation, which must have the class _page_, contains a unique _id_, and be placed as a _body's child_ element. Considering that it is the first _body's child_ page element, it will be used as _default application page_, which means that every request to the basic URL _../index.html_ (without page specification) or invalid URL _../index.html#nonexistentPage_ (invalid page specification) will be redirected to _../index.html#firstPage_ (unless you decide to set another element as default page, by using _WebApp.setDefaultPageId_ function, as explained later in the Public API section).
-- `<h1>First Page</h1>` and `<a href="#secondPage">go to the second page</a>` represent the content of the page _firstPage_ (as every other content inside the same page class element). And the link to _href="#secondPage"_ establishes a connection from the first to the second page (note that only hash data is required, instead of full destination page URL)
+- `<div class="page" id="firstPage">` is the element required for page creation, which must have the class _page_, contains a unique _id_, and be placed as a _body's child_ element. 
+- `<h1>First Page</h1>` and `<a href="#secondPage">go to the second page</a>` represent the content of the page _firstPage_ (note that only the hash data is required to create a link to the secondPage).
 - `<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>` is the inclusion of WebApp framework library, which can be obtained remotely (as here it is, using GitHub _CDN_ URL) or locally (stored beside your _HTML_ file).
 
+**Important Note:** for simplicity reasons, the above HTML code does not include any header definition, but it is strongly recommended to assure compatibility between different devices and platforms. Please include at least the _title_ and the basic _responsive_ meta tag `<meta name="viewport" content="width=device-width, initial-scale=1.0">` as the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_responsive.html#firstPage" target="_blank">live preview</a>):
 
-Note that for simplicity reasons, the above HTML code does not include any header definition, but it is strongly recommended. Please include at least the _title_ and the basic _responsive_ meta tag `<meta name="viewport" content="width=device-width, initial-scale=1.0">` as the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_responsive.html#firstPage" target="_blank">live preview</a>):
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WebApp</title>
+</head>
+
+<body>
+
+<div class="page" id="firstPage">
+	<h1>First Page</h1>
+	<a href="#secondPage">go to the second page</a>
+</div>
+
+<div class="page" id="secondPage">
+	<h1>Second Page</h1>
+	<a href="#firstPage">go to the first page</a>
+</div>
+
+<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+
+</body>
+
+</html>
+```
+
+
+#### Default Application Page:
+The default application page is the first _body's child_ class _page_ element, which means that the first request to the basic URL _../index.html_ (without page specification) or invalid URL _../index.html#nonexistentPage_ (invalid page specification) will be redirected to _../index.html#firstPage_. But if for your convenience you need to set any other further element, it can be accomplished by _WebApp.setDefaultPageId('seconPage')_ function API, as the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_setDefaultPageId.html#secondPage" target="_blank">live preview</a>):
+
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WebApp</title>
+</head>
+
+<body>
+
+<div class="page" id="firstPage">
+	<h1>First Page</h1>
+	<a href="#secondPage">go to the second page</a>
+</div>
+
+<div class="page" id="secondPage">
+	<h1>Second Page</h1>
+	<a href="#firstPage">go to the first page</a>
+</div>
+
+<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+
+<script>
+	// Set default application page id:
+	WebApp.setDefaultPageId('secondPage')
+</script>
+
+</body>
+
+</html>
+```
+
+**Important Note:** WebApp function APIs must be called after the inclusion of WebApp framework library.
 
 
 ####Global elements:
-Global elements are components that must be displayed always (common between the pages, e.g.: toolbar, statusbar, menus, etc). To define an element as global, placed it as a _body's child_ element (exactly as a regular page), but without the class _page_ (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_globalelement.html#firstPage" target="_blank">live preview</a>):
+Global elements are components that must always be displayed (common between the pages, e.g.: toolbar, statusbar, menus, etc). To define an element as global, placed it as a _body's child_ element (exactly as a regular page), but without the class _page_ (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_globalelement.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <!DOCTYPE html>
