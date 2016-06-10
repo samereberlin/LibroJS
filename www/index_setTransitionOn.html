@@ -15,7 +15,7 @@
 		Enable Transition.
 	</label>
 	<label style="padding-left: 1em; white-space:nowrap;">
-		<input type="checkbox" onchange="WebApp.setSlideModeOn(this.checked);" id="slideModeSet">
+		<input type="checkbox" onchange="WebApp.setSlideModeOn(this.checked);" id="slideModeSet" checked>
 		Enable SlideMode.
 	</label>
 </div>
@@ -31,6 +31,12 @@
 </div>
 
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+
+<script>
+	WebApp.setTransitionOn(true); // Enable page transition.
+	WebApp.setSlideModeOn(true); // Enable slide transition mode.
+</script>
+
 
 </body>
 

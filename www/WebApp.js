@@ -41,26 +41,52 @@ var WebAppClass = function() {
 			// Setup CSS style effects:
 			var style = document.createElement('style');
 			style.type = 'text/css';
-			style.innerHTML = '\
-				@keyframes fadein {from {opacity: 0;} to {opacity: 1;}}\
-				@keyframes fadeout {from {opacity: 1;} to {opacity: 0;}}\
-				.fadeout {opacity: 0; animation-duration: 125ms; animation-name: fadeout;}\
-				.fadein {opacity: 1; animation-duration: 225ms; animation-name: fadein;}\
-				@keyframes slideinfromright {from {transform: translateX(100%);} to {transform: translateX(0);}}\
-				@keyframes slideinfromleft {from {transform: translateX(-100%);} to {transform: translateX(0);}}\
-				@keyframes slideouttoleft {from {transform: translateX(0);} to {transform: translateX(-100%);}}\
-				@keyframes slideouttoright {from {transform: translateX(0);} to {transform: translateX(100%);}}\
-				.slideout, .slidein, .slideoutrev, .slideinrev {animation-timing-function: ease-out; animation-duration: 350ms;}\
-				.slideout {transform: translateX(-100%); animation-name: slideouttoleft;}\
-				.slidein {transform: translateX(0); animation-name: slideinfromright;}\
-				.slideoutrev {transform: translateX(100%); animation-name: slideouttoright;}\
-				.slideinrev {transform: translateX(0); animation-name: slideinfromleft;}\
-			';
+			style.innerHTML = styleEffects;
 			document.getElementsByTagName('head')[0].appendChild(style);
+
+			// Setup application life cycle callbacks:
+			document.onblur = function() {pause();};
+			document.onfocus = function() {resume();};
+			document.onkeydown = function(arg) {keyDown(arg);};
+			document.onvisibilitychange = function() {if (document.hidden) pause(); else resume();};
+			window.onresize = function() {resize();};
+			window.onunload = function() {unload();};
+
 
 			// Setup page change listener:
 			window.addEventListener('hashchange', updatePage);
 			updatePage({'type': 'hashchange', 'newURL': null, 'oldURL': null}); // Required to set initial page.
+
+			if (typeof WebApp['onLoad'] === 'function') WebApp.onLoad();
+		}
+	};
+
+	function unload() {
+		if (isDebugOn) console.log('WebApp.js: unload()');
+		if (typeof WebApp['onUnload'] === 'function') WebApp.onUnload();
+	};
+
+	function pause() {
+		if (isDebugOn) console.log('WebApp.js: pause()');
+		if (typeof WebApp['onPause'] === 'function') WebApp.onPause();
+	};
+
+	function resume() {
+		if (isDebugOn) console.log('WebApp.js: resume()');
+		if (typeof WebApp['onResume'] === 'function') WebApp.onResume();
+	};
+
+	function resize() {
+		if (isDebugOn) console.log('WebApp.js: resize()');
+		if (typeof WebApp['onResize'] === 'function') WebApp.onResize();
+	};
+
+	function keyDown(keyEvent) {
+		if (isDebugOn) console.log('WebApp.js: keyDown(' + keyEvent.keyCode + ')');
+		if (keyEvent.keyCode === 13) {
+			if (keyEvent.target['onclick']) keyEvent.target.onclick();
+		} else {
+			if (typeof currentPage['onKeyDown'] === 'function') currentPage.onKeyDown(keyEvent);
 		}
 	};
 
@@ -125,3 +151,19 @@ var WebAppClass = function() {
 };
 WebApp = new WebAppClass();
 document.addEventListener('DOMContentLoaded', function() {WebApp.load();});
+
+var styleEffects = '\
+	@keyframes fadein {from {opacity: 0;} to {opacity: 1;}}\
+	@keyframes fadeout {from {opacity: 1;} to {opacity: 0;}}\
+	.fadeout {opacity: 0; animation-duration: 125ms; animation-name: fadeout;}\
+	.fadein {opacity: 1; animation-duration: 225ms; animation-name: fadein;}\
+	@keyframes slideinfromright {from {transform: translateX(100%);} to {transform: translateX(0);}}\
+	@keyframes slideinfromleft {from {transform: translateX(-100%);} to {transform: translateX(0);}}\
+	@keyframes slideouttoleft {from {transform: translateX(0);} to {transform: translateX(-100%);}}\
+	@keyframes slideouttoright {from {transform: translateX(0);} to {transform: translateX(100%);}}\
+	.slideout, .slidein, .slideoutrev, .slideinrev {animation-timing-function: ease-out; animation-duration: 350ms;}\
+	.slideout {transform: translateX(-100%); animation-name: slideouttoleft;}\
+	.slidein {transform: translateX(0); animation-name: slideinfromright;}\
+	.slideoutrev {transform: translateX(100%); animation-name: slideouttoright;}\
+	.slideinrev {transform: translateX(0); animation-name: slideinfromleft;}\
+';

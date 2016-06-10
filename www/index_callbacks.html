@@ -8,28 +8,19 @@
 
 <body>
 
-<div style="border: 1px solid gray; padding: .4em;">
-	Global settings:
-	<label style="padding-left: 1em; white-space:nowrap;"><input type="checkbox" onchange="WebApp.setDebugOn(this.checked);" checked> Enable debug.</label>
-	<label style="padding-left: 1em; white-space:nowrap;"><input type="checkbox" onchange="WebApp.setTransitionOn(this.checked); document.getElementById('slideModeSet').disabled = !this.checked;" checked> Enable Transition.</label>
-	<label style="padding-left: 1em; white-space:nowrap;"><input type="checkbox" onchange="WebApp.setSlideModeOn(this.checked);" id="slideModeSet"> Enable SlideMode.</label>
-</div>
-
 <div class="page" id="firstPage">
-	<h1>WebApp - First Page</h1>
-	<p>If you are viewing this page (firstPage), it means that the current browser URL ends with "/index.html#firstPage"</p>
+	<h1>First Page</h1>
 	<a href="#secondPage">go to the second page</a>
 </div>
 
 <div class="page" id="secondPage">
-	<h1>WebApp - Second Page</h1>
-	<p>If you are viewing this page (secondPage), it means that the current browser URL ends with "/index.html#secondPage"</p>
+	<h1>Second Page</h1>
 	<a href="#firstPage">go to the first page</a>
 </div>
 
 <p id="logMonitor" style="font-family: monospace; color: gray;"></p>
 
-<script src="WebApp.js"></script>
+<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
 
 <script>
 var logMonitor = document.getElementById('logMonitor');
@@ -51,7 +42,7 @@ WebApp.onResize = function() {
 	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:orange;">WebApp.onResize()</span>';
 }
 
-//Set firstPage callbacks:
+// Set firstPage callbacks:
 var firstPageElement = document.getElementById('firstPage');
 firstPageElement.onLoad = function() {
 	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">firstPage.onLoad()</span>';
@@ -66,7 +57,7 @@ firstPageElement.onKeyDown = function(keyEvent) {
 	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">firstPage.onKeyDown(' + keyEvent.keyCode + ')</span>';
 };
 
-//Set secondPage callbacks:
+// Set secondPage callbacks:
 var secondPageElement = document.getElementById('secondPage');
 secondPageElement.onLoad = function() {
 	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">secondPage.onLoad()</span>';

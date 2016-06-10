@@ -64,16 +64,6 @@ The default application page is the first _body's child_ class _page_ element, w
 
 
 ```html
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WebApp</title>
-</head>
-
-<body>
-
 <div class="page" id="firstPage">
 	<h1>First Page</h1>
 	<a href="#secondPage">go to the second page</a>
@@ -88,12 +78,8 @@ The default application page is the first _body's child_ class _page_ element, w
 
 <script>
 	// Set default application page id:
-	WebApp.setDefaultPageId('secondPage')
+	WebApp.setDefaultPageId('secondPage');
 </script>
-
-</body>
-
-</html>
 ```
 
 **Important Note:** WebApp function APIs must be called after the inclusion of WebApp framework library.
@@ -103,16 +89,6 @@ The default application page is the first _body's child_ class _page_ element, w
 Global elements are components that must always be displayed (common between the pages, e.g.: toolbar, statusbar, menus, etc). To define an element as global, place it as a _body's child_ element (exactly as a regular page), but without the class _page_, as the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_globalelement.html#firstPage" target="_blank">live preview</a>):
 
 ```html
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WebApp</title>
-</head>
-
-<body>
-
 <div style="border: 1px solid gray; padding: .4em;">
     This is a global element, displayed above every page.
 </div>
@@ -133,10 +109,6 @@ Global elements are components that must always be displayed (common between the
 </div>
 
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
-
-</body>
-
-</html>
 ```
 
 
@@ -144,28 +116,6 @@ Global elements are components that must always be displayed (common between the
 A basic page transition (fade in style) is enabled by default, but if you need to disable it, use _WebApp.setTransitionOn(false)_ function API. And if you prefer slide Left/Right transition, instead of traditional fade effect, use _WebApp.setSlideModeOn(true)_ function API. Both transition effects can be observed in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_setTransitionOn.html#firstPage" target="_blank">live preview</a>):
 
 ```html
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WebApp</title>
-</head>
-
-<body>
-
-<div style="border: 1px solid gray; padding: .4em;">
-	Transition settings:
-	<label style="padding-left: 1em; white-space:nowrap;">
-		<input type="checkbox" onchange="WebApp.setTransitionOn(this.checked); document.getElementById('slideModeSet').disabled = !this.checked;" checked>
-		Enable Transition.
-	</label>
-	<label style="padding-left: 1em; white-space:nowrap;">
-		<input type="checkbox" onchange="WebApp.setSlideModeOn(this.checked);" id="slideModeSet">
-		Enable SlideMode.
-	</label>
-</div>
-
 <div class="page" id="firstPage">
 	<h1>First Page</h1>
 	<a href="#secondPage">go to the second page</a>
@@ -178,16 +128,63 @@ A basic page transition (fade in style) is enabled by default, but if you need t
 
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
 
-</body>
-
-</html>
+<script>
+	WebApp.setTransitionOn(true); // Enable page transition.
+	WebApp.setSlideModeOn(true); // Enable slide transition mode.
+</script>
 ```
 
 **Important Note:** Slide transition direction depends on the page ordering. If switching from the first to the second page, the slide occurs from the right to the left side. And if switching back from the second to the first page, the slide occurs from the left to the right side.
 
 
-####Application life cycle callbacks:
-Coming soon... (not documented yet, but already implemented and explained into index.html template)
+####Application life cycle process callbacks:
+Application life cycle process is a set of pre-defined events that occurs during the application execution, which must be monitored (through callbacks) in order to execute the appropriate actions. For example, if you are developing a game, you need to know when the use minimizes the application (in order to pause the game execution, timers, etc.), and you also need to know when the user returns to the application (in order to resume the game from the point where it was paused). That is why the process callbacks are so relevant.
+
+I you do not understand the above explanation, do not be afraid. The use of callbacks is much easier than the explanation itself :) To implement an application callback, you just need to get the _page_ element reference (or WebApp object for global callbacks), and implement the desired function, as can be observed in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_callbacks.html#firstPage" target="_blank">live preview</a>):
+
+```html
+<div class="page" id="firstPage">
+	<h1>First Page</h1>
+	<a href="#secondPage">go to the second page</a>
+</div>
+
+<div class="page" id="secondPage">
+	<h1>Second Page</h1>
+	<a href="#firstPage">go to the first page</a>
+</div>
+
+<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+
+<script>
+// Set global callbacks:
+WebApp.onPause = function() {
+	console.log('WebApp.onPause(): ' + (new Date().toLocaleString()));
+}
+WebApp.onResume = function() {
+	console.log('WebApp.onResume(): ' + (new Date().toLocaleString()));
+}
+
+
+// Set firstPage callbacks:
+var firstPageElement = document.getElementById('firstPage');
+firstPageElement.onShow = function() {
+	console.log('firstPage.onShow(): ' + (new Date().toLocaleString()));
+};
+firstPageElement.onHide = function() {
+	console.log('firstPage.onHide(): ' + (new Date().toLocaleString()));
+};
+</script>
+```
+**Important Note:** the available callbacks are:
+- WebApp.onLoad();
+- WebApp.onUnload();
+- WebApp.onPause();
+- WebApp.onResume();
+- WebApp.onResize();
+- pageElement.onLoad();
+- pageElement.onShow();
+- pageElement.onHide();
+- pageElement.onKeyDown(keyEvent);
 
 
 ####Canvas screen support:
