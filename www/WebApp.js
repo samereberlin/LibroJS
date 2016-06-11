@@ -23,6 +23,7 @@ var WebAppClass = function() {
 
 	this.load = function() {
 		if (isDebugOn) console.log('WebApp.js: load()');
+		if (typeof WebApp['onLoad'] === 'function') WebApp.onLoad();
 
 		// Setup page elements:
 		if (!pageStack) {
@@ -45,19 +46,15 @@ var WebAppClass = function() {
 			document.getElementsByTagName('head')[0].appendChild(style);
 
 			// Setup application life cycle callbacks:
-			document.onblur = function() {pause();};
-			document.onfocus = function() {resume();};
-			document.onkeydown = function(arg) {keyDown(arg);};
-			document.onvisibilitychange = function() {if (document.hidden) pause(); else resume();};
+			window.onblur = function() {pause();};
+			window.onfocus = function() {resume();};
+			window.onkeydown = function(arg) {keyDown(arg);};
 			window.onresize = function() {resize();};
 			window.onunload = function() {unload();};
-
 
 			// Setup page change listener:
 			window.addEventListener('hashchange', updatePage);
 			updatePage({'type': 'hashchange', 'newURL': null, 'oldURL': null}); // Required to set initial page.
-
-			if (typeof WebApp['onLoad'] === 'function') WebApp.onLoad();
 		}
 	};
 
