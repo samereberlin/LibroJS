@@ -3,23 +3,24 @@ var WebApp = null;
 var WebAppClass = function() {
 	var isDebugOn = true;
 	this.getDebugOn = function() {return isDebugOn;};
-	this.setDebugOn = function(state) {isDebugOn = state;};
+	this.setDebugOn = function(booleanState) {isDebugOn = booleanState;};
 
-	var isSlideModeOn = false;
-	this.getSlideModeOn = function() {return isSlideModeOn;};
-	this.setSlideModeOn = function(state) {isSlideModeOn = state;};
-
-	var isTransitionOn = true;
-	this.getTransitionOn = function() {return isTransitionOn;};
-	this.setTransitionOn = function(state) {isTransitionOn = state;};
-
+	// Page settings:
 	var pageList = null;
 	var pageStack = null;
 	var currentPage = null;
-
 	var defaultPageId = null;
 	this.getDefaultPageId = function() {return defaultPageId;};
 	this.setDefaultPageId = function(pageId) {defaultPageId = pageId;};
+
+	// Transition settings:
+	var transitionTypes = ['fadein', 'none', 'slidein', 'slideinrev', 'slideinorder'];
+	var defaultTransition = transitionTypes[0];
+	this.getDefaultTransition = function() {return defaultTransition;};
+	this.setDefaultTransition = function(transitionType) {if (!transitionType || transitionTypes.indexOf(transitionType) >= 0) defaultTransition = transitionType;};
+	var nextTransition = null;
+	this.getNextTransition = function() {return nextTransition;};
+	this.setNextTransition = function(transitionType) {if (!transitionType || transitionTypes.indexOf(transitionType) >= 0) nextTransition = transitionType;};
 
 	this.load = function() {
 		if (isDebugOn) console.log('WebApp.js: load()');
@@ -37,7 +38,7 @@ var WebAppClass = function() {
 				}
 			});
 			pageList = Object.keys(pageStack);
-			if (!defaultPageId) defaultPageId = pageList[0];
+			if (!defaultPageId || (pageList.indexOf(defaultPageId) < 0)) defaultPageId = pageList[0];
 
 			// Setup CSS style effects:
 			var style = document.createElement('style');
@@ -113,36 +114,33 @@ var WebAppClass = function() {
 			if (nextPage === currentPage) {
 				// TODO: implement URL parameters updated engine.
 			} else {
-				switchElement(currentPage, nextPage);
+				switchPage(currentPage, nextPage);
 				currentPage = nextPage;
 			}
 		} else if (currentPage) window.history.back();
 		else window.location.replace(window.location.protocol + '//' + window.location.pathname + '#' + defaultPageId);
 	}
 
-	function switchElement(currentElement, nextElement) {
-		if (isTransitionOn) {
-			if (currentElement) hideElement(currentElement);
-			if (isSlideModeOn) {
-				var slideClass = (currentElement && pageList.indexOf(currentElement.id) > pageList.indexOf(nextElement.id))? ' slideinrev': ' slidein';
-				nextElement.className += slideClass;
-			} else nextElement.className += ' fadein';
-			showElement(nextElement);
-		} else {
-			if (currentElement) hideElement(currentElement);
-			showElement(nextElement);
-		}
+	function switchPage(current, next) {
+		if (current) hidePage(current);
+		if (!nextTransition) nextTransition = defaultTransition;
+		if (nextTransition === 'slideinorder') {
+			var slideClass = (current && pageList.indexOf(current.id) > pageList.indexOf(next.id))? ' slideinrev': ' slidein';
+			next.className += slideClass;
+		} else next.className += ' ' + nextTransition;
+		showPage(next);
+		nextTransition = null;
 	}
 
-	function showElement(element) {
-		element.style.display = element['styleDisplay'] || 'block';
-		if (typeof element['onShow'] === 'function') element.onShow();
+	function showPage(page) {
+		page.style.display = page['styleDisplay'] || 'block';
+		if (typeof page['onShow'] === 'function') page.onShow();
 	}
 
-	function hideElement(element) {
-		if (typeof element['onHide'] === 'function') element.onHide();
-		element.style.display = 'none';
-		element.className = element.className.replace( /(?:^|\s)fadein|slidein|slideinrev(?!\S)/g , '' );
+	function hidePage(page) {
+		if (typeof page['onHide'] === 'function') page.onHide();
+		page.style.display = 'none';
+		page.className = page.className.replace( /(?:^|\s)fadein|none|slidein|slideinrev(?!\S)/g , '' );
 	}
 
 };

@@ -60,8 +60,7 @@ Where:
 
 
 #### Default Application Page:
-The default application page is the first _body's child_ class _page_ element, which means that the first request to the basic URL _../index.html_ (without page specification) or invalid URL _../index.html#nonexistentPage_ (invalid page specification) will be redirected to _../index.html#firstPage_. If for you need to set any other element, use _WebApp.setDefaultPageId('secondPage')_ function API, as the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_setDefaultPageId.html#secondPage" target="_blank">live preview</a>):
-
+The default application page is the first _body's child_ class _page_ element, which means that the first request to the basic URL _../index.html_ (without page specification) will be redirected to _../index.html#firstPage_. If you need to set any other element, use _WebApp.setDefaultPageId('secondPage')_ function API, as the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_setDefaultPageId.html#secondPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -90,7 +89,7 @@ Global elements are components that must always be displayed (common between the
 
 ```html
 <div style="border: 1px solid gray; padding: .4em;">
-    This is a global element, displayed above every page.
+	This is a global element, displayed above every page.
 </div>
 
 <div class="page" id="firstPage">
@@ -104,8 +103,8 @@ Global elements are components that must always be displayed (common between the
 </div>
 
 <div>
-    <br>This is another global element,
-    <br>displayed below every page.
+	<br>This is another global element,
+	<br>displayed below every page.
 </div>
 
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
@@ -113,9 +112,28 @@ Global elements are components that must always be displayed (common between the
 
 
 ####Page Transitions:
-A basic page transition (fade in style) is enabled by default, but if you need to disable it, use _WebApp.setTransitionOn(false)_ function API. And if you prefer slide Left/Right transition, instead of traditional fade effect, use _WebApp.setSlideModeOn(true)_ function API. Both transition effects can be observed in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_setTransitionOn.html#firstPage" target="_blank">live preview</a>):
+The soft/basic page transition "fadein" is enabled by default, but if you need to set a different one, use _WebApp.setDefaultTransition('transitionType')_ function API. The available transition types are:
+- 'fadein' (which is the soft/basic default page transition);
+- 'slidein' (which slides the new page from the right to the left);
+- 'slideinrev' (which slides the new page from the left to the right);
+- 'slideinorder' (which also slides the new page, but the direction depends on the page ordering. If switching from the first to the second page, the slide occurs from the right to the left side. And if switching back from the second to the first page, the slide occurs from the left to the right side);
+- 'none' (which disables page transition).
+The different page transition types can be observed/compared in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_setDefaultTransition.html#firstPage" target="_blank">live preview</a>):
 
 ```html
+<div style="border: 1px solid gray; padding: .4em;">
+	<label style="padding-left: 1em; white-space:nowrap;">
+		Transition
+		<select onchange="WebApp.setDefaultTransition(this.value);">
+			<option value="none">None</option>
+			<option value="fadein" selected>Fade In</option>
+			<option value="slidein">Slide In</option>
+			<option value="slideinrev">Slide In Reverse</option>
+			<option value="slideinorder">Slide in Order</option>
+		</select>
+	</label>
+</div>
+
 <div class="page" id="firstPage">
 	<h1>First Page</h1>
 	<a href="#secondPage">go to the second page</a>
@@ -127,14 +145,51 @@ A basic page transition (fade in style) is enabled by default, but if you need t
 </div>
 
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
-
-<script>
-	WebApp.setTransitionOn(true); // Enable page transition.
-	WebApp.setSlideModeOn(true); // Enable slide transition mode.
-</script>
 ```
 
-**Important Note:** Slide transition direction depends on the page ordering. If switching from the first to the second page, the slide occurs from the right to the left side. And if switching back from the second to the first page, the slide occurs from the left to the right side.
+**Important Note:** if you need to set an specific transition to be used once only (without modify the default setting), use _WebApp.setNextTransition('transitionType')_ function API, according to the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_setNextTransition.html#firstPage" target="_blank">live preview</a>):
+
+```html
+<div class="page" id="firstPage">
+	<h1>First Page</h1>
+
+	<!-- uses soft/fade default transition -->
+	<a href="#secondPage">go to the second page</a>
+
+	<!-- uses Slide In transition -->
+	(<a href="#secondPage" onclick="WebApp.setNextTransition('slidein')">using Slide In</a>)
+
+	<!-- uses Slide In Reverse transition -->
+	(<a href="#secondPage" onclick="WebApp.setNextTransition('slideinrev')">Slide In Reverse</a>)
+
+	<!-- uses Slide In order transition -->
+	(<a href="#secondPage" onclick="WebApp.setNextTransition('slideinorder')">Slide In order</a>)
+
+	<!-- uses no transition -->
+	(<a href="#secondPage" onclick="WebApp.setNextTransition('none')">no transition</a>)
+</div>
+
+<div class="page" id="secondPage">
+	<h1>Second Page</h1>
+
+	<!-- uses soft/fade default transition -->
+	<a href="#firstPage">go to the first page</a>
+
+	<!-- uses Slide In transition -->
+	(<a href="#firstPage" onclick="WebApp.setNextTransition('slidein')">using Slide In</a>)
+
+	<!-- uses Slide In Reverse transition -->
+	(<a href="#firstPage" onclick="WebApp.setNextTransition('slideinrev')">Slide In Reverse</a>)
+
+	<!-- uses Slide In order transition -->
+	(<a href="#firstPage" onclick="WebApp.setNextTransition('slideinorder')">Slide In order</a>)
+
+	<!-- uses no transition -->
+	(<a href="#firstPage" onclick="WebApp.setNextTransition('none')">no transition</a>)
+</div>
+
+<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+```
 
 
 ####Application life cycle process callbacks:
@@ -164,7 +219,6 @@ WebApp.onResume = function() {
 	console.log('WebApp.onResume(): ' + (new Date().toLocaleString()));
 }
 
-
 // Set firstPage callbacks:
 var firstPageElement = document.getElementById('firstPage');
 firstPageElement.onShow = function() {
@@ -175,6 +229,7 @@ firstPageElement.onHide = function() {
 };
 </script>
 ```
+
 **Important Note:** the available callbacks are:
 - WebApp.onLoad();
 - WebApp.onUnload();

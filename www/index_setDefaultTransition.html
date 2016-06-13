@@ -9,14 +9,15 @@
 <body>
 
 <div style="border: 1px solid gray; padding: .4em;">
-	Transition settings:
 	<label style="padding-left: 1em; white-space:nowrap;">
-		<input type="checkbox" onchange="WebApp.setTransitionOn(this.checked); document.getElementById('slideModeSet').disabled = !this.checked;" checked>
-		Enable Transition.
-	</label>
-	<label style="padding-left: 1em; white-space:nowrap;">
-		<input type="checkbox" onchange="WebApp.setSlideModeOn(this.checked);" id="slideModeSet" checked>
-		Enable SlideMode.
+		Transition
+		<select onchange="WebApp.setDefaultTransition(this.value);">
+			<option value="none">None</option>
+			<option value="fadein" selected>Fade In</option>
+			<option value="slidein">Slide In</option>
+			<option value="slideinrev">Slide In Reverse</option>
+			<option value="slideinorder">Slide in Order</option>
+		</select>
 	</label>
 </div>
 
@@ -33,12 +34,6 @@
 </div>
 
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
-
-<script>
-	WebApp.setTransitionOn(true); // Enable page transition.
-	WebApp.setSlideModeOn(true); // Enable slide transition mode.
-</script>
-
 
 </body>
 

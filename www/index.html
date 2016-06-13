@@ -10,9 +10,17 @@
 
 <div style="border: 1px solid gray; padding: .4em;">
 	Global settings:
+	<label style="padding-left: 1em; white-space:nowrap;">
+		Transition
+		<select onchange="WebApp.setDefaultTransition(this.value);">
+			<option value="none">None</option>
+			<option value="fadein">Fade In</option>
+			<option value="slidein">Slide In</option>
+			<option value="slideinrev">Slide In Reverse</option>
+			<option value="slideinorder">Slide in Order</option>
+		</select>
+	</label>
 	<label style="padding-left: 1em; white-space:nowrap;"><input type="checkbox" onchange="WebApp.setDebugOn(this.checked);" checked> Enable debug.</label>
-	<label style="padding-left: 1em; white-space:nowrap;"><input type="checkbox" onchange="WebApp.setTransitionOn(this.checked); document.getElementById('slideModeSet').disabled = !this.checked;" checked> Enable Transition.</label>
-	<label style="padding-left: 1em; white-space:nowrap;"><input type="checkbox" onchange="WebApp.setSlideModeOn(this.checked);" id="slideModeSet"> Enable SlideMode.</label>
 </div>
 
 <div class="page" id="firstPage">
