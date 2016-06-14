@@ -133,10 +133,10 @@ Global elements are components that must always be displayed (common between the
 
 ## Page transitions:
 The soft/basic page transition "fadein" is enabled by default, but if you need to set a different one, use _WebApp.setDefaultTransition('transitionType')_ function API. The available transition types are:
-- 'fadein' (which is the soft/basic default page transition);
-- 'slidein' (which slides the new page from the right to the left);
-- 'slideinrev' (which slides the new page from the left to the right);
-- 'slideinorder' (which also slides the new page, but the direction depends on the page ordering. If switching from the first to the second page, the slide occurs from the right to the left side. And if switching back from the second to the first page, the slide occurs from the left to the right side);
+- 'fade' (which is the soft/basic default page transition);
+- 'slide' (which slides the new page from the right to the left);
+- 'sliderev' (which slides the new page from the left to the right);
+- 'slideorder' (which also slides the new page, but the direction depends on the page ordering. If switching from the first to the second page, the slide occurs from the right to the left side; And if switching back from the second to the first page, the slide occurs from the left to the right side);
 - 'none' (which disables page transition).
 The different page transition types can be observed/compared in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_setDefaultTransition.html#firstPage" target="_blank">live preview</a>):
 
@@ -146,10 +146,10 @@ The different page transition types can be observed/compared in the following ex
 		Transition
 		<select onchange="WebApp.setDefaultTransition(this.value);">
 			<option value="none">None</option>
-			<option value="fadein" selected>Fade In</option>
-			<option value="slidein">Slide In</option>
-			<option value="slideinrev">Slide In Reverse</option>
-			<option value="slideinorder">Slide in Order</option>
+			<option value="fade" selected>Fade</option>
+			<option value="slide">Slide</option>
+			<option value="sliderev">Slide Reverse</option>
+			<option value="slideorder">Slide Order</option>
 		</select>
 	</label>
 </div>
@@ -176,14 +176,14 @@ The different page transition types can be observed/compared in the following ex
 	<!-- uses soft/fade default transition -->
 	<a href="#secondPage">go to the second page</a>
 
-	<!-- uses Slide In transition -->
-	(<a href="#secondPage" onclick="WebApp.setNextTransition('slidein')">using Slide In</a>)
+	<!-- uses Slide transition -->
+	(<a href="#secondPage" onclick="WebApp.setNextTransition('slide')">using Slide</a>)
 
-	<!-- uses Slide In Reverse transition -->
-	(<a href="#secondPage" onclick="WebApp.setNextTransition('slideinrev')">Slide In Reverse</a>)
+	<!-- uses Slide Reverse transition -->
+	(<a href="#secondPage" onclick="WebApp.setNextTransition('sliderev')">Slide Reverse</a>)
 
-	<!-- uses Slide In order transition -->
-	(<a href="#secondPage" onclick="WebApp.setNextTransition('slideinorder')">Slide In order</a>)
+	<!-- uses Slide Order transition -->
+	(<a href="#secondPage" onclick="WebApp.setNextTransition('slideorder')">Slide Order</a>)
 
 	<!-- uses no transition -->
 	(<a href="#secondPage" onclick="WebApp.setNextTransition('none')">no transition</a>)
@@ -195,14 +195,14 @@ The different page transition types can be observed/compared in the following ex
 	<!-- uses soft/fade default transition -->
 	<a href="#firstPage">go to the first page</a>
 
-	<!-- uses Slide In transition -->
-	(<a href="#firstPage" onclick="WebApp.setNextTransition('slidein')">using Slide In</a>)
+	<!-- uses Slide transition -->
+	(<a href="#firstPage" onclick="WebApp.setNextTransition('slide')">using Slide</a>)
 
-	<!-- uses Slide In Reverse transition -->
-	(<a href="#firstPage" onclick="WebApp.setNextTransition('slideinrev')">Slide In Reverse</a>)
+	<!-- uses Slide Reverse transition -->
+	(<a href="#firstPage" onclick="WebApp.setNextTransition('sliderev')">Slide Reverse</a>)
 
-	<!-- uses Slide In order transition -->
-	(<a href="#firstPage" onclick="WebApp.setNextTransition('slideinorder')">Slide In order</a>)
+	<!-- uses Slide Order transition -->
+	(<a href="#firstPage" onclick="WebApp.setNextTransition('slideorder')">Slide order</a>)
 
 	<!-- uses no transition -->
 	(<a href="#firstPage" onclick="WebApp.setNextTransition('none')">no transition</a>)

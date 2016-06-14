@@ -14,7 +14,7 @@ var WebAppClass = function() {
 	this.setDefaultPageId = function(pageId) {defaultPageId = pageId;};
 
 	// Transition settings:
-	var transitionTypes = ['fadein', 'none', 'slidein', 'slideinrev', 'slideinorder'];
+	var transitionTypes = ['fade', 'none', 'slide', 'sliderev', 'slideorder'];
 	var defaultTransition = transitionTypes[0];
 	this.getDefaultTransition = function() {return defaultTransition;};
 	this.setDefaultTransition = function(transitionType) {if (!transitionType || transitionTypes.indexOf(transitionType) >= 0) defaultTransition = transitionType;};
@@ -122,14 +122,37 @@ var WebAppClass = function() {
 	}
 
 	function switchPage(current, next) {
-		if (current) hidePage(current);
 		if (!nextTransition) nextTransition = defaultTransition;
-		if (nextTransition === 'slideinorder') {
-			var slideClass = (current && pageList.indexOf(current.id) > pageList.indexOf(next.id))? ' slideinrev': ' slidein';
-			next.className += slideClass;
-		} else next.className += ' ' + nextTransition;
-		showPage(next);
-		nextTransition = null;
+		if (nextTransition === 'slideorder') {
+			nextTransition = (current && pageList.indexOf(current.id) > pageList.indexOf(next.id))? ' sliderev': ' slide';
+		}
+		if (current) current.className = current.className.replace( /(?:^|\s)fadein|slidein|sliderevin(?!\S)/g , '' );
+		next.className = next.className.replace( /(?:^|\s)fadeout|slideout|sliderevout(?!\S)/g , '' );
+
+		if (nextTransition === 'none') {
+			if (current) hidePage(current);
+			showPage(next);
+			nextTransition = null;
+		} else {
+			if (current) {
+				var transitionRunning = true;
+				var transitionEnded = function() {
+					transitionRunning = false;
+					current.removeEventListener('animationend', transitionEnded);
+					hidePage(current);
+					next.className += ' ' + nextTransition + 'in';
+					showPage(next);
+					nextTransition = null;
+				};
+				setTimeout(function() {if (transitionRunning) transitionEnded();}, 500);
+				current.addEventListener('animationend', transitionEnded);
+				current.className += ' ' + nextTransition + 'out';
+			} else {
+				next.className += ' ' + nextTransition + 'in';
+				showPage(next);
+				nextTransition = null;
+			}
+		}
 	}
 
 	function showPage(page) {
@@ -140,7 +163,6 @@ var WebAppClass = function() {
 	function hidePage(page) {
 		if (typeof page['onHide'] === 'function') page.onHide();
 		page.style.display = 'none';
-		page.className = page.className.replace( /(?:^|\s)fadein|none|slidein|slideinrev(?!\S)/g , '' );
 	}
 
 };
@@ -156,9 +178,9 @@ var styleEffects = '\
 	@keyframes slideinfromleft {from {transform: translateX(-100%);} to {transform: translateX(0);}}\
 	@keyframes slideouttoleft {from {transform: translateX(0);} to {transform: translateX(-100%);}}\
 	@keyframes slideouttoright {from {transform: translateX(0);} to {transform: translateX(100%);}}\
-	.slideout, .slidein, .slideoutrev, .slideinrev {animation-timing-function: ease-out; animation-duration: 350ms;}\
+	.slideout, .slidein, .sliderevout, .sliderevin {animation-timing-function: ease-out; animation-duration: 350ms;}\
 	.slideout {transform: translateX(-100%); animation-name: slideouttoleft;}\
 	.slidein {transform: translateX(0); animation-name: slideinfromright;}\
-	.slideoutrev {transform: translateX(100%); animation-name: slideouttoright;}\
-	.slideinrev {transform: translateX(0); animation-name: slideinfromleft;}\
+	.sliderevout {transform: translateX(100%); animation-name: slideouttoright;}\
+	.sliderevin {transform: translateX(0); animation-name: slideinfromleft;}\
 ';

@@ -14,10 +14,10 @@
 		Transition
 		<select onchange="WebApp.setDefaultTransition(this.value);">
 			<option value="none">None</option>
-			<option value="fadein">Fade In</option>
-			<option value="slidein">Slide In</option>
-			<option value="slideinrev">Slide In Reverse</option>
-			<option value="slideinorder">Slide in Order</option>
+			<option value="fade" selected>Fade</option>
+			<option value="slide">Slide</option>
+			<option value="sliderev">Slide Reverse</option>
+			<option value="slideorder">Slide Order</option>
 		</select>
 	</label>
 	<label style="padding-left: 1em; white-space:nowrap;"><input type="checkbox" onchange="WebApp.setDebugOn(this.checked);" checked> Enable debug.</label>
