@@ -1,8 +1,24 @@
 # WebApp
-WebApp is a lightweight (simple and efficient) WEB application framework (library for HTML5 projects), which allow us to fit multiple pages into a single HTML file (following the "single-page application" concept).
+WebApp is a lightweight (simple and efficient) WEB application framework (library for HTML5 projects), which allow us to fit multiple pages into a single HTML file (following the "single-page application" concept), and several other facilities like:
+- [Minimum code required](#minimum-code-required);
+- [Default application page](#default-application-page);
+- [Dynamic page loading](#dynamic-page-loading) (coming soon);
+- [Global elements](#global-elements);
+- [Page transitions](#page-transitions);
+- [History manipulation](#history-manipulation) (coming soon);
+- [History inserted page](#history-inserted-page) (coming soon);
+- [History bypassed page](#history-bypassed-page) (coming soon);
+- [Life cycle callbacks](#life-cycle-callbacks);
+- [Friendly header/menu API](#friendly-Header-Menu-api) (coming soon);
+- [Canvas screen support](#canvas-screen-support) (coming soon);
+- [Simplified audio API](#simplified-audio-api) (coming soon);
+- [Tooltip widget API](#tooltip-widget-api) (coming soon);
+- [Internationalization support](#internationalization-support) (coming soon);
+- [Language (i18n) support](#language-i18n-support) (coming soon);
+- [Click enhancement feature](#click-enhancement-feature) (coming soon);
 
 
-####Minimum code required:
+## Minimum code required:
 The following HTML crumb is the minimum code required to use WebApp framework. As you can easily guess, it creates an application containing two simple pages (_firstPage_ and _secondPage_), accessible through the corresponding file URLs _../index.html#firstPage_ and _../index.html#secondPage_ (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_minimum.html#firstPage" target="_blank">live preview</a>).
 
 ```html
@@ -24,7 +40,7 @@ The following HTML crumb is the minimum code required to use WebApp framework. A
 ```
 
 Where:
-- `<div class="page" id="firstPage">` is the element required for page creation, which must have the class _page_, contains a unique _id_, and be placed as a _body's child_ element. 
+- `<div class="page" id="firstPage">` is the element required for page creation, which must have the class _page_, contains a unique _id_, and be placed as a _body's child_ element.
 - `<h1>First Page</h1>` and `<a href="#secondPage">go to the second page</a>` represent the content of the page _firstPage_ (note that only the hash data is required to create a link to the secondPage).
 - `<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>` is the inclusion of WebApp framework library, which can be obtained remotely (as here it is, using GitHub _CDN_ URL) or locally (stored beside your _HTML_ file).
 
@@ -59,7 +75,7 @@ Where:
 ```
 
 
-#### Default Application Page:
+## Default application page:
 The default application page is the first _body's child_ class _page_ element, which means that the first request to the basic URL _../index.html_ (without page specification) will be redirected to _../index.html#firstPage_. If you need to set any other element, use _WebApp.setDefaultPageId('secondPage')_ function API, as the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_setDefaultPageId.html#secondPage" target="_blank">live preview</a>):
 
 ```html
@@ -84,7 +100,11 @@ The default application page is the first _body's child_ class _page_ element, w
 **Important Note:** WebApp function APIs must be called after the inclusion of WebApp framework library.
 
 
-####Global elements:
+## Dynamic page loading:
+Coming soon...
+
+
+## Global elements:
 Global elements are components that must always be displayed (common between the pages, e.g.: toolbar, statusbar, menus, etc). To define an element as global, place it as a _body's child_ element (exactly as a regular page), but without the class _page_, as the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_globalelement.html#firstPage" target="_blank">live preview</a>):
 
 ```html
@@ -111,7 +131,7 @@ Global elements are components that must always be displayed (common between the
 ```
 
 
-####Page Transitions:
+## Page transitions:
 The soft/basic page transition "fadein" is enabled by default, but if you need to set a different one, use _WebApp.setDefaultTransition('transitionType')_ function API. The available transition types are:
 - 'fadein' (which is the soft/basic default page transition);
 - 'slidein' (which slides the new page from the right to the left);
@@ -192,7 +212,19 @@ The different page transition types can be observed/compared in the following ex
 ```
 
 
-####Application life cycle process callbacks:
+## History manipulation:
+Coming soon...
+
+
+## History inserted page:
+Coming soon...
+
+
+## History bypassed page:
+Coming soon...
+
+
+## Life cycle callbacks:
 Application life cycle process is a set of pre-defined events that occurs during the application execution, which must be monitored (through callbacks) in order to execute the appropriate actions. For example, if you are developing a game, you need to know when the use minimizes the application (in order to pause the game execution, timers, etc.), and you also need to know when the user returns to the application (in order to resume the game from the point where it was paused). That is why the process callbacks are so relevant.
 
 I you do not understand the above explanation, do not be afraid. The use of callbacks is much easier than the explanation itself :) To implement an application callback, you just need to get the _page_ element reference (or WebApp object for global callbacks), and implement the desired function, as can be observed in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_callbacks.html#firstPage" target="_blank">live preview</a>):
@@ -242,15 +274,31 @@ firstPageElement.onHide = function() {
 - pageElement.onKeyDown(keyEvent);
 
 
-####Canvas screen support:
+## Friendly header/menu API:
 Coming soon...
 
 
-####Internationalization support:
+## Canvas screen support:
 Coming soon...
 
 
-####Public API:
+## Simplified audio API:
+Coming soon...
+
+
+## Tooltip widget API:
+Coming soon...
+
+
+## Language (i18n) support:
+Coming soon...
+
+
+##Click enhancement feature:
+Coming soon...
+
+
+## Public API:
 
 - setDebugOn(boolean): enable/disable debugging from console.log (default system value: true).
 - getDebugOn(): return the current debug state setting.
