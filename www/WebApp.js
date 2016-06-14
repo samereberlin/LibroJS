@@ -4,6 +4,7 @@ var WebAppClass = function() {
 	var isDebugOn = true;
 	this.getDebugOn = function() {return isDebugOn;};
 	this.setDebugOn = function(booleanState) {isDebugOn = booleanState;};
+	var isRunning = false;
 
 	// Page settings:
 	var pageList = null;
@@ -52,6 +53,7 @@ var WebAppClass = function() {
 			window.onkeydown = function(arg) {keyDown(arg);};
 			window.onresize = function() {resize();};
 			window.onunload = function() {unload();};
+			resume(); // Required to dispatch initial onResume event.
 
 			// Setup page change listener:
 			window.addEventListener('hashchange', updatePage);
@@ -62,16 +64,24 @@ var WebAppClass = function() {
 	function unload() {
 		if (isDebugOn) console.log('WebApp.js: unload()');
 		if (typeof WebApp['onUnload'] === 'function') WebApp.onUnload();
+		if (isRunning) pause();
+		currentPage = null;
 	};
 
 	function pause() {
 		if (isDebugOn) console.log('WebApp.js: pause()');
-		if (typeof WebApp['onPause'] === 'function') WebApp.onPause();
+		if (isRunning) {
+			isRunning = false;
+			if (typeof WebApp['onPause'] === 'function') WebApp.onPause();
+		}
 	};
 
 	function resume() {
 		if (isDebugOn) console.log('WebApp.js: resume()');
-		if (typeof WebApp['onResume'] === 'function') WebApp.onResume();
+		if (!isRunning) {
+			isRunning = true;
+			if (typeof WebApp['onResume'] === 'function') WebApp.onResume();
+		}
 	};
 
 	function resize() {
