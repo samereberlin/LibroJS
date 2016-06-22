@@ -23,6 +23,9 @@ var WebAppClass = function() {
 	this.getNextTransition = function() {return nextTransition;};
 	this.setNextTransition = function(transitionType) {if (!transitionType || transitionTypes.indexOf(transitionType) >= 0) nextTransition = transitionType;};
 
+	// API functions:
+	this.animateElement = animateElement;
+
 	this.load = function() {
 		if (isDebugOn) console.log('WebApp.js: load()');
 		if (typeof WebApp['onLoad'] === 'function') WebApp.onLoad();
@@ -66,7 +69,7 @@ var WebAppClass = function() {
 		if (typeof WebApp['onUnload'] === 'function') WebApp.onUnload();
 		if (isRunning) pause();
 		currentPage = null;
-	};
+	}
 
 	function pause() {
 		if (isDebugOn) console.log('WebApp.js: pause()');
@@ -74,7 +77,7 @@ var WebAppClass = function() {
 			isRunning = false;
 			if (typeof WebApp['onPause'] === 'function') WebApp.onPause();
 		}
-	};
+	}
 
 	function resume() {
 		if (isDebugOn) console.log('WebApp.js: resume()');
@@ -82,12 +85,12 @@ var WebAppClass = function() {
 			isRunning = true;
 			if (typeof WebApp['onResume'] === 'function') WebApp.onResume();
 		}
-	};
+	}
 
 	function resize() {
 		if (isDebugOn) console.log('WebApp.js: resize()');
 		if (typeof WebApp['onResize'] === 'function') WebApp.onResize();
-	};
+	}
 
 	function keyDown(keyEvent) {
 		if (isDebugOn) console.log('WebApp.js: keyDown(' + keyEvent.keyCode + ')');
@@ -96,7 +99,7 @@ var WebAppClass = function() {
 		} else {
 			if (typeof currentPage['onKeyDown'] === 'function') currentPage.onKeyDown(keyEvent);
 		}
-	};
+	}
 
 	function updatePage(hashChangeEvent) {
 		if (isDebugOn) console.log('WebApp.js: updatePage(hashChangeEvent)... newURL = ' + hashChangeEvent.newURL + ', oldURL = ' + hashChangeEvent.oldURL);
@@ -136,33 +139,37 @@ var WebAppClass = function() {
 		if (nextTransition === 'slideorder') {
 			nextTransition = (current && pageList.indexOf(current.id) > pageList.indexOf(next.id))? ' sliderev': ' slide';
 		}
-		if (current) current.className = current.className.replace( /(?:^|\s)fadein|slidein|sliderevin(?!\S)/g , '' );
-		next.className = next.className.replace( /(?:^|\s)fadeout|slideout|sliderevout(?!\S)/g , '' );
 
 		if (nextTransition === 'none') {
 			if (current) hidePage(current);
 			showPage(next);
 			nextTransition = null;
 		} else {
-			if (current) {
-				var transitionRunning = true;
-				var transitionEnded = function() {
-					transitionRunning = false;
-					current.removeEventListener('animationend', transitionEnded);
-					hidePage(current);
-					next.className += ' ' + nextTransition + 'in';
-					showPage(next);
-					nextTransition = null;
-				};
-				setTimeout(function() {if (transitionRunning) transitionEnded();}, 500);
-				current.addEventListener('animationend', transitionEnded);
-				current.className += ' ' + nextTransition + 'out';
-			} else {
-				next.className += ' ' + nextTransition + 'in';
+			function showNext() {
+				animateElement(next, nextTransition + 'in', null);
 				showPage(next);
 				nextTransition = null;
 			}
+			if (current) {
+				animateElement(current, nextTransition + 'out', function() {
+					hidePage(current);
+					showNext();
+				});
+			} else showNext();
 		}
+	}
+
+	function animateElement(element, animation, callback) {
+		var animationRunning = true;
+		function animationEnded() {
+			animationRunning = false;
+			element.removeEventListener('animationend', animationEnded);
+			element.className = element.className.replace(new RegExp('(?:^|\\s)' + animation + '(?!\\S)', 'g'), '');
+			if (typeof callback === 'function') callback();
+		}
+		setTimeout(function() {if (animationRunning) animationEnded();}, 1000);
+		element.addEventListener('animationend', animationEnded);
+		element.className += ' ' + animation;
 	}
 
 	function showPage(page) {
