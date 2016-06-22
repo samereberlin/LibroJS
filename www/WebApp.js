@@ -180,6 +180,7 @@ WebApp = new WebAppClass();
 document.addEventListener('DOMContentLoaded', function() {WebApp.load();});
 
 var styleEffects = '\
+    /* Animation Effects (based on jquery.mobile-1.4.5). */\
 	@keyframes fadein {from {opacity: 0;} to {opacity: 1;}}\
 	@keyframes fadeout {from {opacity: 1;} to {opacity: 0;}}\
 	.fadeout {opacity: 0; animation-duration: 125ms; animation-name: fadeout;}\
@@ -188,7 +189,8 @@ var styleEffects = '\
 	@keyframes slideinfromleft {from {transform: translateX(-100%);} to {transform: translateX(0);}}\
 	@keyframes slideouttoleft {from {transform: translateX(0);} to {transform: translateX(-100%);}}\
 	@keyframes slideouttoright {from {transform: translateX(0);} to {transform: translateX(100%);}}\
-	.slideout, .slidein, .sliderevout, .sliderevin {animation-timing-function: ease-out; animation-duration: 350ms;}\
+	.slidein, .sliderevin {animation-timing-function: ease-out; animation-duration: 225ms;}\
+	.slideout, .sliderevout {animation-timing-function: ease-in; animation-duration: 125ms;}\
 	.slideout {transform: translateX(-100%); animation-name: slideouttoleft;}\
 	.slidein {transform: translateX(0); animation-name: slideinfromright;}\
 	.sliderevout {transform: translateX(100%); animation-name: slideouttoright;}\
