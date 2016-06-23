@@ -20,7 +20,7 @@
 			<option value="slideorder">Slide Order</option>
 		</select>
 	</label>
-	<label style="padding-left: 1em; white-space:nowrap;"><input type="checkbox" onchange="WebApp.setDebugOn(this.checked);" checked> Enable debug.</label>
+	<label style="padding-left: 1em; white-space:nowrap;"><input type="checkbox" onchange="WebApp.setLogEnabled(this.checked);" checked> Enable log.</label>
 </div>
 
 <div class="page" id="firstPage">
@@ -44,49 +44,49 @@ var logMonitor = document.getElementById('logMonitor');
 
 //Set global callbacks:
 WebApp.onLoad = function() {
-	if (WebApp.getDebugOn()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:orange;">WebApp.onLoad()</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:orange;">WebApp.onLoad()</span>';
 }
 WebApp.onUnload = function() {
-	if (WebApp.getDebugOn()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:orange;">WebApp.onUnload()</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:orange;">WebApp.onUnload()</span>';
 }
 WebApp.onPause = function() {
-	if (WebApp.getDebugOn()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:orange;">WebApp.onPause()</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:orange;">WebApp.onPause()</span>';
 }
 WebApp.onResume = function() {
-	if (WebApp.getDebugOn()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:orange;">WebApp.onResume()</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:orange;">WebApp.onResume()</span>';
 }
 WebApp.onResize = function() {
-	if (WebApp.getDebugOn()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:orange;">WebApp.onResize()</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:orange;">WebApp.onResize()</span>';
 }
 
 //Set firstPage callbacks:
 var firstPageElement = document.getElementById('firstPage');
 firstPageElement.onLoad = function() {
-	if (WebApp.getDebugOn()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPage.onLoad()</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPage.onLoad()</span>';
 };
 firstPageElement.onShow = function() {
-	if (WebApp.getDebugOn()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPage.onShow()</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPage.onShow()</span>';
 };
 firstPageElement.onHide = function() {
-	if (WebApp.getDebugOn()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPage.onHide()</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPage.onHide()</span>';
 };
 firstPageElement.onKeyDown = function(keyEvent) {
-	if (WebApp.getDebugOn()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPage.onKeyDown(' + keyEvent.keyCode + ')</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPage.onKeyDown(' + keyEvent.keyCode + ')</span>';
 };
 
 //Set secondPage callbacks:
 var secondPageElement = document.getElementById('secondPage');
 secondPageElement.onLoad = function() {
-	if (WebApp.getDebugOn()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPage.onLoad()</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPage.onLoad()</span>';
 };
 secondPageElement.onShow = function() {
-	if (WebApp.getDebugOn()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPage.onShow()</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPage.onShow()</span>';
 };
 secondPageElement.onHide = function() {
-	if (WebApp.getDebugOn()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPage.onHide()</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPage.onHide()</span>';
 };
 secondPageElement.onKeyDown = function(keyEvent) {
-	if (WebApp.getDebugOn()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPage.onKeyDown(' + keyEvent.keyCode + ')</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPage.onKeyDown(' + keyEvent.keyCode + ')</span>';
 };
 </script>
 

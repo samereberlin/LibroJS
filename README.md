@@ -16,6 +16,7 @@ WebApp is a lightweight (simple and efficient) WEB application framework (librar
 - [Internationalization support](#internationalization-support) (coming soon);
 - [Language (i18n) support](#language-i18n-support) (coming soon);
 - [Click enhancement feature](#click-enhancement-feature) (coming soon);
+- [Public API](#public-api) (coming soon);
 
 
 ## Minimum code required:
@@ -299,15 +300,4 @@ Coming soon...
 
 
 ## Public API:
-
-- setDebugOn(boolean): enable/disable debugging from console.log (default system value: true).
-- getDebugOn(): return the current debug state setting.
-
-- setDefaultPageId(pageId): set the default page id, to be shown in case of not specified in the browser URL (default system value: first class page element).
-- getDefaultPageId(): return the default page id.
-
-- setTransitionOn(boolean): enable/disable soft transition when switching between the pages (default system value: true).
-- getTransitionOn(): return the current transition state setting.
-
-- setSlideModeOn(boolean): enable/disable slide transition (instead of soft) when switching between the pages (default system value: false).
-- getSlideModeOn(): return the current slide mode state setting.
+Coming soon...

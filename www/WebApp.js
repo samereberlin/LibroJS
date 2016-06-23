@@ -1,34 +1,90 @@
 'use strict';
 var WebApp = null;
 var WebAppClass = function() {
-	var isDebugOn = true;
-	this.getDebugOn = function() {return isDebugOn;};
-	this.setDebugOn = function(booleanState) {isDebugOn = booleanState;};
+
+	// Platform settings:
+	var isLogEnabled = true;
+	// Platform API:
+	this.isLogEnabled = function() {
+		return isLogEnabled;
+	};
+	this.setLogEnabled = function(booleanState) {
+		isLogEnabled = booleanState;
+	};
+
+	// Application settings:
 	var isRunning = false;
+	// Application API:
+	this.isRunning = function() {
+		return isRunning;
+	};
+	this.setRunning = function(booleanState) {
+		if (booleanState) resume();
+		else pause();
+	};
 
 	// Page settings:
 	var pageList = null;
 	var pageStack = null;
 	var currentPage = null;
 	var defaultPageId = null;
-	this.getDefaultPageId = function() {return defaultPageId;};
-	this.setDefaultPageId = function(pageId) {defaultPageId = pageId;};
+	// Page API:
+	this.getDefaultPageId = function() {
+		return defaultPageId;
+	};
+	this.setDefaultPageId = function(pageId) {
+		defaultPageId = pageId;
+	};
 
-	// Transition settings:
+	// Animation/Transition settings:
+	var styleRules = '\
+		/* Animation Effects (based on jquery.mobile-1.4.5). */\
+		@keyframes fadein {from {opacity: 0;} to {opacity: 1;}}\
+		@keyframes fadeout {from {opacity: 1;} to {opacity: 0;}}\
+		.fadeout {opacity: 0; animation-duration: 125ms; animation-name: fadeout;}\
+		.fadein {opacity: 1; animation-duration: 225ms; animation-name: fadein;}\
+		@keyframes slideinfromright {from {transform: translateX(100%);} to {transform: translateX(0);}}\
+		@keyframes slideinfromleft {from {transform: translateX(-100%);} to {transform: translateX(0);}}\
+		@keyframes slideouttoleft {from {transform: translateX(0);} to {transform: translateX(-100%);}}\
+		@keyframes slideouttoright {from {transform: translateX(0);} to {transform: translateX(100%);}}\
+		.slidein, .sliderevin {animation-timing-function: ease-out; animation-duration: 225ms;}\
+		.slideout, .sliderevout {animation-timing-function: ease-in; animation-duration: 125ms;}\
+		.slideout {transform: translateX(-100%); animation-name: slideouttoleft;}\
+		.slidein {transform: translateX(0); animation-name: slideinfromright;}\
+		.sliderevout {transform: translateX(100%); animation-name: slideouttoright;}\
+		.sliderevin {transform: translateX(0); animation-name: slideinfromleft;}\
+	';
 	var animationTypes = ['fadein', 'fadeout', 'slidein', 'slideout', 'sliderevin', 'sliderevout'];
-	this.getAnimationTypes = function() {return animationTypes;};
-	this.animateElement = function(element, animation, callback) {if (element && element.nodeType === 1 && animation && animationTypes.indexOf(animation) >= 0) animateElement(element, animation, callback);};
 	var transitionTypes = ['none', 'fade', 'slide', 'sliderev', 'slideorder'];
-	this.getTransitionTypes = function() {return transitionTypes;};
 	var defaultTransition = transitionTypes[1];
-	this.getDefaultTransition = function() {return defaultTransition;};
-	this.setDefaultTransition = function(transitionType) {if (transitionType && transitionTypes.indexOf(transitionType) >= 0) defaultTransition = transitionType;};
 	var nextTransition = null;
-	this.getNextTransition = function() {return nextTransition;};
-	this.setNextTransition = function(transitionType) {if (transitionType && transitionTypes.indexOf(transitionType) >= 0) nextTransition = transitionType;};
+	// Animation/Transition API:
+	this.animateElement = function(element, animation, callback) {
+		if (element && element.nodeType === 1 && animation && animationTypes.indexOf(animation) >= 0) animateElement(element, animation, callback);
+	};
+	this.getAnimationTypes = function() {
+		return animationTypes;
+	};
+	this.getTransitionTypes = function() {
+		return transitionTypes;
+	};
+	this.getDefaultTransition = function() {
+		return defaultTransition;
+	};
+	this.setDefaultTransition = function(transitionType) {
+		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) defaultTransition = transitionType;
+	};
+	this.getNextTransition = function() {
+		return nextTransition;
+	};
+	this.setNextTransition = function(transitionType) {
+		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) nextTransition = transitionType;
+	};
+
+	// Functions related to application life cycle: {
 
 	this.load = function() {
-		if (isDebugOn) console.log('WebApp.js: load()');
+		if (isLogEnabled) console.log('WebApp.js: load()');
 		if (typeof WebApp['onLoad'] === 'function') WebApp.onLoad();
 
 		// Setup page elements:
@@ -48,7 +104,7 @@ var WebAppClass = function() {
 			// Setup CSS style effects:
 			var style = document.createElement('style');
 			style.type = 'text/css';
-			style.innerHTML = styleEffects;
+			style.innerHTML = styleRules;
 			document.getElementsByTagName('head')[0].appendChild(style);
 
 			// Setup application life cycle callbacks:
@@ -66,14 +122,14 @@ var WebAppClass = function() {
 	};
 
 	function unload() {
-		if (isDebugOn) console.log('WebApp.js: unload()');
+		if (isLogEnabled) console.log('WebApp.js: unload()');
 		if (typeof WebApp['onUnload'] === 'function') WebApp.onUnload();
 		if (isRunning) pause();
 		currentPage = null;
 	}
 
 	function pause() {
-		if (isDebugOn) console.log('WebApp.js: pause()');
+		if (isLogEnabled) console.log('WebApp.js: pause()');
 		if (isRunning) {
 			isRunning = false;
 			if (typeof WebApp['onPause'] === 'function') WebApp.onPause();
@@ -81,29 +137,26 @@ var WebAppClass = function() {
 	}
 
 	function resume() {
-		if (isDebugOn) console.log('WebApp.js: resume()');
+		if (isLogEnabled) console.log('WebApp.js: resume()');
 		if (!isRunning) {
 			isRunning = true;
 			if (typeof WebApp['onResume'] === 'function') WebApp.onResume();
 		}
 	}
 
+	// }
+	// Functions related to application settings: {
+
 	function resize() {
-		if (isDebugOn) console.log('WebApp.js: resize()');
+		if (isLogEnabled) console.log('WebApp.js: resize()');
 		if (typeof WebApp['onResize'] === 'function') WebApp.onResize();
 	}
 
-	function keyDown(keyEvent) {
-		if (isDebugOn) console.log('WebApp.js: keyDown(' + keyEvent.keyCode + ')');
-		if (keyEvent.keyCode === 13) {
-			if (keyEvent.target['onclick']) keyEvent.target.onclick();
-		} else {
-			if (typeof currentPage['onKeyDown'] === 'function') currentPage.onKeyDown(keyEvent);
-		}
-	}
+	// }
+	// Functions related to internal actions: {
 
 	function updatePage(hashChangeEvent) {
-		if (isDebugOn) console.log('WebApp.js: updatePage(hashChangeEvent)... newURL = ' + hashChangeEvent.newURL + ', oldURL = ' + hashChangeEvent.oldURL);
+		if (isLogEnabled) console.log('WebApp.js: updatePage(hashChangeEvent)... newURL = ' + hashChangeEvent.newURL + ', oldURL = ' + hashChangeEvent.oldURL);
 
 		// Parse URL data:
 		var nextSearch = (window.location.hash.indexOf('?') >= 0)? window.location.hash.substring(window.location.hash.indexOf('?') + 1): null;
@@ -183,24 +236,19 @@ var WebAppClass = function() {
 		page.style.display = 'none';
 	}
 
+	// }
+	// Functions related to user interaction: {
+
+	function keyDown(keyEvent) {
+		if (isLogEnabled) console.log('WebApp.js: keyDown(' + keyEvent.keyCode + ')');
+		if (keyEvent.keyCode === 13) {
+			if (keyEvent.target['onclick']) keyEvent.target.onclick();
+		} else {
+			if (typeof currentPage['onKeyDown'] === 'function') currentPage.onKeyDown(keyEvent);
+		}
+	}
+
+	// }
 };
 WebApp = new WebAppClass();
 document.addEventListener('DOMContentLoaded', function() {WebApp.load();});
-
-var styleEffects = '\
-	/* Animation Effects (based on jquery.mobile-1.4.5). */\
-	@keyframes fadein {from {opacity: 0;} to {opacity: 1;}}\
-	@keyframes fadeout {from {opacity: 1;} to {opacity: 0;}}\
-	.fadeout {opacity: 0; animation-duration: 125ms; animation-name: fadeout;}\
-	.fadein {opacity: 1; animation-duration: 225ms; animation-name: fadein;}\
-	@keyframes slideinfromright {from {transform: translateX(100%);} to {transform: translateX(0);}}\
-	@keyframes slideinfromleft {from {transform: translateX(-100%);} to {transform: translateX(0);}}\
-	@keyframes slideouttoleft {from {transform: translateX(0);} to {transform: translateX(-100%);}}\
-	@keyframes slideouttoright {from {transform: translateX(0);} to {transform: translateX(100%);}}\
-	.slidein, .sliderevin {animation-timing-function: ease-out; animation-duration: 225ms;}\
-	.slideout, .sliderevout {animation-timing-function: ease-in; animation-duration: 125ms;}\
-	.slideout {transform: translateX(-100%); animation-name: slideouttoleft;}\
-	.slidein {transform: translateX(0); animation-name: slideinfromright;}\
-	.sliderevout {transform: translateX(100%); animation-name: slideouttoright;}\
-	.sliderevin {transform: translateX(0); animation-name: slideinfromleft;}\
-';

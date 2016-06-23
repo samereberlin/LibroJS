@@ -1,0 +1,109 @@
+- URL hash location management (basic redirection):
+
+- fisrtPage redirection from a not set hash:
+    · if open URL index.html:
+    > fisrtPage must be shown (URL: index.html#fisrtPage).
+
+- Default page redirection from an unknown hash:
+    · if open URL index.html#foo:
+    > fisrtPage must be shown (URL: index.html#fisrtPage).
+
+- Previous page redirection from an unknown hash:
+    · if open URL index.html:
+    > fisrtPage must be shown (URL: index.html#fisrtPage).
+        · if open URL index.html#secondPage:
+        > secondPage must be shown (URL: index.html#secondPage).
+            · if open URL index.html#foo:
+            > secondPage must be shown back, "without history stack incrementation" (URL: index.html#secondPage).
+                · if press back button:
+                > fisrtPage must be shown (URL: index.html#fisrtPage).
+
+- URL hash location management (exit redirection):
+
+#notYetImplemented
+- exitDialog popup from firstPage, followed by exit?secondPage, and back button once:
+    · if open URL index.html:
+    > firstPage must be shown (URL: index.html#firstPage).
+        · if open URL index.html#exit?secondPage:
+        > secondPage must be shown (URL: index.html#secondPage).
+            · if press back button:
+            > exit dialog must be shown (URL: index.html#exit?secondPage).
+
+#notYetImplemented
+- exitDialog popup from exit?firstPage, followed by secondPage, and back button twice:
+    · if open URL index.html#exit?firstPage:
+    > firstPage must be shown (URL: index.html#firstPage).
+        · if open URL index.html#secondPage:
+        > secondPage must be shown (URL: index.html#secondPage).
+            · if press back button:
+            > firstPage must be shown (URL: index.html#firstPage).
+                · if press back button:
+                > exit dialog must be shown (URL: index.html#exit).
+
+#notYetImplemented
+- exitDialog popup from exit?firstPage, followed by secondScreen, firstPage, secondScreen, firstPage, and back button once:
+    · if open URL index.html#exit?firstPage:
+    > firstPage must be shown (URL: index.html#firstPage).
+        · if open URL index.html#secondScreen:
+        > secondScreen must be shown (URL: index.html#secondScreen).
+            · if open URL index.html#firstPage:
+            > firstPage must be shown (URL: index.html#firstPage).
+                · if open URL index.html#secondScreen:
+                > secondScreen must be shown (URL: index.html#secondScreen).
+                    · if open URL index.html#firstPage:
+                    > firstPage must be shown (URL: index.html#firstPage).
+                        · if press back button:
+                        > exit dialog must be shown (URL: index.html#exit?firstPage).
+
+- URL hash location management (menu redirection):
+
+#notYetImplemented
+- Page redirection from 'menu' reserved search:
+    · if open URL index.html#firstPage?menu:
+    > firstPage must be shown (URL: index.html#firstPage).
+
+#notYetImplemented
+- exitDialog popup from exit?firstPage, followed by firstPage?menu, and back button twice:
+    · if open URL index.html#exit?firstPage:
+    > firstPage must be shown (URL: index.html#firstPage).
+        · if open URL index.html#firstPage?menu:
+        > menu must be shown (URL: index.html#firstPage?menu).
+            · if press back button:
+            > menu must be hidden (URL: index.html#firstPage).
+                · if press back button:
+                > exit dialog must be shown (URL: index.html#exit).
+
+#notYetImplemented
+- exitDialog popup from exit?firstPage, followed by firstPage?menu, click outside menu, and back button once:
+    · if open URL index.html#exit?firstPage:
+    > firstPage must be shown (URL: index.html#firstPage).
+        · if open URL index.html#firstPage?menu:
+        > menu must be shown (URL: index.html#firstPage?menu).
+            · if click outside menu:
+            > menu must be hidden (URL: index.html#firstPage).
+                · if press back button:
+                > exit dialog must be shown (URL: index.html#exit?firstPage).
+
+#notYetImplemented
+- exitDialog popup from exit?firstPage, followed by firstPage?menu, secondPage, and back button twice:
+    · if open URL index.html#exit?firstPage:
+    > firstPage must be shown (URL: index.html#firstPage).
+        · if open URL index.html#firstPage?menu:
+        > menu must be shown (URL: index.html#firstPage?menu).
+            · if open URL index.html#secondPage:
+            > secondPage must be shown, and menu must be hidden (URL: index.html#secondPage).
+                · if press back button:
+                > firstPage must be shown (URL: index.html#firstPage).
+                    · if press back button:
+                    > exit dialog must be shown (URL: index.html#exit?firstPage).
+
+#notYetImplemented
+- exitDialog popup from exit?firstPage, followed by secondPage?menu, and back button twice:
+    · if open URL index.html#exit?firstPage:
+    > firstPage must be shown (URL: index.html#firstPage).
+        · if open URL index.html#secondPage?menu:
+        > secondPage must be shown, and menu must be hidden (URL: index.html#secondPage).
+            · if press back button:
+            > firstPage must be shown (URL: index.html#firstPage).
+                · if press back button:
+                > exit dialog must be shown (URL: index.html#exit?firstPage).
