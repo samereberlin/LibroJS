@@ -15,16 +15,17 @@ var WebAppClass = function() {
 	this.setDefaultPageId = function(pageId) {defaultPageId = pageId;};
 
 	// Transition settings:
-	var transitionTypes = ['fade', 'none', 'slide', 'sliderev', 'slideorder'];
-	var defaultTransition = transitionTypes[0];
+	var animationTypes = ['fadein', 'fadeout', 'slidein', 'slideout', 'sliderevin', 'sliderevout'];
+	this.getAnimationTypes = function() {return animationTypes;};
+	this.animateElement = function(element, animation, callback) {if (element && element.nodeType === 1 && animation && animationTypes.indexOf(animation) >= 0) animateElement(element, animation, callback);};
+	var transitionTypes = ['none', 'fade', 'slide', 'sliderev', 'slideorder'];
+	this.getTransitionTypes = function() {return transitionTypes;};
+	var defaultTransition = transitionTypes[1];
 	this.getDefaultTransition = function() {return defaultTransition;};
-	this.setDefaultTransition = function(transitionType) {if (!transitionType || transitionTypes.indexOf(transitionType) >= 0) defaultTransition = transitionType;};
+	this.setDefaultTransition = function(transitionType) {if (transitionType && transitionTypes.indexOf(transitionType) >= 0) defaultTransition = transitionType;};
 	var nextTransition = null;
 	this.getNextTransition = function() {return nextTransition;};
-	this.setNextTransition = function(transitionType) {if (!transitionType || transitionTypes.indexOf(transitionType) >= 0) nextTransition = transitionType;};
-
-	// API functions:
-	this.animateElement = animateElement;
+	this.setNextTransition = function(transitionType) {if (transitionType && transitionTypes.indexOf(transitionType) >= 0) nextTransition = transitionType;};
 
 	this.load = function() {
 		if (isDebugOn) console.log('WebApp.js: load()');
@@ -137,7 +138,7 @@ var WebAppClass = function() {
 	function switchPage(current, next) {
 		if (!nextTransition) nextTransition = defaultTransition;
 		if (nextTransition === 'slideorder') {
-			nextTransition = (current && pageList.indexOf(current.id) > pageList.indexOf(next.id))? ' sliderev': ' slide';
+			nextTransition = (current && pageList.indexOf(current.id) > pageList.indexOf(next.id))? 'sliderev': 'slide';
 		}
 
 		if (nextTransition === 'none') {
@@ -145,11 +146,11 @@ var WebAppClass = function() {
 			showPage(next);
 			nextTransition = null;
 		} else {
-			function showNext() {
+			var showNext = function() {
 				animateElement(next, nextTransition + 'in', null);
 				showPage(next);
 				nextTransition = null;
-			}
+			};
 			if (current) {
 				animateElement(current, nextTransition + 'out', function() {
 					hidePage(current);
@@ -161,12 +162,12 @@ var WebAppClass = function() {
 
 	function animateElement(element, animation, callback) {
 		var animationRunning = true;
-		function animationEnded() {
+		var animationEnded = function() {
 			animationRunning = false;
 			element.removeEventListener('animationend', animationEnded);
 			element.className = element.className.replace(new RegExp('(?:^|\\s)' + animation + '(?!\\S)', 'g'), '');
 			if (typeof callback === 'function') callback();
-		}
+		};
 		setTimeout(function() {if (animationRunning) animationEnded();}, 1000);
 		element.addEventListener('animationend', animationEnded);
 		element.className += ' ' + animation;
@@ -187,7 +188,7 @@ WebApp = new WebAppClass();
 document.addEventListener('DOMContentLoaded', function() {WebApp.load();});
 
 var styleEffects = '\
-    /* Animation Effects (based on jquery.mobile-1.4.5). */\
+	/* Animation Effects (based on jquery.mobile-1.4.5). */\
 	@keyframes fadein {from {opacity: 0;} to {opacity: 1;}}\
 	@keyframes fadeout {from {opacity: 1;} to {opacity: 0;}}\
 	.fadeout {opacity: 0; animation-duration: 125ms; animation-name: fadeout;}\
