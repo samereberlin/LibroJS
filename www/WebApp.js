@@ -57,16 +57,16 @@ var WebAppClass = function() {
 		.flipout {animation-name: flipout; opacity: 0;}\
 		.fliprevin {animation-name: fliprevin; opacity: 1;}\
 		.fliprevout {animation-name: fliprevout; opacity: 0;}\
-		@keyframes slideinfromright {from {transform: translateX(100%);} to {transform: translateX(0);}}\
-		@keyframes slideinfromleft {from {transform: translateX(-100%);} to {transform: translateX(0);}}\
-		@keyframes slideouttoright {from {transform: translateX(0);} to {transform: translateX(100%);}}\
-		@keyframes slideouttoleft {from {transform: translateX(0);} to {transform: translateX(-100%);}}\
+		@keyframes slidein {from {transform: translateX(100%);} to {transform: translateX(0);}}\
+		@keyframes sliderevin {from {transform: translateX(-100%);} to {transform: translateX(0);}}\
+		@keyframes sliderevout {from {transform: translateX(0);} to {transform: translateX(100%);}}\
+		@keyframes slideout {from {transform: translateX(0);} to {transform: translateX(-100%);}}\
 		.slidein, .sliderevin {animation-duration: 225ms; animation-timing-function: ease-out;}\
 		.slideout, .sliderevout {animation-duration: 125ms; animation-timing-function: ease-in;}\
-		.slidein {animation-name: slideinfromright; transform: translateX(0);}\
-		.slideout {animation-name: slideouttoleft; transform: translateX(-100%);}\
-		.sliderevin {animation-name: slideinfromleft; transform: translateX(0);}\
-		.sliderevout {animation-name: slideouttoright; transform: translateX(100%);}\
+		.slidein {animation-name: slidein; transform: translateX(0);}\
+		.slideout {animation-name: slideout; transform: translateX(-100%);}\
+		.sliderevin {animation-name: sliderevin; transform: translateX(0);}\
+		.sliderevout {animation-name: sliderevout; transform: translateX(100%);}\
 	';
 	var animationTypes = ['fadein', 'fadeout', 'popin', 'popout', 'flipin', 'flipout', 'fliprevin', 'fliprevout', 'slidein', 'slideout', 'sliderevin', 'sliderevout'];
 	var transitionTypes = ['none', 'fade', 'pop', 'flip', 'fliprev', 'fliporder', 'slide', 'sliderev', 'slideorder'];
