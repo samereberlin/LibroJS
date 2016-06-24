@@ -17,7 +17,20 @@ WebApp is a lightweight (simple and efficient) WEB application framework (librar
 - [Language (i18n) support](#language-i18n-support) (coming soon);
 - [Click enhancement feature](#click-enhancement-feature) (coming soon);
 - [Swipe left/right feature](#Swipe-left-right-feature) (coming soon);
-- [Public API](#public-api) (coming soon);
+- [Public API](#public-api);
+  - [isLogEnabled()](#islogenabled)
+  - [setLogEnabled(booleanState)](#setlogenabledbooleanstate)
+  - [isRunning()](#isrunning)
+  - [setRunning(booleanState)](#setrunningbooleanstate)
+  - [getDefaultPageId()](#getdefaultpageid)
+  - [setDefaultPageId(pageId)](#setdefaultpageidpageid)
+  - [animateElement(element, animation, callback)](#animateelementelement-animation-callback)
+  - [getAnimationTypes()](#getanimationtypes)
+  - [getTransitionTypes()](#gettransitiontypes)
+  - [getDefaultTransition()](#getdefaulttransition)
+  - [setDefaultTransition(transitionType)](#setdefaulttransitiontransitiontype)
+  - [getNextTransition()](#getnexttransition)
+  - [setNextTransition(transitionType)](#setnexttransitiontransitiontype)
 
 
 ## Minimum code required:
@@ -332,8 +345,7 @@ Coming soon...
 #### isLogEnabled()
 Returns the log enabled boolean state, which is responsible to show/hide WebApp console.log messages.
 
-**Returns:** {boolean}
-The log enabled boolean state.
+**Returns:** {boolean} The log enabled boolean state.
 
 #### setLogEnabled(booleanState)
 Set the log enabled boolean state, which is responsible to show/hide WebApp console.log messages.
@@ -347,8 +359,7 @@ Set the log enabled boolean state, which is responsible to show/hide WebApp cons
 #### isRunning()
 Returns the running boolean state, which represents the current status of WebApp.
 
-**Returns:** {boolean}
-The running boolean state.
+**Returns:** {boolean} The running boolean state.
 
 #### setRunning(booleanState)
 Set the running boolean state, which represents the current status of WebApp.
@@ -362,8 +373,7 @@ Set the running boolean state, which represents the current status of WebApp.
 #### getDefaultPageId()
 Get the default page id string value, which must be shown in the first request to the basic URL (default value: the first body's child class page element id).
 
-**Returns:** {string}
-The default page id string value.
+**Returns:** {string} The default page id string value.
 
 #### setDefaultPageId(pageId)
 Set the default page id string value, which must be shown in the first request to the basic URL (default value: the first body's child class page element id).
@@ -388,20 +398,17 @@ Animate a node element, according to the supplied animation type (@see getAnimat
 #### getAnimationTypes()
 Get the available animation types, to be applied on node elements (@see animateElement).
 
-**Returns:** {array}
-An array containing the available animation types.
+**Returns:** {array} An array containing the available animation types.
 
 #### getTransitionTypes()
 Get the available transition types, to be used between page switching.
 
-**Returns:** {array}
-An array containing the available transition types.
+**Returns:** {array} An array containing the available transition types.
 
 #### getDefaultTransition()
 Get the default transition type, to be used between every page switching.
 
-**Returns:** {string}
-The default transition type.
+**Returns:** {string} The default transition type.
 
 #### setDefaultTransition(transitionType)
 Set the default transition type, to be used between every page switching.
@@ -415,8 +422,7 @@ Set the default transition type, to be used between every page switching.
 #### getNextTransition()
 Get the next transition type, to be used between the next page switching only.
 
-**Returns:** {string}
-The next transition type.
+**Returns:** {string} The next transition type.
 
 #### setNextTransition(transitionType)
 Set the next transition type, to be used between the next page switching only.
