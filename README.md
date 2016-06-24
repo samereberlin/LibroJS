@@ -328,4 +328,82 @@ Coming soon...
 
 
 ## Public API:
-Coming soon...
+
+#### isLogEnabled()
+Returns the log enabled boolean state, which is responsible to show/hide WebApp console.log messages.
+**Returns:** {boolean}
+The log enabled boolean state.
+
+#### setLogEnabled(booleanState)
+Set the log enabled boolean state, which is responsible to show/hide WebApp console.log messages.
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| booleanState | boolean | The node element to be animated. |
+
+#### isRunning()
+Returns the running boolean state, which represents the current status of WebApp.
+**Returns:** {boolean}
+The running boolean state.
+
+#### setRunning(booleanState)
+Set the running boolean state, which represents the current status of WebApp.
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| booleanState | boolean | The desired running boolean state. |
+
+#### getDefaultPageId()
+Get the default page id string value, which must be shown in the first request to the basic URL (default value: the first body's child class page element id).
+**Returns:** {string}
+The default page id string value.
+
+#### setDefaultPageId(pageId)
+Set the default page id string value, which must be shown in the first request to the basic URL (default value: the first body's child class page element id).
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| pageId | string | The desired default page id string value. |
+
+#### animateElement(element, animation, callback)
+Animate a node element, according to the supplied animation type (@see getAnimationTypes).
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| element | node | The node element to be animated. |
+| animation | string | The animation type to be applied. |
+| callback | function | The function callback to be invoked after animation. |
+
+#### getAnimationTypes()
+Get the available animation types, to be applied on node elements (@see animateElement).
+**Returns:** {array}
+An array containing the available animation types.
+
+#### getTransitionTypes()
+Get the available transition types, to be used between page switching.
+**Returns:** {array}
+An array containing the available transition types.
+
+#### getDefaultTransition()
+Get the default transition type, to be used between every page switching.
+**Returns:** {string}
+The default transition type.
+
+#### setDefaultTransition(transitionType)
+Set the default transition type, to be used between every page switching.
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| transitionType | string | The default transition type. |
+
+#### getNextTransition()
+Get the next transition type, to be used between the next page switching only.
+**Returns:** {string}
+The next transition type.
+
+#### setNextTransition(transitionType)
+Set the next transition type, to be used between the next page switching only.
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| transitionType | string | The next transition type. |

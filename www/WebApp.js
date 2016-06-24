@@ -16,42 +16,100 @@
 var WebApp = null;
 var WebAppClass = function() {
 
+	//################################################################################//
 	// Platform settings:
+
 	var isLogEnabled = true;
+
+	//################################################################################//
 	// Platform API:
+
+	/**
+	 * Returns the log enabled boolean state,
+	 * which is responsible to show/hide WebApp console.log messages.
+	 *
+	 * @return {boolean} The log enabled boolean state.
+	 */
 	this.isLogEnabled = function() {
 		return isLogEnabled;
 	};
+
+	/**
+	 * Set the log enabled boolean state,
+	 * which is responsible to show/hide WebApp console.log messages.
+	 *
+	 * @param {boolean} booleanState - The desired log enabled boolean state.
+	 */
 	this.setLogEnabled = function(booleanState) {
 		isLogEnabled = booleanState;
 	};
 
+	//################################################################################//
 	// Application settings:
+
 	var isRunning = false;
+
+	//################################################################################//
 	// Application API:
+
+	/**
+	 * Returns the running boolean state,
+	 * which represents the current status of WebApp.
+	 *
+	 * @return {boolean} The running boolean state.
+	 */
 	this.isRunning = function() {
 		return isRunning;
 	};
+
+	/**
+	 * Set the running boolean state,
+	 * which represents the current status of WebApp.
+	 *
+	 * @param {boolean} booleanState - The desired running boolean state.
+	 */
 	this.setRunning = function(booleanState) {
 		if (booleanState) resume();
 		else pause();
 	};
 
+	//################################################################################//
 	// Page settings:
+
 	var pageList = null;
 	var pageStack = null;
 	var currentPage = null;
 	var currentSearch = null;
 	var defaultPageId = null;
+
+	//################################################################################//
 	// Page API:
+
+	/**
+	 * Get the default page id string value,
+	 * which must be shown in the first request to the basic URL
+	 * (default value: the first body's child class page element id).
+	 *
+	 * @return {string} The default page id string value.
+	 */
 	this.getDefaultPageId = function() {
 		return defaultPageId;
 	};
+
+	/**
+	 * Set the default page id string value,
+	 * which must be shown in the first request to the basic URL
+	 * (default value: the first body's child class page element id).
+	 *
+	 * @param {string} pageId - The desired default page id string value.
+	 */
 	this.setDefaultPageId = function(pageId) {
 		defaultPageId = pageId;
 	};
 
+	//################################################################################//
 	// Animation/Transition settings:
+
 	var styleRules = '\
 		/* Animation Effects (based on jquery.mobile-1.4.5). */\
 		@keyframes fadein {from {opacity: 0;} to {opacity: 1;}}\
@@ -87,30 +145,77 @@ var WebAppClass = function() {
 	var transitionTypes = ['none', 'fade', 'pop', 'flip', 'fliprev', 'fliporder', 'slide', 'sliderev', 'slideorder'];
 	var defaultTransition = transitionTypes[1];
 	var nextTransition = null;
+
+	//################################################################################//
 	// Animation/Transition API:
+
+	/**
+	 * Animate a node element, according to the supplied animation type (@see getAnimationTypes).
+	 *
+	 * @param {node} element - The node element to be animated.
+	 * @param {string} animation - The animation type to be applied.
+	 * @param {function} callback - The function callback to be invoked after animation.
+	 */
 	this.animateElement = function(element, animation, callback) {
 		if (element && element.nodeType === 1 && animation && animationTypes.indexOf(animation) >= 0) animateElement(element, animation, callback);
 	};
+
+	/**
+	 * Get the available animation types, to be applied on node elements (@see animateElement).
+	 *
+	 * @return {array} An array containing the available animation types.
+	 */
 	this.getAnimationTypes = function() {
 		return animationTypes;
 	};
+
+	/**
+	 * Get the available transition types, to be used between page switching.
+	 *
+	 * @return {array} An array containing the available transition types.
+	 */
 	this.getTransitionTypes = function() {
 		return transitionTypes;
 	};
+
+	/**
+	 * Get the default transition type, to be used between every page switching.
+	 *
+	 * @return {string} The default transition type.
+	 */
 	this.getDefaultTransition = function() {
 		return defaultTransition;
 	};
+
+	/**
+	 * Set the default transition type, to be used between every page switching.
+	 *
+	 * @param {string} transitionType - The default transition type.
+	 */
 	this.setDefaultTransition = function(transitionType) {
 		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) defaultTransition = transitionType;
 	};
+
+	/**
+	 * Get the next transition type, to be used between the next page switching only.
+	 *
+	 * @return {string} The next transition type.
+	 */
 	this.getNextTransition = function() {
 		return nextTransition;
 	};
+
+	/**
+	 * Set the next transition type, to be used between the next page switching only.
+	 *
+	 * @param {string} transitionType - The next transition type.
+	 */
 	this.setNextTransition = function(transitionType) {
 		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) nextTransition = transitionType;
 	};
 
-	// Functions related to application life cycle: {
+	//################################################################################//
+	// Functions related to application life cycle:
 
 	this.load = function() {
 		if (isLogEnabled) console.log('WebApp.js: load()');
@@ -173,16 +278,16 @@ var WebAppClass = function() {
 		}
 	}
 
-	// }
-	// Functions related to application settings: {
+	//################################################################################//
+	// Functions related to application settings:
 
 	function resize() {
 		if (isLogEnabled) console.log('WebApp.js: resize()');
 		if (typeof WebApp['onResize'] === 'function') WebApp.onResize();
 	}
 
-	// }
-	// Functions related to internal actions: {
+	//################################################################################//
+	// Functions related to internal actions:
 
 	function updatePage(hashChangeEvent) {
 		if (isLogEnabled) console.log('WebApp.js: updatePage(hashChangeEvent)... newURL = ' + hashChangeEvent.newURL + ', oldURL = ' + hashChangeEvent.oldURL);
@@ -268,8 +373,8 @@ var WebAppClass = function() {
 		page.style.display = 'none';
 	}
 
-	// }
-	// Functions related to user interaction: {
+	//################################################################################//
+	// Functions related to user interaction:
 
 	function keyDown(keyEvent) {
 		if (isLogEnabled) console.log('WebApp.js: keyDown(' + keyEvent.keyCode + ')');
@@ -280,7 +385,6 @@ var WebAppClass = function() {
 		}
 	}
 
-	// }
 };
 WebApp = new WebAppClass();
 document.addEventListener('DOMContentLoaded', function() {WebApp.load();});
