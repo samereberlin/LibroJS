@@ -41,21 +41,35 @@ var WebAppClass = function() {
 		/* Animation Effects (based on jquery.mobile-1.4.5). */\
 		@keyframes fadein {from {opacity: 0;} to {opacity: 1;}}\
 		@keyframes fadeout {from {opacity: 1;} to {opacity: 0;}}\
-		.fadeout {opacity: 0; animation-duration: 125ms; animation-name: fadeout;}\
-		.fadein {opacity: 1; animation-duration: 225ms; animation-name: fadein;}\
+		.fadein {animation-name: fadein; animation-duration: 225ms; opacity: 1;}\
+		.fadeout {animation-name: fadeout; animation-duration: 125ms; opacity: 0;}\
+		@keyframes popin {from {transform: scale(.8); opacity: 0;} to {transform: scale(1); opacity: 1;}}\
+		@keyframes popout {from {transform: scale(1); opacity: 1;} to {transform: scale(.8); opacity: 0;}}\
+		.popin {animation-name: popin; animation-duration: 225ms; animation-timing-function: ease-out; opacity: 1;}\
+		.popout {animation-name: popout; animation-duration: 125ms; animation-timing-function: ease-in; opacity: 0;}\
+		@keyframes flipin {from {transform: matrix(0.2,0.2,0,1,0,0); opacity: 0;} to {transform: matrix(1,0,0,1,0,0); opacity: 1;}}\
+		@keyframes flipout {from {transform: matrix(1,0,0,1,0,0); opacity: 1;} to {transform: matrix(0.2,-0.2,0,1,0,0); opacity: 0;}}\
+		@keyframes fliprevin {from {transform: matrix(0.2,-0.2,0,1,0,0); opacity: 0;} to {transform: matrix(1,0,0,1,0,0); opacity: 1;}}\
+		@keyframes fliprevout {from {transform: matrix(1,0,0,1,0,0); opacity: 1;} to {transform: matrix(0.2,0.2,0,1,0,0); opacity: 0;}}\
+		.flipin, .fliprevin {animation-duration: 225ms; animation-timing-function: ease-out;}\
+		.flipout, .fliprevout {animation-duration: 125ms; animation-timing-function: ease-in;}\
+		.flipin {animation-name: flipin; opacity: 1;}\
+		.flipout {animation-name: flipout; opacity: 0;}\
+		.fliprevin {animation-name: fliprevin; opacity: 1;}\
+		.fliprevout {animation-name: fliprevout; opacity: 0;}\
 		@keyframes slideinfromright {from {transform: translateX(100%);} to {transform: translateX(0);}}\
 		@keyframes slideinfromleft {from {transform: translateX(-100%);} to {transform: translateX(0);}}\
-		@keyframes slideouttoleft {from {transform: translateX(0);} to {transform: translateX(-100%);}}\
 		@keyframes slideouttoright {from {transform: translateX(0);} to {transform: translateX(100%);}}\
-		.slidein, .sliderevin {animation-timing-function: ease-out; animation-duration: 225ms;}\
-		.slideout, .sliderevout {animation-timing-function: ease-in; animation-duration: 125ms;}\
-		.slideout {transform: translateX(-100%); animation-name: slideouttoleft;}\
-		.slidein {transform: translateX(0); animation-name: slideinfromright;}\
-		.sliderevout {transform: translateX(100%); animation-name: slideouttoright;}\
-		.sliderevin {transform: translateX(0); animation-name: slideinfromleft;}\
+		@keyframes slideouttoleft {from {transform: translateX(0);} to {transform: translateX(-100%);}}\
+		.slidein, .sliderevin {animation-duration: 225ms; animation-timing-function: ease-out;}\
+		.slideout, .sliderevout {animation-duration: 125ms; animation-timing-function: ease-in;}\
+		.slidein {animation-name: slideinfromright; transform: translateX(0);}\
+		.slideout {animation-name: slideouttoleft; transform: translateX(-100%);}\
+		.sliderevin {animation-name: slideinfromleft; transform: translateX(0);}\
+		.sliderevout {animation-name: slideouttoright; transform: translateX(100%);}\
 	';
-	var animationTypes = ['fadein', 'fadeout', 'slidein', 'slideout', 'sliderevin', 'sliderevout'];
-	var transitionTypes = ['none', 'fade', 'slide', 'sliderev', 'slideorder'];
+	var animationTypes = ['fadein', 'fadeout', 'popin', 'popout', 'flipin', 'flipout', 'fliprevin', 'fliprevout', 'slidein', 'slideout', 'sliderevin', 'sliderevout'];
+	var transitionTypes = ['none', 'fade', 'pop', 'flip', 'fliprev', 'fliporder', 'slide', 'sliderev', 'slideorder'];
 	var defaultTransition = transitionTypes[1];
 	var nextTransition = null;
 	// Animation/Transition API:
@@ -190,7 +204,9 @@ var WebAppClass = function() {
 
 	function switchPage(current, next) {
 		if (!nextTransition) nextTransition = defaultTransition;
-		if (nextTransition === 'slideorder') {
+		if (nextTransition === 'fliporder') {
+			nextTransition = (current && pageList.indexOf(current.id) > pageList.indexOf(next.id))? 'fliprev': 'flip';
+		} else if (nextTransition === 'slideorder') {
 			nextTransition = (current && pageList.indexOf(current.id) > pageList.indexOf(next.id))? 'sliderev': 'slide';
 		}
 

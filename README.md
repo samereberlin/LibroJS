@@ -5,17 +5,18 @@ WebApp is a lightweight (simple and efficient) WEB application framework (librar
 - [Dynamic page loading](#dynamic-page-loading) (coming soon);
 - [Global elements](#global-elements);
 - [Page transitions](#page-transitions);
+- [Key pressed callbacks](#key-pressed-callbacks) (coming soon);
+- [Life cycle callbacks](#life-cycle-callbacks);
 - [History manipulation](#history-manipulation) (coming soon);
 - [History inserted page](#history-inserted-page) (coming soon);
 - [History bypassed page](#history-bypassed-page) (coming soon);
-- [Life cycle callbacks](#life-cycle-callbacks);
 - [Friendly header/menu API](#friendly-Header-Menu-api) (coming soon);
 - [Canvas screen support](#canvas-screen-support) (coming soon);
 - [Simplified audio API](#simplified-audio-api) (coming soon);
 - [Tooltip widget API](#tooltip-widget-api) (coming soon);
-- [Internationalization support](#internationalization-support) (coming soon);
 - [Language (i18n) support](#language-i18n-support) (coming soon);
 - [Click enhancement feature](#click-enhancement-feature) (coming soon);
+- [Swipe left/right feature](#Swipe-left-right-feature) (coming soon);
 - [Public API](#public-api) (coming soon);
 
 
@@ -135,9 +136,13 @@ Global elements are components that must always be displayed (common between the
 ## Page transitions:
 The soft/basic page transition "fadein" is enabled by default, but if you need to set a different one, use _WebApp.setDefaultTransition('transitionType')_ function API. The available transition types are:
 - 'fade' (which is the soft/basic default page transition);
-- 'slide' (which slides the new page from the right to the left);
-- 'sliderev' (which slides the new page from the left to the right);
-- 'slideorder' (which also slides the new page, but the direction depends on the page ordering. If switching from the first to the second page, the slide occurs from the right to the left side; And if switching back from the second to the first page, the slide occurs from the left to the right side);
+- 'pop' (which simulates the "pop" appearing effect);
+- 'slide' (which simulates the "flip" forward effect);
+- 'sliderev' (which simulates the "flip" reverse effect);
+- 'slideorder' (which also simulates the "flip" switching effect, but the direction depends on the page ordering. If switching from the first to the second page, it applies flip forward; And if switching back from the second to the first page, it applies flip reverse);
+- 'slide' (which slides the pages from the right to the left);
+- 'sliderev' (which slides the page from the left to the right);
+- 'slideorder' (which also slides the pages, but the direction depends on the page ordering. If switching from the first to the second page, the slide occurs from the right to the left side; And if switching back from the second to the first page, the slide occurs from the left to the right side);
 - 'none' (which disables page transition).
 The different page transition types can be observed/compared in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index_setDefaultTransition.html#firstPage" target="_blank">live preview</a>):
 
@@ -148,12 +153,17 @@ The different page transition types can be observed/compared in the following ex
 		<select onchange="WebApp.setDefaultTransition(this.value);">
 			<option value="none">None</option>
 			<option value="fade" selected>Fade</option>
+			<option value="pop">Pop</option>
+			<option value="flip">Flip</option>
+			<option value="fliprev">Flip Reverse</option>
+			<option value="fliporder">Flip Order</option>
 			<option value="slide">Slide</option>
 			<option value="sliderev">Slide Reverse</option>
 			<option value="slideorder">Slide Order</option>
 		</select>
 	</label>
 </div>
+
 
 <div class="page" id="firstPage">
 	<h1>First Page</h1>
@@ -175,16 +185,16 @@ The different page transition types can be observed/compared in the following ex
 	<h1>First Page</h1>
 
 	<!-- uses soft/fade default transition -->
-	<a href="#secondPage">go to the second page</a>
+	<a href="#secondPage">go to the second page</a><br>
+
+	<!-- uses Pop transition -->
+	(<a href="#secondPage" onclick="WebApp.setNextTransition('pop')">using Pop</a>)<br>
+
+	<!-- uses Flip transition -->
+	(<a href="#secondPage" onclick="WebApp.setNextTransition('flip')">using Flip</a>)<br>
 
 	<!-- uses Slide transition -->
-	(<a href="#secondPage" onclick="WebApp.setNextTransition('slide')">using Slide</a>)
-
-	<!-- uses Slide Reverse transition -->
-	(<a href="#secondPage" onclick="WebApp.setNextTransition('sliderev')">Slide Reverse</a>)
-
-	<!-- uses Slide Order transition -->
-	(<a href="#secondPage" onclick="WebApp.setNextTransition('slideorder')">Slide Order</a>)
+	(<a href="#secondPage" onclick="WebApp.setNextTransition('slide')">using Slide</a>)<br>
 
 	<!-- uses no transition -->
 	(<a href="#secondPage" onclick="WebApp.setNextTransition('none')">no transition</a>)
@@ -194,16 +204,16 @@ The different page transition types can be observed/compared in the following ex
 	<h1>Second Page</h1>
 
 	<!-- uses soft/fade default transition -->
-	<a href="#firstPage">go to the first page</a>
+	<a href="#firstPage">go to the first page</a><br>
+
+	<!-- uses Pop transition -->
+	(<a href="#firstPage" onclick="WebApp.setNextTransition('pop')">using Pop</a>)<br>
+
+	<!-- uses Flip transition -->
+	(<a href="#firstPage" onclick="WebApp.setNextTransition('flip')">using Flip</a>)<br>
 
 	<!-- uses Slide transition -->
-	(<a href="#firstPage" onclick="WebApp.setNextTransition('slide')">using Slide</a>)
-
-	<!-- uses Slide Reverse transition -->
-	(<a href="#firstPage" onclick="WebApp.setNextTransition('sliderev')">Slide Reverse</a>)
-
-	<!-- uses Slide Order transition -->
-	(<a href="#firstPage" onclick="WebApp.setNextTransition('slideorder')">Slide order</a>)
+	(<a href="#firstPage" onclick="WebApp.setNextTransition('slide')">using Slide</a>)<br>
 
 	<!-- uses no transition -->
 	(<a href="#firstPage" onclick="WebApp.setNextTransition('none')">no transition</a>)
@@ -213,15 +223,7 @@ The different page transition types can be observed/compared in the following ex
 ```
 
 
-## History manipulation:
-Coming soon...
-
-
-## History inserted page:
-Coming soon...
-
-
-## History bypassed page:
+## Key pressed callbacks:
 Coming soon...
 
 
@@ -275,6 +277,18 @@ firstPageElement.onHide = function() {
 - pageElement.onKeyDown(keyEvent);
 
 
+## History manipulation:
+Coming soon...
+
+
+## History inserted page:
+Coming soon...
+
+
+## History bypassed page:
+Coming soon...
+
+
 ## Friendly header/menu API:
 Coming soon...
 
@@ -296,6 +310,10 @@ Coming soon...
 
 
 ## Click enhancement feature:
+Coming soon...
+
+
+## Swipe left/right feature:
 Coming soon...
 
 
