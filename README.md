@@ -120,7 +120,7 @@ Coming soon...
 
 
 ## Global elements:
-Global elements are components that must always be displayed (common between the pages, e.g.: toolbar, statusbar, menus, etc). To define an element as global, place it as a _body's child_ element (exactly as a regular page), but without the class _page_, as the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex05_globalelement.html#firstPage" target="_blank">live preview</a>):
+Global elements are components that must always be displayed (common between the pages, e.g.: toolbar, statusbar, menus, etc). To define an element as global, place it as a _body's child_ element (exactly as a regular page), but without the class _page_, as the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex05_globalElement.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div style="border: 1px solid gray; padding: .4em;">
