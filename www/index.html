@@ -66,31 +66,37 @@ WebApp.onResize = function() {
 //Set firstPage callbacks:
 var firstPageElement = document.getElementById('firstPage');
 firstPageElement.onLoad = function() {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPage.onLoad()</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onLoad()</span>';
 };
-firstPageElement.onShow = function() {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPage.onShow()</span>';
+firstPageElement.onShow = function(searchData) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onShow(' + searchData + ')</span>';
 };
 firstPageElement.onHide = function() {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPage.onHide()</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onHide()</span>';
+};
+firstPageElement.onSearchChange = function(searchData) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onSearchChange(' + searchData + ')</span>';
 };
 firstPageElement.onKeyDown = function(keyEvent) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPage.onKeyDown(' + keyEvent.keyCode + ')</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onKeyDown(' + keyEvent.keyCode + ')</span>';
 };
 
 //Set secondPage callbacks:
 var secondPageElement = document.getElementById('secondPage');
 secondPageElement.onLoad = function() {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPage.onLoad()</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onLoad()</span>';
 };
-secondPageElement.onShow = function() {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPage.onShow()</span>';
+secondPageElement.onShow = function(searchData) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onShow(' + searchData + ')</span>';
 };
 secondPageElement.onHide = function() {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPage.onHide()</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onHide()</span>';
+};
+secondPageElement.onSearchChange = function(searchData) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onSearchChange(' + searchData + ')</span>';
 };
 secondPageElement.onKeyDown = function(keyEvent) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPage.onKeyDown(' + keyEvent.keyCode + ')</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onKeyDown(' + keyEvent.keyCode + ')</span>';
 };
 </script>
 

@@ -27,6 +27,7 @@ var WebAppClass = function() {
 	var pageList = null;
 	var pageStack = null;
 	var currentPage = null;
+	var currentSearch = null;
 	var defaultPageId = null;
 	// Page API:
 	this.getDefaultPageId = function() {
@@ -173,7 +174,7 @@ var WebAppClass = function() {
 		if (isLogEnabled) console.log('WebApp.js: updatePage(hashChangeEvent)... newURL = ' + hashChangeEvent.newURL + ', oldURL = ' + hashChangeEvent.oldURL);
 
 		// Parse URL data:
-		var nextSearch = (window.location.hash.indexOf('?') >= 0)? window.location.hash.substring(window.location.hash.indexOf('?') + 1): null;
+		var nextSearch = (window.location.hash.indexOf('?') >= 0)? window.location.hash.substring(window.location.hash.indexOf('?') + 1): "";
 		var nextHash = (window.location.hash.length > 1)? window.location.hash.substring(1, (nextSearch? window.location.hash.indexOf('?'): window.location.hash.length)): null;
 		var nextPage = (nextHash && pageStack[nextHash])? pageStack[nextHash]: null;
 
@@ -193,16 +194,17 @@ var WebAppClass = function() {
 		// Execute update action:
 		if (nextPage) {
 			if (nextPage === currentPage) {
-				// TODO: implement URL parameters updated engine.
+				if (typeof currentPage['onSearchChange'] === 'function') currentPage.onSearchChange(nextSearch);
 			} else {
-				switchPage(currentPage, nextPage);
+				switchPage(currentPage, nextPage, nextSearch);
 				currentPage = nextPage;
 			}
 		} else if (currentPage) window.history.back();
 		else window.location.replace(window.location.protocol + '//' + window.location.pathname + '#' + defaultPageId);
+		currentSearch = nextSearch;
 	}
 
-	function switchPage(current, next) {
+	function switchPage(current, next, search) {
 		if (!nextTransition) nextTransition = defaultTransition;
 		if (nextTransition === 'fliporder') {
 			nextTransition = (current && pageList.indexOf(current.id) > pageList.indexOf(next.id))? 'fliprev': 'flip';
@@ -212,12 +214,12 @@ var WebAppClass = function() {
 
 		if (nextTransition === 'none') {
 			if (current) hidePage(current);
-			showPage(next);
+			showPage(next, search);
 			nextTransition = null;
 		} else {
 			var showNext = function() {
 				animateElement(next, nextTransition + 'in', null);
-				showPage(next);
+				showPage(next, search);
 				nextTransition = null;
 			};
 			if (current) {
@@ -242,9 +244,9 @@ var WebAppClass = function() {
 		element.className += ' ' + animation;
 	}
 
-	function showPage(page) {
+	function showPage(page, search) {
 		page.style.display = page['styleDisplay'] || 'block';
-		if (typeof page['onShow'] === 'function') page.onShow();
+		if (typeof page['onShow'] === 'function') page.onShow(search);
 	}
 
 	function hidePage(page) {

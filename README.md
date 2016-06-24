@@ -256,11 +256,20 @@ WebApp.onResume = function() {
 
 // Set firstPage callbacks:
 var firstPageElement = document.getElementById('firstPage');
-firstPageElement.onShow = function() {
-	console.log('firstPage.onShow(): ' + (new Date().toLocaleString()));
+firstPageElement.onLoad = function() {
+	console.log('firstPageElement.onLoad(): ' + (new Date().toLocaleString()));
 };
-firstPageElement.onHide = function() {
-	console.log('firstPage.onHide(): ' + (new Date().toLocaleString()));
+firstPageElement.onKeyDown = function(keyEvent) {
+	console.log('firstPageElement.onKeyDown(' + keyEvent.keyCode + '): ' + (new Date().toLocaleString()));
+};
+
+// Set secondPage callbacks:
+var secondPageElement = document.getElementById('secondPage');
+secondPageElement.onLoad = function() {
+	console.log('secondPageElement.onLoad(): ' + (new Date().toLocaleString()));
+};
+secondPageElement.onKeyDown = function(keyEvent) {
+	console.log('secondPageElement.onKeyDown(' + keyEvent.keyCode + '): ' + (new Date().toLocaleString()));
 };
 </script>
 ```
@@ -271,9 +280,10 @@ firstPageElement.onHide = function() {
 - WebApp.onPause();
 - WebApp.onResume();
 - WebApp.onResize();
-- pageElement.onLoad();
+- pageElement.onLoad(searchData);
 - pageElement.onShow();
 - pageElement.onHide();
+- pageElement.onSearchChange(searchData);
 - pageElement.onKeyDown(keyEvent);
 
 
