@@ -319,7 +319,7 @@ var WebAppClass = function() {
 				currentPage = nextPage;
 			}
 		} else if (currentPage) window.history.back();
-		else window.location.replace(window.location.protocol + '//' + window.location.pathname + '#' + defaultPageId);
+		else if (defaultPageId) window.location.replace(window.location.protocol + '//' + window.location.pathname + '#' + defaultPageId);
 		currentSearch = nextSearch;
 	}
 
@@ -381,7 +381,7 @@ var WebAppClass = function() {
 		if (keyEvent.keyCode === 13) {
 			if (keyEvent.target['onclick']) keyEvent.target.onclick();
 		} else {
-			if (typeof currentPage['onKeyDown'] === 'function') currentPage.onKeyDown(keyEvent);
+			if (currentPage && typeof currentPage['onKeyDown'] === 'function') currentPage.onKeyDown(keyEvent);
 		}
 	}
 
