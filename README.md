@@ -1,6 +1,6 @@
 # WebApp
 WebApp is a lightweight (simple and efficient) WEB application framework (library for HTML5 projects), which allow us to fit multiple pages into a single HTML file (following the "single-page application" concept), and several other facilities like:
-- [Minimum code required](#minimum-code-required);
+- [Minimum startup code](#minimum-startup-code);
 - [Default application page](#default-application-page);
 - [Dynamic page loading](#dynamic-page-loading) (coming soon);
 - [Global elements](#global-elements);
@@ -33,8 +33,8 @@ WebApp is a lightweight (simple and efficient) WEB application framework (librar
   - [setNextTransition(transitionType)](#setnexttransitiontransitiontype)
 
 
-## Minimum code required:
-The following HTML crumb is the minimum code required to use WebApp framework. As you can easily guess, it creates an application containing two simple pages (_firstPage_ and _secondPage_), accessible through the corresponding file URLs _../index.html#firstPage_ and _../index.html#secondPage_ (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex01_minimum.html#firstPage" target="_blank">live preview</a>).
+## Minimum startup code:
+The following HTML crumb is the minimum startup code required to use WebApp framework. As you can easily guess, it creates an application containing two simple pages (_firstPage_ and _secondPage_), accessible through the corresponding file URLs _../index.html#firstPage_ and _../index.html#secondPage_ (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex01_minimum.html#firstPage" target="_blank">live preview</a>).
 
 ```html
 <body>
@@ -56,7 +56,7 @@ The following HTML crumb is the minimum code required to use WebApp framework. A
 
 Where:
 - `<div class="page" id="firstPage">` is the element required for page creation, which must have the class _page_, contains a unique _id_, and be placed as a _body's child_ element.
-- `<h1>First Page</h1>` and `<a href="#secondPage">go to the second page</a>` represent the content of the page _firstPage_ (note that only the hash data is required to create a link to the secondPage).
+- `<h1>First Page</h1>` and `<a href="#secondPage">go to the second page</a>` represent the content of the page _firstPage_ (notice that only the hash data is required to create a link to the secondPage).
 - `<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>` is the inclusion of WebApp framework library, which can be obtained remotely (as here it is, using GitHub _CDN_ URL) or locally (stored beside your _HTML_ file).
 
 **Important Note:** for simplicity reasons, the above HTML code does not include any header definition, but it is strongly recommended to assure compatibility between different devices and platforms. Please include at least the _title_ and the basic _responsive_ meta tag `<meta name="viewport" content="width=device-width, initial-scale=1.0">` as the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex02_responsive.html#firstPage" target="_blank">live preview</a>):
@@ -150,9 +150,9 @@ Global elements are components that must always be displayed (common between the
 The soft/basic page transition "fadein" is enabled by default, but if you need to set a different one, use _WebApp.setDefaultTransition('transitionType')_ function API. The available transition types are:
 - 'fade' (which is the soft/basic default page transition);
 - 'pop' (which simulates the "pop" appearing effect);
-- 'slide' (which simulates the "flip" forward effect);
-- 'sliderev' (which simulates the "flip" reverse effect);
-- 'slideorder' (which also simulates the "flip" switching effect, but the direction depends on the page ordering. If switching from the first to the second page, it applies flip forward; And if switching back from the second to the first page, it applies flip reverse);
+- 'flip' (which simulates the "flip" forward effect);
+- 'fliprev' (which simulates the "flip" reverse effect);
+- 'fliporder' (which also simulates the "flip" switching effect, but the direction depends on the page ordering. If switching from the first to the second page, it applies flip forward; And if switching back from the second to the first page, it applies flip reverse);
 - 'slide' (which slides the pages from the right to the left);
 - 'sliderev' (which slides the page from the left to the right);
 - 'slideorder' (which also slides the pages, but the direction depends on the page ordering. If switching from the first to the second page, the slide occurs from the right to the left side; And if switching back from the second to the first page, the slide occurs from the left to the right side);
