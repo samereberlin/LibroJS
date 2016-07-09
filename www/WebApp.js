@@ -76,7 +76,7 @@ var WebAppClass = function() {
 	//################################################################################//
 	// Page settings:
 
-	var pageList = null;
+	var pageIds = [];
 	var pageStack = null;
 	var currentPage = null;
 	var currentSearch = null;
@@ -84,6 +84,17 @@ var WebAppClass = function() {
 
 	//################################################################################//
 	// Page API:
+
+	/**
+	 * Get the pageIds array values,
+	 * which contains the list of IDs corresponding to the current loaded page.
+	 *
+	 * @return {array} The list of IDs corresponding to the current loaded page.
+	 */
+	this.getPageIds = function() {
+		return pageIds;
+	};
+
 
 	/**
 	 * Get the default page id string value,
@@ -232,8 +243,8 @@ var WebAppClass = function() {
 					if (typeof node['onLoad'] === 'function') node.onLoad();
 				}
 			});
-			pageList = Object.keys(pageStack);
-			if (!defaultPageId || (pageList.indexOf(defaultPageId) < 0)) defaultPageId = pageList[0];
+			pageIds = Object.keys(pageStack);
+			if (!defaultPageId || (pageIds.indexOf(defaultPageId) < 0)) defaultPageId = pageIds[0];
 
 			// Setup CSS style effects:
 			var style = document.createElement('style');
@@ -326,9 +337,9 @@ var WebAppClass = function() {
 	function switchPage(current, next, search) {
 		if (!nextTransition) nextTransition = defaultTransition;
 		if (nextTransition === 'fliporder') {
-			nextTransition = (current && pageList.indexOf(current.id) > pageList.indexOf(next.id))? 'fliprev': 'flip';
+			nextTransition = (current && pageIds.indexOf(current.id) > pageIds.indexOf(next.id))? 'fliprev': 'flip';
 		} else if (nextTransition === 'slideorder') {
-			nextTransition = (current && pageList.indexOf(current.id) > pageList.indexOf(next.id))? 'sliderev': 'slide';
+			nextTransition = (current && pageIds.indexOf(current.id) > pageIds.indexOf(next.id))? 'sliderev': 'slide';
 		}
 
 		if (nextTransition === 'none') {
