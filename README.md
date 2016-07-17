@@ -2,7 +2,7 @@
 WebApp is a lightweight (simple and efficient) WEB application framework (library for HTML5 projects), which allow us to fit multiple pages into a single HTML file (following the "single-page application" concept), and several other facilities like:
 - [Minimum startup code](#minimum-startup-code);
 - [Default application page](#default-application-page);
-- [Dynamic page loading](#dynamic-page-loading) (coming soon);
+- [Dynamic page creation](#dynamic-page-creation) (coming soon);
 - [Global elements](#global-elements);
 - [Page transitions](#page-transitions);
 - [Key pressed callbacks](#key-pressed-callbacks) (coming soon);
@@ -115,7 +115,7 @@ The default application page is the first _body's child_ class _page_ element, w
 **Important Note:** WebApp function APIs must be called after the inclusion of WebApp framework library.
 
 
-## Dynamic page loading:
+## Dynamic page creation:
 Coming soon...
 
 
@@ -354,7 +354,7 @@ Set the log enabled boolean state, which is responsible to show/hide WebApp cons
 
 | Name         | Type    | Description                      |
 |--------------|---------|----------------------------------|
-| booleanState | boolean | The node element to be animated. |
+| booleanState | boolean | The log enabled boolean state.   |
 
 #### isRunning()
 Returns the running boolean state, which represents the current status of WebApp.
@@ -368,7 +368,7 @@ Set the running boolean state, which represents the current status of WebApp.
 
 | Name         | Type    | Description                        |
 |--------------|---------|------------------------------------|
-| booleanState | boolean | The desired running boolean state. |
+| booleanState | boolean | The running boolean state.         |
 
 #### getPageIds()
 Get the pageIds array values, which contains the list of current loaded pages.
@@ -387,7 +387,7 @@ Set the default page id string value, which must be shown in the first request t
 
 | Name   | Type   | Description                               |
 |--------|--------|-------------------------------------------|
-| pageId | string | The desired default page id string value. |
+| pageId | string | The default page id string value.         |
 
 #### animateElement(element, animation, callback)
 Animate a node element, according to the supplied animation type (@see getAnimationTypes).

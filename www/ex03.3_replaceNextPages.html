@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WebApp</title>
+</head>
+
+<body>
+
+<div class="page" id="1">
+	<h1>WebApp - Page 1</h1>
+	<a href="#0">previous page</a> | <a href="#2">next page</a>
+</div>
+
+<!-- script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script -->
+<script src="WebApp.js"></script>
+
+<script>
+// Set firstPage callbacks:
+var firstPageElement = document.getElementById('1');
+firstPageElement.onShow = function() {
+	firstPageElement.onShow = null;
+	createNextPage(firstPageElement);
+	createPreviousPage(firstPageElement);
+};
+
+// Create nextPage according to the current supplied id:
+function createNextPage(currentPageElement) {
+	// Create the next page according to the currentPageElement:
+	var currentIdIntValue = parseInt(currentPageElement.id);
+	var nextPageId = (currentIdIntValue + 1).toString();
+	var nextPageElement = WebApp.createPage(nextPageId,
+			'<h1>WebApp - Page ' + nextPageId + '</h1>'
+			+ '<a href="#' + currentPageElement.id + '">previous page</a> | <a href="#' + (currentIdIntValue + 2).toString() + '">next page</a>');
+
+	// Execute recursive operations in case of onShow callback:
+	nextPageElement.onShow = function() {
+		nextPageElement.onShow = null;
+		createNextPage(nextPageElement);
+		currentPageElement.onShow = function() {
+			currentPageElement.onShow = null;
+			createPreviousPage(currentPageElement);
+			WebApp.deletePage((currentIdIntValue + 2).toString());
+		};
+		WebApp.deletePage((currentIdIntValue - 1).toString());
+	};
+}
+
+// Create previousPage according to the current supplied id:
+function createPreviousPage(currentPageElement) {
+	// Create the previous page according to the currentPageElement:
+	var currentIdIntValue = parseInt(currentPageElement.id);
+	var previousPageId = (currentIdIntValue - 1).toString();
+	var previousPageElement = WebApp.createPage(previousPageId,
+			'<h1>WebApp - Page ' + previousPageId + '</h1>'
+			+ '<a href="#' + (currentIdIntValue - 2).toString() + '">previous page</a> | <a href="#' + currentPageElement.id + '">next page</a>',
+			currentPageElement.id);
+
+	// Execute recursive operations in case of onShow callback:
+	previousPageElement.onShow = function() {
+		previousPageElement.onShow = null;
+		createPreviousPage(previousPageElement);
+		currentPageElement.onShow = function() {
+			currentPageElement.onShow = null;
+			createNextPage(currentPageElement);
+			WebApp.deletePage((currentIdIntValue - 2).toString());
+		};
+		WebApp.deletePage((currentIdIntValue + 1).toString());
+	};
+}
+
+</script>
+
+</body>
+
+</html>

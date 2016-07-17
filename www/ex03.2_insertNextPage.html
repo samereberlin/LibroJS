@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WebApp</title>
+</head>
+
+<body>
+
+<div class="page" id="1">
+	<h1>WebApp - Page 1</h1>
+	<a href="#2">go to the next page</a>
+</div>
+
+<!-- script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script -->
+<script src="WebApp.js"></script>
+
+<script>
+// Set firstPage callbacks:
+var firstPageElement = document.getElementById('1');
+firstPageElement.onShow = function() {insertNextPage(firstPageElement.id)};
+
+// Insert nextPage according to the current supplied id:
+function insertNextPage(currentId) {
+	if (WebApp.getPageIds().indexOf((parseInt(currentId) + 1).toString()) < 0) {
+		// Create a new page according to the pageId argument + 1:
+		var nextPageId = (parseInt(currentId) + 1).toString();
+		var nextPageElement = WebApp.createPage(nextPageId,
+				'<h1>WebApp - Page ' + nextPageId + '</h1>'
+				+ '<a href="#' + currentId + '">previous page</a> | <a href="#' + (parseInt(nextPageId) + 1).toString() + '">next page</a>');
+
+		// Create another page in case of onShow callback, in order to prepare next interaction:
+		nextPageElement.onShow = function() {insertNextPage(nextPageId);};
+	}
+}
+</script>
+
+</body>
+
+</html>

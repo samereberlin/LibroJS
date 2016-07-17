@@ -38,7 +38,7 @@ var WebAppClass = function() {
 	 * Set the log enabled boolean state,
 	 * which is responsible to show/hide WebApp console.log messages.
 	 *
-	 * @param {boolean} booleanState - The desired log enabled boolean state.
+	 * @param {boolean} booleanState - The log enabled boolean state.
 	 */
 	this.setLogEnabled = function(booleanState) {
 		isLogEnabled = booleanState;
@@ -47,6 +47,7 @@ var WebAppClass = function() {
 	//################################################################################//
 	// Application settings:
 
+	var isLoaded = false;
 	var isRunning = false;
 
 	//################################################################################//
@@ -66,7 +67,7 @@ var WebAppClass = function() {
 	 * Set the running boolean state,
 	 * which represents the current status of WebApp.
 	 *
-	 * @param {boolean} booleanState - The desired running boolean state.
+	 * @param {boolean} booleanState - The running boolean state.
 	 */
 	this.setRunning = function(booleanState) {
 		if (booleanState) resume();
@@ -77,7 +78,7 @@ var WebAppClass = function() {
 	// Page settings:
 
 	var pageIds = [];
-	var pageStack = null;
+	var pageStack = {};
 	var currentPage = null;
 	var currentSearch = null;
 	var defaultPageId = null;
@@ -112,7 +113,7 @@ var WebAppClass = function() {
 	 * which must be shown in the first request to the basic URL
 	 * (default value: the first body's child class page element id).
 	 *
-	 * @param {string} pageId - The desired default page id string value.
+	 * @param {string} pageId - The default page id string value.
 	 */
 	this.setDefaultPageId = function(pageId) {
 		defaultPageId = pageId;
@@ -228,23 +229,20 @@ var WebAppClass = function() {
 	//################################################################################//
 	// Functions related to application life cycle:
 
-	this.load = function() {
+	function load() {
 		if (isLogEnabled) console.log('WebApp.js: load()');
 		if (typeof WebApp['onLoad'] === 'function') WebApp.onLoad();
 
-		// Setup page elements:
-		if (!pageStack) {
-			pageStack = {};
-			Array.prototype.forEach.call(document.body.children, function (node) {
-				if (node.classList.contains('page') && node.id) {
-					node.styleDisplay = node.style.display;
-					node.style.display = 'none';
-					pageStack[node.id] = node;
-					if (typeof node['onLoad'] === 'function') node.onLoad();
-				}
-			});
-			pageIds = Object.keys(pageStack);
-			if (!defaultPageId || (pageIds.indexOf(defaultPageId) < 0)) defaultPageId = pageIds[0];
+		// Load page elements:
+		pageStack = {}; // Required to reset page elements.
+		Array.prototype.forEach.call(document.body.children, function(element) {
+			if (isPage(element)) loadPage(element, null);
+		});
+		if (!defaultPageId || (pageIds.indexOf(defaultPageId) < 0)) defaultPageId = pageIds[0];
+
+		if (isLoaded) showPage(currentPage, search);
+		else {
+			isLoaded = true;
 
 			// Setup CSS style effects:
 			var style = document.createElement('style');
@@ -266,11 +264,29 @@ var WebAppClass = function() {
 		}
 	};
 
+	function isPage(element) {
+		return (element.classList.contains('page') && element.id)? true: false;
+	}
+
+	function loadPage(element, insertBeforeId) {
+		element.styleDisplay = element.style.display;
+		element.style.display = 'none';
+		pageStack[element.id] = element;
+		var insertBeforeIndex = insertBeforeId? pageIds.indexOf(insertBeforeId): -1;
+		if (insertBeforeIndex >= 0) {
+			pageIds.splice(insertBeforeIndex, 0, insertBeforeId);
+		} else {
+			pageIds.push(element.id);
+		}
+		if (typeof element['onLoad'] === 'function') element.onLoad();
+	}
+
 	function unload() {
 		if (isLogEnabled) console.log('WebApp.js: unload()');
 		if (typeof WebApp['onUnload'] === 'function') WebApp.onUnload();
 		if (isRunning) pause();
 		currentPage = null;
+		isLoaded = false;
 	}
 
 	function pause() {
@@ -288,6 +304,63 @@ var WebAppClass = function() {
 			if (typeof WebApp['onResume'] === 'function') WebApp.onResume();
 		}
 	}
+
+	//################################################################################//
+	// Application life cycle API:
+
+	/**
+	 * Load the WebApp framework library.
+	 * It is called automatically after DOMContentLoaded event,
+	 * but it is usefull to reset/reload page elements
+	 * (according to the current body's children nodes).
+	 */
+	this.load = load;
+
+	/**
+	 * Create page dynamically,
+	 * without any previous HTML code declaration,
+	 * and load it according to insertBeforeId value.
+	 *
+	 * @param {string} pageId - The new page id string value.
+	 * @param {string} pageContent - The new page content string value.
+	 * @param {string} insertBeforeId - The existent page id to be the next.
+	 * 
+	 * @return {node} pageElement - The new page node element.
+	 */
+	this.createPage = function(pageId, pageContent, insertBeforeId) {
+		if (pageStack[pageId] || typeof pageId !== 'string') return null;
+		else {
+			var pageElement = document.createElement('div');
+			pageElement.className = 'page';
+			pageElement.id = pageId;
+			pageElement.innerHTML = pageContent;
+			if (isLoaded) {
+				loadPage(pageElement, insertBeforeId);
+			}
+			var insertBeforeElement = document.getElementById(insertBeforeId);
+			if (insertBeforeElement) {
+				document.body.insertBefore(pageElement, insertBeforeElement);
+			} else {
+				document.body.appendChild(pageElement);
+			}
+			return pageElement;
+		}
+	};
+
+	/**
+	 * Delete page dynamically,
+	 * and unload it, in order to release memory resourses.
+	 * 
+	 * @param {string} pageId - The page id string value.
+	 */
+	this.deletePage = function(pageId) {
+		var pageElement = document.getElementById(pageId);
+		if (pageElement && pageElement.parentNode == document.body && isPage(pageElement)) {
+			document.body.removeChild(pageElement);
+			pageIds.splice(pageIds.indexOf(pageId), 1);
+			delete pageStack[pageId];
+		}
+	};
 
 	//################################################################################//
 	// Functions related to application settings:
