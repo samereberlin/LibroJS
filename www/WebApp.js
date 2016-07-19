@@ -349,7 +349,7 @@ var WebAppClass = function() {
 
 	/**
 	 * Delete page dynamically,
-	 * and unload it, in order to release memory resourses.
+	 * and unload it, in order to release memory resources.
 	 * 
 	 * @param {string} pageId - The page id string value.
 	 */
