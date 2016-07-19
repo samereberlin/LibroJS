@@ -469,6 +469,27 @@ var WebAppClass = function() {
 		}
 	}
 
+	//################################################################################//
+	// User interaction API:
+
+	/**
+	 * Go to the next page (when available),
+	 * according to the available pageIds (@see getPageIds).
+	 */
+	this.nextPage = function() {
+		var currentPageIndex = pageIds.indexOf(currentPage.id);
+		if (currentPageIndex + 1 < pageIds.length) window.location.hash = pageIds[currentPageIndex + 1];
+	};
+
+	/**
+	 * Go to the previous page (when available),
+	 * according to the available pageIds (@see getPageIds).
+	 */
+	this.previousPage = function() {
+		var currentPageIndex = pageIds.indexOf(currentPage.id);
+		if (currentPageIndex > 0) window.location.hash = pageIds[currentPageIndex - 1];
+	};
+
 };
 WebApp = new WebAppClass();
 document.addEventListener('DOMContentLoaded', function() {WebApp.load();});

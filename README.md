@@ -5,7 +5,7 @@ WebApp is a lightweight (simple and efficient) WEB application framework (librar
 - [Dynamic page creation](#dynamic-page-creation);
 - [Global elements](#global-elements);
 - [Page transitions](#page-transitions);
-- [Key pressed callbacks](#key-pressed-callbacks) (coming soon);
+- [Key pressed callbacks](#key-pressed-callbacks);
 - [Life cycle callbacks](#life-cycle-callbacks);
 - [History manipulation](#history-manipulation) (coming soon);
 - [History inserted page](#history-inserted-page) (coming soon);
@@ -35,6 +35,8 @@ WebApp is a lightweight (simple and efficient) WEB application framework (librar
   - [load()](#load)
   - [createPage(pageId, pageContent, insertBeforeId)](#createpagepageid-pagecontent-insertbeforeid)
   - [deletePage(pageId)](#deletepagepageid)
+  - [nextPage()](#nextpage)
+  - [previousPage()](#previouspage)
 
 
 ## Minimum startup code:
@@ -259,7 +261,35 @@ The different page transition types can be observed/compared in the following ex
 
 
 ## Key pressed callbacks:
-Coming soon...
+Key pressed callbacks are useful to set page shortcut keys, for example if you want to navigate between the available pages using left/right keys, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex06.0_onKeyDown.html#firstPage" target="_blank">live preview</a>):
+
+```html
+<div class="page" id="firstPage">
+    <h1>First Page</h1>
+    <a href="#secondPage">go to the second page</a>
+</div>
+
+<div class="page" id="secondPage">
+    <h1>Second Page</h1>
+    <a href="#firstPage">go to the first page</a>
+</div>
+
+<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+
+<script>
+// Set firstPage key down callback action:
+document.getElementById('firstPage').onKeyDown = function(keyEvent) {
+	if (keyEvent.keyCode === 39 /*39 = right arrow*/) WebApp.nextPage();
+};
+
+// Set secondPage key down callback action:
+document.getElementById('secondPage').onKeyDown = function(keyEvent) {
+	if (keyEvent.keyCode === 37 /*37 = left arrow*/) WebApp.previousPage();
+};
+</script>
+```
+
+And as you can see in the above example, onKeyDown event is dispatched to the current/active page only.
 
 
 ## Life cycle callbacks:
@@ -294,8 +324,11 @@ var firstPageElement = document.getElementById('firstPage');
 firstPageElement.onLoad = function() {
 	console.log('firstPageElement.onLoad(): ' + (new Date().toLocaleString()));
 };
-firstPageElement.onKeyDown = function(keyEvent) {
-	console.log('firstPageElement.onKeyDown(' + keyEvent.keyCode + '): ' + (new Date().toLocaleString()));
+firstPageElement.onShow = function(searchData) {
+	console.log('firstPageElement.onShow(' + searchData + '): ' + (new Date().toLocaleString()));
+};
+firstPageElement.onHide = function() {
+	console.log('firstPageElement.onHide(): ' + (new Date().toLocaleString()));
 };
 
 // Set secondPage callbacks:
@@ -303,8 +336,11 @@ var secondPageElement = document.getElementById('secondPage');
 secondPageElement.onLoad = function() {
 	console.log('secondPageElement.onLoad(): ' + (new Date().toLocaleString()));
 };
-secondPageElement.onKeyDown = function(keyEvent) {
-	console.log('secondPageElement.onKeyDown(' + keyEvent.keyCode + '): ' + (new Date().toLocaleString()));
+secondPageElement.onShow = function(searchData) {
+	console.log('secondPageElement.onShow(' + searchData + '): ' + (new Date().toLocaleString()));
+};
+secondPageElement.onHide = function() {
+	console.log('secondPageElement.onHide(): ' + (new Date().toLocaleString()));
 };
 </script>
 ```
@@ -315,11 +351,12 @@ secondPageElement.onKeyDown = function(keyEvent) {
 - WebApp.onPause();
 - WebApp.onResume();
 - WebApp.onResize();
-- pageElement.onLoad(searchData);
-- pageElement.onShow();
-- pageElement.onHide();
+- pageElement.onLoad();
+- pageElement.onShow(searchData);
 - pageElement.onSearchChange(searchData);
-- pageElement.onKeyDown(keyEvent);
+- pageElement.onHide();
+Where:
+- `searchData` is the url content from the question mark (if present) to the end. For example, in case of `index.html#fistPage?foo=bar`, the searchData would be `foo=bar`.
 
 
 ## History manipulation:
@@ -484,3 +521,9 @@ Delete page dynamically, and unload it, in order to release memory resources.
 | Name   | Type   | Description               |
 |--------|--------|---------------------------|
 | pageId | string | The page id string value. |
+
+#### nextPage()
+Go to the next page (when available), according to the available pageIds (@see getPageIds).
+
+#### previousPage()
+Go to the previous page (when available), according to the available pageIds (@see getPageIds).
