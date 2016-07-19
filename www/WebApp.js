@@ -325,7 +325,7 @@ var WebAppClass = function() {
 	 * @param {string} pageContent - The new page content string value.
 	 * @param {string} insertBeforeId - The existent page id to be the next.
 	 * 
-	 * @return {node} pageElement - The new page node element.
+	 * @return {node} The new page node element.
 	 */
 	this.createPage = function(pageId, pageContent, insertBeforeId) {
 		if (pageStack[pageId] || typeof pageId !== 'string') return null;

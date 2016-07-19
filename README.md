@@ -2,7 +2,7 @@
 WebApp is a lightweight (simple and efficient) WEB application framework (library for HTML5 projects), which allow us to fit multiple pages into a single HTML file (following the "single-page application" concept), and several other facilities like:
 - [Minimum startup code](#minimum-startup-code);
 - [Default application page](#default-application-page);
-- [Dynamic page creation](#dynamic-page-creation) (coming soon);
+- [Dynamic page creation](#dynamic-page-creation);
 - [Global elements](#global-elements);
 - [Page transitions](#page-transitions);
 - [Key pressed callbacks](#key-pressed-callbacks) (coming soon);
@@ -59,7 +59,7 @@ Where:
 - `<h1>First Page</h1>` and `<a href="#secondPage">go to the second page</a>` represent the content of the page _firstPage_ (notice that only the hash data is required to create a link to the secondPage).
 - `<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>` is the inclusion of WebApp framework library, which can be obtained remotely (as here it is, using GitHub _CDN_ URL) or locally (stored beside your _HTML_ file).
 
-**Important Note:** for simplicity reasons, the above HTML code does not include any header definition, but it is strongly recommended to assure compatibility between different devices and platforms. Please include at least the _title_ and the basic _responsive_ meta tag `<meta name="viewport" content="width=device-width, initial-scale=1.0">` as the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex01.1_responsive.html#firstPage" target="_blank">live preview</a>):
+**Important Note:** for simplicity reasons, the above HTML code does not include any header definition, but it is strongly recommended to assure compatibility between different devices and platforms. Please include at least the _title_ and the basic _responsive_ meta tag `<meta name="viewport" content="width=device-width, initial-scale=1.0">`, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex01.1_responsive.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <!DOCTYPE html>
@@ -91,7 +91,7 @@ Where:
 
 
 ## Default application page:
-The default application page is the first _body's child_ class _page_ element, which means that the first request to the basic URL _../index.html_ (without page specification) will be redirected to _../index.html#firstPage_. If you need to set any other element, use _WebApp.setDefaultPageId('secondPage')_ function API, as the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex02.0_setDefaultPageId.html#secondPage" target="_blank">live preview</a>):
+The default application page is the first _body's child_ class _page_ element, which means that the first request to the basic URL _../index.html_ (without page specification) will be redirected to _../index.html#firstPage_. If you need to set any other element, use _WebApp.setDefaultPageId('secondPage')_ function API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex02.0_setDefaultPageId.html#secondPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -116,11 +116,29 @@ The default application page is the first _body's child_ class _page_ element, w
 
 
 ## Dynamic page creation:
-Coming soon...
+If you need to load another page after application startup, or dynamically during execution (on run-time), use createPage API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex03.0_createPage.html#firstPage" target="_blank">live preview</a>):
+
+```html
+<div class="page" id="firstPage">
+	<h1>First Page</h1>
+	<a href="#secondPage">go to the second page</a>
+</div>
+
+<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+
+<script>
+// Create another page dynamically:
+WebApp.createPage('secondPage', '<h1>Second Page</h1>'
+		+ '<a href="#firstPage">go to the first page</a>');
+</script>
+```
+
+And deletePage API can be used to remove pages (useful to release memory resources). Checkout these other dynamic page creation examples, which demonstrate better some practical utilization cases: <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex03.1_unloadOnHide.html#firstPage" target="_blank">ex03.1_unloadOnHide.html</a>, <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex03.2_insertNextPage.html#1" target="_blank">ex03.2_insertNextPage.html</a>, <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex03.3_replaceNextPages.html#1" target="_blank">ex03.3_replaceNextPages.html</a>.
+(note that these additional examples use _onShow_/_onHide_ "life cycle callbacks", which were not presented yet, but are explained in the next sections)
 
 
 ## Global elements:
-Global elements are components that must always be displayed (common between the pages, e.g.: toolbar, statusbar, menus, etc). To define an element as global, place it as a _body's child_ element (exactly as a regular page), but without the class _page_, as the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex04.0_globalElement.html#firstPage" target="_blank">live preview</a>):
+Global elements are components that must always be displayed (common between the pages, e.g.: toolbar, statusbar, menus, etc). To define an element as global, place it as a _body's child_ element (exactly as a regular page), but without the class _page_, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex04.0_globalElement.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div style="border: 1px solid gray; padding: .4em;">
@@ -191,7 +209,7 @@ The different page transition types can be observed/compared in the following ex
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
 ```
 
-**Important Note:** if you need to set an specific transition to be used once only (without modify the default setting), use _WebApp.setNextTransition('transitionType')_ function API, according to the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex05.1_setNextTransition.html#firstPage" target="_blank">live preview</a>):
+**Important Note:** if you need to set an specific transition to be used once only (without modify the default setting), use _WebApp.setNextTransition('transitionType')_ function API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex05.1_setNextTransition.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -243,7 +261,7 @@ Coming soon...
 ## Life cycle callbacks:
 Application life cycle process is a set of pre-defined events that occurs during the application execution, which must be monitored (through callbacks) in order to execute the appropriate actions. For example, if you are developing a game, you need to know when the use minimizes the application (in order to pause the game execution, timers, etc.), and you also need to know when the user returns to the application (in order to resume the game from the point where it was paused). That is why the process callbacks are so relevant.
 
-If you do not understand the above explanation, do not be afraid. The use of callbacks is much easier than the explanation itself :) To implement an application callback, you just need to get the _page_ element reference (or WebApp object for global callbacks), and implement the desired function, as can be observed in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex07.0_callbacks.html#firstPage" target="_blank">live preview</a>):
+If you do not understand the above explanation, do not be afraid. The use of callbacks is much easier than the explanation itself :) To implement an application callback, you just need to get the _page_ element reference (or WebApp object for global callbacks), and implement the desired function, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex07.0_callbacks.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -437,3 +455,28 @@ Set the next transition type, to be used between the next page switching only.
 | Name           | Type   | Description               |
 |----------------|--------|---------------------------|
 | transitionType | string | The next transition type. |
+
+#### load()
+Load the WebApp framework library. It is called automatically after DOMContentLoaded event, but it is usefull to reset/reload page elements (according to the current body's children nodes).
+
+#### createPage(pageId, pageContent, insertBeforeId)
+Create page dynamically, without any previous HTML code declaration, and load it according to insertBeforeId value.
+
+**Parameters:**
+
+| Name           | Type     | Description                          |
+|----------------|----------|--------------------------------------|
+| pageId         | string   | The new page id string value.        |
+| pageContent    | string   | The new page content string value.   |
+| insertBeforeId | string   | The existent page id to be the next. |
+
+**Returns:** {node} The new page node element
+
+#### deletePage(pageId)
+Delete page dynamically, and unload it, in order to release memory resources.
+
+**Parameters:**
+
+| Name   | Type   | Description               |
+|--------|--------|---------------------------|
+| pageId | string | The page id string value. |
