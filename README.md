@@ -22,6 +22,7 @@ WebApp is a lightweight (simple and efficient) WEB application framework (librar
   - [setLogEnabled(booleanState)](#setlogenabledbooleanstate)
   - [isRunning()](#isrunning)
   - [setRunning(booleanState)](#setrunningbooleanstate)
+  - [getPageIds()](#getPageIds)
   - [getDefaultPageId()](#getdefaultpageid)
   - [setDefaultPageId(pageId)](#setdefaultpageidpageid)
   - [animateElement(element, animation, callback)](#animateelementelement-animation-callback)
@@ -31,6 +32,9 @@ WebApp is a lightweight (simple and efficient) WEB application framework (librar
   - [setDefaultTransition(transitionType)](#setdefaulttransitiontransitiontype)
   - [getNextTransition()](#getnexttransition)
   - [setNextTransition(transitionType)](#setnexttransitiontransitiontype)
+  - [load()](#load)
+  - [createPage(pageId, pageContent, insertBeforeId)](#createPage)
+  - [deletePage(pageId)](#deletePage)
 
 
 ## Minimum startup code:
