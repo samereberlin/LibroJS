@@ -33,8 +33,8 @@ WebApp is a lightweight (simple and efficient) WEB application framework (librar
   - [getNextTransition()](#getnexttransition)
   - [setNextTransition(transitionType)](#setnexttransitiontransitiontype)
   - [load()](#load)
-  - [createPage(pageId, pageContent, insertBeforeId)](#createPage)
-  - [deletePage(pageId)](#deletePage)
+  - [createPage(pageId, pageContent, insertBeforeId)](#createpagepageid-pagecontent-insertbeforeid)
+  - [deletePage(pageId)](#deletepagepageid)
 
 
 ## Minimum startup code:
