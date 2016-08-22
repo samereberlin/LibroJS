@@ -402,7 +402,7 @@ var WebAppClass = function() {
 				currentPage = nextPage;
 			}
 		} else if (currentPage) window.history.back();
-		else if (defaultPageId) window.location.replace(window.location.protocol + '//' + window.location.pathname + '#' + defaultPageId);
+		else if (defaultPageId) window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#' + defaultPageId);
 		currentSearch = nextSearch;
 	}
 
