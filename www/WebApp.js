@@ -82,6 +82,8 @@ var WebAppClass = function() {
 	var currentPage = null;
 	var currentSearch = null;
 	var defaultPageId = null;
+	var historyLength = window.history.length;
+	var historyStack = [];
 
 	//################################################################################//
 	// Page API:
@@ -404,6 +406,17 @@ var WebAppClass = function() {
 		} else if (currentPage) window.history.back();
 		else if (defaultPageId) window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#' + defaultPageId);
 		currentSearch = nextSearch;
+
+		// Manipulate history stack;
+		var isHistoryManipulated = false;
+		if (historyStack.length > 1 && historyStack[historyStack.length - 1] === hashChangeEvent.oldURL && historyStack[historyStack.length - 2] === hashChangeEvent.newURL) {
+			historyStack.pop();
+			if (historyLength < window.history.length) { // Required to assure that back was not pressed.
+				isHistoryManipulated = true;
+				window.history.go(-2);
+			}
+		} else  historyStack[historyStack.length] = window.location.href;
+		historyLength = isHistoryManipulated? historyLength - 1: window.history.length;
 	}
 
 	function switchPage(current, next, search) {
