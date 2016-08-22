@@ -269,7 +269,6 @@ var WebAppClass = function() {
 	}
 
 	function loadPage(element, insertBeforeId) {
-		element.styleDisplay = element.style.display;
 		element.style.display = 'none';
 		pageStack[element.id] = element;
 		var insertBeforeIndex = insertBeforeId? pageIds.indexOf(insertBeforeId): -1;
@@ -448,7 +447,7 @@ var WebAppClass = function() {
 	}
 
 	function showPage(page, search) {
-		page.style.display = page['styleDisplay'] || 'block';
+		page.style.display = 'block';
 		if (typeof page['onShow'] === 'function') page.onShow(search);
 	}
 
