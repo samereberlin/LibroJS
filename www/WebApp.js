@@ -78,7 +78,7 @@ var WebAppClass = function() {
 	// Page settings:
 
 	var pageIds = [];
-	var pageStack = {};
+	var pageElements = {};
 	var currentPage = null;
 	var currentSearch = null;
 	var defaultPageId = null;
@@ -234,7 +234,7 @@ var WebAppClass = function() {
 		if (typeof WebApp['onLoad'] === 'function') WebApp.onLoad();
 
 		// Load page elements:
-		pageStack = {}; // Required to reset page elements.
+		pageElements = {}; // Required to reset page elements.
 		Array.prototype.forEach.call(document.body.children, function(element) {
 			if (isPage(element)) loadPage(element, null);
 		});
@@ -270,7 +270,7 @@ var WebAppClass = function() {
 
 	function loadPage(element, insertBeforeId) {
 		element.style.display = 'none';
-		pageStack[element.id] = element;
+		pageElements[element.id] = element;
 		var insertBeforeIndex = insertBeforeId? pageIds.indexOf(insertBeforeId): -1;
 		if (insertBeforeIndex >= 0) {
 			pageIds.splice(insertBeforeIndex, 0, insertBeforeId);
@@ -327,7 +327,7 @@ var WebAppClass = function() {
 	 * @return {node} The new page node element.
 	 */
 	this.createPage = function(pageId, pageContent, insertBeforeId) {
-		if (pageStack[pageId] || typeof pageId !== 'string') return null;
+		if (pageElements[pageId] || typeof pageId !== 'string') return null;
 		else {
 			var pageElement = document.createElement('div');
 			pageElement.className = 'page';
@@ -357,7 +357,7 @@ var WebAppClass = function() {
 		if (pageElement && pageElement.parentNode == document.body && isPage(pageElement)) {
 			document.body.removeChild(pageElement);
 			pageIds.splice(pageIds.indexOf(pageId), 1);
-			delete pageStack[pageId];
+			delete pageElements[pageId];
 		}
 	};
 
@@ -378,7 +378,7 @@ var WebAppClass = function() {
 		// Parse URL data:
 		var nextSearch = (window.location.hash.indexOf('?') >= 0)? window.location.hash.substring(window.location.hash.indexOf('?') + 1): "";
 		var nextHash = (window.location.hash.length > 1)? window.location.hash.substring(1, (nextSearch? window.location.hash.indexOf('?'): window.location.hash.length)): null;
-		var nextPage = (nextHash && pageStack[nextHash])? pageStack[nextHash]: null;
+		var nextPage = (nextHash && pageElements[nextHash])? pageElements[nextHash]: null;
 
 		// Parse URL parameters:
 		var nextParams = {};
