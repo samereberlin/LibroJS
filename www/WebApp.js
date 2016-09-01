@@ -82,8 +82,6 @@ var WebAppClass = function() {
 	var currentPage = null;
 	var currentSearch = null;
 	var defaultPageId = null;
-	var historyLength = window.history.length;
-	var historyStack = [];
 
 	//################################################################################//
 	// Page API:
@@ -119,6 +117,36 @@ var WebAppClass = function() {
 	 */
 	this.setDefaultPageId = function(pageId) {
 		defaultPageId = pageId;
+	};
+
+	//################################################################################//
+	// History stack management settings:
+
+	var isHistoryManaged = true;
+	var historyLength = window.history.length;
+	var historyStack = [];
+
+	//################################################################################//
+	// History stack management API:
+
+	/**
+	 * Returns the history managed boolean state,
+	 * which indicates if the stack must be manipulate by WebApp.
+	 *
+	 * @return {boolean} The history managed boolean state.
+	 */
+	this.isHistoryManaged = function() {
+		return isHistoryManaged;
+	};
+
+	/**
+	 * Set the history managed boolean state,
+	 * which indicates if the stack must be manipulate by WebApp.
+	 *
+	 * @param {boolean} booleanState - The history managed boolean state.
+	 */
+	this.setHistoryManaged = function(booleanState) {
+		isHistoryManaged = booleanState;
 	};
 
 	//################################################################################//
@@ -407,16 +435,18 @@ var WebAppClass = function() {
 		else if (defaultPageId) window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#' + defaultPageId);
 		currentSearch = nextSearch;
 
-		// Manipulate history stack;
-		var isHistoryManipulated = false;
-		if (historyStack.length > 1 && historyStack[historyStack.length - 1] === hashChangeEvent.oldURL && historyStack[historyStack.length - 2] === hashChangeEvent.newURL) {
-			historyStack.pop();
-			if (historyLength < window.history.length) { // Required to assure that back was not pressed.
-				isHistoryManipulated = true;
-				window.history.go(-2);
-			}
-		} else  historyStack[historyStack.length] = window.location.href;
-		historyLength = isHistoryManipulated? historyLength - 1: window.history.length;
+		// Manipulate history stack:
+		if (isHistoryManaged) {
+			var isHistoryManipulated = false;
+			if (historyStack.length > 1 && historyStack[historyStack.length - 1] === hashChangeEvent.oldURL && historyStack[historyStack.length - 2] === hashChangeEvent.newURL) {
+				historyStack.pop();
+				if (historyLength < window.history.length) { // Required to assure that back was not pressed.
+					isHistoryManipulated = true;
+					window.history.go(-2);
+				}
+			} else  historyStack[historyStack.length] = window.location.href;
+			historyLength = isHistoryManipulated? historyLength - 1: window.history.length;
+		}
 	}
 
 	function switchPage(current, next, search) {

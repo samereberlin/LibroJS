@@ -7,9 +7,7 @@ WebApp is a lightweight (simple and efficient) WEB application framework (librar
 - [Page transitions](#page-transitions);
 - [Key pressed callbacks](#key-pressed-callbacks);
 - [Life cycle callbacks](#life-cycle-callbacks);
-- [History manipulation](#history-manipulation) (coming soon);
-- [History inserted page](#history-inserted-page) (coming soon);
-- [History bypassed page](#history-bypassed-page) (coming soon);
+- [History stack management](#history-stack-management) (coming soon);
 - [Friendly header/menu API](#friendly-Header-Menu-api) (coming soon);
 - [Canvas screen support](#canvas-screen-support) (coming soon);
 - [Simplified audio API](#simplified-audio-api) (coming soon);
@@ -359,16 +357,12 @@ Where:
 - `searchData` is the url content from the question mark (if present) to the end. For example, in case of `index.html#fistPage?foo=bar`, the searchData would be `foo=bar`.
 
 
-## History manipulation:
-Coming soon...
+## History stack management:
+The primary functionality of WebApp history stack management engine is to emulate "back key" action when the subsequent page is the same of the previous visited one, in order to keep the Internet browser history stack compliant with the user navigation flow (this feature is activated by default, but if you need to disable it, use _WebApp.setHistoryManaged(false)_ function API). And some other powerful functionalities are:
 
+**History inserted page:** if you need to insert an intermediate page... Coming soon...
 
-## History inserted page:
-Coming soon...
-
-
-## History bypassed page:
-Coming soon...
+**History bypassed page:** if you need to ignore an intermediate page... Coming soon...
 
 
 ## Friendly header/menu API:
@@ -411,9 +405,9 @@ Set the log enabled boolean state, which is responsible to show/hide WebApp cons
 
 **Parameters:**
 
-| Name         | Type    | Description                      |
-|--------------|---------|----------------------------------|
-| booleanState | boolean | The log enabled boolean state.   |
+| Name         | Type    | Description                    |
+|--------------|---------|--------------------------------|
+| booleanState | boolean | The log enabled boolean state. |
 
 #### isRunning()
 Returns the running boolean state, which represents the current status of WebApp.
@@ -425,9 +419,9 @@ Set the running boolean state, which represents the current status of WebApp.
 
 **Parameters:**
 
-| Name         | Type    | Description                        |
-|--------------|---------|------------------------------------|
-| booleanState | boolean | The running boolean state.         |
+| Name         | Type    | Description                |
+|--------------|---------|----------------------------|
+| booleanState | boolean | The running boolean state. |
 
 #### getPageIds()
 Get the pageIds array values, which contains the list of current loaded pages.
@@ -444,9 +438,28 @@ Set the default page id string value, which must be shown in the first request t
 
 **Parameters:**
 
-| Name   | Type   | Description                               |
-|--------|--------|-------------------------------------------|
-| pageId | string | The default page id string value.         |
+| Name   | Type   | Description                       |
+|--------|--------|-----------------------------------|
+| pageId | string | The default page id string value. |
+
+
+
+#### isHistoryManaged()
+Returns the history managed boolean state, which indicates if the stack must be manipulate by WebApp.
+
+**Returns:** {boolean} The history managed boolean state.
+
+#### setHistoryManaged(booleanState)
+Set the history managed boolean state, which indicates if the stack must be manipulate by WebApp.
+
+**Parameters:**
+
+| Name         | Type    | Description                        |
+|--------------|---------|------------------------------------|
+| booleanState | boolean | The history managed boolean state. |
+
+
+
 
 #### animateElement(element, animation, callback)
 Animate a node element, according to the supplied animation type (@see getAnimationTypes).
