@@ -410,21 +410,19 @@ var WebAppClass = function() {
 		var nextHash = (window.location.hash.length > 1)? window.location.hash.substring(1, (nextSearch? window.location.hash.indexOf('?'): window.location.hash.length)): null;
 		var nextPage = (nextHash && pageElements[nextHash])? pageElements[nextHash]: null;
 
-		// Parse URL parameters:
-		var nextParams = {};
-		if (nextSearch) {
-			var indexOfEqual = null;
-			nextSearch = nextSearch.split('&');
-			nextSearch.forEach(function(param) {
-				indexOfEqual = param.indexOf('=');
-				if (indexOfEqual > 0) {
-					nextParams[param.slice(0, indexOfEqual)] = param.slice(indexOfEqual + 1, param.length);
-				}
-			});
-		}
-
 		// Execute update action:
 		if (nextPage) {
+			if (isHistoryManaged) {
+				var isHistoryManipulated = false;
+				if (historyStack.length > 1 && historyStack[historyStack.length - 1] === hashChangeEvent.oldURL && historyStack[historyStack.length - 2] === hashChangeEvent.newURL) {
+					historyStack.pop();
+					if (historyLength < window.history.length) { // Required to assure that back was not pressed.
+						isHistoryManipulated = true;
+						window.history.go(-2);
+					}
+				} else  historyStack[historyStack.length] = window.location.href;
+				historyLength = isHistoryManipulated? historyLength - 1: window.history.length;
+			}
 			if (nextPage === currentPage) {
 				if (typeof currentPage['onSearchChange'] === 'function') currentPage.onSearchChange(nextSearch);
 			} else {
@@ -434,19 +432,6 @@ var WebAppClass = function() {
 		} else if (currentPage) window.history.back();
 		else if (defaultPageId) window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#' + defaultPageId);
 		currentSearch = nextSearch;
-
-		// Manipulate history stack:
-		if (isHistoryManaged) {
-			var isHistoryManipulated = false;
-			if (historyStack.length > 1 && historyStack[historyStack.length - 1] === hashChangeEvent.oldURL && historyStack[historyStack.length - 2] === hashChangeEvent.newURL) {
-				historyStack.pop();
-				if (historyLength < window.history.length) { // Required to assure that back was not pressed.
-					isHistoryManipulated = true;
-					window.history.go(-2);
-				}
-			} else  historyStack[historyStack.length] = window.location.href;
-			historyLength = isHistoryManipulated? historyLength - 1: window.history.length;
-		}
 	}
 
 	function switchPage(current, next, search) {
