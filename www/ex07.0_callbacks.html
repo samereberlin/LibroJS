@@ -50,8 +50,8 @@ var firstPageElement = document.getElementById('firstPage');
 firstPageElement.onLoad = function() {
 	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onLoad()</span>';
 };
-firstPageElement.onShow = function(searchData) {
-	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onShow(' + searchData + ')</span>';
+firstPageElement.onShow = function(searchData, referrerId) {
+	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onShow(' + searchData + ', ' + referrerId + ')</span>';
 };
 firstPageElement.onHide = function() {
 	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onHide()</span>';
@@ -68,8 +68,8 @@ var secondPageElement = document.getElementById('secondPage');
 secondPageElement.onLoad = function() {
 	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onLoad()</span>';
 };
-secondPageElement.onShow = function(searchData) {
-	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onShow(' + searchData + ')</span>';
+secondPageElement.onShow = function(searchData, referrerId) {
+	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onShow(' + searchData + ', ' + referrerId + ')</span>';
 };
 secondPageElement.onHide = function() {
 	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onHide()</span>';

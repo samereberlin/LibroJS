@@ -270,7 +270,7 @@ var WebAppClass = function() {
 		});
 		if (!defaultPageId || (pageIds.indexOf(defaultPageId) < 0)) defaultPageId = pageIds[0];
 
-		if (isLoaded) showPage(currentPage, search);
+		if (isLoaded) showPage(currentPage, search, currentPage);
 		else {
 			isLoaded = true;
 
@@ -459,12 +459,12 @@ var WebAppClass = function() {
 
 		if (nextTransition === 'none') {
 			if (current) hidePage(current);
-			showPage(next, search);
+			showPage(next, search, current);
 			nextTransition = null;
 		} else {
 			var showNext = function() {
 				animateElement(next, nextTransition + 'in', null);
-				showPage(next, search);
+				showPage(next, search, current);
 				nextTransition = null;
 			};
 			if (current) {
@@ -489,9 +489,9 @@ var WebAppClass = function() {
 		element.className += ' ' + animation;
 	}
 
-	function showPage(page, search) {
+	function showPage(page, search, referrer) {
 		page.style.display = 'block';
-		if (typeof page['onShow'] === 'function') page.onShow(search);
+		if (typeof page['onShow'] === 'function') page.onShow(search, (referrer? referrer.id: null));
 	}
 
 	function hidePage(page) {
