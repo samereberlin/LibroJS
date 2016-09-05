@@ -7,8 +7,9 @@ WebApp is a lightweight (simple and efficient) WEB application framework (librar
 - [Page transitions](#page-transitions);
 - [Key pressed callbacks](#key-pressed-callbacks);
 - [Life cycle callbacks](#life-cycle-callbacks);
-- [History stack management](#history-stack-management) (coming soon);
-- [Friendly header/menu API](#friendly-Header-Menu-api) (coming soon);
+- [History stack management](#history-stack-management);
+- [Friendly header/menu API](#friendly-headermenu-api) (coming soon);
+- [Friendly dialog API](#friendly-dialog-api) (coming soon);
 - [Canvas screen support](#canvas-screen-support) (coming soon);
 - [Simplified audio API](#simplified-audio-api) (coming soon);
 - [Tooltip widget API](#tooltip-widget-api) (coming soon);
@@ -120,7 +121,7 @@ The default application page is the first _body's child_ class _page_ element, w
 
 
 ## Dynamic page creation:
-If you need to load another page after application startup, or dynamically during execution (on run-time), use _WebApp.createPage('pageId', 'pageContent')_ API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex03.0_createPage.html#firstPage" target="_blank">live preview</a>):
+If you need to create another page after application startup, or dynamically during execution (on run-time), use _WebApp.createPage('pageId', 'pageContent')_ API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex03.0_createPage.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -293,7 +294,7 @@ And as you can see in the above example, onKeyDown event is dispatched to the cu
 ## Life cycle callbacks:
 Application life cycle process is a set of pre-defined events that occurs during the application execution, which must be monitored (through callbacks) in order to execute the appropriate actions. For example, if you are developing a game, you need to know when the use minimizes the application (in order to pause the game execution, timers, etc.), and you also need to know when the user returns to the application (in order to resume the game from the point where it was paused). That is why the process callbacks are so relevant.
 
-If you do not understand the above explanation, do not be afraid. The use of callbacks is much easier than the explanation itself :) To implement an application callback, you just need to get the _page_ element reference (or WebApp object for global callbacks), and implement the desired function, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex07.0_callbacks.html#firstPage" target="_blank">live preview</a>):
+If you do not understand the above explanation, do not be afraid. The use of callbacks is much easier than the explanation by itself :) To implement an application callback, you just need to get the _page_ element reference (or WebApp object for global callbacks), and implement the desired function, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex07.0_callbacks.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -322,8 +323,8 @@ var firstPageElement = document.getElementById('firstPage');
 firstPageElement.onLoad = function() {
 	console.log('firstPageElement.onLoad(): ' + (new Date().toLocaleString()));
 };
-firstPageElement.onShow = function(searchData) {
-	console.log('firstPageElement.onShow(' + searchData + '): ' + (new Date().toLocaleString()));
+firstPageElement.onShow = function(searchData, referrerId) {
+	console.log('firstPageElement.onShow(' + searchData + ', ' + referrerId + '): ' + (new Date().toLocaleString()));
 };
 firstPageElement.onHide = function() {
 	console.log('firstPageElement.onHide(): ' + (new Date().toLocaleString()));
@@ -334,11 +335,44 @@ var secondPageElement = document.getElementById('secondPage');
 secondPageElement.onLoad = function() {
 	console.log('secondPageElement.onLoad(): ' + (new Date().toLocaleString()));
 };
-secondPageElement.onShow = function(searchData) {
-	console.log('secondPageElement.onShow(' + searchData + '): ' + (new Date().toLocaleString()));
+secondPageElement.onShow = function(searchData, referrerId) {
+	console.log('secondPageElement.onShow(' + searchData + ', ' + referrerId + '): ' + (new Date().toLocaleString()));
 };
 secondPageElement.onHide = function() {
 	console.log('secondPageElement.onHide(): ' + (new Date().toLocaleString()));
+};
+</script>
+```
+
+Another interesting use case for application life cycle callbacks, is the page redirection possibility, which allow us to emulate exit messages to appear when returning only (according to the "referrerId" / previous displayed pageId), as demonstrated in the following example, where the #secondPage is displayed only when returning from #thirdPage (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex07.1_exitMessage.html#firstPage" target="_blank">live preview</a>):
+```html
+<div class="page" id="firstPage">
+	<h1>WebApp - First Page</h1>
+	<a href="#secondPage">go to the second page</a>
+</div>
+
+<div class="page" id="secondPage">
+	<div style="display: none;">
+		<h1>WebApp - Second Page</h1>
+		<a href="#firstPage">go to the first page</a> | <a href="#thirdPage">go to the third page</a>
+	</div>
+</div>
+
+<div class="page" id="thirdPage">
+	<h1>WebApp - Third Page</h1>
+	<a href="#secondPage">go to the second page</a>
+</div>
+
+<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+
+<script>
+// Set secondPage onShow callback action:
+document.getElementById('secondPage').onShow = function(search, referrerId) {
+	if (referrerId === 'thirdPage') this.children[0].style.display = 'block';
+	else {
+		this.children[0].style.display = 'none';
+		window.location.hash = 'thirdPage';
+	}
 };
 </script>
 ```
@@ -350,22 +384,70 @@ secondPageElement.onHide = function() {
 - WebApp.onResume();
 - WebApp.onResize();
 - pageElement.onLoad();
-- pageElement.onShow(searchData);
+- pageElement.onShow(searchData, referrerId);
 - pageElement.onSearchChange(searchData);
 - pageElement.onHide();
 Where:
 - `searchData` is the url content from the question mark (if present) to the end. For example, in case of `index.html#fistPage?foo=bar`, the searchData would be `foo=bar`.
+- `referrerId` is the previous displayed pageId.
 
 
 ## History stack management:
-The primary functionality of WebApp history stack management engine is to emulate "back key" action when the subsequent page is the same of the previous visited one, in order to keep the Internet browser history stack compliant with the user navigation flow (this feature is activated by default, but if you need to disable it, use _WebApp.setHistoryManaged(false)_ function API). And some other powerful functionalities are:
+The primary purpose of WebApp history stack management engine is to emulate "back key" event when the subsequent page is the same of the previous visited one, in order to keep the Internet browser history stack compliant with the user navigation flow (this feature is activated by default, but if you need to disable it, use _WebApp.setHistoryManaged(false)_ function API).
 
-**History inserted page:** if you need to insert an intermediate page... Coming soon...
+** User navigation example:**
+```
+ page      unmanaged    managed
+loading     history     history
+ #pg1        #pg1        #pg1 <--
+  |           |           |      ^  (back event
+  V           V           V      |   emulation)
+ #pg2        #pg2        #pg2 -->
+  |           |
+  V           V
+ #pg1        #pg1
+```
 
-**History bypassed page:** if you need to ignore an intermediate page... Coming soon...
+As a similar feature, this history management engine presents the "unique entry" stack concept, which compares the subsequent page with all previous visited ones, and emulates "back key" event(s) up to reach the matched instance (this feature is also activated by default, but if you need to disable it, use _WebApp.setHistoryUnique(false)_ function API).
+
+** User navigation example:**
+```
+ page      unmanaged    managed history    managed history
+loading     history     (unique false)     (unique true)
+ #pg1        #pg1            #pg1               #pg1 <--
+  |           |               |                  |      ^
+  V           V               V                  V      |  (back event
+ #pg2        #pg2            #pg2               #pg2    |   emulation)
+  |           |               |                  |      |
+  V           V               V                  V      |
+ #pg3        #pg3            #pg3               #pg3 -->
+  |           |               |
+  V           V               V
+ #pg1        #pg1            #pg1
+```
+
+And another interesting behavior, is the "default page firstly" feature, which inserts the default page at the beginning of the history stack when any other page is explicitly requested firstly. (this feature is also activated by default, but if you need to disable it, use _WebApp.setHistoryDefaultFirstly(false)_ function API).
+
+** User navigation example:**
+```
+ page      unmanaged           managed history
+loading     history            (default first)
+                                    #pg1 <--
+                                            ^
+                                            |  (returns to
+ #pg2        #pg2 <--               #pg2    |   #pg1, which
+  |           |      ^               |      |   is inserted
+  V           V      | (do not       V      |   dynamically)
+press       press    |  change)    press    |
+back key    back key ^             back key ^
+```
 
 
 ## Friendly header/menu API:
+Coming soon...
+
+
+## Friendly dialog API:
 Coming soon...
 
 
@@ -442,8 +524,6 @@ Set the default page id string value, which must be shown in the first request t
 |--------|--------|-----------------------------------|
 | pageId | string | The default page id string value. |
 
-
-
 #### isHistoryManaged()
 Returns the history managed boolean state, which indicates if the stack must be manipulate by WebApp.
 
@@ -458,8 +538,19 @@ Set the history managed boolean state, which indicates if the stack must be mani
 |--------------|---------|------------------------------------|
 | booleanState | boolean | The history managed boolean state. |
 
+#### isHistoryUnique()
+Returns the history unique boolean state, which indicates if the page entries must be unique in the stack.
 
+**Returns:** {boolean} The history unique boolean state.
 
+#### setHistoryUnique(booleanState)
+Set the history unique boolean state, which indicates if the page entries must be unique in the stack.
+
+**Parameters:**
+
+| Name         | Type    | Description                        |
+|--------------|---------|------------------------------------|
+| booleanState | boolean | The history unique boolean state.  |
 
 #### animateElement(element, animation, callback)
 Animate a node element, according to the supplied animation type (@see getAnimationTypes).

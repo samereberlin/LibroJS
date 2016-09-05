@@ -123,6 +123,7 @@ var WebAppClass = function() {
 	// History stack management settings:
 
 	var isHistoryManaged = true;
+	var isHistoryUnique = true;
 	var historyLength = window.history.length;
 	var historyStack = [];
 
@@ -147,6 +148,26 @@ var WebAppClass = function() {
 	 */
 	this.setHistoryManaged = function(booleanState) {
 		isHistoryManaged = booleanState;
+	};
+
+	/**
+	 * Returns the history unique boolean state,
+	 * which indicates if the page entries must be unique in the stack.
+	 *
+	 * @return {boolean} The history unique boolean state.
+	 */
+	this.isHistoryUnique = function() {
+		return isHistoryUnique;
+	};
+
+	/**
+	 * Set the history unique boolean state,
+	 * which indicates if the page entries must be unique in the stack.
+	 *
+	 * @param {boolean} booleanState - The history unique boolean state.
+	 */
+	this.setHistoryUnique = function(booleanState) {
+		isHistoryUnique = booleanState;
 	};
 
 	//################################################################################//
@@ -412,17 +433,28 @@ var WebAppClass = function() {
 
 		// Execute update action:
 		if (nextPage) {
+
+			// History stack management:
 			if (isHistoryManaged) {
-				var isHistoryManipulated = false;
-				if (historyStack.length > 1 && historyStack[historyStack.length - 1] === hashChangeEvent.oldURL && historyStack[historyStack.length - 2] === hashChangeEvent.newURL) {
+				var historyManipulations = 0;
+				var historyStackIndex = historyStack.indexOf(hashChangeEvent.newURL);
+				if (historyStack.length > 1 && historyStack[historyStack.length - 2] === hashChangeEvent.newURL) {
 					historyStack.pop();
-					if (historyLength < window.history.length) { // Required to assure that back was not pressed.
-						isHistoryManipulated = true;
-						window.history.go(-2);
-					}
+					// If back key has not been pressed, set historyManipulations:
+					if (historyLength < window.history.length)  historyManipulations = 1;
+				} else if (isHistoryUnique && historyStack.length > 2 && historyStackIndex >= 0) {
+					var historyStackSteps = historyStack.length - 1 - historyStackIndex;
+					historyStack.splice(historyStackIndex + 1, historyStackSteps);
+					// If back key has not been pressed, set historyManipulations:
+					if (historyLength < window.history.length) historyManipulations = historyStackSteps;
 				} else  historyStack[historyStack.length] = window.location.href;
-				historyLength = isHistoryManipulated? historyLength - 1: window.history.length;
+				if (historyManipulations) {
+					window.history.go(-(historyManipulations + 1));
+					historyLength = historyLength - historyManipulations;
+				} else historyLength = window.history.length;
 			}
+
+			// Page switch management:
 			if (nextPage === currentPage) {
 				if (typeof currentPage['onSearchChange'] === 'function') currentPage.onSearchChange(nextSearch);
 			} else {
