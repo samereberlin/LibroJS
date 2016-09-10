@@ -47,6 +47,7 @@ var WebAppClass = function() {
 	//################################################################################//
 	// Application settings:
 
+	var HASH_DELAY = 200;
 	var isLoaded = false;
 	var isRunning = false;
 
@@ -122,6 +123,7 @@ var WebAppClass = function() {
 	//################################################################################//
 	// History stack management settings:
 
+	var isDefaultPageFirstly = true;
 	var isHistoryManaged = true;
 	var isHistoryUnique = true;
 	var historyLength = window.history.length;
@@ -129,6 +131,26 @@ var WebAppClass = function() {
 
 	//################################################################################//
 	// History stack management API:
+
+	/**
+	 * Returns the default page firstly boolean state,
+	 * which indicates if the default page must be inserted firstly.
+	 *
+	 * @return {boolean} The default page firstly boolean state.
+	 */
+	this.isDefaultPageFirstly = function() {
+		return isDefaultPageFirstly;
+	};
+
+	/**
+	 * Set the default page firstly boolean state,
+	 * which indicates if the default page must be inserted firstly.
+	 *
+	 * @param {boolean} booleanState - The default page firstly boolean state.
+	 */
+	this.setDefaultPageFirstly = function(booleanState) {
+		isDefaultPageFirstly = booleanState;
+	};
 
 	/**
 	 * Returns the history managed boolean state,
@@ -427,43 +449,51 @@ var WebAppClass = function() {
 		if (isLogEnabled) console.log('WebApp.js: updatePage(hashChangeEvent)... newURL = ' + hashChangeEvent.newURL + ', oldURL = ' + hashChangeEvent.oldURL);
 
 		// Parse URL data:
-		var nextSearch = (window.location.hash.indexOf('?') >= 0)? window.location.hash.substring(window.location.hash.indexOf('?') + 1): "";
+		var nextSearch = (window.location.hash.indexOf('?') >= 0)? window.location.hash.substring(window.location.hash.indexOf('?') + 1): '';
 		var nextHash = (window.location.hash.length > 1)? window.location.hash.substring(1, (nextSearch? window.location.hash.indexOf('?'): window.location.hash.length)): null;
 		var nextPage = (nextHash && pageElements[nextHash])? pageElements[nextHash]: null;
 
-		// Execute update action:
-		if (nextPage) {
-
-			// History stack management:
-			if (isHistoryManaged) {
-				var historyManipulations = 0;
-				var historyStackIndex = historyStack.indexOf(hashChangeEvent.newURL);
-				if (historyStack.length > 1 && historyStack[historyStack.length - 2] === hashChangeEvent.newURL) {
-					historyStack.pop();
-					// If back key has not been pressed, set historyManipulations:
-					if (historyLength < window.history.length)  historyManipulations = 1;
-				} else if (isHistoryUnique && historyStack.length > 2 && historyStackIndex >= 0) {
-					var historyStackSteps = historyStack.length - 1 - historyStackIndex;
-					historyStack.splice(historyStackIndex + 1, historyStackSteps);
-					// If back key has not been pressed, set historyManipulations:
-					if (historyLength < window.history.length) historyManipulations = historyStackSteps;
-				} else  historyStack[historyStack.length] = window.location.href;
-				if (historyManipulations) {
-					window.history.go(-(historyManipulations + 1));
-					historyLength = historyLength - historyManipulations;
-				} else historyLength = window.history.length;
-			}
-
-			// Page switch management:
-			if (nextPage === currentPage) {
-				if (typeof currentPage['onSearchChange'] === 'function') currentPage.onSearchChange(nextSearch);
-			} else {
-				switchPage(currentPage, nextPage, nextSearch);
-				currentPage = nextPage;
-			}
-		} else if (currentPage) window.history.back();
-		else if (defaultPageId) window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#' + defaultPageId);
-		currentSearch = nextSearch;
+		// Set default page firstly:
+		if (isDefaultPageFirstly && hashChangeEvent.newURL === null && hashChangeEvent.oldURL === null && nextPage && nextHash !== defaultPageId) {
+			window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#' + defaultPageId);
+			setTimeout(function() { // Timeout required to create history entry for WebKit browsers.
+				window.location.hash = nextHash + (nextSearch? '?' + nextSearch: '');
+			}, HASH_DELAY);
+		} else {
+			// Execute update action:
+			if (nextPage) {
+	
+				// History stack management:
+				if (isHistoryManaged) {
+					var historyManipulations = 0;
+					var historyStackIndex = historyStack.indexOf(hashChangeEvent.newURL);
+					if (historyStack.length > 1 && historyStack[historyStack.length - 2] === hashChangeEvent.newURL) {
+						historyStack.pop();
+						// If back key has not been pressed, set historyManipulations:
+						if (historyLength < window.history.length)  historyManipulations = 1;
+					} else if (isHistoryUnique && historyStack.length > 2 && historyStackIndex >= 0) {
+						var historyStackSteps = historyStack.length - 1 - historyStackIndex;
+						historyStack.splice(historyStackIndex + 1, historyStackSteps);
+						// If back key has not been pressed, set historyManipulations:
+						if (historyLength < window.history.length) historyManipulations = historyStackSteps;
+					} else  historyStack[historyStack.length] = window.location.href;
+					if (historyManipulations) {
+						window.history.go(-(historyManipulations + 1));
+						historyLength = historyLength - historyManipulations;
+					} else historyLength = window.history.length;
+				}
+	
+				// Page switch management:
+				if (nextPage === currentPage) {
+					if (typeof currentPage['onSearchChange'] === 'function') currentPage.onSearchChange(nextSearch);
+				} else {
+					switchPage(currentPage, nextPage, nextSearch);
+					currentPage = nextPage;
+				}
+			} else if (currentPage) window.history.back();
+			else if (defaultPageId) window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#' + defaultPageId);
+			currentSearch = nextSearch;
+		}
 	}
 
 	function switchPage(current, next, search) {

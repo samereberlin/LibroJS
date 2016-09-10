@@ -426,7 +426,7 @@ loading     history     (unique false)     (unique true)
  #pg1        #pg1            #pg1
 ```
 
-And another interesting behavior, is the "default page firstly" feature, which inserts the default page at the beginning of the history stack when any other page is explicitly requested firstly. (this feature is also activated by default, but if you need to disable it, use _WebApp.setHistoryDefaultFirstly(false)_ function API).
+And another interesting behavior, is the "default page firstly" feature, which inserts the default page at the beginning of the history stack when any other page is explicitly requested firstly. (this feature is also activated by default, but if you need to disable it, use _WebApp.setDefaultPageFirstly(false)_ function API).
 
 ** User navigation example:**
 ```
@@ -523,6 +523,20 @@ Set the default page id string value, which must be shown in the first request t
 | Name   | Type   | Description                       |
 |--------|--------|-----------------------------------|
 | pageId | string | The default page id string value. |
+
+#### isDefaultPageFirstly()
+Returns the default page firstly boolean state, which indicates if the default page must be inserted firstly.
+
+**Returns:** {boolean} The default page firstly boolean state.
+
+#### setDefaultPageFirstly(booleanState)
+Set the default page firstly boolean state, which indicates if the default page must be inserted firstly.
+
+**Parameters:**
+
+| Name         | Type    | Description                              |
+|--------------|---------|------------------------------------------|
+| booleanState | boolean | The default page firstly boolean state.  |
 
 #### isHistoryManaged()
 Returns the history managed boolean state, which indicates if the stack must be manipulate by WebApp.
