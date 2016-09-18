@@ -195,37 +195,35 @@ var WebAppClass = function() {
 	//################################################################################//
 	// Animation/Transition settings:
 
-	var styleRules = '\
-		/* Animation Effects (based on jquery.mobile-1.4.5). */\
-		@keyframes fadein {from {opacity: 0;} to {opacity: 1;}}\
-		@keyframes fadeout {from {opacity: 1;} to {opacity: 0;}}\
-		.fadein {animation-name: fadein; animation-duration: 225ms; opacity: 1;}\
-		.fadeout {animation-name: fadeout; animation-duration: 125ms; opacity: 0;}\
-		@keyframes popin {from {transform: scale(.8); opacity: 0;} to {transform: scale(1); opacity: 1;}}\
-		@keyframes popout {from {transform: scale(1); opacity: 1;} to {transform: scale(.8); opacity: 0;}}\
-		.popin {animation-name: popin; animation-duration: 225ms; animation-timing-function: ease-out; opacity: 1;}\
-		.popout {animation-name: popout; animation-duration: 125ms; animation-timing-function: ease-in; opacity: 0;}\
-		@keyframes flipin {from {transform: matrix(0.2,0.2,0,1,0,0); opacity: 0;} to {transform: matrix(1,0,0,1,0,0); opacity: 1;}}\
-		@keyframes flipout {from {transform: matrix(1,0,0,1,0,0); opacity: 1;} to {transform: matrix(0.2,-0.2,0,1,0,0); opacity: 0;}}\
-		@keyframes fliprevin {from {transform: matrix(0.2,-0.2,0,1,0,0); opacity: 0;} to {transform: matrix(1,0,0,1,0,0); opacity: 1;}}\
-		@keyframes fliprevout {from {transform: matrix(1,0,0,1,0,0); opacity: 1;} to {transform: matrix(0.2,0.2,0,1,0,0); opacity: 0;}}\
-		.flipin, .fliprevin {animation-duration: 225ms; animation-timing-function: ease-out;}\
-		.flipout, .fliprevout {animation-duration: 125ms; animation-timing-function: ease-in;}\
-		.flipin {animation-name: flipin; opacity: 1;}\
-		.flipout {animation-name: flipout; opacity: 0;}\
-		.fliprevin {animation-name: fliprevin; opacity: 1;}\
-		.fliprevout {animation-name: fliprevout; opacity: 0;}\
-		@keyframes slidein {from {transform: translateX(100%);} to {transform: translateX(0);}}\
-		@keyframes sliderevin {from {transform: translateX(-100%);} to {transform: translateX(0);}}\
-		@keyframes sliderevout {from {transform: translateX(0);} to {transform: translateX(100%);}}\
-		@keyframes slideout {from {transform: translateX(0);} to {transform: translateX(-100%);}}\
-		.slidein, .sliderevin {animation-duration: 225ms; animation-timing-function: ease-out;}\
-		.slideout, .sliderevout {animation-duration: 125ms; animation-timing-function: ease-in;}\
-		.slidein {animation-name: slidein; transform: translateX(0);}\
-		.slideout {animation-name: slideout; transform: translateX(-100%);}\
-		.sliderevin {animation-name: sliderevin; transform: translateX(0);}\
-		.sliderevout {animation-name: sliderevout; transform: translateX(100%);}\
-	';
+	var styleRules = '/* Animation Effects (based on jquery.mobile-1.4.5). */' +
+		'@keyframes fadein {from {opacity: 0;} to {opacity: 1;}}' +
+		'@keyframes fadeout {from {opacity: 1;} to {opacity: 0;}}' +
+		'.fadein {animation-name: fadein; animation-duration: 225ms; opacity: 1;}' +
+		'.fadeout {animation-name: fadeout; animation-duration: 125ms; opacity: 0;}' +
+		'@keyframes popin {from {transform: scale(.8); opacity: 0;} to {transform: scale(1); opacity: 1;}}' +
+		'@keyframes popout {from {transform: scale(1); opacity: 1;} to {transform: scale(.8); opacity: 0;}}' +
+		'.popin {animation-name: popin; animation-duration: 225ms; animation-timing-function: ease-out; opacity: 1;}' +
+		'.popout {animation-name: popout; animation-duration: 125ms; animation-timing-function: ease-in; opacity: 0;}' +
+		'@keyframes flipin {from {transform: matrix(0.2,0.2,0,1,0,0); opacity: 0;} to {transform: matrix(1,0,0,1,0,0); opacity: 1;}}' +
+		'@keyframes flipout {from {transform: matrix(1,0,0,1,0,0); opacity: 1;} to {transform: matrix(0.2,-0.2,0,1,0,0); opacity: 0;}}' +
+		'@keyframes fliprevin {from {transform: matrix(0.2,-0.2,0,1,0,0); opacity: 0;} to {transform: matrix(1,0,0,1,0,0); opacity: 1;}}' +
+		'@keyframes fliprevout {from {transform: matrix(1,0,0,1,0,0); opacity: 1;} to {transform: matrix(0.2,0.2,0,1,0,0); opacity: 0;}}' +
+		'.flipin, .fliprevin {animation-duration: 225ms; animation-timing-function: ease-out;}' +
+		'.flipout, .fliprevout {animation-duration: 125ms; animation-timing-function: ease-in;}' +
+		'.flipin {animation-name: flipin; opacity: 1;}' +
+		'.flipout {animation-name: flipout; opacity: 0;}' +
+		'.fliprevin {animation-name: fliprevin; opacity: 1;}' +
+		'.fliprevout {animation-name: fliprevout; opacity: 0;}' +
+		'@keyframes slidein {from {transform: translateX(100%);} to {transform: translateX(0);}}' +
+		'@keyframes sliderevin {from {transform: translateX(-100%);} to {transform: translateX(0);}}' +
+		'@keyframes sliderevout {from {transform: translateX(0);} to {transform: translateX(100%);}}' +
+		'@keyframes slideout {from {transform: translateX(0);} to {transform: translateX(-100%);}}' +
+		'.slidein, .sliderevin {animation-duration: 225ms; animation-timing-function: ease-out;}' +
+		'.slideout, .sliderevout {animation-duration: 125ms; animation-timing-function: ease-in;}' +
+		'.slidein {animation-name: slidein; transform: translateX(0);}' +
+		'.slideout {animation-name: slideout; transform: translateX(-100%);}' +
+		'.sliderevin {animation-name: sliderevin; transform: translateX(0);}' +
+		'.sliderevout {animation-name: sliderevout; transform: translateX(100%);}';
 	var animationTypes = ['fadein', 'fadeout', 'popin', 'popout', 'flipin', 'flipout', 'fliprevin', 'fliprevout', 'slidein', 'slideout', 'sliderevin', 'sliderevout'];
 	var transitionTypes = ['none', 'fade', 'pop', 'flip', 'fliprev', 'fliporder', 'slide', 'sliderev', 'slideorder'];
 	var defaultTransition = transitionTypes[1];
@@ -304,7 +302,7 @@ var WebAppClass = function() {
 
 	function load() {
 		if (isLogEnabled) console.log('WebApp.js: load()');
-		if (typeof WebApp['onLoad'] === 'function') WebApp.onLoad();
+		if (typeof WebApp.onLoad === 'function') WebApp.onLoad();
 
 		// Load page elements:
 		pageElements = {}; // Required to reset page elements.
@@ -313,7 +311,7 @@ var WebAppClass = function() {
 		});
 		if (!defaultPageId || (pageIds.indexOf(defaultPageId) < 0)) defaultPageId = pageIds[0];
 
-		if (isLoaded) showPage(currentPage, search, currentPage);
+		if (isLoaded) showPage(currentPage, currentSearch, currentPage);
 		else {
 			isLoaded = true;
 
@@ -335,7 +333,7 @@ var WebAppClass = function() {
 			window.addEventListener('hashchange', updatePage);
 			updatePage({'type': 'hashchange', 'newURL': null, 'oldURL': null}); // Required to set initial page.
 		}
-	};
+	}
 
 	function isPage(element) {
 		return (element.classList.contains('page') && element.id)? true: false;
@@ -350,12 +348,12 @@ var WebAppClass = function() {
 		} else {
 			pageIds.push(element.id);
 		}
-		if (typeof element['onLoad'] === 'function') element.onLoad();
+		if (typeof element.onLoad === 'function') element.onLoad();
 	}
 
 	function unload() {
 		if (isLogEnabled) console.log('WebApp.js: unload()');
-		if (typeof WebApp['onUnload'] === 'function') WebApp.onUnload();
+		if (typeof WebApp.onUnload === 'function') WebApp.onUnload();
 		if (isRunning) pause();
 		currentPage = null;
 		isLoaded = false;
@@ -365,7 +363,7 @@ var WebAppClass = function() {
 		if (isLogEnabled) console.log('WebApp.js: pause()');
 		if (isRunning) {
 			isRunning = false;
-			if (typeof WebApp['onPause'] === 'function') WebApp.onPause();
+			if (typeof WebApp.onPause === 'function') WebApp.onPause();
 		}
 	}
 
@@ -373,7 +371,7 @@ var WebAppClass = function() {
 		if (isLogEnabled) console.log('WebApp.js: resume()');
 		if (!isRunning) {
 			isRunning = true;
-			if (typeof WebApp['onResume'] === 'function') WebApp.onResume();
+			if (typeof WebApp.onResume === 'function') WebApp.onResume();
 		}
 	}
 
@@ -439,7 +437,7 @@ var WebAppClass = function() {
 
 	function resize() {
 		if (isLogEnabled) console.log('WebApp.js: resize()');
-		if (typeof WebApp['onResize'] === 'function') WebApp.onResize();
+		if (typeof WebApp.onResize === 'function') WebApp.onResize();
 	}
 
 	//################################################################################//
@@ -485,7 +483,7 @@ var WebAppClass = function() {
 	
 				// Page switch management:
 				if (nextPage === currentPage) {
-					if (typeof currentPage['onSearchChange'] === 'function') currentPage.onSearchChange(nextSearch);
+					if (typeof currentPage.onSearchChange === 'function') currentPage.onSearchChange(nextSearch);
 				} else {
 					switchPage(currentPage, nextPage, nextSearch);
 					currentPage = nextPage;
@@ -538,11 +536,11 @@ var WebAppClass = function() {
 
 	function showPage(page, search, referrer) {
 		page.style.display = 'block';
-		if (typeof page['onShow'] === 'function') page.onShow(search, (referrer? referrer.id: null));
+		if (typeof page.onShow === 'function') page.onShow(search, (referrer? referrer.id: null));
 	}
 
 	function hidePage(page) {
-		if (typeof page['onHide'] === 'function') page.onHide();
+		if (typeof page.onHide === 'function') page.onHide();
 		page.style.display = 'none';
 	}
 
@@ -552,9 +550,9 @@ var WebAppClass = function() {
 	function keyDown(keyEvent) {
 		if (isLogEnabled) console.log('WebApp.js: keyDown(' + keyEvent.keyCode + ')');
 		if (keyEvent.keyCode === 13) {
-			if (keyEvent.target['onclick']) keyEvent.target.onclick();
+			if (keyEvent.target.onclick) keyEvent.target.onclick();
 		} else {
-			if (currentPage && typeof currentPage['onKeyDown'] === 'function') currentPage.onKeyDown(keyEvent);
+			if (currentPage && typeof currentPage.onKeyDown === 'function') currentPage.onKeyDown(keyEvent);
 		}
 	}
 
