@@ -330,8 +330,8 @@ var WebAppClass = function() {
 			resume(); // Required to dispatch initial onResume event.
 
 			// Setup page change listener:
-			window.addEventListener('hashchange', updatePage);
-			updatePage({'type': 'hashchange', 'newURL': null, 'oldURL': null}); // Required to set initial page.
+			window.addEventListener('hashchange', updateHash);
+			updateHash({'type': 'hashchange', 'newURL': null, 'oldURL': null}); // Required to set initial page.
 		}
 	}
 
@@ -355,8 +355,16 @@ var WebAppClass = function() {
 		if (isLogEnabled) console.log('WebApp.js: unload()');
 		if (typeof WebApp.onUnload === 'function') WebApp.onUnload();
 		if (isRunning) pause();
-		currentPage = null;
 		isLoaded = false;
+		reset();
+	}
+
+	function reset() {
+		hidePage(currentPage);
+		currentPage = null;
+		currentSearch = null;
+		historyLength = window.history.length;
+		historyStack = [];
 	}
 
 	function pause() {
@@ -381,10 +389,17 @@ var WebAppClass = function() {
 	/**
 	 * Load the WebApp framework library.
 	 * It is called automatically after DOMContentLoaded event,
-	 * but it is usefull to reset/reload page elements
+	 * but it is useful to reset/reload page elements
 	 * (according to the current body's children nodes).
 	 */
 	this.load = load;
+
+	/**
+	 * Reset the WebApp framework library.
+	 * It is called automatically after window.onunload event,
+	 * but it is useful to simulate reset event for testing.
+	 */
+	this.reset = reset;
 
 	/**
 	 * Create page dynamically,
@@ -443,8 +458,8 @@ var WebAppClass = function() {
 	//################################################################################//
 	// Functions related to internal actions:
 
-	function updatePage(hashChangeEvent) {
-		if (isLogEnabled) console.log('WebApp.js: updatePage(hashChangeEvent)... newURL = ' + hashChangeEvent.newURL + ', oldURL = ' + hashChangeEvent.oldURL);
+	function updateHash(hashChangeEvent) {
+		if (isLogEnabled) console.log('WebApp.js: updateHash(hashChangeEvent)... newURL = ' + hashChangeEvent.newURL + ', oldURL = ' + hashChangeEvent.oldURL);
 
 		// Parse URL data:
 		var nextSearch = (window.location.hash.indexOf('?') >= 0)? window.location.hash.substring(window.location.hash.indexOf('?') + 1): '';
@@ -460,7 +475,7 @@ var WebAppClass = function() {
 		} else {
 			// Execute update action:
 			if (nextPage) {
-	
+
 				// History stack management:
 				if (isHistoryManaged) {
 					var historyManipulations = 0;
@@ -480,7 +495,7 @@ var WebAppClass = function() {
 						historyLength = historyLength - historyManipulations;
 					} else historyLength = window.history.length;
 				}
-	
+
 				// Page switch management:
 				if (nextPage === currentPage) {
 					if (typeof currentPage.onSearchChange === 'function') currentPage.onSearchChange(nextSearch);
@@ -488,10 +503,14 @@ var WebAppClass = function() {
 					switchPage(currentPage, nextPage, nextSearch);
 					currentPage = nextPage;
 				}
-			} else if (currentPage) window.history.back();
+			} else if (currentPage) {
+				if (isHistoryManaged) historyStack.pop();
+				window.history.back();
+			}
 			else if (defaultPageId) window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#' + defaultPageId);
 			currentSearch = nextSearch;
 		}
+		if (typeof WebApp.onUpdateHash === 'function') WebApp.onUpdateHash(hashChangeEvent);
 	}
 
 	function switchPage(current, next, search) {
@@ -506,11 +525,13 @@ var WebAppClass = function() {
 			if (current) hidePage(current);
 			showPage(next, search, current);
 			nextTransition = null;
+			if (typeof WebApp.onSwitchPage === 'function') WebApp.onSwitchPage(current, next);
 		} else {
 			var showNext = function() {
 				animateElement(next, nextTransition + 'in', null);
 				showPage(next, search, current);
 				nextTransition = null;
+				if (typeof WebApp.onSwitchPage === 'function') WebApp.onSwitchPage(current, next);
 			};
 			if (current) {
 				animateElement(current, nextTransition + 'out', function() {

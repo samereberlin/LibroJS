@@ -383,7 +383,10 @@ document.getElementById('secondPage').onShow = function(search, referrerId) {
 - WebApp.onPause();
 - WebApp.onResume();
 - WebApp.onResize();
+- WebApp.onUpdateHash(hashChangeEvent);
+- WebApp.onSwitchPage(currentPage, nextPage);
 - pageElement.onLoad();
+- pageElement.onKeyDown(keyEvent);
 - pageElement.onShow(searchData, referrerId);
 - pageElement.onSearchChange(searchData);
 - pageElement.onHide();
@@ -616,7 +619,10 @@ Set the next transition type, to be used between the next page switching only.
 | transitionType | string | The next transition type. |
 
 #### load()
-Load the WebApp framework library. It is called automatically after DOMContentLoaded event, but it is usefull to reset/reload page elements (according to the current body's children nodes).
+Load the WebApp framework library. It is called automatically after DOMContentLoaded event, but it is useful to reset/reload page elements (according to the current body's children nodes).
+
+#### reset()
+Reset the WebApp framework library. It is called automatically after window.onunload event, but it is useful to simulate reset event for testing.
 
 #### createPage(pageId, pageContent, insertBeforeId)
 Create page dynamically, without any previous HTML code declaration, and load it according to insertBeforeId value.
