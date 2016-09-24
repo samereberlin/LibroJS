@@ -55,7 +55,8 @@ function setTestPage(testTitle, appEvent, pageId, historyStackLength, nextTest) 
 }
 function testPage(assert, pageId, historyStackLength) {
 	assert.equal(window.location.hash, '#' + pageId, 'Page hash: ' + pageId);
-	for (var pageElement in WebApp.getPageElements()) {
+	var pageElements = WebApp.getPageElements();
+	for (var pageElement in pageElements) {
 		assert.equal(pageElements[pageElement].style.display, (pageElement === pageId? 'block': 'none'), pageElement + 'style display: ' + pageElements[pageElement].style.display);
 	}
 	assert.equal(WebApp.getHistoryStack().length, historyStackLength, 'History stack length: ' + historyStackLength);
@@ -127,12 +128,12 @@ function switchPageSequentially() {
 	});
 }
 
-// 6. Switch page (aleatory)...
+// 6. Switch page (not sequentially)...
 // 1st-> 2nd-> 3rd-> 1st: window.history.length = historyLength + 3 (1st-> 2nd-> 3rd-> 1st).
 //  ,-----------------´
 // 1st  (2nd) (3rd) (1st).
 function switchPageAleatory() {
-	QUnit.test('Switch page (sequentially)...', function(assert) {
+	QUnit.test('Switch page (not sequentially)...', function(assert) {
 		var done = assert.async();
 		testPage(assert, 'firstPage', 1);
 		WebApp.onSwitchPage = function(current, next) {
