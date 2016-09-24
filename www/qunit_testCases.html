@@ -119,8 +119,10 @@ function firstPageFromUnknown() {
 function previousPageFromUnknown() {
 	WebApp.onUpdateHash = function(hashChangeEvent) {
 		setTestFirstPage('Previous page redirection, from unknown hash...', 'onUpdateHash', 0, function(assert) {
+			var done = assert.async();
 			setTimeout(function() {
 				assert.equal(WebApp.getHistoryStack().length, 1, 'History stack length.');
+				done();
 				switchPageSequentially();
 			}, timeoutDelay);
 		});
