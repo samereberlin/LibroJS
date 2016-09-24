@@ -192,6 +192,16 @@ var WebAppClass = function() {
 		isHistoryUnique = booleanState;
 	};
 
+	/**
+	 * Get the historyStack array values,
+	 * which contains the href historyStack, according to the history stack management.
+	 *
+	 * @return {array} The href historyStack, according to the history stack management.
+	 */
+	this.getHistoryStack = function() {
+		return historyStack;
+	};
+
 	//################################################################################//
 	// Animation/Transition settings:
 

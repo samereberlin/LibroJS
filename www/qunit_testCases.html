@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WebApp</title>
+<!-- link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.0.1.css" -->
+<link rel="stylesheet" href="qunit-2.0.1.css">
+</head>
+
+<body>
+
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+
+<div class="page" id="firstPage">
+	<h1>WebApp - <span style="color:#004;">First Page</span></h1>
+	<p>If you are viewing this page (firstPage), it means that the current browser URL ends with "/index.html#firstPage"</p>
+	#firstPage | <a href="#secondPage">#secondPage</a> | <a href="#thirdPage">#thirdPage</a>
+</div>
+
+<div class="page" id="secondPage">
+	<h1>WebApp - <span style="color:#040;">Second Page</span></h1>
+	<p>If you are viewing this page (secondPage), it means that the current browser URL ends with "/index.html#secondPage"</p>
+	<a href="#firstPage">#firstPage</a> | #secondPage | <a href="#thirdPage">#thirdPage</a>
+</div>
+
+<div class="page" id="thirdPage">
+	<h1>WebApp - <span style="color:#400;">Third Page</span></h1>
+	<p>If you are viewing this page (thirdPage), it means that the current browser URL ends with "/index.html#thirdPage"</p>
+	<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a> | #thirdPage
+</div>
+
+<!-- script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script -->
+<script src="WebApp.js"></script>
+
+<!-- script src="https://code.jquery.com/qunit/qunit-2.0.1.js"></script -->
+<script src="qunit-2.0.1.js"></script>
+
+<script>
+var timeoutDelay = 10;
+var historyLength = window.history.length;
+var firstPage = document.getElementById('firstPage');
+var secondPage = document.getElementById('secondPage');
+var thirdPage = document.getElementById('thirdPage');
+
+function setTestFirstPage(testName, appEvent, historyStackLength, nextTest) {
+	WebApp[appEvent] = function() {
+		WebApp[appEvent] = null;
+		QUnit.test(testName, function(assert) {
+			testFirstPage(assert, historyStackLength);
+			if (typeof nextTest === 'function') nextTest(assert);
+		});
+	};
+}
+function testFirstPage(assert, historyStackLength) {
+	assert.equal(window.location.hash, '#firstPage', 'First page hash.');
+	assert.equal(firstPage.style.display, 'block', 'firstPage style display.');
+	assert.equal(secondPage.style.display, 'none', 'secondPage style display.');
+	assert.equal(thirdPage.style.display, 'none', 'thirdPage style display.');
+	assert.equal(WebApp.getHistoryStack().length, historyStackLength, 'History stack length.');
+}
+
+function setTestSecondPage(testName, appEvent, historyStackLength, nextTest) {
+	WebApp[appEvent] = function() {
+		WebApp[appEvent] = null;
+		QUnit.test(testName, function(assert) {
+			testSecondPage(assert, historyStackLength);
+			if (typeof nextTest === 'function') nextTest(assert);
+		});
+	};
+}
+function testSecondPage(assert, historyStackLength) {
+	assert.equal(window.location.hash, '#secondPage', 'Second page hash.');
+	assert.equal(firstPage.style.display, 'none', 'firstPage style display.');
+	assert.equal(secondPage.style.display, 'block', 'secondPage style display.');
+	assert.equal(thirdPage.style.display, 'none', 'thirdPage style display.');
+	assert.equal(WebApp.getHistoryStack().length, historyStackLength, 'History stack length.');
+}
+
+function setTestThirdPage(testName, appEvent, historyStackLength, nextTest) {
+	WebApp[appEvent] = function() {
+		WebApp[appEvent] = null;
+		QUnit.test(testName, function(assert) {
+			testThirdPage(assert, historyStackLength);
+			if (typeof nextTest === 'function') nextTest(assert);
+		});
+	};
+}
+function testThirdPage(assert, historyStackLength) {
+	assert.equal(window.location.hash, '#thirdPage', 'Third page hash.');
+	assert.equal(firstPage.style.display, 'none', 'firstPage style display.');
+	assert.equal(secondPage.style.display, 'none', 'secondPage style display.');
+	assert.equal(thirdPage.style.display, 'block', 'thirdPage style display.');
+	assert.equal(WebApp.getHistoryStack().length, historyStackLength, 'History stack length.');
+}
+
+// 1. Startup verifications...
+var testEmptyStartupHash = window.location.hash;
+var testEmptyHistoryStack = WebApp.getHistoryStack().length;
+QUnit.test('Startup verifications...', function(assert) {
+	assert.equal(testEmptyStartupHash, '', 'Empty URL hash.');
+	assert.equal(testEmptyHistoryStack, 0, 'Empty history stack.');
+});
+
+// 2. First page redirection, from empty hash...
+setTestFirstPage('First page redirection, from empty hash...', 'onSwitchPage', 1, firstPageFromUnknown);
+
+// 3. First page redirection, from unknown hash...
+function firstPageFromUnknown() {
+	setTestFirstPage('First page redirection, from unknown hash...', 'onSwitchPage', 1, previousPageFromUnknown);
+	setTimeout(function() {
+		WebApp.reset();
+		window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#unknown');
+	}, timeoutDelay);
+}
+
+// Test 4: Previous page redirection, from unknown hash...
+function previousPageFromUnknown() {
+	WebApp.onUpdateHash = function(hashChangeEvent) {
+		setTestFirstPage('Previous page redirection, from unknown hash...', 'onUpdateHash', 0, function(assert) {
+			setTimeout(function() {
+				assert.equal(WebApp.getHistoryStack().length, 1, 'History stack length.');
+				switchPageSequentially();
+			}, timeoutDelay);
+		});
+	};
+	window.location.hash = 'unknown';
+}
+
+// 5. Switch page (sequentially)...
+// 1st-> 2nd-> 3rd-> 2nd-> 1st: window.history.length = historyLength + 2 (1st-> 2nd-> 1st).
+//        ,-----------´     |
+//        |     ,-----------´
+// (1st) 2nd-> 1st.
+function switchPageSequentially() {
+	QUnit.test('Switch page (sequentially)...', function(assert) {
+		var done = assert.async();
+		testFirstPage(assert, 1);
+		WebApp.onSwitchPage = function(current, next) {
+			testSecondPage(assert, 2);
+			WebApp.onSwitchPage = function(current, next) {
+				testThirdPage(assert, 3);
+				WebApp.onSwitchPage = function(current, next) {
+					testSecondPage(assert, 2);
+					WebApp.onSwitchPage = function(current, next) {
+						testFirstPage(assert, 1);
+						assert.equal(window.history.length, historyLength + 2, 'window.history.length.');
+						done();
+						switchPageAleatory();
+					};
+					setTimeout(function() {window.location.hash = 'firstPage';}, timeoutDelay);
+				};
+				setTimeout(function() {window.location.hash = 'secondPage';}, timeoutDelay);
+			};
+			setTimeout(function() {window.location.hash = 'thirdPage';}, timeoutDelay);
+		};
+		setTimeout(function() {window.location.hash = 'secondPage';}, timeoutDelay);
+	});
+}
+
+// 6. Switch page (aleatory)...
+// 1st-> 2nd-> 3rd-> 1st: window.history.length = historyLength + 3 (1st-> 2nd-> 3rd-> 1st).
+//  ,-----------------´
+// 1st  (2nd) (3rd) (1st).
+function switchPageAleatory() {
+	QUnit.test('Switch page (sequentially)...', function(assert) {
+		var done = assert.async();
+		testFirstPage(assert, 1);
+		WebApp.onSwitchPage = function(current, next) {
+			testSecondPage(assert, 2);
+			WebApp.onSwitchPage = function(current, next) {
+				testThirdPage(assert, 3);
+				WebApp.onSwitchPage = function(current, next) {
+					testFirstPage(assert, 1);
+					assert.equal(window.history.length, historyLength + 3, 'window.history.length.');
+					done();
+					//nextTest();
+				};
+				setTimeout(function() {window.location.hash = 'firstPage';}, timeoutDelay);
+			};
+			setTimeout(function() {window.location.hash = 'thirdPage';}, timeoutDelay);
+		};
+		setTimeout(function() {window.location.hash = 'secondPage';}, timeoutDelay);
+	});
+}
+
+
+
+// ?. Default page redirection, from empty hash...
+function defaultPageFromEmpty() {
+	setTestSecondPage('onSwitchPage', 'Default page redirection, from empty hash...', defaultPageFromUnknown);
+	WebApp.setDefaultPageId('secondPage');
+	setTimeout(function() {
+		WebApp.reset();
+		window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#');
+	}, timeoutDelay);
+}
+
+// ?. Default page redirection, from unknown hash...
+function defaultPageFromUnknown() {
+	setTestFirstPage('onSwitchPage', 'Default page redirection, from unknown hash...', null);
+	WebApp.setDefaultPageId('firstPage');
+	setTimeout(function() {
+		WebApp.reset();
+		window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#unknown');
+	}, timeoutDelay);
+}
+</script>
+
+</body>
+
+</html>

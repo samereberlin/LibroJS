@@ -569,6 +569,11 @@ Set the history unique boolean state, which indicates if the page entries must b
 |--------------|---------|------------------------------------|
 | booleanState | boolean | The history unique boolean state.  |
 
+#### getHistoryStack()
+Get the historyStack array values, which contains the href historyStack, according to the history stack management.
+
+**Returns:** {array} The href historyStack, according to the history stack management.
+
 #### animateElement(element, animation, callback)
 Animate a node element, according to the supplied animation type (@see getAnimationTypes).
 
