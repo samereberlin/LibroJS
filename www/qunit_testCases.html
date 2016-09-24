@@ -38,21 +38,24 @@
 <script src="qunit-2.0.1.js"></script>
 
 <script>
+var testCaseIndex = 0;
 var timeoutDelay = 10;
 var historyLength = window.history.length;
-var firstPage = document.getElementById('firstPage');
-var secondPage = document.getElementById('secondPage');
-var thirdPage = document.getElementById('thirdPage');
 
-function setTestPage(testTitle, appEvent, pageId, historyStackLength, nextTest) {
+function startNext() {
+	if (testCases[testCaseIndex]) testCases[testCaseIndex++]();
+}
+
+function setTestPage(testTitle, appEvent, pageId, historyStackLength, callback) {
 	WebApp[appEvent] = function() {
 		WebApp[appEvent] = null;
 		QUnit.test(testTitle, function(assert) {
 			testPage(assert, pageId, historyStackLength);
-			if (typeof nextTest === 'function') nextTest(assert);
+			if (typeof callback === 'function') callback(assert);
 		});
 	};
 }
+
 function testPage(assert, pageId, historyStackLength) {
 	assert.equal(window.location.hash, '#' + pageId, 'Page hash: ' + pageId);
 	var pageElements = WebApp.getPageElements();
@@ -62,119 +65,122 @@ function testPage(assert, pageId, historyStackLength) {
 	assert.equal(WebApp.getHistoryStack().length, historyStackLength, 'History stack length: ' + historyStackLength);
 }
 
-// 1. Startup verifications...
-var testEmptyStartupHash = window.location.hash;
-var testEmptyHistoryStack = WebApp.getHistoryStack().length;
-QUnit.test('Startup verifications...', function(assert) {
-	assert.equal(testEmptyStartupHash, '', 'Empty URL hash.');
-	assert.equal(testEmptyHistoryStack, 0, 'Empty history stack.');
-});
-
-// 2. First page redirection, from empty hash...
-setTestPage('First page redirection, from empty hash...', 'onSwitchPage', 'firstPage', 1, firstPageFromUnknown);
-
-// 3. First page redirection, from unknown hash...
-function firstPageFromUnknown() {
-	setTestPage('First page redirection, from unknown hash...', 'onSwitchPage', 'firstPage', 1, previousPageFromUnknown);
-	setTimeout(function() {
-		WebApp.reset();
-		window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#unknown');
-	}, timeoutDelay);
-}
-
-// Test 4: Previous page redirection, from unknown hash...
-function previousPageFromUnknown() {
-	WebApp.onUpdateHash = function(hashChangeEvent) {
-		setTestPage('Previous page redirection, from unknown hash...', 'onUpdateHash', 'firstPage', 0, function(assert) {
-			var done = assert.async();
-			setTimeout(function() {
-				assert.equal(WebApp.getHistoryStack().length, 1, 'History stack length: 1');
-				done();
-				switchPageSequentially();
-			}, timeoutDelay);
+var testCases = [
+	function() {
+		var testEmptyStartupHash = window.location.hash;
+		var testEmptyHistoryStack = WebApp.getHistoryStack().length;
+		QUnit.test('Startup verifications...', function(assert) {
+			assert.equal(testEmptyStartupHash, '', 'Empty URL hash.');
+			assert.equal(testEmptyHistoryStack, 0, 'Empty history stack.');
 		});
-	};
-	window.location.hash = 'unknown';
-}
-
-// 5. Switch page (sequentially)...
-// 1st-> 2nd-> 3rd-> 2nd-> 1st: window.history.length = historyLength + 2 (1st-> 2nd-> 1st).
-//        ,-----------´     |
-//        |     ,-----------´
-// (1st) 2nd-> 1st.
-function switchPageSequentially() {
-	QUnit.test('Switch page (sequentially)...', function(assert) {
-		var done = assert.async();
-		testPage(assert, 'firstPage', 1);
-		WebApp.onSwitchPage = function(current, next) {
-			testPage(assert, 'secondPage', 2);
+		startNext();
+	},
+	function() {
+		setTestPage('First page redirection, from empty hash...', 'onSwitchPage', 'firstPage', 1, startNext);
+	},
+	function() {
+		setTestPage('First page redirection, from unknown hash...', 'onSwitchPage', 'firstPage', 1, startNext);
+		setTimeout(function() {
+			WebApp.reset();
+			window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#unknown');
+		}, timeoutDelay);
+	},
+	function() {
+		WebApp.onUpdateHash = function(hashChangeEvent) {
+			setTestPage('Previous page redirection, from unknown hash...', 'onUpdateHash', 'firstPage', 0, function(assert) {
+				var done = assert.async();
+				setTimeout(function() {
+					assert.equal(WebApp.getHistoryStack().length, 1, 'History stack length: 1');
+					done();
+					startNext();
+				}, timeoutDelay);
+			});
+		};
+		window.location.hash = 'unknown';
+	},
+//	function() {
+		//2nd: window.history.length = historyLength + 1 (1st-> 2nd).
+		//`-----,
+		//(1st) 2nd.
+//		QUnit.test('History stack management (default firstly)...', function(assert) {
+//		});
+//	},
+	function() {
+		// 1st-> 2nd-> 3rd-> 2nd-> 1st: window.history.length = historyLength + 2 (1st-> 2nd-> 1st).
+		//      ,-----------´     |
+		//      |     ,-----------´
+		//(1st) 2nd-> 1st.
+		QUnit.test('History stack management (next/previous)...', function(assert) {
+			var done = assert.async();
+			testPage(assert, 'firstPage', 1);
 			WebApp.onSwitchPage = function(current, next) {
-				testPage(assert, 'thirdPage', 3);
+				testPage(assert, 'secondPage', 2);
 				WebApp.onSwitchPage = function(current, next) {
-					testPage(assert, 'secondPage', 2);
+					testPage(assert, 'thirdPage', 3);
+					WebApp.onSwitchPage = function(current, next) {
+						testPage(assert, 'secondPage', 2);
+						WebApp.onSwitchPage = function(current, next) {
+							testPage(assert, 'firstPage', 1);
+							assert.equal(window.history.length, historyLength + 2, 'window.history.length: ' + historyLength + 2);
+							done();
+							startNext();
+						};
+						setTimeout(function() {window.location.hash = 'firstPage';}, timeoutDelay);
+					};
+					setTimeout(function() {window.location.hash = 'secondPage';}, timeoutDelay);
+				};
+				setTimeout(function() {window.location.hash = 'thirdPage';}, timeoutDelay);
+			};
+			setTimeout(function() {window.location.hash = 'secondPage';}, timeoutDelay);
+		});
+	},
+	function() {
+		// 1st-> 2nd-> 3rd-> 1st: window.history.length = historyLength + 3 (1st-> 2nd-> 3rd-> 1st).
+		//  ,-----------------´
+		// 1st  (2nd) (3rd) (1st).
+		QUnit.test('History stack management (unique entry)...', function(assert) {
+			var done = assert.async();
+			testPage(assert, 'firstPage', 1);
+			WebApp.onSwitchPage = function(current, next) {
+				testPage(assert, 'secondPage', 2);
+				WebApp.onSwitchPage = function(current, next) {
+					testPage(assert, 'thirdPage', 3);
 					WebApp.onSwitchPage = function(current, next) {
 						testPage(assert, 'firstPage', 1);
-						assert.equal(window.history.length, historyLength + 2, 'window.history.length: ' + historyLength + 2);
+						assert.equal(window.history.length, historyLength + 3, 'window.history.length: ' + historyLength + 3);
 						done();
-						switchPageAleatory();
+						startNext();
 					};
 					setTimeout(function() {window.location.hash = 'firstPage';}, timeoutDelay);
 				};
-				setTimeout(function() {window.location.hash = 'secondPage';}, timeoutDelay);
+				setTimeout(function() {window.location.hash = 'thirdPage';}, timeoutDelay);
 			};
-			setTimeout(function() {window.location.hash = 'thirdPage';}, timeoutDelay);
-		};
-		setTimeout(function() {window.location.hash = 'secondPage';}, timeoutDelay);
-	});
-}
-
-// 6. Switch page (not sequentially)...
-// 1st-> 2nd-> 3rd-> 1st: window.history.length = historyLength + 3 (1st-> 2nd-> 3rd-> 1st).
-//  ,-----------------´
-// 1st  (2nd) (3rd) (1st).
-function switchPageAleatory() {
-	QUnit.test('Switch page (not sequentially)...', function(assert) {
-		var done = assert.async();
-		testPage(assert, 'firstPage', 1);
-		WebApp.onSwitchPage = function(current, next) {
-			testPage(assert, 'secondPage', 2);
-			WebApp.onSwitchPage = function(current, next) {
-				testPage(assert, 'thirdPage', 3);
-				WebApp.onSwitchPage = function(current, next) {
-					testPage(assert, 'firstPage', 1);
-					assert.equal(window.history.length, historyLength + 3, 'window.history.length: ' + historyLength + 3);
-					done();
-					//nextTest();
-				};
-				setTimeout(function() {window.location.hash = 'firstPage';}, timeoutDelay);
-			};
-			setTimeout(function() {window.location.hash = 'thirdPage';}, timeoutDelay);
-		};
-		setTimeout(function() {window.location.hash = 'secondPage';}, timeoutDelay);
-	});
-}
+			setTimeout(function() {window.location.hash = 'secondPage';}, timeoutDelay);
+		});
+	},
 
 
 
-// ?. Default page redirection, from empty hash...
-function defaultPageFromEmpty() {
-	setTestPage('onSwitchPage', 'Default page redirection, from empty hash...', 'secondPage', 1, defaultPageFromUnknown);
-	WebApp.setDefaultPageId('secondPage');
-	setTimeout(function() {
-		WebApp.reset();
-		window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#');
-	}, timeoutDelay);
-}
 
-// ?. Default page redirection, from unknown hash...
-function defaultPageFromUnknown() {
-	setTestPage('onSwitchPage', 'Default page redirection, from unknown hash...', 'firstPage', 1, null);
-	WebApp.setDefaultPageId('firstPage');
-	setTimeout(function() {
-		WebApp.reset();
-		window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#unknown');
-	}, timeoutDelay);
-}
+	function() {
+		setTestPage('Default page redirection, from empty hash...', 'onSwitchPage', 'secondPage', 1, startNext);
+		WebApp.setDefaultPageId('secondPage');
+		setTimeout(function() {
+			WebApp.reset();
+			window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#');
+		}, timeoutDelay);
+	},
+	function() {
+		setTestPage('Default page redirection, from unknown hash...', 'onSwitchPage', 'firstPage', 1, startNext);
+		WebApp.setDefaultPageId('firstPage');
+		setTimeout(function() {
+			WebApp.reset();
+			window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#unknown');
+		}, timeoutDelay);
+	}
+];
+
+startNext();
 </script>
 
 </body>
