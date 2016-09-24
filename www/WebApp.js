@@ -97,6 +97,15 @@ var WebAppClass = function() {
 		return pageIds;
 	};
 
+	/**
+	 * Get the pageElements object reference,
+	 * which contains the key-value database (pageId: element) corresponding to the current loaded page.
+	 *
+	 * @return {object} The key-value database (pageId: element) corresponding to the current loaded page.
+	 */
+	this.getPageElements = function() {
+		return pageElements;
+	};
 
 	/**
 	 * Get the default page id string value,

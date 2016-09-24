@@ -513,6 +513,11 @@ Get the pageIds array values, which contains the list of current loaded pages.
 
 **Returns:** {array} The list of IDs corresponding to the current loaded page.
 
+#### getPageElements()
+Get the pageElements object reference, which contains the key-value database (pageId: element) corresponding to the current loaded page.
+
+**Returns:** {array} The key-value database (pageId: element) corresponding to the current loaded page.
+
 #### getDefaultPageId()
 Get the default page id string value, which must be shown in the first request to the basic URL (default value: the first body's child class page element id).
 
