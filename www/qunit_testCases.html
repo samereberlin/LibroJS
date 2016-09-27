@@ -87,10 +87,10 @@ var testCases = [
 	},
 	function() {
 		WebApp.onUpdateHash = function(hashChangeEvent) {
-			setTestPage('Previous page redirection, from unknown hash...', 'onUpdateHash', 'firstPage', 0, function(assert) {
+			setTestPage('Previous page redirection, from unknown hash...', 'onUpdateHash', 'firstPage', 1, function(assert) {
 				var done = assert.async();
 				setTimeout(function() {
-					assert.equal(WebApp.getHistoryStack().length, 1, 'History stack length: 1');
+					assert.equal(window.history.length, historyLength + 1, 'window.history.length: ' + (historyLength + 1));
 					done();
 					startNext();
 				}, timeoutDelay);
@@ -121,7 +121,7 @@ var testCases = [
 						testPage(assert, 'secondPage', 2);
 						WebApp.onSwitchPage = function(current, next) {
 							testPage(assert, 'firstPage', 1);
-							assert.equal(window.history.length, historyLength + 2, 'window.history.length: ' + historyLength + 2);
+							assert.equal(window.history.length, historyLength + 2, 'window.history.length: ' + (historyLength + 2));
 							done();
 							startNext();
 						};
@@ -147,7 +147,7 @@ var testCases = [
 					testPage(assert, 'thirdPage', 3);
 					WebApp.onSwitchPage = function(current, next) {
 						testPage(assert, 'firstPage', 1);
-						assert.equal(window.history.length, historyLength + 3, 'window.history.length: ' + historyLength + 3);
+						assert.equal(window.history.length, historyLength + 3, 'window.history.length: ' + (historyLength + 3));
 						done();
 						startNext();
 					};

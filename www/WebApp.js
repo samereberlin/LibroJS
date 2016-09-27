@@ -508,7 +508,7 @@ var WebAppClass = function() {
 						historyStack.splice(historyStackIndex + 1, historyStackSteps);
 						// If back key has not been pressed, set historyManipulations:
 						if (historyLength < window.history.length) historyManipulations = historyStackSteps;
-					} else  historyStack[historyStack.length] = window.location.href;
+					} else if (!historyStack.length || historyStack[historyStack.length - 1] !== hashChangeEvent.newURL) historyStack[historyStack.length] = window.location.href;
 					if (historyManipulations) {
 						window.history.go(-(historyManipulations + 1));
 						historyLength = historyLength - historyManipulations;
@@ -522,10 +522,7 @@ var WebAppClass = function() {
 					switchPage(currentPage, nextPage, nextSearch);
 					currentPage = nextPage;
 				}
-			} else if (currentPage) {
-				if (isHistoryManaged) historyStack.pop();
-				window.history.back();
-			}
+			} else if (currentPage) window.history.back();
 			else if (defaultPageId) window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#' + defaultPageId);
 			currentSearch = nextSearch;
 		}
