@@ -44,14 +44,24 @@
 
 <script>
 var testCaseIndex = 0;
+var testTimeout = null;
 var timeoutDelay = 10;
+var timeoutLong = 2000;
 
 function startNext() {
-	if (testCases[testCaseIndex]) testCases[testCaseIndex++]();
+	clearTimeout(testTimeout);
+	if (testCases[testCaseIndex]) {
+		testTimeout = setTimeout(function() {
+			QUnit.test('Test timeout, testCaseIndex: ' + testCaseIndex, function(assert) {
+				assert.ok(false, 'Test timeout, testCaseIndex: ' + testCaseIndex);
+			});
+		}, timeoutLong);
+		testCases[testCaseIndex++]();
+	}
 }
 
 function setTestPage(testTitle, pageId, historyStackLength, callback) {
-	WebApp.onSwitchPage = function() {
+	WebApp.onSwitchPage = function(current, next) {
 		WebApp.onSwitchPage = null;
 		QUnit.test(testTitle, function(assert) {
 			testPage(assert, pageId, historyStackLength);
