@@ -414,6 +414,13 @@ var WebAppClass = function() {
 	this.load = load;
 
 	/**
+	 * Unload the WebApp framework library.
+	 * It is called automatically on window.onunload event,
+	 * but it is useful to simulate unload event for testing.
+	 */
+	this.unload = unload;
+
+	/**
 	 * Reset the WebApp framework library.
 	 * It is called automatically after window.onunload event,
 	 * but it is useful to simulate reset event for testing.

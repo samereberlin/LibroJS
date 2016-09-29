@@ -123,13 +123,32 @@ var testCases = [
 			}, timeoutDelay);
 		});
 	},
-//	function() {
-		//2nd: window.history.length = historyLength + 1 (1st-> 2nd).
-		//`-----,
+	function() {
+		// 2nd: window.history.length = (1st-> 2nd).
+		// `-----,
 		//(1st) 2nd.
-//		QUnit.test('History stack management (default firstly)...', function(assert) {
-//		});
-//	},
+		QUnit.test('History stack management (default firstly)...', function(assert) {
+			var done = assert.async();
+			WebApp.onSwitchPage = function(current, next) {
+				WebApp.onSwitchPage = function(current, next) {
+					WebApp.onSwitchPage = function(current, next) {
+						WebApp.onSwitchPage = null;
+						testPage(assert, 'firstPage', 1);
+						done();
+						startNext();
+					};
+					testPage(assert, 'secondPage', 2);
+					window.history.back();
+				};
+				testPage(assert, 'firstPage', 1);
+			};
+			setTimeout(function() { 
+				WebApp.unload();
+				window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#secondPage');
+				WebApp.load();
+			}, timeoutDelay);
+		});
+	},
 	function() {
 		// 1st-> 2nd-> 3rd-> 2nd-> 1st: window.history.length = (1st-> 2nd-> 1st) = historyLength (1st-> unknown) + 1.
 		//       ,-----------<´
@@ -144,6 +163,7 @@ var testCases = [
 					WebApp.onSwitchPage = function(current, next) {
 						WebApp.onSwitchPage = function(current, next) {
 							WebApp.onSwitchPage = function(current, next) {
+								WebApp.onSwitchPage = null;
 								testPage(assert, 'firstPage', 1);
 								assert.equal(window.history.length, historyLength + 1, 'window.history.length: ' + (historyLength + 1));
 								done();
@@ -174,6 +194,7 @@ var testCases = [
 				WebApp.onSwitchPage = function(current, next) {
 					WebApp.onSwitchPage = function(current, next) {
 						WebApp.onSwitchPage = function(current, next) {
+							WebApp.onSwitchPage = null;
 							testPage(assert, 'firstPage', 1);
 							assert.equal(window.history.length, historyLength + 2, 'window.history.length: ' + (historyLength + 2));
 							done();

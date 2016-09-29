@@ -17,25 +17,6 @@ WebApp is a lightweight (simple and efficient) WEB application framework (librar
 - [Click enhancement feature](#click-enhancement-feature) (coming soon);
 - [Swipe left/right feature](#Swipe-left-right-feature) (coming soon);
 - [Public API](#public-api);
-  - [isLogEnabled()](#islogenabled)
-  - [setLogEnabled(booleanState)](#setlogenabledbooleanstate)
-  - [isRunning()](#isrunning)
-  - [setRunning(booleanState)](#setrunningbooleanstate)
-  - [getPageIds()](#getPageIds)
-  - [getDefaultPageId()](#getdefaultpageid)
-  - [setDefaultPageId(pageId)](#setdefaultpageidpageid)
-  - [animateElement(element, animation, callback)](#animateelementelement-animation-callback)
-  - [getAnimationTypes()](#getanimationtypes)
-  - [getTransitionTypes()](#gettransitiontypes)
-  - [getDefaultTransition()](#getdefaulttransition)
-  - [setDefaultTransition(transitionType)](#setdefaulttransitiontransitiontype)
-  - [getNextTransition()](#getnexttransition)
-  - [setNextTransition(transitionType)](#setnexttransitiontransitiontype)
-  - [load()](#load)
-  - [createPage(pageId, pageContent, insertBeforeId)](#createpagepageid-pagecontent-insertbeforeid)
-  - [deletePage(pageId)](#deletepagepageid)
-  - [nextPage()](#nextpage)
-  - [previousPage()](#previouspage)
 
 
 ## Minimum startup code:
@@ -630,6 +611,9 @@ Set the next transition type, to be used between the next page switching only.
 
 #### load()
 Load the WebApp framework library. It is called automatically after DOMContentLoaded event, but it is useful to reset/reload page elements (according to the current body's children nodes).
+
+#### unload()
+Unload the WebApp framework library. It is called automatically after window.onunload event, but it is useful to simulate unload event for testing.
 
 #### reset()
 Reset the WebApp framework library. It is called automatically after window.onunload event, but it is useful to simulate reset event for testing.
