@@ -10,8 +10,9 @@
 
 <body>
 
-<div id="qunit"></div>
-<div id="qunit-fixture"></div>
+<div style="border: 1px solid gray; padding: .4em;">
+	<button onclick="window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname);">Retest</button>
+</div>
 
 <div class="page" id="firstPage">
 	<h1>WebApp - <span style="color:#004;">First Page</span></h1>
@@ -31,6 +32,10 @@
 	<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a> | #thirdPage
 </div>
 
+<br>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+
 <!-- script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script -->
 <script src="WebApp.js"></script>
 
@@ -40,7 +45,6 @@
 <script>
 var testCaseIndex = 0;
 var timeoutDelay = 10;
-var historyLength = window.history.length;
 
 function startNext() {
 	if (testCases[testCaseIndex]) testCases[testCaseIndex++]();
@@ -117,6 +121,7 @@ var testCases = [
 		//      |     ,-----------´
 		//(1st) 2nd-> 1st.
 		QUnit.test('History stack management (next/previous)...', function(assert) {
+			var historyLength = window.history.length;
 			var done = assert.async();
 			testPage(assert, 'firstPage', 1);
 			WebApp.onSwitchPage = function(current, next) {
@@ -124,7 +129,7 @@ var testCases = [
 					WebApp.onSwitchPage = function(current, next) {
 						WebApp.onSwitchPage = function(current, next) {
 							testPage(assert, 'firstPage', 1);
-							assert.equal(window.history.length, historyLength + 2, 'window.history.length: ' + (historyLength + 2));
+							assert.equal(window.history.length, historyLength + 1, 'window.history.length: ' + (historyLength + 1));
 							done();
 							startNext();
 						};
@@ -145,13 +150,14 @@ var testCases = [
 		//  ,-----------------´
 		// 1st  (2nd) (3rd) (1st).
 		QUnit.test('History stack management (unique entry)...', function(assert) {
+			var historyLength = window.history.length;
 			var done = assert.async();
 			testPage(assert, 'firstPage', 1);
 			WebApp.onSwitchPage = function(current, next) {
 				WebApp.onSwitchPage = function(current, next) {
 					WebApp.onSwitchPage = function(current, next) {
 						testPage(assert, 'firstPage', 1);
-						assert.equal(window.history.length, historyLength + 3, 'window.history.length: ' + (historyLength + 3));
+						assert.equal(window.history.length, historyLength + 1, 'window.history.length: ' + (historyLength + 1));
 						done();
 						startNext();
 					};
