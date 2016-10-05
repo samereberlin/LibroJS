@@ -8,10 +8,10 @@ WebApp is a lightweight (simple and efficient) WEB application framework (librar
 - [Key pressed callbacks](#key-pressed-callbacks);
 - [Life cycle callbacks](#life-cycle-callbacks);
 - [History stack management](#history-stack-management);
-- [Friendly header/menu API](#friendly-headermenu-api) (coming soon);
-- [Friendly dialog API](#friendly-dialog-api) (coming soon);
+- [Modal window support](#modal-window-support) (coming soon);
 - [Canvas screen support](#canvas-screen-support) (coming soon);
 - [Simplified audio API](#simplified-audio-api) (coming soon);
+- [Header/Footer widget API](#headerfooter-widget-api) (coming soon);
 - [Tooltip widget API](#tooltip-widget-api) (coming soon);
 - [Language (i18n) support](#language-i18n-support) (coming soon);
 - [Click enhancement feature](#click-enhancement-feature) (coming soon);
@@ -151,7 +151,7 @@ Global elements are components that must always be displayed (common between the
 
 
 ## Page transitions:
-The soft/basic page transition "fadein" is enabled by default, but if you need to set a different one, use _WebApp.setDefaultTransition('transitionType')_ function API. The available transition types are:
+The soft/basic page transition "fade" is enabled by default, but if you need to set a different one, use _WebApp.setDefaultTransition('transitionType')_ function API. The available transition types are:
 - 'fade' (which is the soft/basic default page transition);
 - 'pop' (which simulates the "pop" appearing effect);
 - 'flip' (which simulates the "flip" forward effect);
@@ -358,6 +358,43 @@ document.getElementById('secondPage').onShow = function(search, referrerId) {
 </script>
 ```
 
+And the same page redirection effect can be reached using WebApp.onUpdateHash callback, which is more efficient because it is dispatched earlier, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex07.2_exitMessageOnUpdateHash.html#firstPage" target="_blank">live preview</a>):
+```html
+<div class="page" id="firstPage">
+	<h1>WebApp - First Page</h1>
+	<a href="#secondPage">go to the second page</a>
+</div>
+
+<div class="page" id="secondPage">
+	<div style="display: none;">
+		<h1>WebApp - Second Page</h1>
+		<a href="#firstPage">go to the first page</a> | <a href="#thirdPage">go to the third page</a>
+	</div>
+</div>
+
+<div class="page" id="thirdPage">
+	<h1>WebApp - Third Page</h1>
+	<a href="#secondPage">go to the second page</a>
+</div>
+
+<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+
+<script>
+// Set WebApp onUpdateHash callback action:
+WebApp.onUpdateHash = function(hashChangeEvent) {
+	var newHash = hashChangeEvent.newURL.substr(hashChangeEvent.newURL.lastIndexOf('#'));
+	if (newHash === '#secondPage') {
+		var oldHash = hashChangeEvent.oldURL.substr(hashChangeEvent.oldURL.lastIndexOf('#'));
+		if (oldHash === '#thirdPage') document.getElementById('secondPage').children[0].style.display = 'block';
+		else {
+			document.getElementById('secondPage').children[0].style.display = 'none';
+			window.location.hash = 'thirdPage';
+		}
+	}
+};
+</script>
+```
+
 **Important Note:** the available callbacks are:
 - WebApp.onLoad();
 - WebApp.onUnload();
@@ -427,11 +464,7 @@ back key    back key ^             back key ^
 ```
 
 
-## Friendly header/menu API:
-Coming soon...
-
-
-## Friendly dialog API:
+## Modal window support:
 Coming soon...
 
 
@@ -440,6 +473,10 @@ Coming soon...
 
 
 ## Simplified audio API:
+Coming soon...
+
+
+## Header/Footer widget API:
 Coming soon...
 
 
