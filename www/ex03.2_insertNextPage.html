@@ -27,7 +27,7 @@ function insertNextPage(currentId) {
 	if (WebApp.getPageIds().indexOf((parseInt(currentId) + 1).toString()) < 0) {
 		// Create a new page according to the pageId argument + 1:
 		var nextPageId = (parseInt(currentId) + 1).toString();
-		var nextPageElement = WebApp.createPage(nextPageId,
+		var nextPageElement = WebApp.createPage(nextPageId, null, null,
 				'<h1>WebApp - Page ' + nextPageId + '</h1>'
 			 	+ '<p> This is the "infinite next" dynamic page creation example, which never reaches the last application page.</p>'
 			 	+ '<p>This page has been created dynamically, without any previous HTML code declaration.</p>'

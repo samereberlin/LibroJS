@@ -89,9 +89,9 @@ var WebAppClass = function() {
 
 	/**
 	 * Get the pageIds array values,
-	 * which contains the list of IDs corresponding to the current loaded page.
+	 * which contains the list of IDs corresponding to the current loaded pages.
 	 *
-	 * @return {array} The list of IDs corresponding to the current loaded page.
+	 * @return {array} The list of IDs corresponding to the current loaded pages.
 	 */
 	this.getPageIds = function() {
 		return pageIds;
@@ -99,9 +99,9 @@ var WebAppClass = function() {
 
 	/**
 	 * Get the pageElements object reference,
-	 * which contains the key-value database (pageId: element) corresponding to the current loaded page.
+	 * which contains the key-value database (pageId: element) corresponding to the current loaded pages.
 	 *
-	 * @return {object} The key-value database (pageId: element) corresponding to the current loaded page.
+	 * @return {object} The key-value database (pageId: element) corresponding to the current loaded pages.
 	 */
 	this.getPageElements = function() {
 		return pageElements;
@@ -127,6 +127,126 @@ var WebAppClass = function() {
 	 */
 	this.setDefaultPageId = function(pageId) {
 		defaultPageId = pageId;
+	};
+
+	/**
+	 * Create page dynamically,
+	 * without any previous HTML code declaration,
+	 * and load it according to the insertBeforeId value.
+	 *
+	 * @param {string} pageId - The new page id string value.
+	 * @param {string} extraClass - Extra class which must be assigned.
+	 * @param {string} insertBeforeId - The existent page id to be the next.
+	 * @param {string} pageContent - The new page content string value.
+	 * 
+	 * @return {node} The new page node element.
+	 */
+	this.createPage = function(pageId, extraClass, insertBeforeId, pageContent) {
+		if (pageElements[pageId] || typeof pageId !== 'string') return null;
+		else {
+			var pageElement = document.createElement('div');
+			pageElement.className = 'page' + (extraClass? ' ' + extraClass: '');
+			pageElement.id = pageId;
+			pageElement.innerHTML = pageContent;
+			if (isLoaded) {
+				loadPage(pageElement, insertBeforeId);
+			}
+			var insertBeforeElement = document.getElementById(insertBeforeId);
+			if (insertBeforeElement) {
+				document.body.insertBefore(pageElement, insertBeforeElement);
+			} else {
+				document.body.appendChild(pageElement);
+			}
+			return pageElement;
+		}
+	};
+
+	/**
+	 * Delete page dynamically,
+	 * and unload it, in order to release memory resources.
+	 * 
+	 * @param {string} pageId - The page id string value.
+	 */
+	this.deletePage = function(pageId) {
+		var pageElement = document.getElementById(pageId);
+		if (pageElement && pageElement.parentNode == document.body && isPage(pageElement)) {
+			document.body.removeChild(pageElement);
+			pageIds.splice(pageIds.indexOf(pageId), 1);
+			delete pageElements[pageId];
+		}
+	};
+
+	//################################################################################//
+	// Modal settings:
+
+	var modalIds = [];
+	var modalElements = {};
+	var modalHistoryLength = window.history.length;
+	var currentModal = null;
+	var isModalRedirecting = false;
+
+	//################################################################################//
+	// Modal API:
+
+	/**
+	 * Get the modalIds array values,
+	 * which contains the list of IDs corresponding to the current loaded modals.
+	 *
+	 * @return {array} The list of IDs corresponding to the current loaded modals.
+	 */
+	this.getModalIds = function() {
+		return modalIds;
+	};
+
+	/**
+	 * Get the modalElements object reference,
+	 * which contains the key-value database (modalId: element) corresponding to the current loaded modals.
+	 *
+	 * @return {object} The key-value database (modalId: element) corresponding to the current loaded modals.
+	 */
+	this.getModalElements = function() {
+		return modalElements;
+	};
+
+	/**
+	 * Create modal dynamically,
+	 * without any previous HTML code declaration,
+	 * and load it according to the insertBeforeId value.
+	 *
+	 * @param {string} modalId - The new modal id string value.
+	 * @param {string} extraClass - Extra class which must be assigned.
+	 * @param {string} modalContent - The new modal content string value.
+	 * 
+	 * @return {node} The new modal node element.
+	 */
+	this.createModal = function(modalId, extraClass, modalContent) {
+		if (modalElements[modalId] || typeof modalId !== 'string') return null;
+		else {
+			var modalElement = document.createElement('div');
+			modalElement.className = 'modal' + (extraClass? ' ' + extraClass: '');
+			modalElement.id = modalId;
+			modalElement.innerHTML = modalContent;
+			if (isLoaded) {
+				loadModal(modalElement);
+			}
+			document.body.appendChild(modalElement);
+			return modalElement;
+		}
+	};
+
+	/**
+	 * Delete modal dynamically,
+	 * and unload it, in order to release memory resources.
+	 * 
+	 * @param {string} modalId - The modal id string value.
+	 */
+	this.deleteModal = function(modalId) {
+		var modalElement = document.getElementById(modalId);
+		if (modalElement && modalElement.parentNode == document.body && isModal(modalElement)) {
+			document.body.removeChild(modalElement);
+			modalIds.splice(modalIds.indexOf(modalId), 1);
+			delete modalElements[modalId];
+		}
 	};
 
 	//################################################################################//
@@ -214,35 +334,6 @@ var WebAppClass = function() {
 	//################################################################################//
 	// Animation/Transition settings:
 
-	var styleRules = '/* Animation Effects (based on jquery.mobile-1.4.5). */' +
-		'@keyframes fadein {from {opacity: 0;} to {opacity: 1;}}' +
-		'@keyframes fadeout {from {opacity: 1;} to {opacity: 0;}}' +
-		'.fadein {animation-name: fadein; animation-duration: 225ms; opacity: 1;}' +
-		'.fadeout {animation-name: fadeout; animation-duration: 125ms; opacity: 0;}' +
-		'@keyframes popin {from {transform: scale(.8); opacity: 0;} to {transform: scale(1); opacity: 1;}}' +
-		'@keyframes popout {from {transform: scale(1); opacity: 1;} to {transform: scale(.8); opacity: 0;}}' +
-		'.popin {animation-name: popin; animation-duration: 225ms; animation-timing-function: ease-out; opacity: 1;}' +
-		'.popout {animation-name: popout; animation-duration: 125ms; animation-timing-function: ease-in; opacity: 0;}' +
-		'@keyframes flipin {from {transform: matrix(0.2,0.2,0,1,0,0); opacity: 0;} to {transform: matrix(1,0,0,1,0,0); opacity: 1;}}' +
-		'@keyframes flipout {from {transform: matrix(1,0,0,1,0,0); opacity: 1;} to {transform: matrix(0.2,-0.2,0,1,0,0); opacity: 0;}}' +
-		'@keyframes fliprevin {from {transform: matrix(0.2,-0.2,0,1,0,0); opacity: 0;} to {transform: matrix(1,0,0,1,0,0); opacity: 1;}}' +
-		'@keyframes fliprevout {from {transform: matrix(1,0,0,1,0,0); opacity: 1;} to {transform: matrix(0.2,0.2,0,1,0,0); opacity: 0;}}' +
-		'.flipin, .fliprevin {animation-duration: 225ms; animation-timing-function: ease-out;}' +
-		'.flipout, .fliprevout {animation-duration: 125ms; animation-timing-function: ease-in;}' +
-		'.flipin {animation-name: flipin; opacity: 1;}' +
-		'.flipout {animation-name: flipout; opacity: 0;}' +
-		'.fliprevin {animation-name: fliprevin; opacity: 1;}' +
-		'.fliprevout {animation-name: fliprevout; opacity: 0;}' +
-		'@keyframes slidein {from {transform: translateX(100%);} to {transform: translateX(0);}}' +
-		'@keyframes sliderevin {from {transform: translateX(-100%);} to {transform: translateX(0);}}' +
-		'@keyframes sliderevout {from {transform: translateX(0);} to {transform: translateX(100%);}}' +
-		'@keyframes slideout {from {transform: translateX(0);} to {transform: translateX(-100%);}}' +
-		'.slidein, .sliderevin {animation-duration: 225ms; animation-timing-function: ease-out;}' +
-		'.slideout, .sliderevout {animation-duration: 125ms; animation-timing-function: ease-in;}' +
-		'.slidein {animation-name: slidein; transform: translateX(0);}' +
-		'.slideout {animation-name: slideout; transform: translateX(-100%);}' +
-		'.sliderevin {animation-name: sliderevin; transform: translateX(0);}' +
-		'.sliderevout {animation-name: sliderevout; transform: translateX(100%);}';
 	var animationTypes = ['fadein', 'fadeout', 'popin', 'popout', 'flipin', 'flipout', 'fliprevin', 'fliprevout', 'slidein', 'slideout', 'sliderevin', 'sliderevout'];
 	var transitionTypes = ['none', 'fade', 'pop', 'flip', 'fliprev', 'fliporder', 'slide', 'sliderev', 'slideorder'];
 	var defaultTransition = transitionTypes[1];
@@ -323,21 +414,55 @@ var WebAppClass = function() {
 		if (isLogEnabled) console.log('WebApp.js: load()');
 		if (typeof WebApp.onLoad === 'function') WebApp.onLoad();
 
-		// Load page elements:
+		// Load body elements:
 		pageElements = {}; // Required to reset page elements.
+		modalElements = {}; // Required to reset modal elements.
 		Array.prototype.forEach.call(document.body.children, function(element) {
 			if (isPage(element)) loadPage(element, null);
+			else if (isModal(element)) loadModal(element, null);
 		});
 		if (!defaultPageId || (pageIds.indexOf(defaultPageId) < 0)) defaultPageId = pageIds[0];
 
-		if (isLoaded) showPage(currentPage, currentSearch, currentPage);
+		if (isLoaded) showElement(currentPage, currentSearch, currentPage);
 		else {
 			isLoaded = true;
 
 			// Setup CSS style effects:
 			var style = document.createElement('style');
 			style.type = 'text/css';
-			style.innerHTML = styleRules;
+			style.innerHTML = '/* Animation Effects (based on jquery.mobile-1.4.5). */' +
+				'@keyframes fadein {from {opacity: 0;} to {opacity: 1;}}' +
+				'@keyframes fadeout {from {opacity: 1;} to {opacity: 0;}}' +
+				'.fadein {animation-name: fadein; animation-duration: 225ms; opacity: 1;}' +
+				'.fadeout {animation-name: fadeout; animation-duration: 125ms; opacity: 0;}' +
+				'@keyframes popin {from {transform: scale(.8); opacity: 0;} to {transform: scale(1); opacity: 1;}}' +
+				'@keyframes popout {from {transform: scale(1); opacity: 1;} to {transform: scale(.8); opacity: 0;}}' +
+				'.popin {animation-name: popin; animation-duration: 225ms; animation-timing-function: ease-out; opacity: 1;}' +
+				'.popout {animation-name: popout; animation-duration: 125ms; animation-timing-function: ease-in; opacity: 0;}' +
+				'@keyframes flipin {from {transform: matrix(0.2,0.2,0,1,0,0); opacity: 0;} to {transform: matrix(1,0,0,1,0,0); opacity: 1;}}' +
+				'@keyframes flipout {from {transform: matrix(1,0,0,1,0,0); opacity: 1;} to {transform: matrix(0.2,-0.2,0,1,0,0); opacity: 0;}}' +
+				'@keyframes fliprevin {from {transform: matrix(0.2,-0.2,0,1,0,0); opacity: 0;} to {transform: matrix(1,0,0,1,0,0); opacity: 1;}}' +
+				'@keyframes fliprevout {from {transform: matrix(1,0,0,1,0,0); opacity: 1;} to {transform: matrix(0.2,0.2,0,1,0,0); opacity: 0;}}' +
+				'.flipin, .fliprevin {animation-duration: 225ms; animation-timing-function: ease-out;}' +
+				'.flipout, .fliprevout {animation-duration: 125ms; animation-timing-function: ease-in;}' +
+				'.flipin {animation-name: flipin; opacity: 1;}' +
+				'.flipout {animation-name: flipout; opacity: 0;}' +
+				'.fliprevin {animation-name: fliprevin; opacity: 1;}' +
+				'.fliprevout {animation-name: fliprevout; opacity: 0;}' +
+				'@keyframes slidein {from {transform: translateX(100%);} to {transform: translateX(0);}}' +
+				'@keyframes sliderevin {from {transform: translateX(-100%);} to {transform: translateX(0);}}' +
+				'@keyframes sliderevout {from {transform: translateX(0);} to {transform: translateX(100%);}}' +
+				'@keyframes slideout {from {transform: translateX(0);} to {transform: translateX(-100%);}}' +
+				'.slidein, .sliderevin {animation-duration: 225ms; animation-timing-function: ease-out;}' +
+				'.slideout, .sliderevout {animation-duration: 125ms; animation-timing-function: ease-in;}' +
+				'.slidein {animation-name: slidein; transform: translateX(0);}' +
+				'.slideout {animation-name: slideout; transform: translateX(-100%);}' +
+				'.sliderevin {animation-name: sliderevin; transform: translateX(0);}' +
+				'.sliderevout {animation-name: sliderevout; transform: translateX(100%);}' +
+				'/* WebApp basic/required CSS rules. */' +
+				'.modal {background-color: rgba(0, 0, 0, 0.5); position: fixed; top: 0; right: 0; bottom: 0; left: 0; overflow: auto;}' +
+				'.modal > * {background-color: white; border-radius: 0.3125em; box-shadow: 0 2px 12px rgba(0,0,0,0.6); margin: 10% auto 1em; max-width: 600px; width: 80%;}'
+			;
 			document.getElementsByTagName('head')[0].appendChild(style);
 
 			// Setup application life cycle callbacks:
@@ -370,6 +495,17 @@ var WebAppClass = function() {
 		if (typeof element.onLoad === 'function') element.onLoad();
 	}
 
+	function isModal(element) {
+		return (element.classList.contains('modal') && element.id)? true: false;
+	}
+
+	function loadModal(element) {
+		element.style.display = 'none';
+		modalElements[element.id] = element;
+		modalIds.push(element.id);
+		if (typeof element.onLoad === 'function') element.onLoad();
+	}
+
 	function unload() {
 		if (isLogEnabled) console.log('WebApp.js: unload()');
 		if (typeof WebApp.onUnload === 'function') WebApp.onUnload();
@@ -379,7 +515,7 @@ var WebAppClass = function() {
 	}
 
 	function reset() {
-		hidePage(currentPage);
+		hideElement(currentPage);
 		currentPage = null;
 		currentSearch = null;
 		historyLength = window.history.length;
@@ -427,52 +563,6 @@ var WebAppClass = function() {
 	 */
 	this.reset = reset;
 
-	/**
-	 * Create page dynamically,
-	 * without any previous HTML code declaration,
-	 * and load it according to insertBeforeId value.
-	 *
-	 * @param {string} pageId - The new page id string value.
-	 * @param {string} pageContent - The new page content string value.
-	 * @param {string} insertBeforeId - The existent page id to be the next.
-	 * 
-	 * @return {node} The new page node element.
-	 */
-	this.createPage = function(pageId, pageContent, insertBeforeId) {
-		if (pageElements[pageId] || typeof pageId !== 'string') return null;
-		else {
-			var pageElement = document.createElement('div');
-			pageElement.className = 'page';
-			pageElement.id = pageId;
-			pageElement.innerHTML = pageContent;
-			if (isLoaded) {
-				loadPage(pageElement, insertBeforeId);
-			}
-			var insertBeforeElement = document.getElementById(insertBeforeId);
-			if (insertBeforeElement) {
-				document.body.insertBefore(pageElement, insertBeforeElement);
-			} else {
-				document.body.appendChild(pageElement);
-			}
-			return pageElement;
-		}
-	};
-
-	/**
-	 * Delete page dynamically,
-	 * and unload it, in order to release memory resources.
-	 * 
-	 * @param {string} pageId - The page id string value.
-	 */
-	this.deletePage = function(pageId) {
-		var pageElement = document.getElementById(pageId);
-		if (pageElement && pageElement.parentNode == document.body && isPage(pageElement)) {
-			document.body.removeChild(pageElement);
-			pageIds.splice(pageIds.indexOf(pageId), 1);
-			delete pageElements[pageId];
-		}
-	};
-
 	//################################################################################//
 	// Functions related to application settings:
 
@@ -491,77 +581,115 @@ var WebAppClass = function() {
 		var nextSearch = (window.location.hash.indexOf('?') >= 0)? window.location.hash.substring(window.location.hash.indexOf('?') + 1): '';
 		var nextHash = (window.location.hash.length > 1)? window.location.hash.substring(1, (nextSearch? window.location.hash.indexOf('?'): window.location.hash.length)): null;
 		var nextPage = (nextHash && pageElements[nextHash])? pageElements[nextHash]: null;
+		var nextModal = (!nextPage && nextHash && modalElements[nextHash])? modalElements[nextHash]: null;
 
-		// Set default page firstly:
-		if (isDefaultPageFirstly && hashChangeEvent.newURL === null && hashChangeEvent.oldURL === null && nextPage && nextHash !== defaultPageId) {
-			window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#' + defaultPageId);
-			setTimeout(function() { // Timeout required to create history entry for WebKit browsers.
-				window.location.hash = nextHash + (nextSearch? '?' + nextSearch: '');
-			}, HASH_DELAY);
+		if (currentModal) {
+			switchModal(false, currentModal, nextSearch);
+			// If currentPage and nextPage are not the same element:
+			if (currentPage !== nextPage) {
+				isModalRedirecting = true;
+				var nextURL = window.location.href;
+				setTimeout(function() { // Timeout required to create history entry for WebKit browsers.
+					window.location.href = nextURL;
+				}, HASH_DELAY);
+			}
+			// If back key has not been pressed, go back twice:
+			if (modalHistoryLength < window.history.length) {
+				window.history.go(-2);
+			}
+		} else if (isModalRedirecting) {
+			isModalRedirecting = false;
 		} else {
-			// Execute update action:
-			if (nextPage) {
 
-				// History stack management:
-				if (isHistoryManaged) {
-					var historyManipulations = 0;
-					var historyStackIndex = historyStack.indexOf(hashChangeEvent.newURL);
-					if (historyStack.length > 1 && historyStack[historyStack.length - 2] === hashChangeEvent.newURL) {
-						historyStack.pop();
-						// If back key has not been pressed, set historyManipulations:
-						if (historyLength < window.history.length)  historyManipulations = 1;
-					} else if (isHistoryUnique && historyStack.length > 2 && historyStackIndex >= 0) {
-						var historyStackSteps = historyStack.length - 1 - historyStackIndex;
-						historyStack.splice(historyStackIndex + 1, historyStackSteps);
-						// If back key has not been pressed, set historyManipulations:
-						if (historyLength < window.history.length) historyManipulations = historyStackSteps;
-					} else if (!historyStack.length || historyStack[historyStack.length - 1] !== hashChangeEvent.newURL) historyStack[historyStack.length] = window.location.href;
-					if (historyManipulations) {
-						window.history.go(-(historyManipulations + 1));
-						historyLength = historyLength - historyManipulations;
-					} else historyLength = window.history.length;
-				}
+			// Set default page firstly:
+			if (isDefaultPageFirstly && hashChangeEvent.newURL === null && hashChangeEvent.oldURL === null && nextPage && nextHash !== defaultPageId) {
+				window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#' + defaultPageId);
+				setTimeout(function() { // Timeout required to create history entry for WebKit browsers.
+					window.location.hash = nextHash + (nextSearch? '?' + nextSearch: '');
+				}, HASH_DELAY);
+			} else {
+				// Execute update action:
+				if (nextPage) {
+	
+					// History stack management:
+					if (isHistoryManaged) {
+						var historyManipulations = 0;
+						var historyStackIndex = historyStack.indexOf(hashChangeEvent.newURL);
+						if (historyStack.length > 1 && historyStack[historyStack.length - 2] === hashChangeEvent.newURL) {
+							historyStack.pop();
+							// If back key has not been pressed, set historyManipulations:
+							if (historyLength < window.history.length)  historyManipulations = 1;
+						} else if (isHistoryUnique && historyStack.length > 2 && historyStackIndex >= 0) {
+							var historyStackSteps = historyStack.length - 1 - historyStackIndex;
+							historyStack.splice(historyStackIndex + 1, historyStackSteps);
+							// If back key has not been pressed, set historyManipulations:
+							if (historyLength < window.history.length) historyManipulations = historyStackSteps;
+						} else if (!historyStack.length || historyStack[historyStack.length - 1] !== hashChangeEvent.newURL) historyStack[historyStack.length] = window.location.href;
+						if (historyManipulations) {
+							window.history.go(-(historyManipulations + 1));
+							historyLength = historyLength - historyManipulations;
+						} else historyLength = window.history.length;
+					}
 
-				// Page switch management:
-				if (nextPage === currentPage) {
-					if (typeof currentPage.onSearchChange === 'function') currentPage.onSearchChange(nextSearch);
-				} else {
-					switchPage(currentPage, nextPage, nextSearch);
-					currentPage = nextPage;
-				}
-			} else if (currentPage) window.history.back();
-			else if (defaultPageId) window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#' + defaultPageId);
-			currentSearch = nextSearch;
+					// Page switch management:
+					if (nextPage === currentPage) {
+						if (typeof currentPage.onSearchChange === 'function') currentPage.onSearchChange(nextSearch);
+					} else switchPage(nextPage, nextSearch);
+				} else if (currentPage) {
+					if (nextModal) {
+						switchModal(true, nextModal, nextSearch);
+						modalHistoryLength = window.history.length;
+					} else window.history.back();
+				} else if (defaultPageId) window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#' + defaultPageId);
+				currentSearch = nextSearch;
+			}
 		}
 		if (typeof WebApp.onUpdateHash === 'function') WebApp.onUpdateHash(hashChangeEvent);
 	}
 
-	function switchPage(current, next, search) {
+	function switchPage(next, search) {
 		if (!nextTransition) nextTransition = defaultTransition;
 		if (nextTransition === 'fliporder') {
-			nextTransition = (current && pageIds.indexOf(current.id) > pageIds.indexOf(next.id))? 'fliprev': 'flip';
+			nextTransition = (currentPage && pageIds.indexOf(currentPage.id) > pageIds.indexOf(next.id))? 'fliprev': 'flip';
 		} else if (nextTransition === 'slideorder') {
-			nextTransition = (current && pageIds.indexOf(current.id) > pageIds.indexOf(next.id))? 'sliderev': 'slide';
+			nextTransition = (currentPage && pageIds.indexOf(currentPage.id) > pageIds.indexOf(next.id))? 'sliderev': 'slide';
 		}
 
 		if (nextTransition === 'none') {
-			if (current) hidePage(current);
-			showPage(next, search, current);
+			if (currentPage) hideElement(currentPage);
+			showElement(next, search, currentPage);
 			nextTransition = null;
-			if (typeof WebApp.onSwitchPage === 'function') WebApp.onSwitchPage(current, next);
+			if (typeof WebApp.onSwitchPage === 'function') WebApp.onSwitchPage(currentPage, next);
 		} else {
-			var showNext = function() {
+			var showNext = function(current) {
 				animateElement(next, nextTransition + 'in', null);
-				showPage(next, search, current);
+				showElement(next, search, current);
 				nextTransition = null;
 				if (typeof WebApp.onSwitchPage === 'function') WebApp.onSwitchPage(current, next);
 			};
-			if (current) {
+			if (currentPage) {
+				var current = currentPage;
 				animateElement(current, nextTransition + 'out', function() {
-					hidePage(current);
-					showNext();
+					hideElement(current);
+					showNext(current);
 				});
-			} else showNext();
+			} else showNext(currentPage);
+		}
+		currentPage = next;
+	}
+
+	function switchModal(switchOn, modal, search) {
+		if (switchOn) {
+			animateElement(modal, 'fadein', null);
+			animateElement(modal.children[0], 'popin', null);
+			showElement(modal, search, currentPage);
+			currentModal = modal;
+		} else {
+			animateElement(modal.children[0], 'popout', null);
+			animateElement(modal, 'fadeout', function() {
+				hideElement(modal);
+			});
+			currentModal = null;
 		}
 	}
 
@@ -578,14 +706,14 @@ var WebAppClass = function() {
 		element.className += ' ' + animation;
 	}
 
-	function showPage(page, search, referrer) {
-		page.style.display = 'block';
-		if (typeof page.onShow === 'function') page.onShow(search, (referrer? referrer.id: null));
+	function showElement(element, search, referrer) {
+		element.style.display = 'block';
+		if (typeof element.onShow === 'function') element.onShow(search, (referrer? referrer.id: null));
 	}
 
-	function hidePage(page) {
-		if (typeof page.onHide === 'function') page.onHide();
-		page.style.display = 'none';
+	function hideElement(element) {
+		if (typeof element.onHide === 'function') element.onHide();
+		element.style.display = 'none';
 	}
 
 	//################################################################################//
@@ -593,8 +721,10 @@ var WebAppClass = function() {
 
 	function keyDown(keyEvent) {
 		if (isLogEnabled) console.log('WebApp.js: keyDown(' + keyEvent.keyCode + ')');
-		if (keyEvent.keyCode === 13) {
-			if (keyEvent.target.onclick) keyEvent.target.onclick();
+		if (keyEvent.keyCode === 13 && keyEvent.target.onclick) {
+			keyEvent.target.onclick();
+		} else if (keyEvent.keyCode === 27 && currentModal) {
+			window.history.back();
 		} else {
 			if (currentPage && typeof currentPage.onKeyDown === 'function') currentPage.onKeyDown(keyEvent);
 		}

@@ -9,6 +9,7 @@ WebApp is a lightweight (simple and efficient) WEB application framework (librar
 - [Life cycle callbacks](#life-cycle-callbacks);
 - [History stack management](#history-stack-management);
 - [Modal window support](#modal-window-support) (coming soon);
+- [Ghost hash support](#ghost-hash-support) (coming soon);
 - [Canvas screen support](#canvas-screen-support) (coming soon);
 - [Simplified audio API](#simplified-audio-api) (coming soon);
 - [Header/Footer widget API](#headerfooter-widget-api) (coming soon);
@@ -41,7 +42,7 @@ The following HTML crumb is the minimum startup code required to use WebApp fram
 ```
 
 Where:
-- `<div class="page" id="firstPage">` is the element required for page creation, which must have the class _page_, contains a unique _id_, and be placed as a _body's child_ element.
+- `<div class="page" id="firstPage">` is the element required for page creation, which must have the class _page_, a unique _id_, and be placed as a _body's child_ element.
 - `<h1>First Page</h1>` and `<a href="#secondPage">go to the second page</a>` represent the content of the page _firstPage_ (notice that only the hash data is required to create a link to the secondPage).
 - `<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>` is the inclusion of WebApp framework library, which can be obtained remotely (as here it is, using GitHub _CDN_ URL) or locally (stored beside your _HTML_ file).
 
@@ -102,7 +103,7 @@ The default application page is the first _body's child_ class _page_ element, w
 
 
 ## Dynamic page creation:
-If you need to create another page after application startup, or dynamically during execution (on run-time), use _WebApp.createPage('pageId', 'pageContent')_ API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex03.0_createPage.html#firstPage" target="_blank">live preview</a>):
+If you need to create another page after application startup, or dynamically during execution (on run-time), use _WebApp.createPage('pageId', 'extraClass', 'insertBeforeId', 'pageContent')_ API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex03.0_createPage.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -114,7 +115,7 @@ If you need to create another page after application startup, or dynamically dur
 
 <script>
 // Create another page dynamically:
-WebApp.createPage('secondPage', '<h1>Second Page</h1>'
+WebApp.createPage('secondPage', null, null, '<h1>Second Page</h1>'
 		+ '<a href="#firstPage">go to the first page</a>');
 </script>
 ```
@@ -465,6 +466,90 @@ back key    back key ^             back key ^
 
 
 ## Modal window support:
+Modal window are elements designed to appear over page elements. The primary purpose is to display pop-up dialogs, but it can also be customized to display smaller components, like a simple menu, for example. Similar to page elements, modal windows visibility is also controlled by the file URL hash data, which must contain the corresponding element "id". And this mechanism is interesting because it allow us to hide/close the modal by pressing the browser back key. Also similar to page nodes, the code required to use modal elements must be placed as a _body's child_ element, an it also must have the class _modal_, and a unique _id_, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex09.0_modalWindow.html#firstPage" target="_blank">live preview</a>):
+
+```html
+<body>
+
+<div class="page" id="firstPage">
+	<h1>First Page</h1>
+	<a href="#secondPage">go to the second page</a>
+</div>
+
+<div class="page" id="secondPage">
+	<h1>Second Page</h1>
+	<a href="#firstPage">go to the first page</a>
+</div>
+
+<br>
+<a href="#modalWindow">(show modal)</a>
+
+<div class="modal" id="modalWindow">
+	<div style="padding: 0.5em;">
+		<h1>Modal Window</h1>
+		<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a>
+		<br><br>
+		<a href="javascript:window.history.back();">(hide modal)</a>
+	</div>
+</div>
+
+<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+
+</body>
+```
+
+**Important Note:** the whole modal content must be inside another single element (which in this case is using style padding: 0.5em), in order to generate a single pop-up dialog.
+
+**Important Note:** If you want a modal window that closes automatically on click outside the dialog content, use the following implementation with "onclick" handling instead (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex09.1_hideOnClickOutside.html#firstPage" target="_blank">live preview</a>):
+
+```html
+<div class="modal" id="modalWindow" onclick="window.history.back();">
+	<div style="padding: 0.5em;" onclick="event.stopPropagation();">
+		<h1>Modal Window</h1>
+		<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a>
+		<br><br>
+		<a href="javascript:window.history.back();">(hide modal)</a>
+	</div>
+</div>
+```
+
+**Important Note:** If you need to create another modal after application startup, or dynamically during execution (on run-time), use _WebApp.createModal('modalId', 'extraClass', 'modalContent')_ API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex09.2_createModal.html#firstPage" target="_blank">live preview</a>):
+
+```html
+<body>
+
+<div class="page" id="firstPage">
+	<h1>First Page</h1>
+	<a href="#secondPage">go to the second page</a>
+</div>
+
+<div class="page" id="secondPage">
+	<h1>Second Page</h1>
+	<a href="#firstPage">go to the first page</a>
+</div>
+
+<br>
+<a href="#modalWindow">(show modal)</a>
+
+<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+
+<script>
+// Create modal dynamically:
+WebApp.createModal('modalWindow', null, '<div style="padding: 0.5em;">'
+		+ '<h1>Modal Window</h1>'
+		+ '<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a>'
+		+ '<br><br>'
+		+ '<a href="javascript:window.history.back();">(hide modal)</a>'
+		+ '</div>');
+</script>
+
+</body>
+```
+
+And _WebApp.deleteModal('modalId')_ API can be used to remove modals (useful to release memory resources).
+
+
+## Ghost hash support:
 Coming soon...
 
 
@@ -527,14 +612,14 @@ Set the running boolean state, which represents the current status of WebApp.
 | booleanState | boolean | The running boolean state. |
 
 #### getPageIds()
-Get the pageIds array values, which contains the list of current loaded pages.
+Get the pageIds array values, which contains the list of IDs corresponding to the current loaded pages.
 
-**Returns:** {array} The list of IDs corresponding to the current loaded page.
+**Returns:** {array} The list of IDs corresponding to the current loaded pages.
 
 #### getPageElements()
-Get the pageElements object reference, which contains the key-value database (pageId: element) corresponding to the current loaded page.
+Get the pageElements object reference, which contains the key-value database (pageId: element) corresponding to the current loaded pages.
 
-**Returns:** {array} The key-value database (pageId: element) corresponding to the current loaded page.
+**Returns:** {array} The key-value database (pageId: element) corresponding to the current loaded pages.
 
 #### getDefaultPageId()
 Get the default page id string value, which must be shown in the first request to the basic URL (default value: the first body's child class page element id).
@@ -549,6 +634,61 @@ Set the default page id string value, which must be shown in the first request t
 | Name   | Type   | Description                       |
 |--------|--------|-----------------------------------|
 | pageId | string | The default page id string value. |
+
+#### createPage(pageId, extraClass, insertBeforeId, pageContent)
+Create page dynamically, without any previous HTML code declaration, and load it according to the insertBeforeId value.
+
+**Parameters:**
+
+| Name           | Type   | Description                          |
+|----------------|--------|--------------------------------------|
+| pageId         | string | The new page id string value.        |
+| extraClass     | string | Extra class which must be assigned.  |
+| insertBeforeId | string | The existent page id to be the next. |
+| pageContent    | string | The new page content string value.   |
+
+**Returns:** {node} The new page node element.
+
+#### deletePage(pageId)
+Delete page dynamically, and unload it, in order to release memory resources.
+
+**Parameters:**
+
+| Name   | Type   | Description               |
+|--------|--------|---------------------------|
+| pageId | string | The page id string value. |
+
+#### getModalIds()
+Get the modalIds array values, which contains the list of IDs corresponding to the current loaded modals.
+
+**Returns:** {array} The list of IDs corresponding to the current loaded modals.
+
+#### getModalElements()
+Get the modalElements object reference, which contains the key-value database (modalId: element) corresponding to the current loaded modals.
+
+**Returns:** {array} The key-value database (modalId: element) corresponding to the current loaded modals.
+
+#### createModal(modalId, extraClass, modalContent)
+Create modal dynamically, without any previous HTML code declaration, and load it.
+
+**Parameters:**
+
+| Name         | Type   | Description                         |
+|--------------|--------|-------------------------------------|
+| modalId      | string | The new modal id string value.      |
+| extraClass   | string | Extra class which must be assigned. |
+| modalContent | string | The new modal content string value. |
+
+**Returns:** {node} The new modal node element.
+
+#### deleteModal(modalId)
+Delete modal dynamically, and unload it, in order to release memory resources.
+
+**Parameters:**
+
+| Name    | Type   | Description                |
+|---------|--------|----------------------------|
+| modalId | string | The modal id string value. |
 
 #### isDefaultPageFirstly()
 Returns the default page firstly boolean state, which indicates if the default page must be inserted firstly.
@@ -654,28 +794,6 @@ Unload the WebApp framework library. It is called automatically after window.onu
 
 #### reset()
 Reset the WebApp framework library. It is called automatically after window.onunload event, but it is useful to simulate reset event for testing.
-
-#### createPage(pageId, pageContent, insertBeforeId)
-Create page dynamically, without any previous HTML code declaration, and load it according to insertBeforeId value.
-
-**Parameters:**
-
-| Name           | Type     | Description                          |
-|----------------|----------|--------------------------------------|
-| pageId         | string   | The new page id string value.        |
-| pageContent    | string   | The new page content string value.   |
-| insertBeforeId | string   | The existent page id to be the next. |
-
-**Returns:** {node} The new page node element
-
-#### deletePage(pageId)
-Delete page dynamically, and unload it, in order to release memory resources.
-
-**Parameters:**
-
-| Name   | Type   | Description               |
-|--------|--------|---------------------------|
-| pageId | string | The page id string value. |
 
 #### nextPage()
 Go to the next page (when available), according to the available pageIds (@see getPageIds).
