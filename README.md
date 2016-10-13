@@ -8,7 +8,7 @@ WebApp is a lightweight (simple and efficient) WEB application framework (librar
 - [Key pressed callbacks](#key-pressed-callbacks);
 - [Life cycle callbacks](#life-cycle-callbacks);
 - [History stack management](#history-stack-management);
-- [Modal window support](#modal-window-support) (coming soon);
+- [Modal window support](#modal-window-support);
 - [Ghost hash support](#ghost-hash-support) (coming soon);
 - [Canvas screen support](#canvas-screen-support) (coming soon);
 - [Simplified audio API](#simplified-audio-api) (coming soon);
@@ -500,7 +500,7 @@ Modal window are elements designed to appear over page elements. The primary pur
 
 **Important Note:** the whole modal content must be inside another single element (which in this case is using style padding: 0.5em), in order to generate a single pop-up dialog.
 
-**Important Note:** If you want a modal window that closes automatically on click outside the dialog content, use the following implementation with "onclick" handling instead (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex09.1_hideOnClickOutside.html#firstPage" target="_blank">live preview</a>):
+If you want a modal window that closes automatically on click outside the dialog content, use the following implementation with "onclick" handling instead (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex09.1_hideOnClickOutside.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="modal" id="modalWindow" onclick="window.history.back();">
@@ -513,7 +513,7 @@ Modal window are elements designed to appear over page elements. The primary pur
 </div>
 ```
 
-**Important Note:** If you need to create another modal after application startup, or dynamically during execution (on run-time), use _WebApp.createModal('modalId', 'extraClass', 'modalContent')_ API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex09.2_createModal.html#firstPage" target="_blank">live preview</a>):
+If you need to create another modal after application startup, or dynamically during execution (on run-time), use _WebApp.createModal('modalId', 'extraClass', 'modalContent')_ API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex09.2_createModal.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <body>
