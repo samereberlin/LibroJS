@@ -63,6 +63,9 @@ WebApp.onResume = function() {
 WebApp.onResize = function() {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:orange;">WebApp.onResize()</span>';
 }
+WebApp.onKeyDown = function(keyEvent, pageElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:orange;">WebApp.onKeyDown(' + keyEvent.keyCode + ', ' + pageElement.id + ')</span>';
+};
 
 //Set firstPage callbacks:
 var firstPageElement = document.getElementById('firstPage');
@@ -78,9 +81,6 @@ firstPageElement.onHide = function() {
 firstPageElement.onSearchChange = function(searchData) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onSearchChange(' + searchData + ')</span>';
 };
-firstPageElement.onKeyDown = function(keyEvent) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onKeyDown(' + keyEvent.keyCode + ')</span>';
-};
 
 //Set secondPage callbacks:
 var secondPageElement = document.getElementById('secondPage');
@@ -95,9 +95,6 @@ secondPageElement.onHide = function() {
 };
 secondPageElement.onSearchChange = function(searchData) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onSearchChange(' + searchData + ')</span>';
-};
-secondPageElement.onKeyDown = function(keyEvent) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onKeyDown(' + keyEvent.keyCode + ')</span>';
 };
 </script>
 

@@ -29,14 +29,10 @@
 <script src="WebApp.js"></script>
 
 <script>
-// Set firstPage key down callback action:
-document.getElementById('firstPage').onKeyDown = function(keyEvent) {
+//Set key down callback action:
+WebApp.onKeyDown = function(keyEvent, pageElement) {
 	if (keyEvent.keyCode === 39 /*39 = right arrow*/) WebApp.nextPage();
-};
-
-// Set secondPage key down callback action:
-document.getElementById('secondPage').onKeyDown = function(keyEvent) {
-	if (keyEvent.keyCode === 37 /*37 = left arrow*/) WebApp.previousPage();
+	else if (keyEvent.keyCode === 37 /*37 = left arrow*/) WebApp.previousPage();
 };
 </script>
 

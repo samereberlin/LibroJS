@@ -721,13 +721,13 @@ var WebAppClass = function() {
 	// Functions related to user interaction:
 
 	function keyDown(keyEvent) {
-		if (isLogEnabled) console.log('WebApp.js: keyDown(' + keyEvent.keyCode + ')');
+		if (isLogEnabled) console.log('WebApp.js: keyDown(' + keyEvent.keyCode + ', ' + (currentPage? currentPage.id: '') + ')');
 		if (keyEvent.keyCode === 13 && keyEvent.target.onclick) {
 			keyEvent.target.onclick();
 		} else if (keyEvent.keyCode === 27 && currentModal) {
 			window.history.back();
 		} else {
-			if (currentPage && typeof currentPage.onKeyDown === 'function') currentPage.onKeyDown(keyEvent);
+			if (typeof WebApp.onKeyDown === 'function') WebApp.onKeyDown(keyEvent, currentPage);
 		}
 	}
 

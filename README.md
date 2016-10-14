@@ -258,19 +258,15 @@ Key pressed callbacks are useful to set page shortcut keys, for example if you w
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
 
 <script>
-// Set firstPage key down callback action:
-document.getElementById('firstPage').onKeyDown = function(keyEvent) {
+//Set key down callback action:
+WebApp.onKeyDown = function(keyEvent, pageElement) {
 	if (keyEvent.keyCode === 39 /*39 = right arrow*/) WebApp.nextPage();
-};
-
-// Set secondPage key down callback action:
-document.getElementById('secondPage').onKeyDown = function(keyEvent) {
-	if (keyEvent.keyCode === 37 /*37 = left arrow*/) WebApp.previousPage();
+	else if (keyEvent.keyCode === 37 /*37 = left arrow*/) WebApp.previousPage();
 };
 </script>
 ```
 
-And as you can see in the above example, onKeyDown event is dispatched to the current/active page only.
+And as you can see in the above example, onKeyDown event is dispatched globally to the WebApp object, but it can be distinguished according to the pageElement argument.
 
 
 ## Life cycle callbacks:
@@ -405,8 +401,8 @@ WebApp.onUpdateHash = function(hashChangeEvent) {
 - WebApp.onUpdateHash(hashChangeEvent);
 - WebApp.onSwitchPage(pageElement, referrerElement);
 - WebApp.onSwitchModal(switchOn, modalElement, referrerElement);
+- WebApp.onKeyDown(keyEvent, pageElement);
 - pageElement.onLoad();
-- pageElement.onKeyDown(keyEvent);
 - pageElement.onShow(searchData, referrerElement);
 - pageElement.onSearchChange(searchData);
 - pageElement.onHide();
