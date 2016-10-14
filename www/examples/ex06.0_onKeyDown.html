@@ -9,20 +9,8 @@
 <body>
 
 <div style="border: 1px solid gray; padding: .4em;">
-	<label style="padding-left: 1em; white-space:nowrap;">
-		Transition
-		<select onchange="WebApp.setDefaultTransition(this.value);">
-			<option value="none">None</option>
-			<option value="fade" selected>Fade</option>
-			<option value="pop">Pop</option>
-			<option value="flip">Flip</option>
-			<option value="fliprev">Flip Reverse</option>
-			<option value="fliporder">Flip Order</option>
-			<option value="slide">Slide</option>
-			<option value="sliderev">Slide Reverse</option>
-			<option value="slideorder">Slide Order</option>
-		</select>
-	</label>
+	<button onclick="WebApp.previousPage()">&lt;&lt;</button>
+	<button onclick="WebApp.nextPage()" style="float:right">&gt;&gt;</button>
 </div>
 
 <div class="page" id="firstPage">
@@ -38,7 +26,15 @@
 </div>
 
 <!-- script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script -->
-<script src="WebApp.js"></script>
+<script src="../WebApp.js"></script>
+
+<script>
+//Set key down callback action:
+WebApp.onKeyDown = function(keyEvent, pageElement) {
+	if (keyEvent.keyCode === 39 /*39 = right arrow*/) WebApp.nextPage();
+	else if (keyEvent.keyCode === 37 /*37 = left arrow*/) WebApp.previousPage();
+};
+</script>
 
 </body>
 

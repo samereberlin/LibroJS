@@ -8,34 +8,29 @@
 
 <body>
 
+<div style="border: 1px solid gray; padding: .4em;">
+	This is a global element, displayed above every page.
+</div>
+
 <div class="page" id="firstPage">
 	<h1>WebApp - <span style="color:#004;">First Page</span></h1>
 	<p>If you are viewing this page (firstPage), it means that the current browser URL ends with "/index.html#firstPage"</p>
-	#firstPage | <a href="#secondPage">#secondPage</a>
+	<a href="#secondPage">go to the second page</a>
 </div>
 
 <div class="page" id="secondPage">
 	<h1>WebApp - <span style="color:#040;">Second Page</span></h1>
 	<p>If you are viewing this page (secondPage), it means that the current browser URL ends with "/index.html#secondPage"</p>
-	<a href="#firstPage">#firstPage</a> | #secondPage
+	<a href="#firstPage">go to the first page</a>
 </div>
 
-<br>
-<a href="#modalWindow">(show modal)</a>
+<div>
+	<br>This is another global element,
+	<br>displayed below every page.
+</div>
 
 <!-- script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script -->
-<script src="WebApp.js"></script>
-
-<script>
-// Create modal dynamically:
-WebApp.createModal('modalWindow', null, '<div style="padding: 0.5em;">'
-		+ '<h1>WebApp - <span style="color:#040;">Modal Window</span></h1>'
-	 	+ '<p>This modal has been created dynamically, without any previous HTML code declaration.</p>'
-		+ '<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a>'
-		+ '<br><br>'
-		+ '<a href="javascript:window.history.back();">(hide modal)</a>'
-		+ '</div>');
-</script>
+<script src="../WebApp.js"></script>
 
 </body>
 

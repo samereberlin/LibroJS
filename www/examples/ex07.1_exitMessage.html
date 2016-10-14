@@ -29,19 +29,15 @@
 </div>
 
 <!-- script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script -->
-<script src="WebApp.js"></script>
+<script src="../WebApp.js"></script>
 
 <script>
-// Set WebApp onUpdateHash callback action:
-WebApp.onUpdateHash = function(hashChangeEvent) {
-	var newHash = hashChangeEvent.newURL.substr(hashChangeEvent.newURL.lastIndexOf('#'));
-	if (newHash === '#secondPage') {
-		var oldHash = hashChangeEvent.oldURL.substr(hashChangeEvent.oldURL.lastIndexOf('#'));
-		if (oldHash === '#thirdPage') document.getElementById('secondPage').children[0].style.display = 'block';
-		else {
-			document.getElementById('secondPage').children[0].style.display = 'none';
-			window.location.hash = 'thirdPage';
-		}
+// Set secondPage onShow callback action:
+document.getElementById('secondPage').onShow = function(searchData, referrerElement) {
+	if (referrerElement.id === 'thirdPage') this.children[0].style.display = 'block';
+	else {
+		this.children[0].style.display = 'none';
+		window.location.hash = 'thirdPage';
 	}
 };
 </script>
