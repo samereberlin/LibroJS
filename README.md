@@ -21,7 +21,7 @@ WebApp is a lightweight (simple and efficient) WEB application framework (librar
 
 
 ## Minimum startup code:
-The following HTML crumb is the minimum startup code required to use WebApp framework. As you can easily guess, it creates an application containing two simple pages (_firstPage_ and _secondPage_), accessible through the corresponding file URLs _../index.html#firstPage_ and _../index.html#secondPage_ (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex01.0_minimum.html#firstPage" target="_blank">live preview</a>).
+The following HTML crumb is the minimum startup code required to use WebApp framework. As we can easily guess, it creates an application containing two simple pages (_firstPage_ and _secondPage_), accessible through the corresponding file URLs _../index.html#firstPage_ and _../index.html#secondPage_ (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex01.0_minimum.html#firstPage" target="_blank">live preview</a>).
 
 ```html
 <body>
@@ -44,7 +44,7 @@ The following HTML crumb is the minimum startup code required to use WebApp fram
 Where:
 - `<div class="page" id="firstPage">` is the element required for page creation, which must have the class _page_, a unique _id_, and be placed as a _body's child_ element.
 - `<h1>First Page</h1>` and `<a href="#secondPage">go to the second page</a>` represent the content of the page _firstPage_ (notice that only the hash data is required to create a link to the secondPage).
-- `<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>` is the inclusion of WebApp framework library, which can be obtained remotely (as here it is, using GitHub _CDN_ URL) or locally (stored beside your _HTML_ file).
+- `<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>` is the inclusion of WebApp framework library, which can be obtained remotely (as here it is, using GitHub _CDN_ URL) or locally (stored beside our _HTML_ file).
 
 **Important Note:** for simplicity reasons, the above HTML code does not include any header definition, but it is strongly recommended to assure compatibility between different devices and platforms. Please include at least the _title_ and the basic _responsive_ meta tag `<meta name="viewport" content="width=device-width, initial-scale=1.0">`, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex01.1_responsive.html#firstPage" target="_blank">live preview</a>):
 
@@ -78,7 +78,7 @@ Where:
 
 
 ## Default application page:
-The default application page is the first _body's child_ class _page_ element, which means that the first request to the basic URL _../index.html_ (without page specification) will be redirected to _../index.html#firstPage_. If you need to set any other element, use _WebApp.setDefaultPageId('pageId')_ function API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex02.0_setDefaultPageId.html#secondPage" target="_blank">live preview</a>):
+The default application page is the first _body's child_ class _page_ element, which means that the first request to the basic URL _../index.html_ (without page specification) will be redirected to _../index.html#firstPage_. If we need to set any other element, we can use _WebApp.setDefaultPageId('pageId')_ function API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex02.0_setDefaultPageId.html#secondPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -103,7 +103,7 @@ The default application page is the first _body's child_ class _page_ element, w
 
 
 ## Dynamic page creation:
-If you need to create another page after application startup, or dynamically during execution (on run-time), use _WebApp.createPage('pageId', 'extraClass', 'insertBeforeId', 'pageContent')_ API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex03.0_createPage.html#firstPage" target="_blank">live preview</a>):
+If we need to create another page after application startup, or dynamically during execution (on run-time), we can use _WebApp.createPage('pageId', 'extraClass', 'insertBeforeId', 'pageContent')_ API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex03.0_createPage.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -152,7 +152,7 @@ Global elements are components that must always be displayed (common between the
 
 
 ## Page transitions:
-The soft/basic page transition "fade" is enabled by default, but if you need to set a different one, use _WebApp.setDefaultTransition('transitionType')_ function API. The available transition types are:
+The soft/basic page transition "fade" is enabled by default, but if we need to set a different one, we can use _WebApp.setDefaultTransition('transitionType')_ function API. The available transition types are:
 - 'fade' (which is the soft/basic default page transition);
 - 'pop' (which simulates the "pop" appearing effect);
 - 'flip' (which simulates the "flip" forward effect);
@@ -196,7 +196,7 @@ The different page transition types can be observed/compared in the following ex
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
 ```
 
-**Important Note:** if you need to set an specific transition to be used once only (without modify the default setting), use _WebApp.setNextTransition('transitionType')_ function API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex05.1_setNextTransition.html#firstPage" target="_blank">live preview</a>):
+**Important Note:** if we need to set an specific transition to be used once only (without modify the default setting), we can use _WebApp.setNextTransition('transitionType')_ function API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex05.1_setNextTransition.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -242,7 +242,7 @@ The different page transition types can be observed/compared in the following ex
 
 
 ## Key pressed callbacks:
-Key pressed callbacks are useful to set page shortcut keys, for example if you want to navigate between the available pages using left/right keys, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex06.0_onKeyDown.html#firstPage" target="_blank">live preview</a>):
+Key pressed callbacks are useful to set page shortcut keys, for example if we want to navigate between the available pages using left/right keys, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex06.0_onKeyDown.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -266,13 +266,13 @@ WebApp.onKeyDown = function(keyEvent, pageElement) {
 </script>
 ```
 
-And as you can see in the above example, onKeyDown event is dispatched globally to the WebApp object, but it can be distinguished according to the pageElement argument.
+And as we can see in the above example, onKeyDown event is dispatched globally to the WebApp object, but it can be distinguished/filtered according to the pageElement argument.
 
 
 ## Life cycle callbacks:
-Application life cycle process is a set of pre-defined events that occurs during the application execution, which must be monitored (through callbacks) in order to execute the appropriate actions. For example, if you are developing a game, you need to know when the use minimizes the application (in order to pause the game execution, timers, etc.), and you also need to know when the user returns to the application (in order to resume the game from the point where it was paused). That is why the process callbacks are so relevant.
+Application life cycle process is a set of pre-defined events that occurs during the application execution, which must be monitored (through callbacks) in order to execute the appropriate actions. For example, if we are developing a game, we need to know when the user minimizes the application (in order to pause the game execution, timers, etc.), and we also need to know when the user returns to the application (in order to resume the game from the point where it was paused). That is why the process callbacks are so relevant.
 
-If you do not understand the above explanation, do not be afraid. The use of callbacks is much easier than the explanation by itself :) To implement an application callback, you just need to get the _page_ element reference (or WebApp object for global callbacks), and implement the desired function, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex07.0_callbacks.html#firstPage" target="_blank">live preview</a>):
+If you do not understand the above explanation, do not be afraid. The use of callbacks is much easier than the explanation by itself :) To implement an application callback, we just need to get the _page_ element reference (or WebApp object for global callbacks), and implement the desired function, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex07.0_callbacks.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -415,7 +415,7 @@ Where:
 
 
 ## History stack management:
-The primary purpose of WebApp history stack management engine is to emulate "back key" event when the subsequent page is the same of the previous visited one, in order to keep the Internet browser history stack compliant with the user navigation flow (this feature is activated by default, but if you need to disable it, use _WebApp.setHistoryManaged(false)_ function API).
+The primary purpose of WebApp history stack management engine is to emulate "back key" event when the subsequent page is the same of the previous visited one, in order to keep the Internet browser history stack compliant with the user navigation flow (this feature is activated by default, but if we need to disable it, we can use _WebApp.setHistoryManaged(false)_ function API).
 
 ** User navigation example:**
 ```
@@ -430,7 +430,7 @@ loading     history     history
  #pg1        #pg1
 ```
 
-As a similar feature, this history management engine presents the "unique entry" stack concept, which compares the subsequent page with all previous visited ones, and emulates "back key" event(s) up to reach the matched instance (this feature is also activated by default, but if you need to disable it, use _WebApp.setHistoryUnique(false)_ function API).
+As a similar feature, this history management engine presents the "unique entry" stack concept, which compares the subsequent page with all previous visited ones, and emulates "back key" event(s) up to reach the matched instance (this feature is also activated by default, but if we need to disable it, we can use _WebApp.setHistoryUnique(false)_ function API).
 
 ** User navigation example:**
 ```
@@ -448,7 +448,7 @@ loading     history     (unique false)     (unique true)
  #pg1        #pg1            #pg1
 ```
 
-And another interesting behavior, is the "default page firstly" feature, which inserts the default page at the beginning of the history stack when any other page is explicitly requested firstly. (this feature is also activated by default, but if you need to disable it, use _WebApp.setDefaultPageFirstly(false)_ function API).
+And another interesting behavior, is the "default page firstly" feature, which inserts the default page at the beginning of the history stack when any other page is explicitly requested firstly. (this feature is also activated by default, but if we need to disable it, we can use _WebApp.setDefaultPageFirstly(false)_ function API).
 
 ** User navigation example:**
 ```
@@ -500,7 +500,7 @@ Modal window are elements designed to appear over page elements. The primary pur
 
 **Important Note:** the whole modal content must be inside another single element (which in this case is using style padding: 0.5em), in order to generate a single pop-up dialog.
 
-If you want a modal window that closes automatically on click outside the dialog content, use the following implementation with "onclick" handling instead (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex09.1_hideOnClickOutside.html#firstPage" target="_blank">live preview</a>):
+If we want a modal window that closes automatically on click outside the dialog content, we can use the following implementation with "onclick" handling instead (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex09.1_hideOnClickOutside.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="modal" id="modalWindow" onclick="window.history.back();">
@@ -513,7 +513,7 @@ If you want a modal window that closes automatically on click outside the dialog
 </div>
 ```
 
-If you need to create another modal after application startup, or dynamically during execution (on run-time), use _WebApp.createModal('modalId', 'extraClass', 'modalContent')_ API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex09.2_createModal.html#firstPage" target="_blank">live preview</a>):
+If we need to create another modal after application startup, or dynamically during execution (on run-time), we can use _WebApp.createModal('modalId', 'extraClass', 'modalContent')_ API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex09.2_createModal.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <body>
