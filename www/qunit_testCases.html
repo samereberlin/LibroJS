@@ -60,7 +60,7 @@ function startNext() {
 }
 
 function setTestPage(testTitle, pageId, historyStackLength, callback) {
-	WebApp.onSwitchPage = function(current, next) {
+	WebApp.onSwitchPage = function() {
 		WebApp.onSwitchPage = null;
 		QUnit.test(testTitle, function(assert) {
 			testPage(assert, pageId, historyStackLength);
@@ -146,9 +146,9 @@ var testCases = [
 		//(1st) 2nd.
 		QUnit.test('History stack management (default firstly)...', function(assert) {
 			var done = assert.async();
-			WebApp.onSwitchPage = function(current, next) {
-				WebApp.onSwitchPage = function(current, next) {
-					WebApp.onSwitchPage = function(current, next) {
+			WebApp.onSwitchPage = function() {
+				WebApp.onSwitchPage = function() {
+					WebApp.onSwitchPage = function() {
 						WebApp.onSwitchPage = null;
 						testPage(assert, 'firstPage', 1);
 						done();
@@ -175,10 +175,10 @@ var testCases = [
 			var done = assert.async();
 			testUnknownHash(assert, 'firstPage', function() { // Required to reset window.history.length
 				var historyLength = window.history.length;
-				WebApp.onSwitchPage = function(current, next) {
-					WebApp.onSwitchPage = function(current, next) {
-						WebApp.onSwitchPage = function(current, next) {
-							WebApp.onSwitchPage = function(current, next) {
+				WebApp.onSwitchPage = function() {
+					WebApp.onSwitchPage = function() {
+						WebApp.onSwitchPage = function() {
+							WebApp.onSwitchPage = function() {
 								WebApp.onSwitchPage = null;
 								testPage(assert, 'firstPage', 1);
 								assert.equal(window.history.length, historyLength + 1, 'window.history.length: ' + (historyLength + 1));
@@ -207,9 +207,9 @@ var testCases = [
 			var done = assert.async();
 			testUnknownHash(assert, 'firstPage', function() { // Required to reset window.history.length
 				var historyLength = window.history.length;
-				WebApp.onSwitchPage = function(current, next) {
-					WebApp.onSwitchPage = function(current, next) {
-						WebApp.onSwitchPage = function(current, next) {
+				WebApp.onSwitchPage = function() {
+					WebApp.onSwitchPage = function() {
+						WebApp.onSwitchPage = function() {
 							WebApp.onSwitchPage = null;
 							testPage(assert, 'firstPage', 1);
 							assert.equal(window.history.length, historyLength + 2, 'window.history.length: ' + (historyLength + 2));
@@ -234,8 +234,8 @@ var testCases = [
 		QUnit.test('History stack management (default firstly FALSE)...', function(assert) {
 			var done = assert.async();
 			WebApp.setDefaultPageFirstly(false);
-			WebApp.onSwitchPage = function(current, next) {
-				WebApp.onSwitchPage = function(current, next) {
+			WebApp.onSwitchPage = function() {
+				WebApp.onSwitchPage = function() {
 					WebApp.onSwitchPage = null;
 					testPage(assert, 'firstPage', 1);
 					done();
@@ -265,10 +265,10 @@ var testCases = [
 			WebApp.setHistoryManaged(false);
 			testUnknownHash(assert, 'firstPage', function() { // Required to reset window.history.length
 				var historyLength = window.history.length;
-				WebApp.onSwitchPage = function(current, next) {
-					WebApp.onSwitchPage = function(current, next) {
-						WebApp.onSwitchPage = function(current, next) {
-							WebApp.onSwitchPage = function(current, next) {
+				WebApp.onSwitchPage = function() {
+					WebApp.onSwitchPage = function() {
+						WebApp.onSwitchPage = function() {
+							WebApp.onSwitchPage = function() {
 								WebApp.onSwitchPage = null;
 								testPage(assert, 'firstPage', 1);
 								assert.equal(window.history.length, historyLength + 3, 'window.history.length: ' + (historyLength + 3));
@@ -300,10 +300,10 @@ var testCases = [
 			WebApp.setHistoryUnique(false);
 			testUnknownHash(assert, 'firstPage', function() { // Required to reset window.history.length
 				var historyLength = window.history.length;
-				WebApp.onSwitchPage = function(current, next) {
-					WebApp.onSwitchPage = function(current, next) {
-						WebApp.onSwitchPage = function(current, next) {
-							WebApp.onSwitchPage = function(current, next) {
+				WebApp.onSwitchPage = function() {
+					WebApp.onSwitchPage = function() {
+						WebApp.onSwitchPage = function() {
+							WebApp.onSwitchPage = function() {
 								WebApp.onSwitchPage = null;
 								testPage(assert, 'firstPage', 1);
 								done();

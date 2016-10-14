@@ -647,25 +647,25 @@ var WebAppClass = function() {
 		if (typeof WebApp.onUpdateHash === 'function') WebApp.onUpdateHash(hashChangeEvent);
 	}
 
-	function switchPage(next, search) {
+	function switchPage(pageElement, searchData) {
 		if (!nextTransition) nextTransition = defaultTransition;
 		if (nextTransition === 'fliporder') {
-			nextTransition = (currentPage && pageIds.indexOf(currentPage.id) > pageIds.indexOf(next.id))? 'fliprev': 'flip';
+			nextTransition = (currentPage && pageIds.indexOf(currentPage.id) > pageIds.indexOf(pageElement.id))? 'fliprev': 'flip';
 		} else if (nextTransition === 'slideorder') {
-			nextTransition = (currentPage && pageIds.indexOf(currentPage.id) > pageIds.indexOf(next.id))? 'sliderev': 'slide';
+			nextTransition = (currentPage && pageIds.indexOf(currentPage.id) > pageIds.indexOf(pageElement.id))? 'sliderev': 'slide';
 		}
 
 		if (nextTransition === 'none') {
 			if (currentPage) hideElement(currentPage);
-			showElement(next, search, currentPage);
+			showElement(pageElement, searchData, currentPage);
 			nextTransition = null;
-			if (typeof WebApp.onSwitchPage === 'function') WebApp.onSwitchPage(currentPage, next);
+			if (typeof WebApp.onSwitchPage === 'function') WebApp.onSwitchPage(pageElement, currentPage);
 		} else {
 			var showNext = function(current) {
-				animateElement(next, nextTransition + 'in', null);
-				showElement(next, search, current);
+				animateElement(pageElement, nextTransition + 'in', null);
+				showElement(pageElement, searchData, current);
 				nextTransition = null;
-				if (typeof WebApp.onSwitchPage === 'function') WebApp.onSwitchPage(current, next);
+				if (typeof WebApp.onSwitchPage === 'function') WebApp.onSwitchPage(pageElement, currentPage);
 			};
 			if (currentPage) {
 				var current = currentPage;
@@ -675,22 +675,23 @@ var WebAppClass = function() {
 				});
 			} else showNext(currentPage);
 		}
-		currentPage = next;
+		currentPage = pageElement;
 	}
 
-	function switchModal(switchOn, modal, search) {
+	function switchModal(switchOn, modalElement, searchData) {
 		if (switchOn) {
-			animateElement(modal, 'fadein', null);
-			animateElement(modal.children[0], 'popin', null);
-			showElement(modal, search, currentPage);
-			currentModal = modal;
+			animateElement(modalElement, 'fadein', null);
+			animateElement(modalElement.children[0], 'popin', null);
+			showElement(modalElement, searchData, currentPage);
+			currentModal = modalElement;
 		} else {
-			animateElement(modal.children[0], 'popout', null);
-			animateElement(modal, 'fadeout', function() {
-				hideElement(modal);
+			animateElement(modalElement.children[0], 'popout', null);
+			animateElement(modalElement, 'fadeout', function() {
+				hideElement(modalElement);
 			});
 			currentModal = null;
 		}
+		if (typeof WebApp.onSwitchModal === 'function') WebApp.onSwitchModal(switchOn, modalElement, currentPage);
 	}
 
 	function animateElement(element, animation, callback) {
@@ -706,9 +707,9 @@ var WebAppClass = function() {
 		element.className += ' ' + animation;
 	}
 
-	function showElement(element, search, referrer) {
+	function showElement(element, searchData, referrerElement) {
 		element.style.display = 'block';
-		if (typeof element.onShow === 'function') element.onShow(search, (referrer? referrer.id: null));
+		if (typeof element.onShow === 'function') element.onShow(searchData, referrerElement);
 	}
 
 	function hideElement(element) {

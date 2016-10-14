@@ -33,8 +33,8 @@
 
 <script>
 // Set secondPage onShow callback action:
-document.getElementById('secondPage').onShow = function(search, referrerId) {
-	if (referrerId === 'thirdPage') this.children[0].style.display = 'block';
+document.getElementById('secondPage').onShow = function(searchData, referrerElement) {
+	if (referrerElement.id === 'thirdPage') this.children[0].style.display = 'block';
 	else {
 		this.children[0].style.display = 'none';
 		window.location.hash = 'thirdPage';

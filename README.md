@@ -305,8 +305,8 @@ var firstPageElement = document.getElementById('firstPage');
 firstPageElement.onLoad = function() {
 	console.log('firstPageElement.onLoad(): ' + (new Date().toLocaleString()));
 };
-firstPageElement.onShow = function(searchData, referrerId) {
-	console.log('firstPageElement.onShow(' + searchData + ', ' + referrerId + '): ' + (new Date().toLocaleString()));
+firstPageElement.onShow = function(searchData, referrerElement) {
+	console.log('firstPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + '): ' + (new Date().toLocaleString()));
 };
 firstPageElement.onHide = function() {
 	console.log('firstPageElement.onHide(): ' + (new Date().toLocaleString()));
@@ -317,8 +317,8 @@ var secondPageElement = document.getElementById('secondPage');
 secondPageElement.onLoad = function() {
 	console.log('secondPageElement.onLoad(): ' + (new Date().toLocaleString()));
 };
-secondPageElement.onShow = function(searchData, referrerId) {
-	console.log('secondPageElement.onShow(' + searchData + ', ' + referrerId + '): ' + (new Date().toLocaleString()));
+secondPageElement.onShow = function(searchData, referrerElement) {
+	console.log('secondPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + '): ' + (new Date().toLocaleString()));
 };
 secondPageElement.onHide = function() {
 	console.log('secondPageElement.onHide(): ' + (new Date().toLocaleString()));
@@ -326,7 +326,7 @@ secondPageElement.onHide = function() {
 </script>
 ```
 
-Another interesting use case for application life cycle callbacks, is the page redirection possibility, which allow us to emulate exit messages to appear when returning only (according to the "referrerId" / previous displayed pageId), as demonstrated in the following example, where the #secondPage is displayed only when returning from #thirdPage (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex07.1_exitMessage.html#firstPage" target="_blank">live preview</a>):
+Another interesting use case for application life cycle callbacks, is the page redirection possibility, which allow us to emulate exit messages to appear when returning only (according to the "referrerElement" / previous displayed page), as demonstrated in the following example, where the #secondPage is displayed only when returning from #thirdPage (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/ex07.1_exitMessage.html#firstPage" target="_blank">live preview</a>):
 ```html
 <div class="page" id="firstPage">
 	<h1>WebApp - First Page</h1>
@@ -349,8 +349,8 @@ Another interesting use case for application life cycle callbacks, is the page r
 
 <script>
 // Set secondPage onShow callback action:
-document.getElementById('secondPage').onShow = function(search, referrerId) {
-	if (referrerId === 'thirdPage') this.children[0].style.display = 'block';
+document.getElementById('secondPage').onShow = function(searchData, referrerElement) {
+	if (referrerElement.id === 'thirdPage') this.children[0].style.display = 'block';
 	else {
 		this.children[0].style.display = 'none';
 		window.location.hash = 'thirdPage';
@@ -403,15 +403,19 @@ WebApp.onUpdateHash = function(hashChangeEvent) {
 - WebApp.onResume();
 - WebApp.onResize();
 - WebApp.onUpdateHash(hashChangeEvent);
-- WebApp.onSwitchPage(currentPage, nextPage);
+- WebApp.onSwitchPage(pageElement, referrerElement);
+- WebApp.onSwitchModal(switchOn, modalElement, referrerElement);
 - pageElement.onLoad();
 - pageElement.onKeyDown(keyEvent);
-- pageElement.onShow(searchData, referrerId);
+- pageElement.onShow(searchData, referrerElement);
 - pageElement.onSearchChange(searchData);
 - pageElement.onHide();
+- modalElement.onLoad();
+- modalElement.onShow(searchData, referrerElement);
+- modalElement.onHide();
 Where:
 - `searchData` is the url content from the question mark (if present) to the end. For example, in case of `index.html#fistPage?foo=bar`, the searchData would be `foo=bar`.
-- `referrerId` is the previous displayed pageId.
+- `referrerElement` is the previous displayed page element.
 
 
 ## History stack management:
