@@ -10,7 +10,7 @@
 
 <body>
 
-<div style="border: 1px solid gray; padding: .4em;">
+<div id="header" style="border: 1px solid gray; padding: .4em;">
 	<button onclick="window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname);">Retest</button>
 </div>
 
@@ -43,6 +43,7 @@
 <script src="qunit-2.0.1.js"></script>
 
 <script>
+var headerElement = document.getElementById('header');
 var testCaseIndex = 0;
 var testTimeout = null;
 var timeoutDelay = 10;
@@ -73,8 +74,9 @@ function testPage(assert, pageId, historyStackLength) {
 	assert.equal(window.location.hash, '#' + pageId, 'Page hash: #' + pageId);
 	var pageElements = WebApp.getPageElements();
 	for (var pageElement in pageElements) {
-		assert.equal(pageElements[pageElement].style.display, (pageElement === pageId? 'block': 'none'), pageElement + 'style display: ' + pageElements[pageElement].style.display);
+		assert.equal(pageElements[pageElement].style.display, (pageElement === pageId? 'block': 'none'), pageElement + ' style display: ' + pageElements[pageElement].style.display);
 	}
+	assert.equal(headerElement.style.display, '', 'Global header element visibility: ' + headerElement.style.display);
 	assert.equal(WebApp.getHistoryStack().length, historyStackLength, 'History stack length: ' + historyStackLength);
 }
 
@@ -138,6 +140,28 @@ var testCases = [
 				done();
 				startNext();
 			});
+		});
+	},
+	function() {
+		QUnit.test('Dynamic page creation...', function(assert) {
+			var done = assert.async();
+			WebApp.onSwitchPage = function() {
+				WebApp.onSwitchPage = function() {
+					WebApp.onSwitchPage = null;
+					testPage(assert, 'firstPage', 1);
+					WebApp.deletePage(newPageElement.id);
+					assert.equal(WebApp.getPageElements()[newPageElement.id], null, 'New page element must be deleted.');
+					assert.equal(WebApp.getPageIds().length, 3, 'New page ID must be removed.');
+					done();
+					startNext();
+				};
+				testPage(assert, newPageElement.id, 2);
+				WebApp.previousPage();
+			};
+			var newPageElement = WebApp.createPage('newPage', null, 'secondPage', '<h1>WebApp - <span style="color:#444;">New Page</span></h1>');
+			assert.equal(WebApp.getPageElements()[newPageElement.id].id, newPageElement.id, 'New page element must be created.');
+			assert.equal(WebApp.getPageIds()[1], newPageElement.id, 'New page ID must be inserted before secondPage.');
+			WebApp.nextPage();
 		});
 	},
 	function() {

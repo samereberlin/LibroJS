@@ -415,6 +415,7 @@ var WebAppClass = function() {
 		if (typeof WebApp.onLoad === 'function') WebApp.onLoad();
 
 		// Load body elements:
+		pageIds = []; // Required to reset page IDs.
 		pageElements = {}; // Required to reset page elements.
 		modalElements = {}; // Required to reset modal elements.
 		Array.prototype.forEach.call(document.body.children, function(element) {
@@ -488,7 +489,7 @@ var WebAppClass = function() {
 		pageElements[element.id] = element;
 		var insertBeforeIndex = insertBeforeId? pageIds.indexOf(insertBeforeId): -1;
 		if (insertBeforeIndex >= 0) {
-			pageIds.splice(insertBeforeIndex, 0, insertBeforeId);
+			pageIds.splice(insertBeforeIndex, 0, element.id);
 		} else {
 			pageIds.push(element.id);
 		}
