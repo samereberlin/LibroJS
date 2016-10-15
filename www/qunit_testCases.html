@@ -45,7 +45,8 @@
 <script>
 var headerElement = document.getElementById('header');
 var testCaseIndex = 0;
-var timeoutDelay = 10;
+var shortDelay = 10;
+var longDelay = 200;
 QUnit.config.testTimeout = 5000;
 
 function startNext() {
@@ -148,7 +149,7 @@ var testCases = [
 		});
 	},
 	function() {
-		QUnit.test('Dynamic page creation...', function(assert) {
+		QUnit.test('Dynamic page creation (create and delete)...', function(assert) {
 			var done = assert.async();
 			WebApp.onSwitchPage = function() {
 				WebApp.onSwitchPage = function() {
@@ -167,6 +168,31 @@ var testCases = [
 			assert.equal(WebApp.getPageElements()[newPageElement.id].id, newPageElement.id, 'New page element must be created.');
 			assert.equal(WebApp.getPageIds()[1], newPageElement.id, 'New page ID must be inserted before secondPage.');
 			WebApp.nextPage();
+		});
+	},
+	function() {
+		QUnit.test('Page transitions (setDefault and setNext)...', function(assert) {
+			var done = assert.async();
+			WebApp.onUpdateHash = function() {
+				WebApp.onUpdateHash = function() {
+					WebApp.onUpdateHash = null;
+					assert.equal(WebApp.getDefaultTransition(), 'slide', 'Get default transition must be "slide".');
+					assert.equal(WebApp.getNextTransition(), 'flip', 'Get next transition must be "flip".');
+					setTimeout(function() { // Required to restore the initial state (#firstPage).
+						WebApp.setDefaultTransition('fade');
+						done();
+						startNext();
+					}, longDelay);
+				};
+				assert.equal(WebApp.getDefaultTransition(), 'slide', 'Get default transition must be "slide".');
+				assert.equal(WebApp.getNextTransition(), 'slide', 'Get next transition must be "slide".');
+				WebApp.setNextTransition('flip');
+				setTimeout(function() {WebApp.previousPage();}, shortDelay);
+			};
+			assert.equal(WebApp.getDefaultTransition(), 'fade', 'Initial default transition must be "fade".');
+			assert.equal(WebApp.getNextTransition(), null, 'Initial next transition must be null.');
+			WebApp.setDefaultTransition('slide');
+			setTimeout(function() {WebApp.nextPage();}, shortDelay);
 		});
 	},
 	function() {
@@ -273,7 +299,7 @@ var testCases = [
 					WebApp.reset();
 					WebApp.setDefaultPageFirstly(true);
 					window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#firstPage');
-				}, timeoutDelay);
+				}, shortDelay);
 			};
 			WebApp.unload();
 			window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#secondPage');
@@ -341,7 +367,7 @@ var testCases = [
 								WebApp.reset();
 								WebApp.setHistoryUnique(true);
 								window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#');
-							}, timeoutDelay);
+							}, shortDelay);
 						};
 						testPage(assert, 'thirdPage', 3);
 						window.location.hash = 'firstPage';
