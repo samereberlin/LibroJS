@@ -196,7 +196,7 @@ The different page transition types can be observed/compared in the following ex
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
 ```
 
-**Important Note:** if we need to set an specific transition to be used once only (without modify the default setting), we can use _WebApp.setNextTransition('transitionType')_ function API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex05.1_setNextTransition.html#firstPage" target="_blank">live preview</a>):
+If we need to set an specific transition to be used once only (without modify the default setting), we can use _WebApp.setNextTransition('transitionType')_ function API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex05.1_setNextTransition.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
