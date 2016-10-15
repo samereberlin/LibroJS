@@ -45,29 +45,11 @@
 <script>
 var headerElement = document.getElementById('header');
 var testCaseIndex = 0;
-var testTimeout = null;
 var timeoutDelay = 10;
-var timeoutLong = 5000;
-QUnit.config.testTimeout = timeoutLong;
+QUnit.config.testTimeout = 5000;
 
 function startNext() {
-	clearTimeout(testTimeout);
-	if (testCases[testCaseIndex]) {
-		testTimeout = setTimeout(function() {
-			throw 'Test timed out, testCaseIndex: ' + testCaseIndex;
-		}, timeoutLong);
-		testCases[testCaseIndex++]();
-	}
-}
-
-function setTestPage(testTitle, pageId, historyStackLength, callback) {
-	WebApp.onSwitchPage = function() {
-		WebApp.onSwitchPage = null;
-		QUnit.test(testTitle, function(assert) {
-			testPage(assert, pageId, historyStackLength);
-			if (typeof callback === 'function') callback(assert);
-		});
-	};
+	if (testCases[testCaseIndex]) testCases[testCaseIndex++]();
 }
 
 function testPage(assert, pageId, historyStackLength) {
@@ -106,30 +88,53 @@ var testCases = [
 		startNext();
 	},
 	function() {
-		setTestPage('First page redirection, from empty hash...', 'firstPage', 1, startNext);
+		QUnit.test('First page redirection, from empty hash...', function(assert) {
+			var done = assert.async();
+			testPage(assert, 'firstPage', 1);
+			done();
+			startNext();
+		});
 	},
 	function() {
-		setTestPage('First page redirection, from unknown hash...', 'firstPage', 1, startNext);
-		setTimeout(function() { 
+		QUnit.test('First page redirection, from unknown hash...', function(assert) {
+			var done = assert.async();
+			WebApp.onSwitchPage = function() {
+				WebApp.onSwitchPage = null;
+				testPage(assert, 'firstPage', 1);
+				done();
+				startNext();
+			};
 			WebApp.reset();
 			window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#unknown');
-		}, timeoutDelay);
+		});
 	},
 	function() {
-		setTestPage('Default page redirection, from empty hash...', 'secondPage', 1, startNext);
-		WebApp.setDefaultPageId('secondPage');
-		setTimeout(function() {
+		QUnit.test('Default page redirection, from empty hash...', function(assert) {
+			var done = assert.async();
+			WebApp.onSwitchPage = function() {
+				WebApp.onSwitchPage = null;
+				testPage(assert, 'secondPage', 1);
+				done();
+				startNext();
+			};
 			WebApp.reset();
+			WebApp.setDefaultPageId('secondPage');
 			window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#');
-		}, timeoutDelay);
+		});
 	},
 	function() {
-		setTestPage('Default page redirection, from unknown hash...', 'firstPage', 1, startNext);
-		WebApp.setDefaultPageId('firstPage');
-		setTimeout(function() {
+		QUnit.test('Default page redirection, from unknown hash...', function(assert) {
+			var done = assert.async();
+			WebApp.onSwitchPage = function() {
+				WebApp.onSwitchPage = null;
+				testPage(assert, 'firstPage', 1);
+				done();
+				startNext();
+			};
+			WebApp.setDefaultPageId('firstPage');
 			WebApp.reset();
 			window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#unknown');
-		}, timeoutDelay);
+		});
 	},
 	function() {
 		QUnit.test('Previous page redirection, from unknown hash...', function(assert) {
@@ -183,11 +188,9 @@ var testCases = [
 				};
 				testPage(assert, 'firstPage', 1);
 			};
-			setTimeout(function() { 
-				WebApp.unload();
-				window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#secondPage');
-				WebApp.load();
-			}, timeoutDelay);
+			WebApp.unload();
+			window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#secondPage');
+			WebApp.load();
 		});
 	},
 	function() {
@@ -210,16 +213,16 @@ var testCases = [
 								startNext();
 							};
 							testPage(assert, 'secondPage', 2);
-							setTimeout(function() {window.location.hash = 'firstPage';}, timeoutDelay);
+							window.location.hash = 'firstPage';
 						};
 						testPage(assert, 'thirdPage', 3);
-						setTimeout(function() {window.location.hash = 'secondPage';}, timeoutDelay);
+						window.location.hash = 'secondPage';
 					};
 					testPage(assert, 'secondPage', 2);
-					setTimeout(function() {window.location.hash = 'thirdPage';}, timeoutDelay);
+					window.location.hash = 'thirdPage';
 				};
 				testPage(assert, 'firstPage', 1);
-				setTimeout(function() {window.location.hash = 'secondPage';}, timeoutDelay);
+				window.location.hash = 'secondPage';
 			});
 		});
 	},
@@ -241,13 +244,13 @@ var testCases = [
 							startNext();
 						};
 						testPage(assert, 'thirdPage', 3);
-						setTimeout(function() {window.location.hash = 'firstPage';}, timeoutDelay);
+						window.location.hash = 'firstPage';
 					};
 					testPage(assert, 'secondPage', 2);
-					setTimeout(function() {window.location.hash = 'thirdPage';}, timeoutDelay);
+					window.location.hash = 'thirdPage';
 				};
 				testPage(assert, 'firstPage', 1);
-				setTimeout(function() {window.location.hash = 'secondPage';}, timeoutDelay);
+				window.location.hash = 'secondPage';
 			});
 		});
 	},
@@ -272,11 +275,9 @@ var testCases = [
 					window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#firstPage');
 				}, timeoutDelay);
 			};
-			setTimeout(function() { 
-				WebApp.unload();
-				window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#secondPage');
-				WebApp.load();
-			}, timeoutDelay);
+			WebApp.unload();
+			window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#secondPage');
+			WebApp.load();
 		});
 	},
 	function() {
@@ -302,16 +303,16 @@ var testCases = [
 								startNext();
 							};
 							testPage(assert, 'secondPage', 1);
-							setTimeout(function() {window.location.hash = 'firstPage';}, timeoutDelay);
+							window.location.hash = 'firstPage';
 						};
 						testPage(assert, 'thirdPage', 1);
-						setTimeout(function() {window.location.hash = 'secondPage';}, timeoutDelay);
+						window.location.hash = 'secondPage';
 					};
 					testPage(assert, 'secondPage', 1);
-					setTimeout(function() {window.location.hash = 'thirdPage';}, timeoutDelay);
+					window.location.hash = 'thirdPage';
 				};
 				testPage(assert, 'firstPage', 1);
-				setTimeout(function() {window.location.hash = 'secondPage';}, timeoutDelay);
+				window.location.hash = 'secondPage';
 			});
 		});
 	},
@@ -343,13 +344,13 @@ var testCases = [
 							}, timeoutDelay);
 						};
 						testPage(assert, 'thirdPage', 3);
-						setTimeout(function() {window.location.hash = 'firstPage';}, timeoutDelay);
+						window.location.hash = 'firstPage';
 					};
 					testPage(assert, 'secondPage', 2);
-					setTimeout(function() {window.location.hash = 'thirdPage';}, timeoutDelay);
+					window.location.hash = 'thirdPage';
 				};
 				testPage(assert, 'firstPage', 1);
-				setTimeout(function() {window.location.hash = 'secondPage';}, timeoutDelay);
+				window.location.hash = 'secondPage';
 			});
 		});
 	},
