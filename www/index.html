@@ -11,7 +11,7 @@
 
 <div style="border: 1px solid gray; padding: .4em;">
 	Settings:
-	<label style="padding-left: 1em; white-space:nowrap;">
+	<label style="margin-left: 1em; white-space:nowrap;">
 		Transition
 		<select onchange="WebApp.setDefaultTransition(this.value);">
 			<option value="none">None</option>
@@ -25,19 +25,30 @@
 			<option value="slideorder">Slide Order</option>
 		</select>
 	</label>
-	<label style="padding-left: 1em; white-space:nowrap;"><input type="checkbox" onchange="WebApp.setLogEnabled(this.checked);" checked> Enable log.</label>
+	<button style="margin-left: 1.5em;" onclick="window.location.hash = 'modalWindow';">Open modal</button>
+	<label style="margin-left: 1em; white-space:nowrap;"><input type="checkbox" onchange="WebApp.setLogEnabled(this.checked);" checked> Enable log.</label>
 </div>
 
 <div class="page" id="firstPage">
 	<h1>WebApp - <span style="color:#004;">First Page</span></h1>
 	<p>If you are viewing this page (firstPage), it means that the current browser URL ends with "/index.html#firstPage"</p>
-	<a href="#secondPage">go to the second page</a>
+	#firstPage | <a href="#secondPage">#secondPage</a>
 </div>
 
 <div class="page" id="secondPage">
 	<h1>WebApp - <span style="color:#040;">Second Page</span></h1>
 	<p>If you are viewing this page (secondPage), it means that the current browser URL ends with "/index.html#secondPage"</p>
-	<a href="#firstPage">go to the first page</a>
+	<a href="#firstPage">#firstPage</a> | #secondPage
+</div>
+
+<div class="modal" id="modalWindow" onclick="window.history.back();">
+	<div style="padding: 0.5em;" onclick="event.stopPropagation();">
+		<h1>WebApp - <span style="color:#400;">Modal Window</span></h1>
+		<p>If you are viewing this page (modalWindow), it means that the current browser URL ends with "/index.html#modalWindow"</p>
+		<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a>
+		<br><br>
+		<a href="javascript:window.history.back();">(hide modal)</a>
+	</div>
 </div>
 
 <p id="logMonitor" style="font-family: monospace; color: gray;"></p>
@@ -95,6 +106,18 @@ secondPageElement.onHide = function() {
 };
 secondPageElement.onSearchChange = function(searchData) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onSearchChange(' + searchData + ')</span>';
+};
+
+//Set modalWindow callbacks:
+var modalWindowElement = document.getElementById('modalWindow');
+modalWindowElement.onLoad = function() {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:darkred;">modalWindowElement.onLoad()</span>';
+};
+modalWindowElement.onShow = function(searchData, referrerElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:darkred;">modalWindowElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+};
+modalWindowElement.onHide = function() {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:darkred;">modalWindowElement.onHide()</span>';
 };
 </script>
 
