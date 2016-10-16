@@ -152,7 +152,7 @@ Global elements are components that must always be displayed (common between the
 
 
 ## Page transitions:
-The soft/basic page transition "fade" is enabled by default, but if we need to set a different one, we can use _WebApp.setDefaultTransition('transitionType')_ function API. The available transition types are:
+The soft/basic page transition "fade" is enabled by default, but if we need to set a different one, we can use _WebApp.setDefaultPageTransition('transitionType')_ function API. The available transition types are:
 - 'fade' (which is the soft/basic default page transition);
 - 'pop' (which simulates the "pop" appearing effect);
 - 'flip' (which simulates the "flip" forward effect);
@@ -162,13 +162,13 @@ The soft/basic page transition "fade" is enabled by default, but if we need to s
 - 'sliderev' (which slides the page from the left to the right);
 - 'slideorder' (which also slides the pages, but the direction depends on the page ordering. If switching from the first to the second page, the slide occurs from the right to the left side; And if switching back from the second to the first page, the slide occurs from the left to the right side);
 - 'none' (which disables page transition).
-The different page transition types can be observed/compared in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex05.0_setDefaultTransition.html#firstPage" target="_blank">live preview</a>):
+The different page transition types can be observed/compared in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex05.0_setDefaultPageTransition.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div style="border: 1px solid gray; padding: .4em;">
 	<label style="padding-left: 1em; white-space:nowrap;">
-		Transition
-		<select onchange="WebApp.setDefaultTransition(this.value);">
+		Page transition
+		<select onchange="WebApp.setDefaultPageTransition(this.value);">
 			<option value="none">None</option>
 			<option value="fade" selected>Fade</option>
 			<option value="pop">Pop</option>
@@ -196,7 +196,7 @@ The different page transition types can be observed/compared in the following ex
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
 ```
 
-If we need to set an specific transition to be used once only (without modify the default setting), we can use _WebApp.setNextTransition('transitionType')_ function API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex05.1_setNextTransition.html#firstPage" target="_blank">live preview</a>):
+If we need to set an specific page transition to be used once only (without modify the default setting), we can use _WebApp.setNextPageTransition('transitionType')_ function API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex05.1_setNextPageTransition.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -206,16 +206,16 @@ If we need to set an specific transition to be used once only (without modify th
 	<a href="#secondPage">go to the second page</a><br>
 
 	<!-- uses Pop transition -->
-	(<a href="#secondPage" onclick="WebApp.setNextTransition('pop')">using Pop</a>)<br>
+	(<a href="#secondPage" onclick="WebApp.setNextPageTransition('pop')">using Pop</a>)<br>
 
 	<!-- uses Flip transition -->
-	(<a href="#secondPage" onclick="WebApp.setNextTransition('flip')">using Flip</a>)<br>
+	(<a href="#secondPage" onclick="WebApp.setNextPageTransition('flip')">using Flip</a>)<br>
 
 	<!-- uses Slide transition -->
-	(<a href="#secondPage" onclick="WebApp.setNextTransition('slide')">using Slide</a>)<br>
+	(<a href="#secondPage" onclick="WebApp.setNextPageTransition('slide')">using Slide</a>)<br>
 
 	<!-- uses no transition -->
-	(<a href="#secondPage" onclick="WebApp.setNextTransition('none')">no transition</a>)
+	(<a href="#secondPage" onclick="WebApp.setNextPageTransition('none')">no transition</a>)
 </div>
 
 <div class="page" id="secondPage">
@@ -225,16 +225,16 @@ If we need to set an specific transition to be used once only (without modify th
 	<a href="#firstPage">go to the first page</a><br>
 
 	<!-- uses Pop transition -->
-	(<a href="#firstPage" onclick="WebApp.setNextTransition('pop')">using Pop</a>)<br>
+	(<a href="#firstPage" onclick="WebApp.setNextPageTransition('pop')">using Pop</a>)<br>
 
 	<!-- uses Flip transition -->
-	(<a href="#firstPage" onclick="WebApp.setNextTransition('flip')">using Flip</a>)<br>
+	(<a href="#firstPage" onclick="WebApp.setNextPageTransition('flip')">using Flip</a>)<br>
 
 	<!-- uses Slide transition -->
-	(<a href="#firstPage" onclick="WebApp.setNextTransition('slide')">using Slide</a>)<br>
+	(<a href="#firstPage" onclick="WebApp.setNextPageTransition('slide')">using Slide</a>)<br>
 
 	<!-- uses no transition -->
-	(<a href="#firstPage" onclick="WebApp.setNextTransition('none')">no transition</a>)
+	(<a href="#firstPage" onclick="WebApp.setNextPageTransition('none')">no transition</a>)
 </div>
 
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
@@ -758,33 +758,33 @@ Get the available transition types, to be used between page switching.
 
 **Returns:** {array} An array containing the available transition types.
 
-#### getDefaultTransition()
-Get the default transition type, to be used between every page switching.
+#### getDefaultPageTransition()
+Get the default page transition type, to be used between every page switching.
 
-**Returns:** {string} The default transition type.
+**Returns:** {string} The default page transition type.
 
-#### setDefaultTransition(transitionType)
-Set the default transition type, to be used between every page switching.
-
-**Parameters:**
-
-| Name           | Type   | Description                  |
-|----------------|--------|------------------------------|
-| transitionType | string | The default transition type. |
-
-#### getNextTransition()
-Get the next transition type, to be used between the next page switching only.
-
-**Returns:** {string} The next transition type.
-
-#### setNextTransition(transitionType)
-Set the next transition type, to be used between the next page switching only.
+#### setDefaultPageTransition(transitionType)
+Set the default page transition type, to be used between every page switching.
 
 **Parameters:**
 
-| Name           | Type   | Description               |
-|----------------|--------|---------------------------|
-| transitionType | string | The next transition type. |
+| Name           | Type   | Description                       |
+|----------------|--------|-----------------------------------|
+| transitionType | string | The default page transition type. |
+
+#### getNextPageTransition()
+Get the next page transition type, to be used between the next page switching only.
+
+**Returns:** {string} The next page transition type.
+
+#### setNextPageTransition(transitionType)
+Set the next page transition type, to be used between the next page switching only.
+
+**Parameters:**
+
+| Name           | Type   | Description                    |
+|----------------|--------|--------------------------------|
+| transitionType | string | The next page transition type. |
 
 #### load()
 Load the WebApp framework library. It is called automatically after DOMContentLoaded event, but it is useful to reset/reload page elements (according to the current body's children nodes).

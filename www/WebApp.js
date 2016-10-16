@@ -336,8 +336,8 @@ var WebAppClass = function() {
 
 	var animationTypes = ['fadein', 'fadeout', 'popin', 'popout', 'flipin', 'flipout', 'fliprevin', 'fliprevout', 'slidein', 'slideout', 'sliderevin', 'sliderevout'];
 	var transitionTypes = ['none', 'fade', 'pop', 'flip', 'fliprev', 'fliporder', 'slide', 'sliderev', 'slideorder'];
-	var defaultTransition = transitionTypes[1];
-	var nextTransition = null;
+	var defaultPageTransition = transitionTypes[1];
+	var nextPageTransition = null;
 
 	//################################################################################//
 	// Animation/Transition API:
@@ -372,39 +372,39 @@ var WebAppClass = function() {
 	};
 
 	/**
-	 * Get the default transition type, to be used between every page switching.
+	 * Get the default page transition type, to be used between every page switching.
 	 *
-	 * @return {string} The default transition type.
+	 * @return {string} The default page transition type.
 	 */
-	this.getDefaultTransition = function() {
-		return defaultTransition;
+	this.getDefaultPageTransition = function() {
+		return defaultPageTransition;
 	};
 
 	/**
-	 * Set the default transition type, to be used between every page switching.
+	 * Set the default page transition type, to be used between every page switching.
 	 *
-	 * @param {string} transitionType - The default transition type.
+	 * @param {string} transitionType - The default page transition type.
 	 */
-	this.setDefaultTransition = function(transitionType) {
-		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) defaultTransition = transitionType;
+	this.setDefaultPageTransition = function(transitionType) {
+		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) defaultPageTransition = transitionType;
 	};
 
 	/**
-	 * Get the next transition type, to be used between the next page switching only.
+	 * Get the next page transition type, to be used between the next page switching only.
 	 *
-	 * @return {string} The next transition type.
+	 * @return {string} The next page transition type.
 	 */
-	this.getNextTransition = function() {
-		return nextTransition;
+	this.getNextPageTransition = function() {
+		return nextPageTransition;
 	};
 
 	/**
-	 * Set the next transition type, to be used between the next page switching only.
+	 * Set the next page transition type, to be used between the next page switching only.
 	 *
-	 * @param {string} transitionType - The next transition type.
+	 * @param {string} transitionType - The next page transition type.
 	 */
-	this.setNextTransition = function(transitionType) {
-		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) nextTransition = transitionType;
+	this.setNextPageTransition = function(transitionType) {
+		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) nextPageTransition = transitionType;
 	};
 
 	//################################################################################//
@@ -649,28 +649,28 @@ var WebAppClass = function() {
 	}
 
 	function switchPage(pageElement, searchData) {
-		if (!nextTransition) nextTransition = defaultTransition;
-		if (nextTransition === 'fliporder') {
-			nextTransition = (currentPage && pageIds.indexOf(currentPage.id) > pageIds.indexOf(pageElement.id))? 'fliprev': 'flip';
-		} else if (nextTransition === 'slideorder') {
-			nextTransition = (currentPage && pageIds.indexOf(currentPage.id) > pageIds.indexOf(pageElement.id))? 'sliderev': 'slide';
+		if (!nextPageTransition) nextPageTransition = defaultPageTransition;
+		if (nextPageTransition === 'fliporder') {
+			nextPageTransition = (currentPage && pageIds.indexOf(currentPage.id) > pageIds.indexOf(pageElement.id))? 'fliprev': 'flip';
+		} else if (nextPageTransition === 'slideorder') {
+			nextPageTransition = (currentPage && pageIds.indexOf(currentPage.id) > pageIds.indexOf(pageElement.id))? 'sliderev': 'slide';
 		}
 
-		if (nextTransition === 'none') {
+		if (nextPageTransition === 'none') {
 			if (currentPage) hideElement(currentPage);
 			showElement(pageElement, searchData, currentPage);
-			nextTransition = null;
+			nextPageTransition = null;
 			if (typeof WebApp.onSwitchPage === 'function') WebApp.onSwitchPage(pageElement, currentPage);
 		} else {
 			var showNext = function(current) {
-				animateElement(pageElement, nextTransition + 'in', null);
+				animateElement(pageElement, nextPageTransition + 'in', null);
 				showElement(pageElement, searchData, current);
-				nextTransition = null;
+				nextPageTransition = null;
 				if (typeof WebApp.onSwitchPage === 'function') WebApp.onSwitchPage(pageElement, currentPage);
 			};
 			if (currentPage) {
 				var current = currentPage;
-				animateElement(current, nextTransition + 'out', function() {
+				animateElement(current, nextPageTransition + 'out', function() {
 					hideElement(current);
 					showNext(current);
 				});
