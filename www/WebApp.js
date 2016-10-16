@@ -338,6 +338,8 @@ var WebAppClass = function() {
 	var transitionTypes = ['none', 'fade', 'pop', 'flip', 'fliprev', 'fliporder', 'slide', 'sliderev', 'slideorder'];
 	var defaultPageTransition = transitionTypes[1];
 	var nextPageTransition = null;
+	var defaultModalTransition = transitionTypes[2];
+	var nextModalTransition = null;
 
 	//################################################################################//
 	// Animation/Transition API:
@@ -372,7 +374,7 @@ var WebAppClass = function() {
 	};
 
 	/**
-	 * Get the default page transition type, to be used between every page switching.
+	 * Get the default transition type, to be used between every page switching.
 	 *
 	 * @return {string} The default page transition type.
 	 */
@@ -381,7 +383,7 @@ var WebAppClass = function() {
 	};
 
 	/**
-	 * Set the default page transition type, to be used between every page switching.
+	 * Set the default transition type, to be used between every page switching.
 	 *
 	 * @param {string} transitionType - The default page transition type.
 	 */
@@ -390,7 +392,7 @@ var WebAppClass = function() {
 	};
 
 	/**
-	 * Get the next page transition type, to be used between the next page switching only.
+	 * Get the next transition type, to be used between the next page switching only.
 	 *
 	 * @return {string} The next page transition type.
 	 */
@@ -399,12 +401,48 @@ var WebAppClass = function() {
 	};
 
 	/**
-	 * Set the next page transition type, to be used between the next page switching only.
+	 * Set the next transition type, to be used between the next page switching only.
 	 *
 	 * @param {string} transitionType - The next page transition type.
 	 */
 	this.setNextPageTransition = function(transitionType) {
 		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) nextPageTransition = transitionType;
+	};
+
+	/**
+	 * Get the default transition type, to be used between every modal switching.
+	 *
+	 * @return {string} The default modal transition type.
+	 */
+	this.getDefaultModalTransition = function() {
+		return defaultModalTransition;
+	};
+
+	/**
+	 * Set the default transition type, to be used between every modal switching.
+	 *
+	 * @param {string} transitionType - The default modal transition type.
+	 */
+	this.setDefaultModalTransition = function(transitionType) {
+		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) defaultModalTransition = transitionType;
+	};
+
+	/**
+	 * Get the next transition type, to be used between the next modal switching only.
+	 *
+	 * @return {string} The next modal transition type.
+	 */
+	this.getNextModalTransition = function() {
+		return nextModalTransition;
+	};
+
+	/**
+	 * Set the next transition type, to be used between the next modal switching only.
+	 *
+	 * @param {string} transitionType - The next modal transition type.
+	 */
+	this.setNextModalTransition = function(transitionType) {
+		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) nextModalTransition = transitionType;
 	};
 
 	//################################################################################//
@@ -680,17 +718,22 @@ var WebAppClass = function() {
 	}
 
 	function switchModal(switchOn, modalElement, searchData) {
+		if (!nextModalTransition) nextModalTransition = defaultModalTransition;
+		if (nextModalTransition === 'fliporder') nextModalTransition = 'flip';
+		else if (nextModalTransition === 'slideorder') nextPageTransition = 'slide';
+
 		if (switchOn) {
 			animateElement(modalElement, 'fadein', null);
-			animateElement(modalElement.children[0], 'popin', null);
+			animateElement(modalElement.children[0], nextModalTransition + 'in', null);
 			showElement(modalElement, searchData, currentPage);
 			currentModal = modalElement;
 		} else {
-			animateElement(modalElement.children[0], 'popout', null);
+			animateElement(modalElement.children[0], nextModalTransition + 'out', null);
 			animateElement(modalElement, 'fadeout', function() {
 				hideElement(modalElement);
 			});
 			currentModal = null;
+			nextModalTransition = null;
 		}
 		if (typeof WebApp.onSwitchModal === 'function') WebApp.onSwitchModal(switchOn, modalElement, currentPage);
 	}

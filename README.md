@@ -500,7 +500,9 @@ Modal window are elements designed to appear over page elements. The primary pur
 
 **Important Note:** the whole modal content must be inside another single element (which in this case is using style padding: 0.5em), in order to generate a single pop-up dialog.
 
-If we want a modal window that closes automatically on click outside the dialog content, we can use the following implementation with "onclick" handling instead (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.1_hideOnClickOutside.html#firstPage" target="_blank">live preview</a>):
+The pop-up modal transition "pop" is enabled by default, but if we need to set a different one, we can use _WebApp.setDefaultModalTransition('transitionType')_ function API. And if we need to set an specific modal transition to be used once only (without modify the default setting), we can use _WebApp.setNextModalTransition('transitionType')_ function API, similar as described in the "page transitions" section.
+
+If we need a modal window that closes automatically on click outside the dialog content, we can use the following implementation with "onclick" handling instead (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.1_hideOnClickOutside.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="modal" id="modalWindow" onclick="window.history.back();">
@@ -759,12 +761,12 @@ Get the available transition types, to be used between page switching.
 **Returns:** {array} An array containing the available transition types.
 
 #### getDefaultPageTransition()
-Get the default page transition type, to be used between every page switching.
+Get the default transition type, to be used between every page switching.
 
 **Returns:** {string} The default page transition type.
 
 #### setDefaultPageTransition(transitionType)
-Set the default page transition type, to be used between every page switching.
+Set the default transition type, to be used between every page switching.
 
 **Parameters:**
 
@@ -773,18 +775,46 @@ Set the default page transition type, to be used between every page switching.
 | transitionType | string | The default page transition type. |
 
 #### getNextPageTransition()
-Get the next page transition type, to be used between the next page switching only.
+Get the next transition type, to be used between the next page switching only.
 
 **Returns:** {string} The next page transition type.
 
 #### setNextPageTransition(transitionType)
-Set the next page transition type, to be used between the next page switching only.
+Set the next transition type, to be used between the next page switching only.
 
 **Parameters:**
 
 | Name           | Type   | Description                    |
 |----------------|--------|--------------------------------|
 | transitionType | string | The next page transition type. |
+
+#### getDefaultModalTransition()
+Get the default transition type, to be used between every modal switching.
+
+**Returns:** {string} The default modal transition type.
+
+#### setDefaultModalTransition(transitionType)
+Set the default transition type, to be used between every modal switching.
+
+**Parameters:**
+
+| Name           | Type   | Description                       |
+|----------------|--------|-----------------------------------|
+| transitionType | string | The default modal transition type. |
+
+#### getNextModalTransition()
+Get the next transition type, to be used between the next modal switching only.
+
+**Returns:** {string} The next modal transition type.
+
+#### setNextModalTransition(transitionType)
+Set the next transition type, to be used between the next modal switching only.
+
+**Parameters:**
+
+| Name           | Type   | Description                    |
+|----------------|--------|--------------------------------|
+| transitionType | string | The next modal transition type. |
 
 #### load()
 Load the WebApp framework library. It is called automatically after DOMContentLoaded event, but it is useful to reset/reload page elements (according to the current body's children nodes).

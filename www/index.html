@@ -25,7 +25,18 @@
 			<option value="slideorder">Slide Order</option>
 		</select>
 	</label>
-	<button style="margin-left: 1.5em;" onclick="window.location.hash = 'modalWindow';">Open modal</button>
+	<label style="margin-left: 1em; white-space:nowrap;">
+		Modal transition
+		<select onchange="WebApp.setDefaultModalTransition(this.value);">
+			<option value="none">None</option>
+			<option value="fade">Fade</option>
+			<option value="pop" selected>Pop</option>
+			<option value="flip">Flip</option>
+			<option value="fliprev">Flip Reverse</option>
+			<option value="slide">Slide</option>
+			<option value="sliderev">Slide Reverse</option>
+		</select>
+	</label>
 	<label style="margin-left: 1em; white-space:nowrap;"><input type="checkbox" onchange="WebApp.setLogEnabled(this.checked);" checked> Enable log.</label>
 </div>
 
@@ -50,6 +61,9 @@
 		<a href="javascript:window.history.back();">(hide modal)</a>
 	</div>
 </div>
+
+<br>
+<a href="#modalWindow">(show modal)</a>
 
 <p id="logMonitor" style="font-family: monospace; color: gray;"></p>
 
