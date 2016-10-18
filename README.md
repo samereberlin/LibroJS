@@ -481,9 +481,6 @@ Modal window are elements designed to appear over page elements. The primary pur
 	<a href="#firstPage">go to the first page</a>
 </div>
 
-<br>
-<a href="#modalWindow">(show modal)</a>
-
 <div class="modal" id="modalWindow">
 	<div style="padding: 0.5em;">
 		<h1>Modal Window</h1>
@@ -492,6 +489,9 @@ Modal window are elements designed to appear over page elements. The primary pur
 		<a href="javascript:window.history.back();">(hide modal)</a>
 	</div>
 </div>
+
+<br>
+<a href="#modalWindow">(show modal)</a>
 
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
 
