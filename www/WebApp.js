@@ -499,7 +499,7 @@ var WebAppClass = function() {
 				'.sliderevin {animation-name: sliderevin; transform: translateX(0);}' +
 				'.sliderevout {animation-name: sliderevout; transform: translateX(100%);}' +
 				'/* WebApp basic/required CSS rules. */' +
-				'.modal {background-color: rgba(0, 0, 0, 0.5); position: fixed; top: 0; right: 0; bottom: 0; left: 0; overflow: auto;}' +
+				'.modal {background-color: rgba(0, 0, 0, 0.5); position: fixed; top: 0; right: 0; bottom: 0; left: 0; overflow: auto; z-index: 2}' +
 				'.modal > * {background-color: white; border-radius: 0.3125em; box-shadow: 0 2px 12px rgba(0,0,0,0.6); margin: 10% auto 1em; max-width: 600px; width: 80%;}'
 			;
 			document.getElementsByTagName('head')[0].appendChild(style);
