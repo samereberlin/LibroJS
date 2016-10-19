@@ -454,6 +454,7 @@ var WebAppClass = function() {
 
 		// Load body elements:
 		pageIds = []; // Required to reset page IDs.
+		modalIds = []; // Required to reset modal IDs.
 		pageElements = {}; // Required to reset page elements.
 		modalElements = {}; // Required to reset modal elements.
 		Array.prototype.forEach.call(document.body.children, function(element) {
@@ -722,20 +723,24 @@ var WebAppClass = function() {
 		if (nextModalTransition === 'fliporder') nextModalTransition = 'flip';
 		else if (nextModalTransition === 'slideorder') nextPageTransition = 'slide';
 
+		var onSwitchModal = function() {
+			if (typeof WebApp.onSwitchModal === 'function') WebApp.onSwitchModal(switchOn, modalElement, currentPage);
+		};
 		if (switchOn) {
 			animateElement(modalElement, 'fadein', null);
 			animateElement(modalElement.children[0], nextModalTransition + 'in', null);
 			showElement(modalElement, searchData, currentPage);
 			currentModal = modalElement;
+			onSwitchModal();
 		} else {
 			animateElement(modalElement.children[0], nextModalTransition + 'out', null);
 			animateElement(modalElement, 'fadeout', function() {
 				hideElement(modalElement);
+				onSwitchModal();
 			});
 			currentModal = null;
 			nextModalTransition = null;
 		}
-		if (typeof WebApp.onSwitchModal === 'function') WebApp.onSwitchModal(switchOn, modalElement, currentPage);
 	}
 
 	function animateElement(element, animation, callback) {
@@ -757,8 +762,8 @@ var WebAppClass = function() {
 	}
 
 	function hideElement(element) {
-		if (typeof element.onHide === 'function') element.onHide();
 		element.style.display = 'none';
+		if (typeof element.onHide === 'function') element.onHide();
 	}
 
 	//################################################################################//
