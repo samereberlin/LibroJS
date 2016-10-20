@@ -163,6 +163,8 @@ The soft/basic page transition "fade" is enabled by default, but if we need to s
 - 'slideorder' (which also slides the pages, but the direction depends on the page ordering. If switching from the first to the second page, the slide occurs from the right to the left side; And if switching back from the second to the first page, the slide occurs from the left to the right side);
 - 'drawertop' (which slides the pages "in" from the top, and slides it "out" also to the top, simulating a kind of drawer in the top);
 - 'drawerbottom' (which slides the pages "in" from the bottom, and slides it "out" also to the bottom, simulating a kind of drawer in the bottom);
+- 'drawerleft' (which slides the pages "in" from the left, and slides it "out" also to the left, simulating a kind of drawer in the left);
+- 'drawerright' (which slides the pages "in" from the right, and slides it "out" also to the right, simulating a kind of drawer in the right);
 - 'none' (which disables page transition).
 The different page transition types can be observed/compared in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex05.0_setDefaultPageTransition.html#firstPage" target="_blank">live preview</a>):
 

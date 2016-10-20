@@ -334,8 +334,8 @@ var WebAppClass = function() {
 	//################################################################################//
 	// Animation/Transition settings:
 
-	var animationTypes = ['fadein', 'fadeout', 'popin', 'popout', 'flipin', 'flipout', 'fliprevin', 'fliprevout', 'slidein', 'slideout', 'sliderevin', 'sliderevout', 'drawertopin', 'drawertopout', 'drawerbottomin', 'drawerbottomout'];
-	var transitionTypes = ['none', 'fade', 'pop', 'flip', 'fliprev', 'fliporder', 'slide', 'sliderev', 'slideorder', 'drawertop', 'drawerbottom'];
+	var animationTypes = ['fadein', 'fadeout', 'popin', 'popout', 'flipin', 'flipout', 'fliprevin', 'fliprevout', 'slidein', 'slideout', 'sliderevin', 'sliderevout', 'drawertopin', 'drawertopout', 'drawerbottomin', 'drawerbottomout', 'drawerleftin', 'drawerleftout', 'drawerrightin', 'drawerrightout'];
+	var transitionTypes = ['none', 'fade', 'pop', 'flip', 'fliprev', 'fliporder', 'slide', 'sliderev', 'slideorder', 'drawertop', 'drawerbottom', 'drawerleft', 'drawerright'];
 	var defaultPageTransition = transitionTypes[1];
 	var nextPageTransition = null;
 	var defaultModalTransition = transitionTypes[2];
@@ -503,12 +503,20 @@ var WebAppClass = function() {
 				'@keyframes drawertopout {from {transform: translateY(0);} to {transform: translateY(-100%);}}' +
 				'@keyframes drawerbottomin {from {transform: translateY(100%);} to {transform: translateY(0);}}' +
 				'@keyframes drawerbottomout {from {transform: translateY(0);} to {transform: translateY(100%);}}' +
-				'.drawertopin, .drawerbottomin {animation-duration: 225ms; animation-timing-function: ease-out;}' +
-				'.drawertopout, .drawerbottomout {animation-duration: 125ms; animation-timing-function: ease-in;}' +
+				'@keyframes drawerleftin {from {transform: translateX(-100%);} to {transform: translateX(0);}}' +
+				'@keyframes drawerleftout {from {transform: translateX(0);} to {transform: translateX(-100%);}}' +
+				'@keyframes drawerrightin {from {transform: translateX(100%);} to {transform: translateX(0);}}' +
+				'@keyframes drawerrightout {from {transform: translateX(0);} to {transform: translateX(100%);}}' +
+				'.drawertopin, .drawerbottomin, .drawerleftin, .drawerrightin {animation-duration: 225ms; animation-timing-function: ease-out;}' +
+				'.drawertopout, .drawerbottomout, .drawerleftout, .drawerrightout {animation-duration: 125ms; animation-timing-function: ease-in;}' +
 				'.drawertopin {animation-name: drawertopin; transform: translateY(0);}' +
 				'.drawertopout {animation-name: drawertopout; transform: translateY(-100%);}' +
 				'.drawerbottomin {animation-name: drawerbottomin; transform: translateY(0);}' +
 				'.drawerbottomout {animation-name: drawerbottomout; transform: translateY(100%);}' +
+				'.drawerleftin {animation-name: drawerleftin; transform: translateX(0);}' +
+				'.drawerleftout {animation-name: drawerleftout; transform: translateX(-100%);}' +
+				'.drawerrightin {animation-name: drawerrightin; transform: translateX(0);}' +
+				'.drawerrightout {animation-name: drawerrightout; transform: translateX(100%);}' +
 				'/* WebApp basic/required CSS rules. */' +
 				'.modal {background-color: rgba(0, 0, 0, 0.5); position: fixed; top: 0; right: 0; bottom: 0; left: 0; overflow: auto; z-index: 2}' +
 				'.modal > * {background-color: white; border-radius: 0.3125em; box-shadow: 0 2px 12px rgba(0,0,0,0.6); margin: 10% auto 1em; max-width: 600px; width: 80%;}'
