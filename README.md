@@ -152,7 +152,7 @@ Global elements are components that must always be displayed (common between the
 
 
 ## Page transitions:
-The soft/basic page transition "fade" is enabled by default, but if we need to set a different one, we can use _WebApp.setDefaultPageTransition('transitionType')_ function API. The available transition types are:
+The soft/basic page transition "fade" is enabled by default, but if we need to set a different one, we can use _WebApp.setDefaultPageTransition('transitionType')_ function API. But if we need to set a different transition for an specific page only, we just need to set the _transition="transitionType"_ DOM element property. The available transition types are:
 - 'fade' (which is the soft/basic default page transition);
 - 'pop' (which simulates the "pop" appearing effect);
 - 'flip' (which simulates the "flip" forward effect);
@@ -176,16 +176,9 @@ The different page transition types can be observed/compared in the following ex
 			<option value="none">None</option>
 			<option value="fade" selected>Fade</option>
 			<option value="pop">Pop</option>
-			<option value="flip">Flip</option>
-			<option value="fliprev">Flip Reverse</option>
-			<option value="fliporder">Flip Order</option>
-			<option value="slide">Slide</option>
-			<option value="sliderev">Slide Reverse</option>
-			<option value="slideorder">Slide Order</option>
 		</select>
 	</label>
 </div>
-
 
 <div class="page" id="firstPage">
 	<h1>First Page</h1>
@@ -212,12 +205,6 @@ If we need to set an specific page transition to be used once only (without modi
 	<!-- uses Pop transition -->
 	(<a href="#secondPage" onclick="WebApp.setNextPageTransition('pop')">using Pop</a>)<br>
 
-	<!-- uses Flip transition -->
-	(<a href="#secondPage" onclick="WebApp.setNextPageTransition('flip')">using Flip</a>)<br>
-
-	<!-- uses Slide transition -->
-	(<a href="#secondPage" onclick="WebApp.setNextPageTransition('slide')">using Slide</a>)<br>
-
 	<!-- uses no transition -->
 	(<a href="#secondPage" onclick="WebApp.setNextPageTransition('none')">no transition</a>)
 </div>
@@ -230,12 +217,6 @@ If we need to set an specific page transition to be used once only (without modi
 
 	<!-- uses Pop transition -->
 	(<a href="#firstPage" onclick="WebApp.setNextPageTransition('pop')">using Pop</a>)<br>
-
-	<!-- uses Flip transition -->
-	(<a href="#firstPage" onclick="WebApp.setNextPageTransition('flip')">using Flip</a>)<br>
-
-	<!-- uses Slide transition -->
-	(<a href="#firstPage" onclick="WebApp.setNextPageTransition('slide')">using Slide</a>)<br>
 
 	<!-- uses no transition -->
 	(<a href="#firstPage" onclick="WebApp.setNextPageTransition('none')">no transition</a>)
@@ -504,7 +485,7 @@ Modal window are elements designed to appear over page elements. The primary pur
 
 **Important Note:** the whole modal content must be inside another single element (which in this case is using style padding: 0.5em), in order to generate a single pop-up dialog.
 
-The pop-up modal transition "pop" is enabled by default, but if we need to set a different one, we can use _WebApp.setDefaultModalTransition('transitionType')_ function API. And if we need to set an specific modal transition to be used once only (without modify the default setting), we can use _WebApp.setNextModalTransition('transitionType')_ function API, similar as described in the "page transitions" section.
+The pop-up modal transition "pop" is enabled by default, but if we need to set a different one, we can use _WebApp.setDefaultModalTransition('transitionType')_ function API. But if we need to set a different transition for an specific modal only, we just need to set the _transition="transitionType"_ DOM element property. And if we need to set an specific modal transition to be used once only (without modify the default setting), we can use _WebApp.setNextModalTransition('transitionType')_ function API, similar as described in the "page transitions" section.
 
 If we need a modal window that closes automatically on click outside the dialog content, we can use the following implementation with "onclick" handling instead (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.1_hideOnClickOutside.html#firstPage" target="_blank">live preview</a>):
 
