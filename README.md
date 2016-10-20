@@ -485,8 +485,6 @@ Modal window are elements designed to appear over page elements. The primary pur
 
 **Important Note:** the whole modal content must be inside another single element (which in this case is using style padding: 0.5em), in order to generate a single pop-up dialog.
 
-The pop-up modal transition "pop" is enabled by default, but if we need to set a different one, we can use _WebApp.setDefaultModalTransition('transitionType')_ function API. But if we need to set a different transition for an specific modal only, we just need to set the _transition="transitionType"_ DOM element property. And if we need to set an specific modal transition to be used once only (without modify the default setting), we can use _WebApp.setNextModalTransition('transitionType')_ function API, similar as described in the "page transitions" section.
-
 If we need a modal window that closes automatically on click outside the dialog content, we can use the following implementation with "onclick" handling instead (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.1_hideOnClickOutside.html#firstPage" target="_blank">live preview</a>):
 
 ```html
@@ -531,6 +529,37 @@ WebApp.createModal('modalWindow', null, '<div style="padding: 0.5em;">'
 </script>
 
 </body>
+```
+
+The pop-up modal transition "pop" is enabled by default, but if we need to set a different one, we can use _WebApp.setDefaultModalTransition('transitionType')_ function API. But if we need to set a different transition for an specific modal only, we just need to set the _transition="transitionType"_ DOM element property. And if we need to set an specific modal transition to be used once only (without modify the default setting), we can use _WebApp.setNextModalTransition('transitionType')_ function API, similar as described in the "page transitions" section. The following example demonstrates how to create a simple modal "drawer element" and a simple modal "top menu" (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.3_modalMenus.html#firstPage" target="_blank">live preview</a>).
+
+```html
+<div class="page" id="firstPage">
+	<h1>First Page</h1>
+	<a href="#modalSideMenu">Side Menu</a> |
+	<a href="#modalTopMenu">Top Menu</a>
+</div>
+
+<div class="modal" id="modalTopMenu" onclick="window.history.back();">
+	<div transition="drawertop" onclick="event.stopPropagation();"
+			style="border-radius: 0; margin: 0 0 auto auto; max-width: 300px; padding: 0.5em;">
+		<h2>Modal - Top Menu</h2>
+		<br>
+		<a href="javascript:window.history.back();">(hide modal)</a>
+	</div>
+</div>
+
+<div class="modal" id="modalSideMenu" onclick="window.history.back();">
+	<div transition="drawerleft" onclick="event.stopPropagation();"
+			style="border-radius: 0; margin: 0; max-width: 300px; padding: 0.5em;
+				position: fixed; top: 0; bottom: 0; left: 0; overflow: auto;">
+		<h2>Modal - Side Menu</h2>
+		<br>
+		<a href="javascript:window.history.back();">(hide modal)</a>
+	</div>
+</div>
+
+<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
 ```
 
 
