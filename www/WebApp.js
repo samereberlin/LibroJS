@@ -334,8 +334,8 @@ var WebAppClass = function() {
 	//################################################################################//
 	// Animation/Transition settings:
 
-	var animationTypes = ['fadein', 'fadeout', 'popin', 'popout', 'flipin', 'flipout', 'fliprevin', 'fliprevout', 'slidein', 'slideout', 'sliderevin', 'sliderevout', 'slidetopin', 'slidetopout', 'slidebottomin', 'slidebottomout'];
-	var transitionTypes = ['none', 'fade', 'pop', 'flip', 'fliprev', 'fliporder', 'slide', 'sliderev', 'slideorder', 'slidetop', 'slidebottom'];
+	var animationTypes = ['fadein', 'fadeout', 'popin', 'popout', 'flipin', 'flipout', 'fliprevin', 'fliprevout', 'slidein', 'slideout', 'sliderevin', 'sliderevout', 'drawertopin', 'drawertopout', 'drawerbottomin', 'drawerbottomout'];
+	var transitionTypes = ['none', 'fade', 'pop', 'flip', 'fliprev', 'fliporder', 'slide', 'sliderev', 'slideorder', 'drawertop', 'drawerbottom'];
 	var defaultPageTransition = transitionTypes[1];
 	var nextPageTransition = null;
 	var defaultModalTransition = transitionTypes[2];
@@ -499,16 +499,16 @@ var WebAppClass = function() {
 				'.slideout {animation-name: slideout; transform: translateX(-100%);}' +
 				'.sliderevin {animation-name: sliderevin; transform: translateX(0);}' +
 				'.sliderevout {animation-name: sliderevout; transform: translateX(100%);}' +
-				'@keyframes slidetopin {from {transform: translateY(-100%);} to {transform: translateY(0);}}' +
-				'@keyframes slidetopout {from {transform: translateY(0);} to {transform: translateY(-100%);}}' +
-				'@keyframes slidebottomin {from {transform: translateY(100%);} to {transform: translateY(0);}}' +
-				'@keyframes slidebottomout {from {transform: translateY(0);} to {transform: translateY(100%);}}' +
-				'.slidetopin, .slidebottomin {animation-duration: 225ms; animation-timing-function: ease-out;}' +
-				'.slidetopout, .slidebottomout {animation-duration: 125ms; animation-timing-function: ease-in;}' +
-				'.slidetopin {animation-name: slidetopin; transform: translateY(0);}' +
-				'.slidetopout {animation-name: slidetopout; transform: translateY(-100%);}' +
-				'.slidebottomin {animation-name: slidebottomin; transform: translateY(0);}' +
-				'.slidebottomout {animation-name: slidebottomout; transform: translateY(100%);}' +
+				'@keyframes drawertopin {from {transform: translateY(-100%);} to {transform: translateY(0);}}' +
+				'@keyframes drawertopout {from {transform: translateY(0);} to {transform: translateY(-100%);}}' +
+				'@keyframes drawerbottomin {from {transform: translateY(100%);} to {transform: translateY(0);}}' +
+				'@keyframes drawerbottomout {from {transform: translateY(0);} to {transform: translateY(100%);}}' +
+				'.drawertopin, .drawerbottomin {animation-duration: 225ms; animation-timing-function: ease-out;}' +
+				'.drawertopout, .drawerbottomout {animation-duration: 125ms; animation-timing-function: ease-in;}' +
+				'.drawertopin {animation-name: drawertopin; transform: translateY(0);}' +
+				'.drawertopout {animation-name: drawertopout; transform: translateY(-100%);}' +
+				'.drawerbottomin {animation-name: drawerbottomin; transform: translateY(0);}' +
+				'.drawerbottomout {animation-name: drawerbottomout; transform: translateY(100%);}' +
 				'/* WebApp basic/required CSS rules. */' +
 				'.modal {background-color: rgba(0, 0, 0, 0.5); position: fixed; top: 0; right: 0; bottom: 0; left: 0; overflow: auto; z-index: 2}' +
 				'.modal > * {background-color: white; border-radius: 0.3125em; box-shadow: 0 2px 12px rgba(0,0,0,0.6); margin: 10% auto 1em; max-width: 600px; width: 80%;}'

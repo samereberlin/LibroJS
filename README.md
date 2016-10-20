@@ -161,8 +161,8 @@ The soft/basic page transition "fade" is enabled by default, but if we need to s
 - 'slide' (which slides the pages from the right to the left);
 - 'sliderev' (which slides the page from the left to the right);
 - 'slideorder' (which also slides the pages, but the direction depends on the page ordering. If switching from the first to the second page, the slide occurs from the right to the left side; And if switching back from the second to the first page, the slide occurs from the left to the right side);
-- 'slidetop' (which slides the pages from the top to the bottom);
-- 'slidebottom' (which slides the pages from the bottom to the top);
+- 'drawertop' (which slides the pages "in" from the top, and slides it "out" also to the top, simulating a kind of drawer in the top);
+- 'drawerbottom' (which slides the pages "in" from the bottom, and slides it "out" also to the bottom, simulating a kind of drawer in the bottom);
 - 'none' (which disables page transition).
 The different page transition types can be observed/compared in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex05.0_setDefaultPageTransition.html#firstPage" target="_blank">live preview</a>):
 
@@ -517,7 +517,7 @@ If we need a modal window that closes automatically on click outside the dialog 
 </div>
 ```
 
-If we need to create another modal after application startup, or dynamically during execution (on run-time), we can use _WebApp.createModal('modalId', 'extraClass', 'modalContent')_ function API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.2_createModal.html#firstPage" target="_blank">live preview</a>):
+If we need to create another modal after application startup, or dynamically during execution (on run-time), we can use _WebApp.createModal('modalId', 'extraClass', 'modalContent')_ function API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.2_createModal.html#firstPage" target="_blank">live preview</a>), and _WebApp.deleteModal('modalId')_ function API can be used to remove modals (useful to release memory resources):
 
 ```html
 <body>
@@ -549,8 +549,6 @@ WebApp.createModal('modalWindow', null, '<div style="padding: 0.5em;">'
 
 </body>
 ```
-
-And _WebApp.deleteModal('modalId')_ function API can be used to remove modals (useful to release memory resources).
 
 
 ## Ghost hash support:
