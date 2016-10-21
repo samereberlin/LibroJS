@@ -550,7 +550,8 @@ var WebAppClass = function() {
 		} else {
 			pageIds.push(element.id);
 		}
-		element.transition = element.getAttribute('transition');
+		var transitionType = element.getAttribute('transition');
+		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) element.transitionType = transitionType;
 		if (typeof element.onLoad === 'function') element.onLoad();
 	}
 
@@ -562,7 +563,8 @@ var WebAppClass = function() {
 		element.style.display = 'none';
 		modalElements[element.id] = element;
 		modalIds.push(element.id);
-		element.transition = element.children[0].getAttribute('transition');
+		var transitionType = element.children[0].getAttribute('transition');
+		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) element.transitionType = transitionType;
 		if (typeof element.onLoad === 'function') element.onLoad();
 	}
 
@@ -708,7 +710,7 @@ var WebAppClass = function() {
 	}
 
 	function switchPage(pageElement, searchData) {
-		if (!nextPageTransition) nextPageTransition = pageElement.transition? pageElement.transition: defaultPageTransition;
+		if (!nextPageTransition) nextPageTransition = pageElement.transitionType? pageElement.transitionType: defaultPageTransition;
 		if (nextPageTransition === 'fliporder') {
 			nextPageTransition = (currentPage && pageIds.indexOf(currentPage.id) > pageIds.indexOf(pageElement.id))? 'fliprev': 'flip';
 		} else if (nextPageTransition === 'slideorder') {
@@ -732,7 +734,7 @@ var WebAppClass = function() {
 	}
 
 	function switchModal(switchOn, modalElement, searchData) {
-		if (!nextModalTransition) nextModalTransition = modalElement.transition? modalElement.transition: defaultModalTransition;
+		if (!nextModalTransition) nextModalTransition = modalElement.transitionType? modalElement.transitionType: defaultModalTransition;
 		if (nextModalTransition === 'fliporder') nextModalTransition = 'flip';
 		else if (nextModalTransition === 'slideorder') nextPageTransition = 'slide';
 
