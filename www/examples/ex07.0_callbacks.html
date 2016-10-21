@@ -20,7 +20,7 @@
 	<a href="#firstPage">go to the first page</a>
 </div>
 
-<p id="logMonitor" style="font-family: monospace; color: gray;"></p>
+<p id="logMonitor" style="font-family: monospace; color: darkgray;"></p>
 
 <!-- script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script -->
 <script src="../WebApp.js"></script>
@@ -30,23 +30,14 @@ var logMonitor = document.getElementById('logMonitor');
 
 // Set global callbacks:
 WebApp.onLoad = function() {
-	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:orange;">WebApp.onLoad()</span>';
-}
-WebApp.onUnload = function() {
-	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:orange;">WebApp.onUnload()</span>';
+	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onLoad()</span>';
 }
 WebApp.onPause = function() {
-	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:orange;">WebApp.onPause()</span>';
+	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onPause()</span>';
 }
 WebApp.onResume = function() {
-	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:orange;">WebApp.onResume()</span>';
+	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onResume()</span>';
 }
-WebApp.onResize = function() {
-	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:orange;">WebApp.onResize()</span>';
-}
-WebApp.onKeyDown = function(keyEvent, pageElement) {
-	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:orange;">WebApp.onKeyDown(' + keyEvent.keyCode + ', ' + pageElement.id + ')</span>';
-};
 
 // Set firstPage callbacks:
 var firstPageElement = document.getElementById('firstPage');
@@ -59,9 +50,6 @@ firstPageElement.onShow = function(searchData, referrerElement) {
 firstPageElement.onHide = function() {
 	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onHide()</span>';
 };
-firstPageElement.onSearchChange = function(searchData) {
-	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onSearchChange(' + searchData + ')</span>';
-};
 
 // Set secondPage callbacks:
 var secondPageElement = document.getElementById('secondPage');
@@ -73,9 +61,6 @@ secondPageElement.onShow = function(searchData, referrerElement) {
 };
 secondPageElement.onHide = function() {
 	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onHide()</span>';
-};
-secondPageElement.onSearchChange = function(searchData) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onSearchChange(' + searchData + ')</span>';
 };
 </script>
 

@@ -73,7 +73,7 @@
 <br>
 <a href="#modalWindow">(show modal)</a>
 
-<p id="logMonitor" style="font-family: monospace; color: gray;"></p>
+<p id="logMonitor" style="font-family: monospace; color: darkgray;"></p>
 
 <script src="WebApp.js"></script>
 
@@ -82,22 +82,33 @@ var logMonitor = document.getElementById('logMonitor');
 
 //Set global callbacks:
 WebApp.onLoad = function() {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:orange;">WebApp.onLoad()</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onLoad()</span>';
 }
 WebApp.onUnload = function() {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:orange;">WebApp.onUnload()</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onUnload()</span>';
 }
 WebApp.onPause = function() {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:orange;">WebApp.onPause()</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onPause()</span>';
 }
 WebApp.onResume = function() {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:orange;">WebApp.onResume()</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onResume()</span>';
 }
 WebApp.onResize = function() {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:orange;">WebApp.onResize()</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onResize()</span>';
+}
+WebApp.onUpdateHash = function(hashChangeEvent) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onUpdateHash(hashChangeEvent)' +
+		'<br>&nbsp;&nbsp;&nbsp;&nbsp;hashChangeEvent.newURL: ' + hashChangeEvent.newURL +
+		'<br>&nbsp;&nbsp;&nbsp;&nbsp;hashChangeEvent.oldURL: ' + hashChangeEvent.oldURL + '</span>';
+}
+WebApp.onSwitchPage = function(pageElement, referrerElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onSwitchPage(' + pageElement.id + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+}
+WebApp.onSwitchModal = function(switchOn, modalElement, referrerElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onSwitchModal(' + switchOn + ', ' + modalElement.id + ', ' + referrerElement.id + ')</span>';
 }
 WebApp.onKeyDown = function(keyEvent, pageElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:orange;">WebApp.onKeyDown(' + keyEvent.keyCode + ', ' + pageElement.id + ')</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onKeyDown(' + keyEvent.keyCode + ', ' + pageElement.id + ')</span>';
 };
 
 //Set firstPage callbacks:
@@ -108,11 +119,11 @@ firstPageElement.onLoad = function() {
 firstPageElement.onShow = function(searchData, referrerElement) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
-firstPageElement.onHide = function() {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onHide()</span>';
-};
 firstPageElement.onSearchChange = function(searchData) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onSearchChange(' + searchData + ')</span>';
+};
+firstPageElement.onHide = function() {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onHide()</span>';
 };
 
 //Set secondPage callbacks:
@@ -123,11 +134,11 @@ secondPageElement.onLoad = function() {
 secondPageElement.onShow = function(searchData, referrerElement) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
-secondPageElement.onHide = function() {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onHide()</span>';
-};
 secondPageElement.onSearchChange = function(searchData) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onSearchChange(' + searchData + ')</span>';
+};
+secondPageElement.onHide = function() {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onHide()</span>';
 };
 
 //Set modalWindow callbacks:

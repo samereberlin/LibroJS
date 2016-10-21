@@ -274,6 +274,9 @@ If you do not understand the above explanation, do not be afraid. The use of cal
 
 <script>
 // Set global callbacks:
+WebApp.onLoad = function() {
+	console.log('WebApp.onLoad(): ' + (new Date().toLocaleString()));
+}
 WebApp.onPause = function() {
 	console.log('WebApp.onPause(): ' + (new Date().toLocaleString()));
 }

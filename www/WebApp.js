@@ -721,7 +721,7 @@ var WebAppClass = function() {
 			animateElement(pageElement, nextPageTransition + 'in', null);
 			showElement(pageElement, searchData, current);
 			nextPageTransition = null;
-			if (typeof WebApp.onSwitchPage === 'function') WebApp.onSwitchPage(pageElement, currentPage);
+			if (typeof WebApp.onSwitchPage === 'function') WebApp.onSwitchPage(pageElement, current);
 		};
 		if (currentPage) {
 			var current = currentPage;
