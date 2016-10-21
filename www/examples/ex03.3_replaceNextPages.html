@@ -21,7 +21,6 @@
 // Set firstPage callbacks:
 var firstPageElement = document.getElementById('1');
 firstPageElement.onShow = function() {
-	firstPageElement.onShow = null;
 	createNextPage(firstPageElement);
 	createPreviousPage(firstPageElement);
 };
@@ -31,21 +30,18 @@ function createNextPage(currentPageElement) {
 	// Create the next page according to the currentPageElement:
 	var currentIdIntValue = parseInt(currentPageElement.id);
 	var nextPageId = (currentIdIntValue + 1).toString();
-	var nextPageElement = WebApp.createPage(nextPageId, null, null,
-			'<h1>WebApp - Page ' + nextPageId + '</h1>'
-		 	+ '<p> This is the "replace next" dynamic page creation example, which never reaches the first/last application page.</p>'
-		 	+ '<p>This page has been created/replaced dynamically, without any previous HTML code declaration.</p>'
-			+ '<a href="#' + currentPageElement.id + '">previous page</a> | <a href="#' + (currentIdIntValue + 2).toString() + '">next page</a>');
-
+	var nextPageElement = document.getElementById(nextPageId);
+	if (!nextPageElement) {
+		nextPageElement = WebApp.createPage(nextPageId, null, null,
+				'<h1>WebApp - Page ' + nextPageId + '</h1>'
+			 	+ '<p> This is the "replace next" dynamic page creation example, which never reaches the first/last application page.</p>'
+			 	+ '<p>This page has been created/replaced dynamically, without any previous HTML code declaration.</p>'
+				+ '<a href="#' + currentPageElement.id + '">previous page</a> | <a href="#' + (currentIdIntValue + 2).toString() + '">next page</a>');
+	}
 	// Execute recursive operations in case of onShow callback:
 	nextPageElement.onShow = function() {
-		nextPageElement.onShow = null;
 		createNextPage(nextPageElement);
-		currentPageElement.onShow = function() {
-			currentPageElement.onShow = null;
-			createPreviousPage(currentPageElement);
-			WebApp.deletePage((currentIdIntValue + 2).toString());
-		};
+		createPreviousPage(nextPageElement);
 		WebApp.deletePage((currentIdIntValue - 1).toString());
 	};
 }
@@ -55,21 +51,18 @@ function createPreviousPage(currentPageElement) {
 	// Create the previous page according to the currentPageElement:
 	var currentIdIntValue = parseInt(currentPageElement.id);
 	var previousPageId = (currentIdIntValue - 1).toString();
-	var previousPageElement = WebApp.createPage(previousPageId, null, currentPageElement.id,
-			'<h1>WebApp - Page ' + previousPageId + '</h1>'
-		 	+ '<p> This is the "replace next" dynamic page creation example, which never reaches the first/last application page.</p>'
-		 	+ '<p>This page has been created/replaced dynamically, without any previous HTML code declaration.</p>'
-			+ '<a href="#' + (currentIdIntValue - 2).toString() + '">previous page</a> | <a href="#' + currentPageElement.id + '">next page</a>');
-
+	var previousPageElement = document.getElementById(previousPageId);
+	if (!previousPageElement) {
+		previousPageElement = WebApp.createPage(previousPageId, null, currentPageElement.id,
+				'<h1>WebApp - Page ' + previousPageId + '</h1>'
+			 	+ '<p> This is the "replace next" dynamic page creation example, which never reaches the first/last application page.</p>'
+			 	+ '<p>This page has been created/replaced dynamically, without any previous HTML code declaration.</p>'
+				+ '<a href="#' + (currentIdIntValue - 2).toString() + '">previous page</a> | <a href="#' + currentPageElement.id + '">next page</a>');
+	}
 	// Execute recursive operations in case of onShow callback:
 	previousPageElement.onShow = function() {
-		previousPageElement.onShow = null;
 		createPreviousPage(previousPageElement);
-		currentPageElement.onShow = function() {
-			currentPageElement.onShow = null;
-			createNextPage(currentPageElement);
-			WebApp.deletePage((currentIdIntValue - 2).toString());
-		};
+		createNextPage(previousPageElement);
 		WebApp.deletePage((currentIdIntValue + 1).toString());
 	};
 }
