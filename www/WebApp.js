@@ -771,7 +771,7 @@ var WebAppClass = function() {
 			element.className = element.className.replace(new RegExp('(?:^|\\s)' + animation + '(?!\\S)', 'g'), '');
 			if (typeof callback === 'function') callback();
 		};
-		setTimeout(function() {if (animationRunning) animationEnded();}, 1000);
+		setTimeout(function() {if (animationRunning) animationEnded();}, 1000); // 1000 = animation timeout.
 		element.addEventListener('animationend', animationEnded);
 		element.className += ' ' + animation;
 	}
