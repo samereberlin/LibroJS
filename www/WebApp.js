@@ -715,26 +715,19 @@ var WebAppClass = function() {
 			nextPageTransition = (currentPage && pageIds.indexOf(currentPage.id) > pageIds.indexOf(pageElement.id))? 'sliderev': 'slide';
 		}
 
-		if (nextPageTransition === 'none') {
-			if (currentPage) hideElement(currentPage);
-			showElement(pageElement, searchData, currentPage);
+		var showNext = function(current) {
+			animateElement(pageElement, nextPageTransition + 'in', null);
+			showElement(pageElement, searchData, current);
 			nextPageTransition = null;
 			if (typeof WebApp.onSwitchPage === 'function') WebApp.onSwitchPage(pageElement, currentPage);
-		} else {
-			var showNext = function(current) {
-				animateElement(pageElement, nextPageTransition + 'in', null);
-				showElement(pageElement, searchData, current);
-				nextPageTransition = null;
-				if (typeof WebApp.onSwitchPage === 'function') WebApp.onSwitchPage(pageElement, currentPage);
-			};
-			if (currentPage) {
-				var current = currentPage;
-				animateElement(current, nextPageTransition + 'out', function() {
-					hideElement(current);
-					showNext(current);
-				});
-			} else showNext(currentPage);
-		}
+		};
+		if (currentPage) {
+			var current = currentPage;
+			animateElement(current, nextPageTransition + 'out', function() {
+				hideElement(current);
+				showNext(current);
+			});
+		} else showNext(currentPage);
 		currentPage = pageElement;
 	}
 
@@ -764,16 +757,21 @@ var WebAppClass = function() {
 	}
 
 	function animateElement(element, animation, callback) {
-		var animationRunning = true;
-		var animationEnded = function() {
-			animationRunning = false;
-			element.removeEventListener('animationend', animationEnded);
-			element.className = element.className.replace(new RegExp('(?:^|\\s)' + animation + '(?!\\S)', 'g'), '');
+		//if (animation.substring(0, 4) === 'none') {
+		if (animation === 'nonein' || animation === 'noneout') {
 			if (typeof callback === 'function') callback();
-		};
-		setTimeout(function() {if (animationRunning) animationEnded();}, 1000); // 1000 = animation timeout.
-		element.addEventListener('animationend', animationEnded);
-		element.className += ' ' + animation;
+		} else {
+			var animationRunning = true;
+			var animationEnded = function() {
+				animationRunning = false;
+				element.removeEventListener('animationend', animationEnded);
+				element.className = element.className.replace(new RegExp('(?:^|\\s)' + animation + '(?!\\S)', 'g'), '');
+				if (typeof callback === 'function') callback();
+			};
+			setTimeout(function() {if (animationRunning) animationEnded();}, 1000); // 1000 = animation timeout.
+			element.addEventListener('animationend', animationEnded);
+			element.className += ' ' + animation;
+		}
 	}
 
 	function showElement(element, searchData, referrerElement) {
