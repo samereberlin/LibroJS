@@ -67,7 +67,7 @@ function startNext() {
 }
 
 function testElements(assert, pageId, modalId, historyStackLength) {
-	assert.equal(window.location.hash, '#' + (modalId? modalId: pageId), '====> URL hash: #' + pageId);
+	assert.equal(window.location.hash, '#' + (modalId? modalId: pageId), '====> URL hash: #' + (modalId? modalId: pageId));
 	var pageElements = WebApp.getPageElements();
 	if (pageId) assert.equal(pageElements[pageId].style.display, 'block', pageId + ' page style display: ' + pageElements[pageId].style.display);
 	for (var pageElement in pageElements) {
