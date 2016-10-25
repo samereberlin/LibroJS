@@ -81,6 +81,7 @@ var WebAppClass = function() {
 	var pageIds = [];
 	var pageElements = {};
 	var currentPage = null;
+	var currentGhostPage = null;
 	var currentSearch = null;
 	var defaultPageId = null;
 
@@ -550,8 +551,12 @@ var WebAppClass = function() {
 		} else {
 			pageIds.push(element.id);
 		}
-		var transitionType = element.getAttribute('transition');
-		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) element.transitionType = transitionType;
+		if (element.classList.contains('ghost')) {
+			element.ghostPage = true;
+		} else {
+			var transitionType = element.getAttribute('transition');
+			if (transitionType && transitionTypes.indexOf(transitionType) >= 0) element.transitionType = transitionType;
+		}
 		if (typeof element.onLoad === 'function') element.onLoad();
 	}
 
@@ -577,7 +582,7 @@ var WebAppClass = function() {
 	}
 
 	function reset() {
-		hideElement(currentPage);
+		hideElement(currentPage, currentPage);
 		currentPage = null;
 		currentSearch = null;
 		historyLength = window.history.length;
@@ -646,9 +651,9 @@ var WebAppClass = function() {
 		var nextModal = (!nextPage && nextHash && modalElements[nextHash])? modalElements[nextHash]: null;
 
 		if (currentModal) {
-			switchModal(false, currentModal, nextSearch);
-			// If currentPage and nextPage are not the same element:
-			if (currentPage !== nextPage) {
+			switchModal(false, currentModal, nextPage, nextSearch);
+			// If nextPage is not the same as the currentPage, nor the currentGhostPage:
+			if (currentPage !== nextPage && currentGhostPage !== nextPage) {
 				isModalRedirecting = true;
 				var nextURL = window.location.href;
 				setTimeout(function() { // Timeout required to create history entry for WebKit browsers.
@@ -697,7 +702,7 @@ var WebAppClass = function() {
 					} else switchPage(nextPage, nextSearch);
 				} else if (currentPage) {
 					if (nextModal) {
-						switchModal(true, nextModal, nextSearch);
+						switchModal(true, nextModal, nextPage, nextSearch);
 						modalHistoryLength = window.history.length;
 					} else window.history.back();
 				} else if (defaultPageId) window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#' + defaultPageId);
@@ -708,30 +713,43 @@ var WebAppClass = function() {
 	}
 
 	function switchPage(pageElement, searchData) {
-		if (!nextPageTransition) nextPageTransition = pageElement.transitionType? pageElement.transitionType: defaultPageTransition;
-		if (nextPageTransition === 'fliporder') {
-			nextPageTransition = (currentPage && pageIds.indexOf(currentPage.id) > pageIds.indexOf(pageElement.id))? 'fliprev': 'flip';
-		} else if (nextPageTransition === 'slideorder') {
-			nextPageTransition = (currentPage && pageIds.indexOf(currentPage.id) > pageIds.indexOf(pageElement.id))? 'sliderev': 'slide';
-		}
-
-		var showNext = function(current) {
-			animateElement(pageElement, nextPageTransition + 'in', null);
-			showElement(pageElement, searchData, current);
-			nextPageTransition = null;
-			if (typeof WebApp.onSwitchPage === 'function') WebApp.onSwitchPage(pageElement, current);
+		var onSwitchPage = function(referrerElement) {
+			if (typeof WebApp.onSwitchPage === 'function') WebApp.onSwitchPage(pageElement, referrerElement);
 		};
-		if (currentPage) {
-			var current = currentPage;
-			animateElement(current, nextPageTransition + 'out', function() {
-				hideElement(current);
-				showNext(current);
-			});
-		} else showNext(currentPage);
-		currentPage = pageElement;
+		if (currentGhostPage) {
+			hideElement(currentGhostPage, pageElement);
+			currentGhostPage = null;
+		}
+		if (pageElement.ghostPage) {
+			showElement(pageElement, searchData, currentPage);
+			currentGhostPage = pageElement;
+			onSwitchPage(currentPage);
+		} else {
+			if (!nextPageTransition) nextPageTransition = pageElement.transitionType? pageElement.transitionType: defaultPageTransition;
+			if (nextPageTransition === 'fliporder') {
+				nextPageTransition = (currentPage && pageIds.indexOf(currentPage.id) > pageIds.indexOf(pageElement.id))? 'fliprev': 'flip';
+			} else if (nextPageTransition === 'slideorder') {
+				nextPageTransition = (currentPage && pageIds.indexOf(currentPage.id) > pageIds.indexOf(pageElement.id))? 'sliderev': 'slide';
+			}
+	
+			var showNext = function(referrerElement) {
+				animateElement(pageElement, nextPageTransition + 'in', null);
+				showElement(pageElement, searchData, referrerElement);
+				nextPageTransition = null;
+				onSwitchPage(referrerElement);
+			};
+			if (currentPage) {
+				var referrerElement = currentPage;
+				animateElement(referrerElement, nextPageTransition + 'out', function() {
+					hideElement(referrerElement, pageElement);
+					showNext(referrerElement);
+				});
+			} else showNext(currentPage);
+			currentPage = pageElement;
+		}
 	}
 
-	function switchModal(switchOn, modalElement, searchData) {
+	function switchModal(switchOn, modalElement, nextElement, searchData) {
 		if (!nextModalTransition) nextModalTransition = modalElement.transitionType? modalElement.transitionType: defaultModalTransition;
 		if (nextModalTransition === 'fliporder') nextModalTransition = 'flip';
 		else if (nextModalTransition === 'slideorder') nextPageTransition = 'slide';
@@ -748,7 +766,7 @@ var WebAppClass = function() {
 		} else {
 			animateElement(modalElement.children[0], nextModalTransition + 'out', null);
 			animateElement(modalElement, 'fadeout', function() {
-				hideElement(modalElement);
+				hideElement(modalElement, nextElement);
 				onSwitchModal();
 			});
 			currentModal = null;
@@ -775,13 +793,13 @@ var WebAppClass = function() {
 	}
 
 	function showElement(element, searchData, referrerElement) {
-		element.style.display = 'block';
+		if (!element.ghost) element.style.display = 'block';
 		if (typeof element.onShow === 'function') element.onShow(searchData, referrerElement);
 	}
 
-	function hideElement(element) {
-		element.style.display = 'none';
-		if (typeof element.onHide === 'function') element.onHide();
+	function hideElement(element, nextElement) {
+		if (!element.ghost) element.style.display = 'none';
+		if (typeof element.onHide === 'function') element.onHide(nextElement);
 	}
 
 	//################################################################################//

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WebApp</title>
+</head>
+
+<body>
+
+<div class="page" id="firstPage">
+	<h1>WebApp - <span style="color:#004;">First Page</span></h1>
+	<p>If you are viewing this page (firstPage), it means that the current browser URL ends with "#firstPage"</p>
+	<a href="javascript:WebApp.nextPage();">go to the next page</a>
+</div>
+
+<div class="page ghost" id="secondPage">
+	<!-- Ghost page elements will never be displayed. -->
+</div>
+
+<div class="page" id="thirdPage">
+	<h1>WebApp - <span style="color:#400;">Third Page</span></h1>
+	<p>If you are viewing this page (thirdPage), it means that the current browser URL ends with "#thirdPage"</p>
+	<a href="javascript:WebApp.previousPage();">return to the previous page</a>
+</div>
+
+<div class="modal" id="returnDialog" onclick="window.history.back();">
+	<div style="padding: 0.5em; text-align: center;" onclick="event.stopPropagation();">
+		<p>Are you sure you want to return to the previous page?</p>
+		<button onclick="window.history.back();">Cancel</button>&nbsp;&nbsp;
+		<button onclick="window.location.hash = '#firstPage';">Return</button>
+	</div>
+</div>
+
+<!-- script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script -->
+<script src="../WebApp.js"></script>
+
+<script>
+// Set secondPage onShow callback action:
+document.getElementById('secondPage').onShow = function(searchData, referrerElement) {
+	window.location.hash = (referrerElement.id === 'thirdPage')? 'returnDialog': 'thirdPage';
+};
+
+//Set returnDialog onHide callback action:
+document.getElementById('returnDialog').onHide = function(nextElement) {
+	if (nextElement.id === 'secondPage') window.location.hash = 'thirdPage';
+};
+</script>
+
+</body>
+
+</html>

@@ -9,12 +9,12 @@ WebApp is a lightweight (simple and efficient) WEB application framework (librar
 - [Life cycle callbacks](#life-cycle-callbacks);
 - [History stack management](#history-stack-management);
 - [Modal window support](#modal-window-support);
-- [Ghost hash support](#ghost-hash-support) (coming soon);
+- [Ghost page support](#ghost-page-support);
 - [Canvas screen support](#canvas-screen-support) (coming soon);
+- [Language (i18n) support](#language-i18n-support) (coming soon);
 - [Simplified audio API](#simplified-audio-api) (coming soon);
 - [Header/Footer widget API](#headerfooter-widget-api) (coming soon);
 - [Tooltip widget API](#tooltip-widget-api) (coming soon);
-- [Language (i18n) support](#language-i18n-support) (coming soon);
 - [Click enhancement feature](#click-enhancement-feature) (coming soon);
 - [Swipe left/right feature](#Swipe-left-right-feature) (coming soon);
 - [Public API](#public-api);
@@ -393,13 +393,14 @@ WebApp.onUpdateHash = function(hashChangeEvent) {
 - pageElement.onLoad();
 - pageElement.onShow(searchData, referrerElement);
 - pageElement.onSearchChange(searchData);
-- pageElement.onHide();
+- pageElement.onHide(nextElement);
 - modalElement.onLoad();
 - modalElement.onShow(searchData, referrerElement);
-- modalElement.onHide();
+- modalElement.onHide(nextElement);
 Where:
 - `searchData` is the url content from the question mark (if present) to the end. For example, in case of `index.html#fistPage?foo=bar`, the searchData would be `foo=bar`.
 - `referrerElement` is the previous displayed page element.
+- `nextElement` is the page element that will be displayed.
 
 
 ## History stack management:
@@ -566,11 +567,53 @@ The pop-up modal transition "pop" is enabled by default, but if we need to set a
 ```
 
 
-## Ghost hash support:
-Coming soon...
+## Ghost page support:
+Ghost pages are elements designed to behave like page nodes (URL hash access, life cycle callbacks, etc.), but instead of be displayed as a regular application page, _ghost_ classified elements are used to manipulate application flow only, and will be invisible forever. The primary purpose of is to emulate intermediate actions, which take place according to some predefined flow. For example, an exit messages, which appears only when returning from some predefined page, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.0_ghostPage.html#firstPage" target="_blank">live preview</a>):
+
+```html
+<div class="page" id="firstPage">
+	<h1>First Page</h1>
+	<a href="javascript:WebApp.nextPage();">go to the next page</a>
+</div>
+
+<div class="page ghost" id="secondPage">
+	<!-- Ghost page elements will never be displayed. -->
+</div>
+
+<div class="page" id="thirdPage">
+	<h1>Third Page</h1>
+	<a href="javascript:WebApp.previousPage();">return to the previous page</a>
+</div>
+
+<div class="modal" id="returnDialog" onclick="window.history.back();">
+	<div style="padding: 0.5em; text-align: center;" onclick="event.stopPropagation();">
+		<p>Are you sure you want to return to the previous page?</p>
+		<button onclick="window.history.back();">Cancel</button>&nbsp;&nbsp;
+		<button onclick="window.location.hash = '#firstPage';">Return</button>
+	</div>
+</div>
+
+<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+
+<script>
+// Set secondPage onShow callback action:
+document.getElementById('secondPage').onShow = function(searchData, referrerElement) {
+	window.location.hash = (referrerElement.id === 'thirdPage')? 'returnDialog': 'thirdPage';
+};
+
+//Set returnDialog onHide callback action:
+document.getElementById('returnDialog').onHide = function(nextElement) {
+	if (nextElement.id === 'secondPage') window.location.hash = 'thirdPage';
+};
+</script>
+```
 
 
 ## Canvas screen support:
+Coming soon...
+
+
+## Language (i18n) support:
 Coming soon...
 
 
@@ -583,10 +626,6 @@ Coming soon...
 
 
 ## Tooltip widget API:
-Coming soon...
-
-
-## Language (i18n) support:
 Coming soon...
 
 
