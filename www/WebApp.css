@@ -1,4 +1,4 @@
 @CHARSET "UTF-8";
 
 /* WebApp useful rules. */
-.page {display:none;}
+.page, .modal {display:none;}
