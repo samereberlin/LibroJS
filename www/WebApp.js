@@ -678,19 +678,17 @@ var WebAppClass = function() {
 						var historyManipulations = 0;
 						var historyStackIndex = historyStack.indexOf(hashChangeEvent.newURL);
 						if (historyStack.length > 1 && historyStack[historyStack.length - 2] === hashChangeEvent.newURL) {
+							historyManipulations = 1;
 							historyStack.pop();
-							// If back key has not been pressed, set historyManipulations:
-							if (historyLength < window.history.length)  historyManipulations = 1;
 						} else if (isHistoryUnique && historyStack.length > 2 && historyStackIndex >= 0) {
-							var historyStackSteps = historyStack.length - 1 - historyStackIndex;
-							historyStack.splice(historyStackIndex + 1, historyStackSteps);
-							// If back key has not been pressed, set historyManipulations:
-							if (historyLength < window.history.length) historyManipulations = historyStackSteps;
+							historyManipulations = historyStack.length - 1 - historyStackIndex;
+							historyStack.splice(historyStackIndex + 1, historyManipulations);
 						} else if (!historyStack.length || historyStack[historyStack.length - 1] !== hashChangeEvent.newURL) historyStack[historyStack.length] = window.location.href;
-						if (historyManipulations) {
+						// If there are history manipulations, and browser back key has not been pressed:
+						if (historyManipulations && historyLength < window.history.length) {
 							window.history.go(-(historyManipulations + 1));
 							historyLength = historyLength - historyManipulations;
-						} else historyLength = window.history.length;
+						} else historyLength = window.history.length - historyManipulations;
 					}
 
 					// Page switch management:
