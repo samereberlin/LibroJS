@@ -47,7 +47,7 @@ var WebAppClass = function() {
 	//################################################################################//
 	// Application settings:
 
-	var HASH_DELAY = 200;
+	var HASH_DELAY = 100;
 	var isLoaded = false;
 	var isRunning = false;
 
@@ -721,9 +721,11 @@ var WebAppClass = function() {
 			currentGhostPage = null;
 		}
 		if (pageElement.ghostPage) {
-			showElement(pageElement, searchData, currentPage);
-			currentGhostPage = pageElement;
-			onSwitchPage(currentPage);
+			setTimeout(function() { // Timeout required to create history entry for WebKit browsers.
+				showElement(pageElement, searchData, currentPage);
+				currentGhostPage = pageElement;
+				onSwitchPage(currentPage);
+			}, HASH_DELAY);
 		} else {
 			if (!nextPageTransition) nextPageTransition = pageElement.transitionType? pageElement.transitionType: defaultPageTransition;
 			if (nextPageTransition === 'fliporder') {
