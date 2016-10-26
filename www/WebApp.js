@@ -698,7 +698,7 @@ var WebAppClass = function() {
 
 					// Page switch management:
 					if (nextPage === currentPage) {
-						if (typeof currentPage.onSearchChange === 'function') currentPage.onSearchChange(nextSearch);
+						if (typeof WebApp.onUpdateSearch === 'function') WebApp.onUpdateSearch(nextSearch, currentPage);
 					} else switchPage(nextPage, nextSearch);
 				} else if (currentPage) {
 					if (nextModal) {
@@ -795,12 +795,12 @@ var WebAppClass = function() {
 	}
 
 	function showElement(element, searchData, referrerElement) {
-		if (!element.ghost) element.style.display = 'block';
+		if (!element.ghostPage) element.style.display = 'block';
 		if (typeof element.onShow === 'function') element.onShow(searchData, referrerElement);
 	}
 
 	function hideElement(element, nextElement) {
-		if (!element.ghost) element.style.display = 'none';
+		if (!element.ghostPage) element.style.display = 'none';
 		if (typeof element.onHide === 'function') element.onHide(nextElement);
 	}
 

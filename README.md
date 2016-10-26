@@ -387,12 +387,12 @@ WebApp.onUpdateHash = function(hashChangeEvent) {
 - WebApp.onResume();
 - WebApp.onResize();
 - WebApp.onUpdateHash(hashChangeEvent);
+- WebApp.onUpdateSearch(searchData, pageElement);
 - WebApp.onSwitchPage(pageElement, referrerElement);
 - WebApp.onSwitchModal(switchOn, modalElement, referrerElement);
 - WebApp.onKeyDown(keyEvent, pageElement);
 - pageElement.onLoad();
 - pageElement.onShow(searchData, referrerElement);
-- pageElement.onSearchChange(searchData);
 - pageElement.onHide(nextElement);
 - modalElement.onLoad();
 - modalElement.onShow(searchData, referrerElement);
