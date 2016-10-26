@@ -71,8 +71,11 @@ var WebAppClass = function() {
 	 * @param {boolean} booleanState - The running boolean state.
 	 */
 	this.setRunning = function(booleanState) {
-		if (booleanState) resume();
-		else pause();
+		if (booleanState) {
+			resume();
+		} else {
+			pause();
+		}
 	};
 
 	//################################################################################//
@@ -143,8 +146,9 @@ var WebAppClass = function() {
 	 * @return {node} The new page node element.
 	 */
 	this.createPage = function(pageId, extraClass, insertBeforeId, pageContent) {
-		if (pageElements[pageId] || typeof pageId !== 'string') return null;
-		else {
+		if (pageElements[pageId] || typeof pageId !== 'string') {
+			return null;
+		} else {
 			var pageElement = document.createElement('div');
 			pageElement.className = 'page' + (extraClass? ' ' + extraClass: '');
 			pageElement.id = pageId;
@@ -221,8 +225,9 @@ var WebAppClass = function() {
 	 * @return {node} The new modal node element.
 	 */
 	this.createModal = function(modalId, extraClass, modalContent) {
-		if (modalElements[modalId] || typeof modalId !== 'string') return null;
-		else {
+		if (modalElements[modalId] || typeof modalId !== 'string') {
+			return null;
+		} else {
 			var modalElement = document.createElement('div');
 			modalElement.className = 'modal' + (extraClass? ' ' + extraClass: '');
 			modalElement.id = modalId;
@@ -353,7 +358,9 @@ var WebAppClass = function() {
 	 * @param {function} callback - The function callback to be invoked after animation.
 	 */
 	this.animateElement = function(element, animation, callback) {
-		if (element && element.nodeType === 1 && animation && animationTypes.indexOf(animation) >= 0) animateElement(element, animation, callback);
+		if (element && element.nodeType === 1 && animation && animationTypes.indexOf(animation) >= 0) {
+			animateElement(element, animation, callback);
+		}
 	};
 
 	/**
@@ -389,7 +396,9 @@ var WebAppClass = function() {
 	 * @param {string} transitionType - The default page transition type.
 	 */
 	this.setDefaultPageTransition = function(transitionType) {
-		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) defaultPageTransition = transitionType;
+		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) {
+			defaultPageTransition = transitionType;
+		}
 	};
 
 	/**
@@ -407,7 +416,9 @@ var WebAppClass = function() {
 	 * @param {string} transitionType - The next page transition type.
 	 */
 	this.setNextPageTransition = function(transitionType) {
-		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) nextPageTransition = transitionType;
+		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) {
+			nextPageTransition = transitionType;
+		}
 	};
 
 	/**
@@ -425,7 +436,9 @@ var WebAppClass = function() {
 	 * @param {string} transitionType - The default modal transition type.
 	 */
 	this.setDefaultModalTransition = function(transitionType) {
-		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) defaultModalTransition = transitionType;
+		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) {
+			defaultModalTransition = transitionType;
+		}
 	};
 
 	/**
@@ -443,7 +456,9 @@ var WebAppClass = function() {
 	 * @param {string} transitionType - The next modal transition type.
 	 */
 	this.setNextModalTransition = function(transitionType) {
-		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) nextModalTransition = transitionType;
+		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) {
+			nextModalTransition = transitionType;
+		}
 	};
 
 	//################################################################################//
@@ -451,7 +466,9 @@ var WebAppClass = function() {
 
 	function load() {
 		if (isLogEnabled) console.log('WebApp.js: load()');
-		if (typeof WebApp.onLoad === 'function') WebApp.onLoad();
+		if (typeof WebApp.onLoad === 'function') {
+			WebApp.onLoad();
+		}
 
 		// Load body elements:
 		pageIds = []; // Required to reset page IDs.
@@ -459,13 +476,19 @@ var WebAppClass = function() {
 		pageElements = {}; // Required to reset page elements.
 		modalElements = {}; // Required to reset modal elements.
 		Array.prototype.forEach.call(document.body.children, function(element) {
-			if (isPage(element)) loadPage(element, null);
-			else if (isModal(element)) loadModal(element, null);
+			if (isPage(element)) {
+				loadPage(element, null);
+			} else if (isModal(element)) {
+				loadModal(element, null);
+			}
 		});
-		if (!defaultPageId || (pageIds.indexOf(defaultPageId) < 0)) defaultPageId = pageIds[0];
+		if (!defaultPageId || (pageIds.indexOf(defaultPageId) < 0)) {
+			defaultPageId = pageIds[0];
+		}
 
-		if (isLoaded) showElement(currentPage, currentSearch, currentPage);
-		else {
+		if (isLoaded) {
+			showElement(currentPage, currentSearch, currentPage);
+		} else {
 			isLoaded = true;
 
 			// Setup CSS style effects:
@@ -556,9 +579,13 @@ var WebAppClass = function() {
 			element.ghostPage = true;
 		} else {
 			var transitionType = element.getAttribute('transition');
-			if (transitionType && transitionTypes.indexOf(transitionType) >= 0) element.transitionType = transitionType;
+			if (transitionType && transitionTypes.indexOf(transitionType) >= 0) {
+				element.transitionType = transitionType;
+			}
 		}
-		if (typeof element.onLoad === 'function') element.onLoad();
+		if (typeof element.onLoad === 'function') {
+			element.onLoad();
+		}
 	}
 
 	function isModal(element) {
@@ -570,14 +597,22 @@ var WebAppClass = function() {
 		modalElements[element.id] = element;
 		modalIds.push(element.id);
 		var transitionType = element.children[0].getAttribute('transition');
-		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) element.transitionType = transitionType;
-		if (typeof element.onLoad === 'function') element.onLoad();
+		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) {
+			element.transitionType = transitionType;
+		}
+		if (typeof element.onLoad === 'function') {
+			element.onLoad();
+		}
 	}
 
 	function unload() {
 		if (isLogEnabled) console.log('WebApp.js: unload()');
-		if (typeof WebApp.onUnload === 'function') WebApp.onUnload();
-		if (isRunning) pause();
+		if (typeof WebApp.onUnload === 'function') {
+			WebApp.onUnload();
+		}
+		if (isRunning) {
+			pause();
+		}
 		isLoaded = false;
 		reset();
 	}
@@ -594,7 +629,9 @@ var WebAppClass = function() {
 		if (isLogEnabled) console.log('WebApp.js: pause()');
 		if (isRunning) {
 			isRunning = false;
-			if (typeof WebApp.onPause === 'function') WebApp.onPause();
+			if (typeof WebApp.onPause === 'function') {
+				WebApp.onPause();
+			}
 		}
 	}
 
@@ -602,7 +639,9 @@ var WebAppClass = function() {
 		if (isLogEnabled) console.log('WebApp.js: resume()');
 		if (!isRunning) {
 			isRunning = true;
-			if (typeof WebApp.onResume === 'function') WebApp.onResume();
+			if (typeof WebApp.onResume === 'function') {
+				WebApp.onResume();
+			}
 		}
 	}
 
@@ -636,7 +675,9 @@ var WebAppClass = function() {
 
 	function resize() {
 		if (isLogEnabled) console.log('WebApp.js: resize()');
-		if (typeof WebApp.onResize === 'function') WebApp.onResize();
+		if (typeof WebApp.onResize === 'function') {
+			WebApp.onResize();
+		}
 	}
 
 	//################################################################################//
@@ -646,8 +687,9 @@ var WebAppClass = function() {
 		if (isLogEnabled) console.log('WebApp.js: updateHash(hashChangeEvent)... newURL = ' + hashChangeEvent.newURL + ', oldURL = ' + hashChangeEvent.oldURL);
 
 		// Parse URL data:
-		var nextSearch = (window.location.hash.indexOf('?') >= 0)? window.location.hash.substring(window.location.hash.indexOf('?') + 1): '';
-		var nextHash = (window.location.hash.length > 1)? window.location.hash.substring(1, (nextSearch? window.location.hash.indexOf('?'): window.location.hash.length)): null;
+		var indexOfSearch = window.location.hash.indexOf('?');
+		var nextSearch = (indexOfSearch >= 0)? window.location.hash.substring(indexOfSearch + 1): '';
+		var nextHash = (window.location.hash.length > 1)? window.location.hash.substring(1, (nextSearch? indexOfSearch: window.location.hash.length)): null;
 		var nextPage = (nextHash && pageElements[nextHash])? pageElements[nextHash]: null;
 		var nextModal = (!nextPage && nextHash && modalElements[nextHash])? modalElements[nextHash]: null;
 
@@ -689,33 +731,49 @@ var WebAppClass = function() {
 						} else if (isHistoryUnique && historyStack.length > 2 && historyStackIndex >= 0) {
 							historyManipulations = historyStack.length - 1 - historyStackIndex;
 							historyStack.splice(historyStackIndex + 1, historyManipulations);
-						} else if (!historyStack.length || historyStack[historyStack.length - 1] !== hashChangeEvent.newURL) historyStack[historyStack.length] = window.location.href;
+						} else if (!historyStack.length || historyStack[historyStack.length - 1] !== hashChangeEvent.newURL) {
+							historyStack[historyStack.length] = window.location.href;
+						}
 						// If there are history manipulations, and browser back key has not been pressed:
 						if (historyManipulations && historyLength < window.history.length) {
 							window.history.go(-(historyManipulations + 1));
 							historyLength = historyLength - historyManipulations;
-						} else historyLength = window.history.length - historyManipulations;
+						} else {
+							historyLength = window.history.length - historyManipulations;
+						}
 					}
 
 					// Page switch management:
 					if (nextPage === currentPage) {
-						if (typeof WebApp.onUpdateSearch === 'function') WebApp.onUpdateSearch(nextSearch, currentPage);
-					} else switchPage(nextPage, nextSearch);
+						if (typeof WebApp.onUpdateSearch === 'function') {
+							WebApp.onUpdateSearch(nextSearch, currentPage);
+						}
+					} else {
+						switchPage(nextPage, nextSearch);
+					}
 				} else if (currentPage) {
 					if (nextModal) {
 						switchModal(true, nextModal, nextPage, nextSearch);
 						modalHistoryLength = window.history.length;
-					} else window.history.back();
-				} else if (defaultPageId) window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#' + defaultPageId);
+					} else {
+						window.history.back();
+					}
+				} else if (defaultPageId) {
+					window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#' + defaultPageId);
+				}
 				currentSearch = nextSearch;
 			}
 		}
-		if (typeof WebApp.onUpdateHash === 'function') WebApp.onUpdateHash(hashChangeEvent);
+		if (typeof WebApp.onUpdateHash === 'function') {
+			WebApp.onUpdateHash(hashChangeEvent);
+		}
 	}
 
 	function switchPage(pageElement, searchData) {
 		var onSwitchPage = function(referrerElement) {
-			if (typeof WebApp.onSwitchPage === 'function') WebApp.onSwitchPage(pageElement, referrerElement);
+			if (typeof WebApp.onSwitchPage === 'function') {
+				WebApp.onSwitchPage(pageElement, referrerElement);
+			}
 		};
 		if (currentGhostPage) {
 			hideElement(currentGhostPage, pageElement);
@@ -728,7 +786,9 @@ var WebAppClass = function() {
 				onSwitchPage(currentPage);
 			}, HASH_DELAY);
 		} else {
-			if (!nextPageTransition) nextPageTransition = pageElement.transitionType? pageElement.transitionType: defaultPageTransition;
+			if (!nextPageTransition) {
+				nextPageTransition = pageElement.transitionType? pageElement.transitionType: defaultPageTransition;
+			}
 			if (nextPageTransition === 'fliporder') {
 				nextPageTransition = (currentPage && pageIds.indexOf(currentPage.id) > pageIds.indexOf(pageElement.id))? 'fliprev': 'flip';
 			} else if (nextPageTransition === 'slideorder') {
@@ -747,18 +807,27 @@ var WebAppClass = function() {
 					hideElement(referrerElement, pageElement);
 					showNext(referrerElement);
 				});
-			} else showNext(currentPage);
+			} else {
+				showNext(currentPage);
+			}
 			currentPage = pageElement;
 		}
 	}
 
 	function switchModal(switchOn, modalElement, nextElement, searchData) {
-		if (!nextModalTransition) nextModalTransition = modalElement.transitionType? modalElement.transitionType: defaultModalTransition;
-		if (nextModalTransition === 'fliporder') nextModalTransition = 'flip';
-		else if (nextModalTransition === 'slideorder') nextPageTransition = 'slide';
+		if (!nextModalTransition) {
+			nextModalTransition = modalElement.transitionType? modalElement.transitionType: defaultModalTransition;
+		}
+		if (nextModalTransition === 'fliporder') {
+			nextModalTransition = 'flip';
+		} else if (nextModalTransition === 'slideorder') {
+			nextPageTransition = 'slide';
+		}
 
 		var onSwitchModal = function() {
-			if (typeof WebApp.onSwitchModal === 'function') WebApp.onSwitchModal(switchOn, modalElement, currentPage);
+			if (typeof WebApp.onSwitchModal === 'function') {
+				WebApp.onSwitchModal(switchOn, modalElement, currentPage);
+			}
 		};
 		if (switchOn) {
 			animateElement(modalElement, 'fadein', null);
@@ -780,31 +849,46 @@ var WebAppClass = function() {
 	}
 
 	function animateElement(element, animation, callback) {
-		//if (animation.substring(0, 4) === 'none') {
 		if (animation === 'nonein' || animation === 'noneout') {
-			if (typeof callback === 'function') callback();
+			if (typeof callback === 'function') {
+				callback();
+			}
 		} else {
 			var animationRunning = true;
 			var animationEnded = function() {
 				animationRunning = false;
 				element.removeEventListener('animationend', animationEnded);
 				element.className = element.className.replace(new RegExp('(?:^|\\s)' + animation + '(?!\\S)', 'g'), '');
-				if (typeof callback === 'function') callback();
+				if (typeof callback === 'function') {
+					callback();
+				}
 			};
-			setTimeout(function() {if (animationRunning) animationEnded();}, 1000); // 1000 = animation timeout.
+			setTimeout(function() {
+				if (animationRunning) {
+					animationEnded();
+				}
+			}, 1000); // 1000 = animation timeout.
 			element.addEventListener('animationend', animationEnded);
 			element.className += ' ' + animation;
 		}
 	}
 
 	function showElement(element, searchData, referrerElement) {
-		if (!element.ghostPage) element.style.display = 'block';
-		if (typeof element.onShow === 'function') element.onShow(searchData, referrerElement);
+		if (!element.ghostPage) {
+			element.style.display = 'block';
+		}
+		if (typeof element.onShow === 'function') {
+			element.onShow(searchData, referrerElement);
+		}
 	}
 
 	function hideElement(element, nextElement) {
-		if (!element.ghostPage) element.style.display = 'none';
-		if (typeof element.onHide === 'function') element.onHide(nextElement);
+		if (!element.ghostPage) {
+			element.style.display = 'none';
+		}
+		if (typeof element.onHide === 'function') {
+			element.onHide(nextElement);
+		}
 	}
 
 	//################################################################################//
@@ -817,7 +901,9 @@ var WebAppClass = function() {
 		} else if (keyEvent.keyCode === 27 && currentModal) {
 			window.history.back();
 		} else {
-			if (typeof WebApp.onKeyDown === 'function') WebApp.onKeyDown(keyEvent, currentPage);
+			if (typeof WebApp.onKeyDown === 'function') {
+				WebApp.onKeyDown(keyEvent, currentPage);
+			}
 		}
 	}
 
@@ -830,7 +916,9 @@ var WebAppClass = function() {
 	 */
 	this.nextPage = function() {
 		var currentPageIndex = pageIds.indexOf(currentPage.id);
-		if (currentPageIndex + 1 < pageIds.length) window.location.hash = pageIds[currentPageIndex + 1];
+		if (currentPageIndex + 1 < pageIds.length) {
+			window.location.hash = pageIds[currentPageIndex + 1];
+		}
 	};
 
 	/**
@@ -839,7 +927,9 @@ var WebAppClass = function() {
 	 */
 	this.previousPage = function() {
 		var currentPageIndex = pageIds.indexOf(currentPage.id);
-		if (currentPageIndex > 0) window.location.hash = pageIds[currentPageIndex - 1];
+		if (currentPageIndex > 0) {
+			window.location.hash = pageIds[currentPageIndex - 1];
+		}
 	};
 
 };
