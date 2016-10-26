@@ -508,6 +508,7 @@ var testCases = [
 										WebApp.deletePage(ghostPageElement.id);
 										assert.equal(WebApp.getPageElements()[ghostPageElement.id], null, 'Ghost page element must be deleted.');
 										assert.equal(WebApp.getPageIds().length, 3, 'Ghost page ID must be removed.');
+										modalWindow.onHide = null; // Required to restore the initial state (modalWindow onHide callback).
 										done();
 										startNext();
 									};
