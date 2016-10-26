@@ -766,11 +766,13 @@ var WebAppClass = function() {
 			showElement(modalElement, searchData, currentPage);
 			currentModal = modalElement;
 			onSwitchModal();
+			pause();
 		} else {
 			animateElement(modalElement.children[0], nextModalTransition + 'out', null);
 			animateElement(modalElement, 'fadeout', function() {
 				hideElement(modalElement, nextElement);
 				onSwitchModal();
+				resume();
 			});
 			currentModal = null;
 			nextModalTransition = null;
