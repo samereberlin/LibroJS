@@ -720,7 +720,7 @@ var WebAppClass = function() {
 			} else {
 				// Execute update action:
 				if (nextPage) {
-	
+
 					// History stack management:
 					if (isHistoryManaged) {
 						var historyManipulations = 0;
@@ -745,6 +745,7 @@ var WebAppClass = function() {
 
 					// Page switch management:
 					if (nextPage === currentPage) {
+						if (isLogEnabled) console.log('WebApp.js: updateSearch... nextSearch: ' + nextSearch);
 						if (typeof WebApp.onUpdateSearch === 'function') {
 							WebApp.onUpdateSearch(nextSearch, currentPage);
 						}
@@ -770,6 +771,7 @@ var WebAppClass = function() {
 	}
 
 	function switchPage(pageElement, searchData) {
+		if (isLogEnabled) console.log('WebApp.js: switchPage(pageElement, searchData)... pageElement.id = ' + pageElement.id + ', currentPage.id = ' + (currentPage? currentPage.id: ''));
 		var onSwitchPage = function(referrerElement) {
 			if (typeof WebApp.onSwitchPage === 'function') {
 				WebApp.onSwitchPage(pageElement, referrerElement);
@@ -794,7 +796,7 @@ var WebAppClass = function() {
 			} else if (nextPageTransition === 'slideorder') {
 				nextPageTransition = (currentPage && pageIds.indexOf(currentPage.id) > pageIds.indexOf(pageElement.id))? 'sliderev': 'slide';
 			}
-	
+
 			var showNext = function(referrerElement) {
 				animateElement(pageElement, nextPageTransition + 'in', null);
 				showElement(pageElement, searchData, referrerElement);
@@ -815,6 +817,7 @@ var WebAppClass = function() {
 	}
 
 	function switchModal(switchOn, modalElement, nextElement, searchData) {
+		if (isLogEnabled) console.log('WebApp.js: switchModal(switchOn, modalElement, nextElement, searchData)... switchOn: ' + switchOn + ', modalElement.id: ' + modalElement.id + ', nextElement.id = ' + (nextElement? nextElement.id: '') + ', currentPage.id = ' + (currentPage? currentPage.id: ''));
 		if (!nextModalTransition) {
 			nextModalTransition = modalElement.transitionType? modalElement.transitionType: defaultModalTransition;
 		}
