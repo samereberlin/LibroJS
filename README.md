@@ -387,15 +387,16 @@ WebApp.onUpdateHash = function(hashChangeEvent) {
 - WebApp.onResume();
 - WebApp.onResize();
 - WebApp.onUpdateHash(hashChangeEvent);
-- WebApp.onUpdateSearch(searchData, pageElement);
 - WebApp.onSwitchPage(pageElement, referrerElement);
 - WebApp.onSwitchModal(switchOn, modalElement, referrerElement);
 - WebApp.onKeyDown(keyEvent, pageElement);
 - pageElement.onLoad();
 - pageElement.onShow(searchData, referrerElement);
+- pageElement.onUpdateSearch(searchData);
 - pageElement.onHide(nextElement);
 - modalElement.onLoad();
 - modalElement.onShow(searchData, referrerElement);
+- modalElement.onUpdateSearch(searchData);
 - modalElement.onHide(nextElement);
 Where:
 - `searchData` is the url content from the question mark (if present) to the end. For example, in case of `index.html#fistPage?foo=bar`, the searchData would be `foo=bar`.

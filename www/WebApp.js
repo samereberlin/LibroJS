@@ -694,18 +694,22 @@ var WebAppClass = function() {
 		var nextModal = (!nextPage && nextHash && modalElements[nextHash])? modalElements[nextHash]: null;
 
 		if (currentModal) {
-			switchModal(false, currentModal, nextPage, nextSearch);
-			// If nextPage is not the same as the currentPage, nor the currentGhostPage:
-			if (currentPage !== nextPage && currentGhostPage !== nextPage) {
-				isModalRedirecting = true;
-				var nextURL = window.location.href;
-				setTimeout(function() { // Timeout required to create history entry for WebKit browsers.
-					window.location.href = nextURL;
-				}, HASH_DELAY);
-			}
-			// If back key has not been pressed, go back twice:
-			if (modalHistoryLength < window.history.length) {
-				window.history.go(-2);
+			if (nextModal === currentModal) {
+				updateSearch(nextSearch, nextModal);
+			} else {
+				switchModal(false, currentModal, nextPage, nextSearch);
+				// If nextPage is not the same as the currentPage, nor the currentGhostPage:
+				if (currentPage !== nextPage && currentGhostPage !== nextPage) {
+					isModalRedirecting = true;
+					var nextURL = window.location.href;
+					setTimeout(function() { // Timeout required to create history entry for WebKit browsers.
+						window.location.href = nextURL;
+					}, HASH_DELAY);
+				}
+				// If back key has not been pressed, go back twice:
+				if (modalHistoryLength < window.history.length) {
+					window.history.go(-2);
+				}
 			}
 		} else if (isModalRedirecting) {
 			isModalRedirecting = false;
@@ -745,10 +749,7 @@ var WebAppClass = function() {
 
 					// Page switch management:
 					if (nextPage === currentPage) {
-						if (isLogEnabled) console.log('WebApp.js: updateSearch... nextSearch: ' + nextSearch);
-						if (typeof WebApp.onUpdateSearch === 'function') {
-							WebApp.onUpdateSearch(nextSearch, currentPage);
-						}
+						updateSearch(nextSearch, nextPage);
 					} else {
 						switchPage(nextPage, nextSearch);
 					}
@@ -767,6 +768,13 @@ var WebAppClass = function() {
 		}
 		if (typeof WebApp.onUpdateHash === 'function') {
 			WebApp.onUpdateHash(hashChangeEvent);
+		}
+	}
+
+	function updateSearch(searchData, element) {
+		if (isLogEnabled) console.log('WebApp.js: updateSearch(searchData, element)... searchData: ' + searchData + ', element.id: ' + element.id);
+		if (typeof element.onUpdateSearch === 'function') {
+			element.onUpdateSearch(searchData);
 		}
 	}
 
@@ -838,13 +846,11 @@ var WebAppClass = function() {
 			showElement(modalElement, searchData, currentPage);
 			currentModal = modalElement;
 			onSwitchModal();
-			pause();
 		} else {
 			animateElement(modalElement.children[0], nextModalTransition + 'out', null);
 			animateElement(modalElement, 'fadeout', function() {
 				hideElement(modalElement, nextElement);
 				onSwitchModal();
-				resume();
 			});
 			currentModal = null;
 			nextModalTransition = null;
