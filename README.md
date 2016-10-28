@@ -292,8 +292,8 @@ firstPageElement.onLoad = function() {
 firstPageElement.onShow = function(searchData, referrerElement) {
 	console.log('firstPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + '): ' + (new Date().toLocaleString()));
 };
-firstPageElement.onHide = function() {
-	console.log('firstPageElement.onHide(): ' + (new Date().toLocaleString()));
+firstPageElement.onHide = function(nextSearchData, nextElement) {
+	console.log('firstPageElement.onHide(' + nextSearchData + ', ' + nextElement.id + '): ' + (new Date().toLocaleString()));
 };
 
 // Set secondPage callbacks:
@@ -304,8 +304,8 @@ secondPageElement.onLoad = function() {
 secondPageElement.onShow = function(searchData, referrerElement) {
 	console.log('secondPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + '): ' + (new Date().toLocaleString()));
 };
-secondPageElement.onHide = function() {
-	console.log('secondPageElement.onHide(): ' + (new Date().toLocaleString()));
+secondPageElement.onHide = function(nextSearchData, nextElement) {
+	console.log('secondPageElement.onHide(' + nextSearchData + ', ' + nextElement.id + '): ' + (new Date().toLocaleString()));
 };
 </script>
 ```
@@ -392,12 +392,12 @@ WebApp.onUpdateHash = function(hashChangeEvent) {
 - WebApp.onKeyDown(keyEvent, pageElement);
 - pageElement.onLoad();
 - pageElement.onShow(searchData, referrerElement);
+- pageElement.onHide(nextSearchData, nextElement);
 - pageElement.onUpdateSearch(searchData);
-- pageElement.onHide(nextElement);
 - modalElement.onLoad();
 - modalElement.onShow(searchData, referrerElement);
+- modalElement.onHide(nextSearchData, nextElement);
 - modalElement.onUpdateSearch(searchData);
-- modalElement.onHide(nextElement);
 Where:
 - `searchData` is the url content from the question mark (if present) to the end. For example, in case of `index.html#fistPage?foo=bar`, the searchData would be `foo=bar`.
 - `referrerElement` is the previous displayed page element.

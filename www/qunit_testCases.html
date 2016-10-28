@@ -533,7 +533,7 @@ var testCases = [
 					window.location.hash = (referrerElement.id === 'secondPage')? 'modalWindow': 'secondPage';
 				};
 				var modalWindow = document.getElementById('modalWindow');
-				modalWindow.onHide = function(nextElement) {
+				modalWindow.onHide = function(nextSearchData, nextElement) {
 					if (nextElement.id === 'ghostPage') window.location.hash = 'secondPage';
 				};
 				WebApp.nextPage();

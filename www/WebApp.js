@@ -618,7 +618,7 @@ var WebAppClass = function() {
 	}
 
 	function reset() {
-		hideElement(currentPage, currentPage);
+		hideElement(currentPage, currentSearch, currentPage);
 		currentPage = null;
 		currentSearch = null;
 		historyLength = window.history.length;
@@ -786,7 +786,7 @@ var WebAppClass = function() {
 			}
 		};
 		if (currentGhostPage) {
-			hideElement(currentGhostPage, pageElement);
+			hideElement(currentGhostPage, searchData, pageElement);
 			currentGhostPage = null;
 		}
 		if (pageElement.ghostPage) {
@@ -814,7 +814,7 @@ var WebAppClass = function() {
 			if (currentPage) {
 				var referrerElement = currentPage;
 				animateElement(referrerElement, nextPageTransition + 'out', function() {
-					hideElement(referrerElement, pageElement);
+					hideElement(referrerElement, searchData, pageElement);
 					showNext(referrerElement);
 				});
 			} else {
@@ -849,7 +849,7 @@ var WebAppClass = function() {
 		} else {
 			animateElement(modalElement.children[0], nextModalTransition + 'out', null);
 			animateElement(modalElement, 'fadeout', function() {
-				hideElement(modalElement, nextElement);
+				hideElement(modalElement, searchData, nextElement);
 				onSwitchModal();
 			});
 			currentModal = null;
@@ -891,12 +891,12 @@ var WebAppClass = function() {
 		}
 	}
 
-	function hideElement(element, nextElement) {
+	function hideElement(element, nextSearchData, nextElement) {
 		if (!element.ghostPage) {
 			element.style.display = 'none';
 		}
 		if (typeof element.onHide === 'function') {
-			element.onHide(nextElement);
+			element.onHide(nextSearchData, nextElement);
 		}
 	}
 

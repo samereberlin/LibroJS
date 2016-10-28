@@ -47,8 +47,8 @@ firstPageElement.onLoad = function() {
 firstPageElement.onShow = function(searchData, referrerElement) {
 	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
-firstPageElement.onHide = function() {
-	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onHide()</span>';
+firstPageElement.onHide = function(nextSearchData, nextElement) {
+	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
 };
 
 // Set secondPage callbacks:
@@ -59,8 +59,8 @@ secondPageElement.onLoad = function() {
 secondPageElement.onShow = function(searchData, referrerElement) {
 	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
-secondPageElement.onHide = function() {
-	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onHide()</span>';
+secondPageElement.onHide = function(nextSearchData, nextElement) {
+	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
 };
 </script>
 

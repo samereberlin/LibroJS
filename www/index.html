@@ -119,11 +119,11 @@ firstPageElement.onLoad = function() {
 firstPageElement.onShow = function(searchData, referrerElement) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
+firstPageElement.onHide = function(nextSearchData, nextElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
+};
 firstPageElement.onUpdateSearch = function(searchData) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onUpdateSearch(' + searchData + ')</span>';
-};
-firstPageElement.onHide = function() {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onHide()</span>';
 };
 
 //Set secondPage callbacks:
@@ -134,11 +134,11 @@ secondPageElement.onLoad = function() {
 secondPageElement.onShow = function(searchData, referrerElement) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
+secondPageElement.onHide = function(nextSearchData, nextElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
+};
 secondPageElement.onUpdateSearch = function(searchData) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onUpdateSearch(' + searchData + ')</span>';
-};
-secondPageElement.onHide = function() {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onHide()</span>';
 };
 
 //Set modalWindow callbacks:
@@ -149,11 +149,11 @@ modalWindowElement.onLoad = function() {
 modalWindowElement.onShow = function(searchData, referrerElement) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:darkred;">modalWindowElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
+modalWindowElement.onHide = function(nextSearchData, nextElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:darkred;">modalWindowElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
+};
 modalWindowElement.onUpdateSearch = function(searchData) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:darkred;">modalWindowElement.onUpdateSearch(' + searchData + ')</span>';
-};
-modalWindowElement.onHide = function() {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:darkred;">modalWindowElement.onHide()</span>';
 };
 </script>
 
