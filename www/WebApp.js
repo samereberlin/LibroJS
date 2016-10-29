@@ -187,7 +187,6 @@ var WebAppClass = function() {
 	var modalElements = {};
 	var modalHistoryLength = window.history.length;
 	var currentModal = null;
-	var isModalRedirecting = false;
 
 	//################################################################################//
 	// Modal API:
@@ -260,6 +259,7 @@ var WebAppClass = function() {
 	var isDefaultPageFirstly = true;
 	var isHistoryManaged = true;
 	var isHistoryUnique = true;
+	var isRedirection = false;
 	var historyLength = window.history.length;
 	var historyStack = [];
 
@@ -324,6 +324,26 @@ var WebAppClass = function() {
 	 */
 	this.setHistoryUnique = function(booleanState) {
 		isHistoryUnique = booleanState;
+	};
+
+	/**
+	 * Returns the redirection boolean state,
+	 * which indicates if the next updateHash event must be bypassed.
+	 *
+	 * @return {boolean} The redirection boolean state.
+	 */
+	this.isRedirection = function() {
+		return isRedirection;
+	};
+
+	/**
+	 * Set the redirection boolean state,
+	 * which indicates if the next updateHash event must be bypassed.
+	 *
+	 * @param {boolean} booleanState - The redirection boolean state.
+	 */
+	this.setIsRedirection = function(booleanState) {
+		isRedirection = booleanState;
 	};
 
 	/**
@@ -688,14 +708,19 @@ var WebAppClass = function() {
 		var nextPage = (nextHash && pageElements[nextHash])? pageElements[nextHash]: null;
 		var nextModal = (!nextPage && nextHash && modalElements[nextHash])? modalElements[nextHash]: null;
 
-		if (currentModal) {
+		// If it is a redirection, bypass it:
+		if (isRedirection) {
+			isRedirection = false;
+
+		// Else if current modal is shown, hide it:
+		} else if (currentModal) {
 			if (nextModal === currentModal) {
 				updateSearch(nextSearch, nextModal);
 			} else {
 				switchModal(false, currentModal, nextPage, nextSearch);
 				// If nextPage is not the same as the currentPage:
 				if (nextPage !== currentPage) {
-					isModalRedirecting = true;
+					isRedirection = true;
 					var nextURL = window.location.href;
 					setTimeout(function() { // Timeout required to create history entry for WebKit browsers.
 						window.location.href = nextURL;
@@ -706,8 +731,8 @@ var WebAppClass = function() {
 					window.history.go(-2);
 				}
 			}
-		} else if (isModalRedirecting) {
-			isModalRedirecting = false;
+
+		// Else, execute update action:
 		} else {
 
 			// Set default page firstly:
@@ -717,7 +742,6 @@ var WebAppClass = function() {
 					window.location.hash = nextHash + (nextSearch? '?' + nextSearch: '');
 				}, HASH_DELAY);
 			} else {
-				// Execute update action:
 				if (nextPage) {
 
 					// History stack management:
@@ -730,7 +754,7 @@ var WebAppClass = function() {
 						} else if (isHistoryUnique && historyStack.length > 2 && historyStackIndex >= 0) {
 							historyManipulations = historyStack.length - 1 - historyStackIndex;
 							historyStack.splice(historyStackIndex + 1, historyManipulations);
-						} else if (!historyStack.length || historyStack[historyStack.length - 1] !== hashChangeEvent.newURL) {
+						} else {
 							historyStack[historyStack.length] = window.location.href;
 						}
 						// If there are history manipulations, and browser back key has not been pressed:
@@ -742,7 +766,7 @@ var WebAppClass = function() {
 						}
 					}
 
-					// Page switch management:
+					// Page update management:
 					if (nextPage === currentPage) {
 						updateSearch(nextSearch, nextPage);
 					} else {
@@ -753,6 +777,7 @@ var WebAppClass = function() {
 						switchModal(true, nextModal, nextPage, nextSearch);
 						modalHistoryLength = window.history.length;
 					} else {
+						isRedirection = true;
 						window.history.back();
 					}
 				} else if (defaultPageId) {

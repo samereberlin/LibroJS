@@ -742,9 +742,23 @@ Set the history unique boolean state, which indicates if the page entries must b
 
 **Parameters:**
 
-| Name         | Type    | Description                        |
-|--------------|---------|------------------------------------|
-| booleanState | boolean | The history unique boolean state.  |
+| Name         | Type    | Description                       |
+|--------------|---------|-----------------------------------|
+| booleanState | boolean | The history unique boolean state. |
+
+#### isRedirection()
+Returns the redirection boolean state, which indicates if the next updateHash event must be bypassed.
+
+**Returns:** {boolean} The redirection boolean state.
+
+#### setIsRedirection(booleanState)
+Set the redirection boolean state, which indicates if the next updateHash event must be bypassed.
+
+**Parameters:**
+
+| Name         | Type    | Description                    |
+|--------------|---------|--------------------------------|
+| booleanState | boolean | The redirection boolean state. |
 
 #### getHistoryStack()
 Get the historyStack array values, which contains the href historyStack, according to the history stack management.

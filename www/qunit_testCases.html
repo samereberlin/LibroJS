@@ -231,8 +231,9 @@ var testCases = [
 				testElements(assert, 'firstPage', null, 1);
 			};
 			WebApp.unload();
+			WebApp.setIsRedirection(true);
 			window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#secondPage');
-			WebApp.load();
+			setTimeout(function() {WebApp.load();}, shortDelay);
 		});
 	},
 	function() {
@@ -318,8 +319,9 @@ var testCases = [
 				}, shortDelay);
 			};
 			WebApp.unload();
+			WebApp.setIsRedirection(true);
 			window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#secondPage');
-			WebApp.load();
+			setTimeout(function() {WebApp.load();}, shortDelay);
 		});
 	},
 	function() {
