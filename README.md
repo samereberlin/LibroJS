@@ -9,7 +9,6 @@ WebApp is a lightweight (simple and efficient) WEB application framework (librar
 - [Life cycle callbacks](#life-cycle-callbacks);
 - [History stack management](#history-stack-management);
 - [Modal window support](#modal-window-support);
-- [Ghost page support](#ghost-page-support);
 - [Canvas screen support](#canvas-screen-support) (coming soon);
 - [Language (i18n) support](#language-i18n-support) (coming soon);
 - [Simplified audio API](#simplified-audio-api) (coming soon);
@@ -21,7 +20,7 @@ WebApp is a lightweight (simple and efficient) WEB application framework (librar
 
 
 ## Minimum startup code:
-The following HTML crumb is the minimum startup code required to use WebApp framework. As we can easily guess, it creates an application containing two simple pages (_firstPage_ and _secondPage_), accessible through the corresponding file URLs _../index.html#firstPage_ and _../index.html#secondPage_ (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex01.0_minimum.html#firstPage" target="_blank">live preview</a>).
+The following HTML crumb is the minimum startup code required to use WebApp framework. As we can easily guess, it creates an application containing two simple pages (_firstPage_ and _secondPage_), accessible through the corresponding file URLs _../index.html#firstPage_ and _../index.html#secondPage_ (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex01.0_minimum.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <body>
@@ -536,7 +535,7 @@ WebApp.createModal('modalWindow', null, '<div style="padding: 0.5em;">'
 </body>
 ```
 
-The pop-up modal transition "pop" is enabled by default, but if we need to set a different one, we can use _WebApp.setDefaultModalTransition('transitionType')_ function API. But if we need to set a different transition for an specific modal only, we just need to set the _transition="transitionType"_ DOM element property. And if we need to set an specific modal transition to be used once only (without modify the default setting), we can use _WebApp.setNextModalTransition('transitionType')_ function API, similar as described in the "page transitions" section. The following example demonstrates how to create a simple modal "drawer element" and a simple modal "top menu" (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.3_modalMenus.html#firstPage" target="_blank">live preview</a>).
+The pop-up modal transition "pop" is enabled by default, but if we need to set a different one, we can use _WebApp.setDefaultModalTransition('transitionType')_ function API. But if we need to set a different transition for an specific modal only, we just need to set the _transition="transitionType"_ DOM element property. And if we need to set an specific modal transition to be used once only (without modify the default setting), we can use _WebApp.setNextModalTransition('transitionType')_ function API, similar as described in the "page transitions" section. The following example demonstrates how to create a simple modal "drawer element" and a simple modal "top menu" (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.3_modalMenus.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -565,48 +564,6 @@ The pop-up modal transition "pop" is enabled by default, but if we need to set a
 </div>
 
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
-```
-
-
-## Ghost page support:
-Ghost pages are elements designed to behave like page nodes (URL hash access, life cycle callbacks, etc.), but instead of be displayed as a regular application page, _ghost_ classified elements are used to manipulate application flow only, and will be invisible forever. The primary purpose of is to emulate intermediate actions, which take place according to some predefined flow. For example, an exit messages, which appears only when returning from some predefined page, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.0_ghostPage.html#firstPage" target="_blank">live preview</a>):
-
-```html
-<div class="page" id="firstPage">
-	<h1>First Page</h1>
-	<a href="javascript:WebApp.nextPage();">go to the next page</a>
-</div>
-
-<div class="page ghost" id="secondPage">
-	<!-- Ghost page elements will never be displayed. -->
-</div>
-
-<div class="page" id="thirdPage">
-	<h1>Third Page</h1>
-	<a href="javascript:WebApp.previousPage();">return to the previous page</a>
-</div>
-
-<div class="modal" id="returnDialog" onclick="window.history.back();">
-	<div style="padding: 0.5em; text-align: center;" onclick="event.stopPropagation();">
-		<p>Are you sure you want to return to the previous page?</p>
-		<button onclick="window.history.back();">Cancel</button>&nbsp;&nbsp;
-		<button onclick="window.location.hash = '#firstPage';">Return</button>
-	</div>
-</div>
-
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
-
-<script>
-// Set secondPage onShow callback action:
-document.getElementById('secondPage').onShow = function(searchData, referrerElement) {
-	window.location.hash = (referrerElement.id === 'thirdPage')? 'returnDialog': 'thirdPage';
-};
-
-//Set returnDialog onHide callback action:
-document.getElementById('returnDialog').onHide = function(nextElement) {
-	if (nextElement.id === 'secondPage') window.location.hash = 'thirdPage';
-};
-</script>
 ```
 
 

@@ -484,61 +484,6 @@ var testCases = [
 				window.location.hash = 'modalWindow';
 			});
 		});
-	},
-	function() {
-		// 1st-> ghost-> 2nd: window.history.length = (1st-> ghost-> 2nd) = historyLength (1st-> unknown) + 1.
-		//        v ^
-		//       modal
-		QUnit.test('Ghost page (create, set callbacks, switch, and delete)...', function(assert) {
-			var done = assert.async();
-			testUnknownHash(assert, 'firstPage', function() { // Required to reset window.history.length
-				var historyLength = window.history.length;
-				WebApp.onSwitchPage = function() {
-					WebApp.onSwitchPage = function() {
-						WebApp.onSwitchPage = null;
-						WebApp.onSwitchModal = function() {
-							WebApp.onSwitchModal = null;
-							var secondPageElement = document.getElementById('secondPage');
-							secondPageElement.onUpdateSearch = function() {
-								secondPageElement.onUpdateSearch = null;
-								WebApp.onSwitchModal = function() {
-									WebApp.onSwitchModal = null;
-									WebApp.onSwitchPage = function() {
-										testElements(assert, 'firstPage', null, 1);
-										assert.equal(window.history.length, historyLength + 1, 'window.history.length: ' + (historyLength + 1));
-										WebApp.deletePage(ghostPageElement.id);
-										assert.equal(WebApp.getPageElements()[ghostPageElement.id], null, 'Ghost page element must be deleted.');
-										assert.equal(WebApp.getPageIds().length, 3, 'Ghost page ID must be removed.');
-										modalWindow.onHide = null; // Required to restore the initial state (modalWindow onHide callback).
-										done();
-										startNext();
-									};
-									testElements(assert, 'secondPage', 'modalWindow', 2);
-									setTimeout(function() {window.location.hash = 'firstPage';}, shortDelay);
-								};
-								testElements(assert, 'secondPage', null, 3);
-								window.history.back();
-							};
-							testElements(assert, 'secondPage', 'modalWindow', 2);
-							window.history.back();
-						}
-						testElements(assert, 'secondPage', null, 3);
-						WebApp.previousPage();
-					};
-				};
-				var ghostPageElement = WebApp.createPage('ghostPage', 'ghost', 'secondPage', '');
-				assert.equal(WebApp.getPageElements()[ghostPageElement.id].id, ghostPageElement.id, 'Ghost page element must be created.');
-				assert.equal(WebApp.getPageIds()[1], ghostPageElement.id, 'Ghost page ID must be inserted before secondPage.');
-				ghostPageElement.onShow = function(searchData, referrerElement) {
-					window.location.hash = (referrerElement.id === 'secondPage')? 'modalWindow': 'secondPage';
-				};
-				var modalWindow = document.getElementById('modalWindow');
-				modalWindow.onHide = function(nextSearchData, nextElement) {
-					if (nextElement.id === 'ghostPage') window.location.hash = 'secondPage';
-				};
-				WebApp.nextPage();
-			});
-		});
 	}
 
 

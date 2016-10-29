@@ -84,7 +84,6 @@ var WebAppClass = function() {
 	var pageIds = [];
 	var pageElements = {};
 	var currentPage = null;
-	var currentGhostPage = null;
 	var currentSearch = null;
 	var defaultPageId = null;
 
@@ -575,13 +574,9 @@ var WebAppClass = function() {
 		} else {
 			pageIds.push(element.id);
 		}
-		if (element.classList.contains('ghost')) {
-			element.ghostPage = true;
-		} else {
-			var transitionType = element.getAttribute('transition');
-			if (transitionType && transitionTypes.indexOf(transitionType) >= 0) {
-				element.transitionType = transitionType;
-			}
+		var transitionType = element.getAttribute('transition');
+		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) {
+			element.transitionType = transitionType;
 		}
 		if (typeof element.onLoad === 'function') {
 			element.onLoad();
@@ -698,8 +693,8 @@ var WebAppClass = function() {
 				updateSearch(nextSearch, nextModal);
 			} else {
 				switchModal(false, currentModal, nextPage, nextSearch);
-				// If nextPage is not the same as the currentPage, nor the currentGhostPage:
-				if (currentPage !== nextPage && currentGhostPage !== nextPage) {
+				// If nextPage is not the same as the currentPage:
+				if (nextPage !== currentPage) {
 					isModalRedirecting = true;
 					var nextURL = window.location.href;
 					setTimeout(function() { // Timeout required to create history entry for WebKit browsers.
@@ -780,48 +775,33 @@ var WebAppClass = function() {
 
 	function switchPage(pageElement, searchData) {
 		if (isLogEnabled) console.log('WebApp.js: switchPage(pageElement, searchData)... pageElement.id = ' + pageElement.id + ', currentPage.id = ' + (currentPage? currentPage.id: ''));
-		var onSwitchPage = function(referrerElement) {
+		if (!nextPageTransition) {
+			nextPageTransition = pageElement.transitionType? pageElement.transitionType: defaultPageTransition;
+		}
+		if (nextPageTransition === 'fliporder') {
+			nextPageTransition = (currentPage && pageIds.indexOf(currentPage.id) > pageIds.indexOf(pageElement.id))? 'fliprev': 'flip';
+		} else if (nextPageTransition === 'slideorder') {
+			nextPageTransition = (currentPage && pageIds.indexOf(currentPage.id) > pageIds.indexOf(pageElement.id))? 'sliderev': 'slide';
+		}
+
+		var showNext = function(referrerElement) {
+			animateElement(pageElement, nextPageTransition + 'in', null);
+			showElement(pageElement, searchData, referrerElement);
+			nextPageTransition = null;
 			if (typeof WebApp.onSwitchPage === 'function') {
 				WebApp.onSwitchPage(pageElement, referrerElement);
 			}
 		};
-		if (currentGhostPage) {
-			hideElement(currentGhostPage, searchData, pageElement);
-			currentGhostPage = null;
-		}
-		if (pageElement.ghostPage) {
-			setTimeout(function() { // Timeout required to create history entry for WebKit browsers.
-				showElement(pageElement, searchData, currentPage);
-				currentGhostPage = pageElement;
-				onSwitchPage(currentPage);
-			}, HASH_DELAY);
+		if (currentPage) {
+			var referrerElement = currentPage;
+			animateElement(referrerElement, nextPageTransition + 'out', function() {
+				hideElement(referrerElement, searchData, pageElement);
+				showNext(referrerElement);
+			});
 		} else {
-			if (!nextPageTransition) {
-				nextPageTransition = pageElement.transitionType? pageElement.transitionType: defaultPageTransition;
-			}
-			if (nextPageTransition === 'fliporder') {
-				nextPageTransition = (currentPage && pageIds.indexOf(currentPage.id) > pageIds.indexOf(pageElement.id))? 'fliprev': 'flip';
-			} else if (nextPageTransition === 'slideorder') {
-				nextPageTransition = (currentPage && pageIds.indexOf(currentPage.id) > pageIds.indexOf(pageElement.id))? 'sliderev': 'slide';
-			}
-
-			var showNext = function(referrerElement) {
-				animateElement(pageElement, nextPageTransition + 'in', null);
-				showElement(pageElement, searchData, referrerElement);
-				nextPageTransition = null;
-				onSwitchPage(referrerElement);
-			};
-			if (currentPage) {
-				var referrerElement = currentPage;
-				animateElement(referrerElement, nextPageTransition + 'out', function() {
-					hideElement(referrerElement, searchData, pageElement);
-					showNext(referrerElement);
-				});
-			} else {
-				showNext(currentPage);
-			}
-			currentPage = pageElement;
+			showNext(currentPage);
 		}
+		currentPage = pageElement;
 	}
 
 	function switchModal(switchOn, modalElement, nextElement, searchData) {
@@ -883,18 +863,14 @@ var WebAppClass = function() {
 	}
 
 	function showElement(element, searchData, referrerElement) {
-		if (!element.ghostPage) {
-			element.style.display = 'block';
-		}
+		element.style.display = 'block';
 		if (typeof element.onShow === 'function') {
 			element.onShow(searchData, referrerElement);
 		}
 	}
 
 	function hideElement(element, nextSearchData, nextElement) {
-		if (!element.ghostPage) {
-			element.style.display = 'none';
-		}
+		element.style.display = 'none';
 		if (typeof element.onHide === 'function') {
 			element.onHide(nextSearchData, nextElement);
 		}
