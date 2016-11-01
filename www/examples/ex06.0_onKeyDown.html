@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WebApp</title>
+<title>WebApp - ex06.0_onKeyDown</title>
 </head>
 
 <body>
@@ -31,8 +31,11 @@
 <script>
 //Set key down callback action:
 WebApp.onKeyDown = function(keyEvent, pageElement) {
-	if (keyEvent.keyCode === 39 /*39 = right arrow*/) WebApp.nextPage();
-	else if (keyEvent.keyCode === 37 /*37 = left arrow*/) WebApp.previousPage();
+	if (keyEvent.keyCode === 39 /*39 = right arrow*/) {
+		WebApp.nextPage();
+	} else if (keyEvent.keyCode === 37 /*37 = left arrow*/) {
+		WebApp.previousPage();
+	}
 };
 </script>
 
