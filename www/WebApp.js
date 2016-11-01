@@ -257,10 +257,9 @@ var WebAppClass = function() {
 	// History stack management settings:
 
 	var isDefaultPageFirstly = true;
-	var isHistoryManaged = true;
-	var isHistoryUnique = true;
+	var isHistoryManaged = (typeof window.history.replaceState !== 'undefined')? true: false;
+	var isHistoryUnique = isHistoryManaged;
 	var isRedirection = false;
-	var historyLength = window.history.length;
 	var historyStack = [];
 
 	//################################################################################//
@@ -303,7 +302,7 @@ var WebAppClass = function() {
 	 * @param {boolean} booleanState - The history managed boolean state.
 	 */
 	this.setHistoryManaged = function(booleanState) {
-		isHistoryManaged = booleanState;
+		isHistoryManaged = (typeof window.history.replaceState !== 'undefined') && booleanState;
 	};
 
 	/**
@@ -323,7 +322,7 @@ var WebAppClass = function() {
 	 * @param {boolean} booleanState - The history unique boolean state.
 	 */
 	this.setHistoryUnique = function(booleanState) {
-		isHistoryUnique = booleanState;
+		isHistoryUnique = (typeof window.history.replaceState !== 'undefined') && booleanState;
 	};
 
 	/**
@@ -636,7 +635,6 @@ var WebAppClass = function() {
 		hideElement(currentPage, currentSearch, currentPage);
 		currentPage = null;
 		currentSearch = null;
-		historyLength = window.history.length;
 		historyStack = [];
 	}
 
@@ -757,12 +755,14 @@ var WebAppClass = function() {
 						} else {
 							historyStack[historyStack.length] = window.location.href;
 						}
-						// If there are history manipulations, and browser back key has not been pressed:
-						if (historyManipulations && historyLength < window.history.length) {
-							window.history.go(-(historyManipulations + 1));
-							historyLength = historyLength - historyManipulations;
+						// If there are history manipulations:
+						if (historyManipulations) {
+							// And if browser back key has not been pressed:
+							if (!window.history.state) {
+								window.history.go(-(historyManipulations + 1));
+							}
 						} else {
-							historyLength = window.history.length - historyManipulations;
+							window.history.replaceState(true, "", "");
 						}
 					}
 
