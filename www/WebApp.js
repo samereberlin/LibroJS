@@ -597,9 +597,6 @@ var WebAppClass = function() {
 		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) {
 			element.transitionType = transitionType;
 		}
-		if (typeof element.onLoad === 'function') {
-			element.onLoad();
-		}
 	}
 
 	function isModal(element) {
@@ -613,9 +610,6 @@ var WebAppClass = function() {
 		var transitionType = element.children[0].getAttribute('transition');
 		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) {
 			element.transitionType = transitionType;
-		}
-		if (typeof element.onLoad === 'function') {
-			element.onLoad();
 		}
 	}
 

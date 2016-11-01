@@ -285,9 +285,6 @@ WebApp.onResume = function() {
 
 // Set firstPage callbacks:
 var firstPageElement = document.getElementById('firstPage');
-firstPageElement.onLoad = function() {
-	console.log('firstPageElement.onLoad(): ' + (new Date().toLocaleString()));
-};
 firstPageElement.onShow = function(searchData, referrerElement) {
 	console.log('firstPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + '): ' + (new Date().toLocaleString()));
 };
@@ -297,9 +294,6 @@ firstPageElement.onHide = function(nextSearchData, nextElement) {
 
 // Set secondPage callbacks:
 var secondPageElement = document.getElementById('secondPage');
-secondPageElement.onLoad = function() {
-	console.log('secondPageElement.onLoad(): ' + (new Date().toLocaleString()));
-};
 secondPageElement.onShow = function(searchData, referrerElement) {
 	console.log('secondPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + '): ' + (new Date().toLocaleString()));
 };
@@ -319,11 +313,9 @@ secondPageElement.onHide = function(nextSearchData, nextElement) {
 - WebApp.onSwitchPage(pageElement, referrerElement);
 - WebApp.onSwitchModal(switchOn, modalElement, referrerElement);
 - WebApp.onKeyDown(keyEvent, pageElement);
-- pageElement.onLoad();
 - pageElement.onShow(searchData, referrerElement);
 - pageElement.onHide(nextSearchData, nextElement);
 - pageElement.onUpdateSearch(searchData);
-- modalElement.onLoad();
 - modalElement.onShow(searchData, referrerElement);
 - modalElement.onHide(nextSearchData, nextElement);
 - modalElement.onUpdateSearch(searchData);
