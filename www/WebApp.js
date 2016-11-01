@@ -710,17 +710,19 @@ var WebAppClass = function() {
 				updateSearch(nextSearch, nextModal);
 			} else {
 				switchModal(false, currentModal, nextPage, nextSearch);
-				// If nextPage is not the same as the currentPage:
-				if (nextPage !== currentPage) {
-					isRedirection = true;
-					var nextURL = window.location.href;
-					setTimeout(function() { // Timeout required to create history entry for WebKit browsers.
-						window.location.href = nextURL;
-					}, HASH_DELAY);
-				}
-				// If back key has not been pressed, go back twice:
+				// If browser back key has not been pressed:
 				if (modalHistoryLength < window.history.length) {
-					window.history.go(-2);
+					// If nextPage is not the same as the currentPage:
+					if (nextPage !== currentPage) {
+						isRedirection = true;
+						var nextURL = window.location.href;
+						setTimeout(function() { // Timeout required to create history entry for WebKit browsers.
+							window.location.href = nextURL;
+						}, HASH_DELAY);
+					}
+					window.history.go(-2); // Go back twice.
+				} else if (nextPage !== currentPage) {
+					updateHash(hashChangeEvent);
 				}
 			}
 
