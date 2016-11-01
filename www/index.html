@@ -80,7 +80,7 @@
 <script>
 var logMonitor = document.getElementById('logMonitor');
 
-//Set global callbacks:
+// Set global callbacks:
 WebApp.onLoad = function() {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onLoad()</span>';
 }
@@ -111,7 +111,7 @@ WebApp.onKeyDown = function(keyEvent, pageElement) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onKeyDown(' + keyEvent.keyCode + ', ' + pageElement.id + ')</span>';
 };
 
-//Set firstPage callbacks:
+// Set firstPage callbacks:
 var firstPageElement = document.getElementById('firstPage');
 firstPageElement.onShow = function(searchData, referrerElement) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
@@ -123,7 +123,7 @@ firstPageElement.onUpdateSearch = function(searchData) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onUpdateSearch(' + searchData + ')</span>';
 };
 
-//Set secondPage callbacks:
+// Set secondPage callbacks:
 var secondPageElement = document.getElementById('secondPage');
 secondPageElement.onShow = function(searchData, referrerElement) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
@@ -135,7 +135,7 @@ secondPageElement.onUpdateSearch = function(searchData) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onUpdateSearch(' + searchData + ')</span>';
 };
 
-//Set modalWindow callbacks:
+// Set modalWindow callbacks:
 var modalWindowElement = document.getElementById('modalWindow');
 modalWindowElement.onShow = function(searchData, referrerElement) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:darkred;">modalWindowElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';

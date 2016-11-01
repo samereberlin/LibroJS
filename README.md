@@ -242,7 +242,7 @@ Key pressed callbacks are useful to set page shortcut keys, for example if we wa
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
 
 <script>
-//Set key down callback action:
+// Set key down callback action:
 WebApp.onKeyDown = function(keyEvent, pageElement) {
 	if (keyEvent.keyCode === 39 /*39 = right arrow*/) {
 		WebApp.nextPage();
