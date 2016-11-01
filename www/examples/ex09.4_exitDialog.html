@@ -24,7 +24,7 @@
 	<div style="padding: 0.5em; text-align: center;" onclick="event.stopPropagation();">
 		<p>Are you sure you want to return to the previous page?</p>
 		<button onclick="window.history.back();">Cancel</button>&nbsp;&nbsp;
-		<button onclick="window.location.hash = '#firstPage';">Return</button>
+		<button onclick="window.history.go(-2);" id="returnButton">Return</button>
 	</div>
 </div>
 
@@ -32,6 +32,7 @@
 <script src="../WebApp.js"></script>
 
 <script>
+// Set secondPage callbacks:
 var secondPageElement = document.getElementById('secondPage');
 secondPageElement.onShow = function(searchData, referrerElement) {
 	if (searchData && searchData === 'modal') {
@@ -43,6 +44,12 @@ secondPageElement.onUpdateSearch = function(searchData) {
 		window.location.hash = 'returnDialog';
 	}
 };
+
+// Set focus into "Return" buton:
+var returnButtonElement = document.getElementById('returnButton');
+document.getElementById('returnDialog').onShow = function() {
+	returnButtonElement.focus();
+}
 </script>
 
 </body>

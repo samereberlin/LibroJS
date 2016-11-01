@@ -517,6 +517,7 @@ Another interesting use case for modal window pop-ups, is the "exit dialog" emul
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
 
 <script>
+// Set secondPage callbacks:
 var secondPageElement = document.getElementById('secondPage');
 secondPageElement.onShow = function(searchData, referrerElement) {
 	if (searchData && searchData === 'modal') {
