@@ -16,20 +16,26 @@
 
 <div class="page" id="firstPage">
 	<h1>WebApp - <span style="color:#004;">First Page</span></h1>
-	<p>If you are viewing this page (firstPage), it means that the current browser URL ends with "/index.html#firstPage"</p>
-	#firstPage | <a href="#secondPage">#secondPage</a> | <a href="#thirdPage">#thirdPage</a>
+	<p>If you are viewing this page (firstPage), it means that the current browser URL ends with "#firstPage"</p>
+	#firstPage | <a href="#secondPage">#secondPage</a> | <a href="#thirdPage">#thirdPage</a> | <a href="#fourthPage">#fourthPage</a>
 </div>
 
 <div class="page" id="secondPage">
 	<h1>WebApp - <span style="color:#040;">Second Page</span></h1>
-	<p>If you are viewing this page (secondPage), it means that the current browser URL ends with "/index.html#secondPage"</p>
-	<a href="#firstPage">#firstPage</a> | #secondPage | <a href="#thirdPage">#thirdPage</a>
+	<p>If you are viewing this page (secondPage), it means that the current browser URL ends with "#secondPage"</p>
+	<a href="#firstPage">#firstPage</a> | #secondPage | <a href="#thirdPage">#thirdPage</a> | <a href="#fourthPage">#fourthPage</a>
 </div>
 
 <div class="page" id="thirdPage">
 	<h1>WebApp - <span style="color:#400;">Third Page</span></h1>
-	<p>If you are viewing this page (thirdPage), it means that the current browser URL ends with "/index.html#thirdPage"</p>
-	<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a> | #thirdPage
+	<p>If you are viewing this page (thirdPage), it means that the current browser URL ends with "#thirdPage"</p>
+	<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a> | #thirdPage | <a href="#fourthPage">#fourthPage</a>
+</div>
+
+<div class="page" id="fourthPage">
+	<h1>WebApp - <span style="color:#400;">Fourth Page</span></h1>
+	<p>If you are viewing this page (fourthPage), it means that the current browser URL ends with "#fourthPage"</p>
+	<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a> | <a href="#thirdPage">#thirdPage</a> | #fourthPage
 </div>
 
 <div class="modal" id="modalWindow" onclick="window.history.back();">
@@ -167,13 +173,14 @@ var testCases = [
 	function() {
 		QUnit.test('Dynamic page creation (create, switch, and delete)...', function(assert) {
 			var done = assert.async();
+			var getPageIdsLength = WebApp.getPageIds().length;
 			WebApp.onSwitchPage = function() {
 				WebApp.onSwitchPage = function() {
 					WebApp.onSwitchPage = null;
 					testElements(assert, 'firstPage', null, 1);
 					WebApp.deletePage(newPageElement.id);
 					assert.equal(WebApp.getPageElements()[newPageElement.id], null, 'New page element must be deleted.');
-					assert.equal(WebApp.getPageIds().length, 3, 'New page ID must be removed.');
+					assert.equal(WebApp.getPageIds().length, getPageIdsLength, 'New page ID must be removed.');
 					done();
 					startNext();
 				};
@@ -237,10 +244,17 @@ var testCases = [
 		});
 	},
 	function() {
-		// 1st-> 2nd-> 3rd-> 2nd-> 1st: window.history.length = (1st-> 2nd-> 1st) = historyLength (1st-> unknown) + 1.
+		// 1st-> 2nd-> 3rd-> 4th  1st: window.history.length = (1st-> 2nd-> 3rd-> 4th) = historyLength (1st-> unknown) + 2.
+		//              ,----<´
+		//(1st) (2nd)  3rd-> 2nd
 		//        ,----------<´
-		//(1st)  2nd-> 1st.
-		//  `----------<´
+		//(1st)  2nd-> 3rd-> 4th
+		//              ,----<´
+		//(1st) (2nd)  3rd
+		//        ,----<´
+		//(1st)  2nd
+		//  ,----<´
+		// 1st
 		QUnit.test('History stack management (next/previous)...', function(assert) {
 			var done = assert.async();
 			testUnknownHash(assert, 'firstPage', function() { // Required to reset window.history.length
@@ -249,17 +263,37 @@ var testCases = [
 					WebApp.onSwitchPage = function() {
 						WebApp.onSwitchPage = function() {
 							WebApp.onSwitchPage = function() {
-								WebApp.onSwitchPage = null;
-								testElements(assert, 'firstPage', null, 1);
-								assert.equal(window.history.length, historyLength + 1, 'window.history.length: ' + (historyLength + 1));
-								done();
-								startNext();
+								WebApp.onSwitchPage = function() {
+									WebApp.onSwitchPage = function() {
+										WebApp.onSwitchPage = function() {
+											WebApp.onSwitchPage = function() {
+												WebApp.onSwitchPage = function() {
+													WebApp.onSwitchPage = function() {
+														WebApp.onSwitchPage = null;
+														testElements(assert, 'firstPage', null, 1);
+														assert.equal(window.history.length, historyLength + 2, 'window.history.length: ' + (historyLength + 2));
+														done();
+														startNext();
+													};
+													window.history.back();
+												};
+												window.history.back();
+											};
+											window.history.back();
+										};
+										window.location.hash = 'fourthPage';
+									};
+									testElements(assert, 'secondPage', null, 2);
+									window.location.hash = 'thirdPage';
+								};
+								testElements(assert, 'thirdPage', null, 3);
+								window.location.hash = 'secondPage';
 							};
-							testElements(assert, 'secondPage', null, 2);
-							window.location.hash = 'firstPage';
+							testElements(assert, 'fourthPage', null, 4);
+							window.history.back();
 						};
 						testElements(assert, 'thirdPage', null, 3);
-						window.location.hash = 'secondPage';
+						window.location.hash = 'fourthPage';
 					};
 					testElements(assert, 'secondPage', null, 2);
 					window.location.hash = 'thirdPage';
@@ -325,32 +359,64 @@ var testCases = [
 		});
 	},
 	function() {
-		// 1st-> 2nd-> 3rd-> 2nd-> 1st: window.history.length = (1st-> 2nd-> 3rd-> 2nd-> 1st) = historyLength (1st-> unknown) + 3.
-		//        ,----X-----<´
-		//(1st)  2nd-> 1st.
-		//  `-----X----<´
+		// 1st-> 2nd-> 3rd-> 4th  1st: window.history.length = (1st-> 2nd-> 3rd-> 2nd-> 3rd-> 4th) = historyLength (1st-> unknown) + 4.
+		//              ,----<´
+		//(1st) (2nd)  3rd-> 2nd
+		//        ,-----X----<´
+		//(1st)  2nd-> 3rd-> 4th
+		//              ,----<´
+		//(1st) (2nd)  3rd
+		//        ,----<´
+		//(1st)  2nd
+		//  ,----<´
+		// 1st
 		QUnit.test('History stack management (next/previous FALSE)...', function(assert) {
 			var done = assert.async();
-			WebApp.setHistoryManaged(false);
+            WebApp.setHistoryManaged(false);
 			testUnknownHash(assert, 'firstPage', function() { // Required to reset window.history.length
 				var historyLength = window.history.length;
 				WebApp.onSwitchPage = function() {
 					WebApp.onSwitchPage = function() {
 						WebApp.onSwitchPage = function() {
 							WebApp.onSwitchPage = function() {
-								WebApp.onSwitchPage = null;
-								testElements(assert, 'firstPage', null, 1);
-								assert.equal(window.history.length, historyLength + 3, 'window.history.length: ' + (historyLength + 3));
-								window.history.go(-4); // Required to restore the initial state (#firstPage).
-								WebApp.setHistoryManaged(true);
-								done();
-								startNext();
+								WebApp.onSwitchPage = function() {
+									WebApp.onSwitchPage = function() {
+										WebApp.onSwitchPage = function() {
+											WebApp.onSwitchPage = function() {
+												WebApp.onSwitchPage = function() {
+													WebApp.onSwitchPage = function() {
+														WebApp.onSwitchPage = function() {
+															WebApp.onSwitchPage = function() {
+																WebApp.onSwitchPage = null;
+																testElements(assert, 'firstPage', null, 1);
+																assert.equal(window.history.length, historyLength + 4, 'window.history.length: ' + (historyLength + 4));
+																WebApp.setHistoryManaged(true); // Required to restore the initial state (#firstPage).
+																done();
+																startNext();
+															};
+															window.history.back();
+														};
+														window.history.back();
+													};
+													window.history.back();
+												};
+												window.history.back();
+											};
+											window.history.back();
+										};
+										window.location.hash = 'fourthPage';
+									};
+									testElements(assert, 'secondPage', null, 1);
+									window.location.hash = 'thirdPage';
+								};
+								testElements(assert, 'thirdPage', null, 1);
+								window.location.hash = 'secondPage';
 							};
-							testElements(assert, 'secondPage', null, 1);
-							window.location.hash = 'firstPage';
+							testElements(assert, 'fourthPage', null, 1);
+							window.history.back();
 						};
 						testElements(assert, 'thirdPage', null, 1);
-						window.location.hash = 'secondPage';
+						window.location.hash = 'fourthPage';
 					};
 					testElements(assert, 'secondPage', null, 1);
 					window.location.hash = 'thirdPage';
@@ -432,6 +498,7 @@ var testCases = [
 			}
 			testUnknownHash(assert, 'firstPage', function() { // Required to reset window.history.length
 				var historyLength = window.history.length;
+				var getModalIdsLength = WebApp.getModalIds().length;
 				var modalWindow = document.getElementById('modalWindow');
 				// Assert transition:
 				WebApp.onUpdateHash = function() {
@@ -461,7 +528,7 @@ var testCases = [
 										assert.equal(window.history.length, historyLength + 1, 'window.history.length: ' + (historyLength + 1));
 										WebApp.deleteModal(newModalElement.id);
 										assert.equal(WebApp.getModalElements()[newModalElement.id], null, 'New modal element must be deleted.');
-										assert.equal(WebApp.getModalIds().length, 1, 'New modal ID must be removed.');
+										assert.equal(WebApp.getModalIds().length, getModalIdsLength, 'New modal ID must be removed.');
 										done();
 										startNext();
 									});
