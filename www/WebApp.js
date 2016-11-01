@@ -886,7 +886,7 @@ var WebAppClass = function() {
 	}
 
 	function showElement(element, searchData, referrerElement) {
-		if (!referrerElement || pageElements[referrerElement.id]) {
+		if (!referrerElement || !modalElements[referrerElement.id]) {
 			element.style.display = 'block';
 		}
 		if (typeof element.onShow === 'function') {
@@ -895,7 +895,7 @@ var WebAppClass = function() {
 	}
 
 	function hideElement(element, nextSearchData, nextElement) {
-		if (!nextElement || pageElements[nextElement.id]) {
+		if (!nextElement || !modalElements[nextElement.id]) {
 			element.style.display = 'none';
 		}
 		if (typeof element.onHide === 'function') {
