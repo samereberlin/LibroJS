@@ -846,6 +846,7 @@ var WebAppClass = function() {
 			}
 		};
 		if (switchOn) {
+			hideElement(currentPage, searchData, modalElement);
 			animateElement(modalElement, 'fadein', null);
 			animateElement(modalElement.children[0], nextModalTransition + 'in', null);
 			showElement(modalElement, searchData, currentPage);
@@ -856,6 +857,7 @@ var WebAppClass = function() {
 			animateElement(modalElement, 'fadeout', function() {
 				hideElement(modalElement, searchData, nextElement);
 				onSwitchModal();
+				showElement(currentPage, searchData, modalElement);
 			});
 			currentModal = null;
 			nextModalTransition = null;
@@ -888,14 +890,18 @@ var WebAppClass = function() {
 	}
 
 	function showElement(element, searchData, referrerElement) {
-		element.style.display = 'block';
+		if (!referrerElement || pageElements[referrerElement.id]) {
+			element.style.display = 'block';
+		}
 		if (typeof element.onShow === 'function') {
 			element.onShow(searchData, referrerElement);
 		}
 	}
 
 	function hideElement(element, nextSearchData, nextElement) {
-		element.style.display = 'none';
+		if (!nextElement || pageElements[nextElement.id]) {
+			element.style.display = 'none';
+		}
 		if (typeof element.onHide === 'function') {
 			element.onHide(nextSearchData, nextElement);
 		}

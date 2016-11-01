@@ -309,76 +309,6 @@ secondPageElement.onHide = function(nextSearchData, nextElement) {
 </script>
 ```
 
-Another interesting use case for application life cycle callbacks, is the page redirection possibility, which allow us to emulate exit messages to appear when returning only (according to the "referrerElement" / previous displayed page), as demonstrated in the following example, where the #secondPage is displayed only when returning from #thirdPage (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex07.1_exitMessage.html#firstPage" target="_blank">live preview</a>):
-```html
-<div class="page" id="firstPage">
-	<h1>WebApp - First Page</h1>
-	<a href="#secondPage">go to the second page</a>
-</div>
-
-<div class="page" id="secondPage">
-	<div style="display: none;">
-		<h1>WebApp - Second Page</h1>
-		<a href="#firstPage">go to the first page</a> | <a href="#thirdPage">go to the third page</a>
-	</div>
-</div>
-
-<div class="page" id="thirdPage">
-	<h1>WebApp - Third Page</h1>
-	<a href="#secondPage">go to the second page</a>
-</div>
-
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
-
-<script>
-// Set secondPage onShow callback action:
-document.getElementById('secondPage').onShow = function(searchData, referrerElement) {
-	if (referrerElement.id === 'thirdPage') this.children[0].style.display = 'block';
-	else {
-		this.children[0].style.display = 'none';
-		window.location.hash = 'thirdPage';
-	}
-};
-</script>
-```
-
-And the same page redirection effect can be reached using WebApp.onUpdateHash callback, which is more efficient because it is dispatched earlier, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex07.2_exitMessageOnUpdateHash.html#firstPage" target="_blank">live preview</a>):
-```html
-<div class="page" id="firstPage">
-	<h1>WebApp - First Page</h1>
-	<a href="#secondPage">go to the second page</a>
-</div>
-
-<div class="page" id="secondPage">
-	<div style="display: none;">
-		<h1>WebApp - Second Page</h1>
-		<a href="#firstPage">go to the first page</a> | <a href="#thirdPage">go to the third page</a>
-	</div>
-</div>
-
-<div class="page" id="thirdPage">
-	<h1>WebApp - Third Page</h1>
-	<a href="#secondPage">go to the second page</a>
-</div>
-
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
-
-<script>
-// Set WebApp onUpdateHash callback action:
-WebApp.onUpdateHash = function(hashChangeEvent) {
-	var newHash = hashChangeEvent.newURL.substr(hashChangeEvent.newURL.lastIndexOf('#'));
-	if (newHash === '#secondPage') {
-		var oldHash = hashChangeEvent.oldURL.substr(hashChangeEvent.oldURL.lastIndexOf('#'));
-		if (oldHash === '#thirdPage') document.getElementById('secondPage').children[0].style.display = 'block';
-		else {
-			document.getElementById('secondPage').children[0].style.display = 'none';
-			window.location.hash = 'thirdPage';
-		}
-	}
-};
-</script>
-```
-
 **Important Note:** the available callbacks are:
 - WebApp.onLoad();
 - WebApp.onUnload();
@@ -564,6 +494,46 @@ The pop-up modal transition "pop" is enabled by default, but if we need to set a
 </div>
 
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+```
+
+Another interesting use case for modal window pop-ups, is the "exit dialog" emulation possibility, which alerts the user when returning, in order to prevent data loss. The following example demonstrates how to create a simple "exit dialog" confirmation, which alerts the user when returning from the second to the first page (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.4_exitDialog.html#firstPage" target="_blank">live preview</a>):
+
+```html
+<div class="page" id="firstPage">
+	<h1>WebApp - <span style="color:#004;">First Page</span></h1>
+	<p>If you are viewing this page (firstPage), it means that the current browser URL ends with "#firstPage"</p>
+	<a href="#secondPage?modal">go to the next page</a>
+</div>
+
+<div class="page" id="secondPage">
+	<h1>WebApp - <span style="color:#040;">Second Page</span></h1>
+	<p>If you are viewing this page (secondPage), it means that the current browser URL ends with "#secondPage"</p>
+	<a href="javascript:window.history.back();">return to the previous</a>
+</div>
+
+<div class="modal" id="returnDialog" onclick="window.history.back();">
+	<div style="padding: 0.5em; text-align: center;" onclick="event.stopPropagation();">
+		<p>Are you sure you want to return to the previous page?</p>
+		<button onclick="window.history.back();">Cancel</button>&nbsp;&nbsp;
+		<button onclick="window.location.hash = '#firstPage';">Return</button>
+	</div>
+</div>
+
+<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+
+<script>
+var secondPageElement = document.getElementById('secondPage');
+secondPageElement.onShow = function(searchData, referrerElement) {
+	if (searchData && searchData === 'modal') {
+		window.location.hash = 'secondPage';
+	}
+};
+secondPageElement.onUpdateSearch = function(searchData) {
+	if (searchData && searchData === 'modal') {
+		window.location.hash = 'returnDialog';
+	}
+};
+</script>
 ```
 
 
