@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WebApp</title>
+<title>WebApp - tests</title>
 <!-- link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.0.1.css" -->
 <link rel="stylesheet" href="qunit-2.0.1.css">
 </head>
@@ -41,7 +41,7 @@
 <div class="modal" id="modalWindow" onclick="window.history.back();">
 	<div style="padding: 0.5em;" onclick="event.stopPropagation();">
 		<h1>WebApp - <span style="color:#400;">Modal Window</span></h1>
-		<p>If you are viewing this page (modalWindow), it means that the current browser URL ends with "/index.html#modalWindow"</p>
+		<p>If you are viewing this page (modalWindow), it means that the current browser URL ends with "#modalWindow"</p>
 		<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a>
 		<br><br>
 		<a href="javascript:window.history.back();">(hide modal)</a>
@@ -65,11 +65,13 @@
 var headerElement = document.getElementById('header');
 var testCaseIndex = 0;
 var shortDelay = 10;
-var longDelay = 200;
+var longDelay = 100;
 QUnit.config.testTimeout = 5000;
 
 function startNext() {
-	if (testCases[testCaseIndex]) testCases[testCaseIndex++]();
+	if (testCases[testCaseIndex]) {
+		testCases[testCaseIndex++]();
+	}
 }
 
 function testElements(assert, pageId, modalId, historyStackLength) {
@@ -205,7 +207,7 @@ var testCases = [
 						WebApp.setDefaultPageTransition('fade');
 						done();
 						startNext();
-					}, longDelay);
+					}, longDelay); // longDelay is required due to the onUpdateHash processing.
 				};
 				assert.equal(WebApp.getDefaultPageTransition(), 'slide', 'Intermediate default page transition must be "slide".');
 				assert.equal(WebApp.getNextPageTransition(), 'slide', 'Intermediate next page transition must be "slide".');
@@ -533,7 +535,7 @@ var testCases = [
 										startNext();
 									});
 									testElements(assert, 'secondPage', newModalElement.id, 2);
-									setTimeout(function() {window.location.hash = 'firstPage';}, shortDelay);
+									setTimeout(function() {window.location.hash = 'firstPage';}, longDelay); // longDelay is required due to the modal redirecting processing.
 								};
 								testElements(assert, 'secondPage', null, 2);
 								var newModalElement = WebApp.createModal('newModal', null, '<div style="padding: 0.5em;"><h1>New Modal Window</h1></div>');
@@ -542,7 +544,7 @@ var testCases = [
 								window.location.hash = newModalElement.id;
 							});
 							testElements(assert, 'firstPage', 'modalWindow', 1);
-							setTimeout(function() {window.location.hash = 'secondPage';}, shortDelay);
+							setTimeout(function() {window.location.hash = 'secondPage';}, longDelay); // longDelay is required due to the modal redirecting processing.
 						};
 						testElements(assert, 'firstPage', null, 1);
 						window.history.forward();
