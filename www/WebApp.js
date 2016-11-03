@@ -111,6 +111,26 @@ var WebAppClass = function() {
 	};
 
 	/**
+	 * Get the currentPage HTML DOM element reference,
+	 * which represents the currently displayed page.
+	 *
+	 * @return {HTML DOM element} The currentPage HTML DOM element reference.
+	 */
+	this.getCurrentPage = function() {
+		return currentPage;
+	};
+
+	/**
+	 * Get the current searchData string value,
+	 * which is the URL hash content from the question mark (if present) to the end.
+	 *
+	 * @return {string} The current searchData string value.
+	 */
+	this.getCurrentSearch = function() {
+		return currentSearch;
+	};
+
+	/**
 	 * Get the default page id string value,
 	 * which must be shown in the first request to the basic URL
 	 * (default value: the first body's child class page element id).
@@ -209,6 +229,16 @@ var WebAppClass = function() {
 	 */
 	this.getModalElements = function() {
 		return modalElements;
+	};
+
+	/**
+	 * Get the currentModal HTML DOM element reference,
+	 * which represents the currently displayed modal.
+	 *
+	 * @return {HTML DOM element} The currentModal HTML DOM element reference.
+	 */
+	this.getCurrentModal = function() {
+		return currentModal;
 	};
 
 	/**
@@ -327,7 +357,8 @@ var WebAppClass = function() {
 
 	/**
 	 * Returns the redirection boolean state,
-	 * which indicates if the next updateHash event must be bypassed.
+	 * which indicates if the next updateHash event must be bypassed
+	 * (useful to update searchData content without hash processing).
 	 *
 	 * @return {boolean} The redirection boolean state.
 	 */
@@ -337,7 +368,8 @@ var WebAppClass = function() {
 
 	/**
 	 * Set the redirection boolean state,
-	 * which indicates if the next updateHash event must be bypassed.
+	 * which indicates if the next updateHash event must be bypassed
+	 * (useful to update searchData content without hash processing).
 	 *
 	 * @param {boolean} booleanState - The redirection boolean state.
 	 */

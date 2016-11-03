@@ -323,7 +323,7 @@ secondPageElement.onHide = function(nextSearchData, nextElement) {
 - modalElement.onHide(nextSearchData, nextElement);
 - modalElement.onUpdateSearch(searchData);
 Where:
-- `searchData` is the url content from the question mark (if present) to the end. For example, in case of `index.html#fistPage?foo=bar`, the searchData would be `foo=bar`.
+- `searchData` is the URL hash content from the question mark (if present) to the end. For example, in case of `index.html#fistPage?foo=bar`, the searchData would be `foo=bar`.
 - `referrerElement` is the previous displayed page element.
 - `nextElement` is the page element that will be displayed.
 
@@ -601,6 +601,16 @@ Get the pageElements object reference, which contains the key-value database (pa
 
 **Returns:** {array} The key-value database (pageId: element) corresponding to the current loaded pages.
 
+#### getCurrentPage()
+Get the currentPage HTML DOM element reference, which represents the currently displayed page.
+
+**Returns:** {HTML DOM element} The currentPage HTML DOM element reference.
+
+#### getCurrentSearch()
+Get the current searchData string value, which is the URL hash content from the question mark (if present) to the end.
+
+**Returns:** {string} The current searchData string value.
+
 #### getDefaultPageId()
 Get the default page id string value, which must be shown in the first request to the basic URL (default value: the first body's child class page element id).
 
@@ -647,6 +657,11 @@ Get the modalIds array values, which contains the list of IDs corresponding to t
 Get the modalElements object reference, which contains the key-value database (modalId: element) corresponding to the current loaded modals.
 
 **Returns:** {array} The key-value database (modalId: element) corresponding to the current loaded modals.
+
+#### getCurrentModal()
+Get the currentModal HTML DOM element reference, which represents the currently displayed modal.
+
+**Returns:** {HTML DOM element} The currentModal HTML DOM element reference.
 
 #### createModal(modalId, extraClass, modalContent)
 Create modal dynamically, without any previous HTML code declaration, and load it.
@@ -713,12 +728,12 @@ Set the history unique boolean state, which indicates if the page entries must b
 | booleanState | boolean | The history unique boolean state. |
 
 #### isRedirection()
-Returns the redirection boolean state, which indicates if the next updateHash event must be bypassed.
+Returns the redirection boolean state, which indicates if the next updateHash event must be bypassed (useful to update searchData content without hash processing).
 
 **Returns:** {boolean} The redirection boolean state.
 
 #### setIsRedirection(booleanState)
-Set the redirection boolean state, which indicates if the next updateHash event must be bypassed.
+Set the redirection boolean state, which indicates if the next updateHash event must be bypassed (useful to update searchData content without hash processing).
 
 **Parameters:**
 
