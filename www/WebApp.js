@@ -47,7 +47,7 @@ var WebAppClass = function() {
 	//################################################################################//
 	// Application settings:
 
-	var HASH_DELAY = 100;
+	var HASH_DELAY = 200;
 	var isLoaded = false;
 	var isRunning = false;
 
@@ -613,7 +613,7 @@ var WebAppClass = function() {
 	}
 
 	function isPage(element) {
-		return (element.classList.contains('page') && element.id)? true: false;
+		return ((element.className.search('(^| )page($| )') >= 0) && element.id)? true: false;
 	}
 
 	function loadPage(element, insertBeforeId) {
@@ -632,7 +632,7 @@ var WebAppClass = function() {
 	}
 
 	function isModal(element) {
-		return (element.classList.contains('modal') && element.id)? true: false;
+		return ((element.className.search('(^| )modal($| )') >= 0) && element.id)? true: false;
 	}
 
 	function loadModal(element) {
