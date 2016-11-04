@@ -1,4 +1,10 @@
 @CHARSET "UTF-8";
 
 /* WebApp useful rules. */
-.page, .modal {display:none;}
+.page, .modal {
+	display:none;
+}
+.modal > * {
+	border-radius: 0.3125em;
+	box-shadow: 0 2px 12px rgba(0,0,0,0.6);
+}

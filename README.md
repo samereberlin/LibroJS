@@ -412,7 +412,7 @@ Modal window are elements designed to appear over page elements. The primary pur
 </body>
 ```
 
-**Important Note:** the whole modal content must be inside another single element (which in this case is using style padding: 0.5em), in order to generate a single pop-up dialog.
+**Important Note:** the whole modal content must be inside another single element, in order to generate a single pop-up dialog (which in this case is using style padding: 0.5em). And notice also that these default pop-ups do not have round corners neither shadows (if we need such specific decorations, we can declare the appropriate CSS rules, as it is presented in the _WebApp.css_ style file).
 
 If we need a modal window that closes automatically on click outside the dialog content, we can use the following implementation with "onclick" handling instead (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.1_hideOnClickOutside.html#firstPage" target="_blank">live preview</a>):
 
