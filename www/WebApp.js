@@ -547,32 +547,44 @@ var WebAppClass = function() {
 			style.innerHTML = '/* Animation Effects (based on jquery.mobile-1.4.5). */' +
 				'@keyframes fadein {from {opacity: 0;} to {opacity: 1;}}' +
 				'@keyframes fadeout {from {opacity: 1;} to {opacity: 0;}}' +
-				'.fadein {animation-name: fadein; animation-duration: 225ms; opacity: 1;}' +
-				'.fadeout {animation-name: fadeout; animation-duration: 125ms; opacity: 0;}' +
+				'@-webkit-keyframes fadein {from {opacity: 0;} to {opacity: 1;}}' +
+				'@-webkit-keyframes fadeout {from {opacity: 1;} to {opacity: 0;}}' +
+				'.fadein {animation-name: fadein; animation-duration: 225ms; -webkit-animation-name: fadein; -webkit-animation-duration: 225ms; opacity: 1;}' +
+				'.fadeout {animation-name: fadeout; animation-duration: 125ms; -webkit-animation-name: fadeout; -webkit-animation-duration: 125ms; opacity: 0;}' +
 				'@keyframes popin {from {transform: scale(.8); opacity: 0;} to {transform: scale(1); opacity: 1;}}' +
 				'@keyframes popout {from {transform: scale(1); opacity: 1;} to {transform: scale(.8); opacity: 0;}}' +
-				'.popin {animation-name: popin; animation-duration: 225ms; animation-timing-function: ease-out; opacity: 1;}' +
-				'.popout {animation-name: popout; animation-duration: 125ms; animation-timing-function: ease-in; opacity: 0;}' +
+				'@-webkit-keyframes popin {from {-webkit-transform: scale(.8); opacity: 0;} to {-webkit-transform: scale(1); opacity: 1;}}' +
+				'@-webkit-keyframes popout {from {-webkit-transform: scale(1); opacity: 1;} to {-webkit-transform: scale(.8); opacity: 0;}}' +
+				'.popin {animation-name: popin; animation-duration: 225ms; animation-timing-function: ease-out; -webkit-animation-name: popin; -webkit-animation-duration: 225ms; -webkit-animation-timing-function: ease-out; opacity: 1;}' +
+				'.popout {animation-name: popout; animation-duration: 125ms; animation-timing-function: ease-in; -webkit-animation-name: popout; -webkit-animation-duration: 125ms; -webkit-animation-timing-function: ease-in; opacity: 0;}' +
 				'@keyframes flipin {from {transform: matrix(0.2,0.2,0,1,0,0); opacity: 0;} to {transform: matrix(1,0,0,1,0,0); opacity: 1;}}' +
 				'@keyframes flipout {from {transform: matrix(1,0,0,1,0,0); opacity: 1;} to {transform: matrix(0.2,-0.2,0,1,0,0); opacity: 0;}}' +
 				'@keyframes fliprevin {from {transform: matrix(0.2,-0.2,0,1,0,0); opacity: 0;} to {transform: matrix(1,0,0,1,0,0); opacity: 1;}}' +
 				'@keyframes fliprevout {from {transform: matrix(1,0,0,1,0,0); opacity: 1;} to {transform: matrix(0.2,0.2,0,1,0,0); opacity: 0;}}' +
-				'.flipin, .fliprevin {animation-duration: 225ms; animation-timing-function: ease-out;}' +
-				'.flipout, .fliprevout {animation-duration: 125ms; animation-timing-function: ease-in;}' +
-				'.flipin {animation-name: flipin; opacity: 1;}' +
-				'.flipout {animation-name: flipout; opacity: 0;}' +
-				'.fliprevin {animation-name: fliprevin; opacity: 1;}' +
-				'.fliprevout {animation-name: fliprevout; opacity: 0;}' +
+				'@-webkit-keyframes flipin {from {-webkit-transform: matrix(0.2,0.2,0,1,0,0); opacity: 0;} to {-webkit-transform: matrix(1,0,0,1,0,0); opacity: 1;}}' +
+				'@-webkit-keyframes flipout {from {-webkit-transform: matrix(1,0,0,1,0,0); opacity: 1;} to {-webkit-transform: matrix(0.2,-0.2,0,1,0,0); opacity: 0;}}' +
+				'@-webkit-keyframes fliprevin {from {-webkit-transform: matrix(0.2,-0.2,0,1,0,0); opacity: 0;} to {-webkit-transform: matrix(1,0,0,1,0,0); opacity: 1;}}' +
+				'@-webkit-keyframes fliprevout {from {-webkit-transform: matrix(1,0,0,1,0,0); opacity: 1;} to {-webkit-transform: matrix(0.2,0.2,0,1,0,0); opacity: 0;}}' +
+				'.flipin, .fliprevin {animation-duration: 225ms; animation-timing-function: ease-out; -webkit-animation-duration: 225ms; -webkit-animation-timing-function: ease-out;}' +
+				'.flipout, .fliprevout {animation-duration: 125ms; animation-timing-function: ease-in; -webkit-animation-duration: 125ms; -webkit-animation-timing-function: ease-in;}' +
+				'.flipin {animation-name: flipin; -webkit-animation-name: flipin; opacity: 1;}' +
+				'.flipout {animation-name: flipout; -webkit-animation-name: flipout; opacity: 0;}' +
+				'.fliprevin {animation-name: fliprevin; -webkit-animation-name: fliprevin; opacity: 1;}' +
+				'.fliprevout {animation-name: fliprevout; -webkit-animation-name: fliprevout; opacity: 0;}' +
 				'@keyframes slidein {from {transform: translateX(100%);} to {transform: translateX(0);}}' +
 				'@keyframes slideout {from {transform: translateX(0);} to {transform: translateX(-100%);}}' +
 				'@keyframes sliderevin {from {transform: translateX(-100%);} to {transform: translateX(0);}}' +
 				'@keyframes sliderevout {from {transform: translateX(0);} to {transform: translateX(100%);}}' +
-				'.slidein, .sliderevin {animation-duration: 225ms; animation-timing-function: ease-out;}' +
-				'.slideout, .sliderevout {animation-duration: 125ms; animation-timing-function: ease-in;}' +
-				'.slidein {animation-name: slidein; transform: translateX(0);}' +
-				'.slideout {animation-name: slideout; transform: translateX(-100%);}' +
-				'.sliderevin {animation-name: sliderevin; transform: translateX(0);}' +
-				'.sliderevout {animation-name: sliderevout; transform: translateX(100%);}' +
+				'@-webkit-keyframes slidein {from {-webkit-transform: translateX(100%);} to {-webkit-transform: translateX(0);}}' +
+				'@-webkit-keyframes slideout {from {-webkit-transform: translateX(0);} to {-webkit-transform: translateX(-100%);}}' +
+				'@-webkit-keyframes sliderevin {from {-webkit-transform: translateX(-100%);} to {-webkit-transform: translateX(0);}}' +
+				'@-webkit-keyframes sliderevout {from {-webkit-transform: translateX(0);} to {-webkit-transform: translateX(100%);}}' +
+				'.slidein, .sliderevin {animation-duration: 225ms; animation-timing-function: ease-out; -webkit-animation-duration: 225ms; -webkit-animation-timing-function: ease-out;}' +
+				'.slideout, .sliderevout {animation-duration: 125ms; animation-timing-function: ease-in; -webkit-animation-duration: 125ms; -webkit-animation-timing-function: ease-in;}' +
+				'.slidein {animation-name: slidein; transform: translateX(0); -webkit-animation-name: slidein; -webkit-transform: translateX(0);}' +
+				'.slideout {animation-name: slideout; transform: translateX(-100%); -webkit-animation-name: slideout; -webkit-transform: translateX(-100%);}' +
+				'.sliderevin {animation-name: sliderevin; transform: translateX(0); -webkit-animation-name: sliderevin; -webkit-transform: translateX(0);}' +
+				'.sliderevout {animation-name: sliderevout; transform: translateX(100%); -webkit-animation-name: sliderevout; -webkit-transform: translateX(100%);}' +
 				'@keyframes drawertopin {from {transform: translateY(-100%);} to {transform: translateY(0);}}' +
 				'@keyframes drawertopout {from {transform: translateY(0);} to {transform: translateY(-100%);}}' +
 				'@keyframes drawerbottomin {from {transform: translateY(100%);} to {transform: translateY(0);}}' +
@@ -581,16 +593,24 @@ var WebAppClass = function() {
 				'@keyframes drawerleftout {from {transform: translateX(0);} to {transform: translateX(-100%);}}' +
 				'@keyframes drawerrightin {from {transform: translateX(100%);} to {transform: translateX(0);}}' +
 				'@keyframes drawerrightout {from {transform: translateX(0);} to {transform: translateX(100%);}}' +
-				'.drawertopin, .drawerbottomin, .drawerleftin, .drawerrightin {animation-duration: 225ms; animation-timing-function: ease-out;}' +
-				'.drawertopout, .drawerbottomout, .drawerleftout, .drawerrightout {animation-duration: 125ms; animation-timing-function: ease-in;}' +
-				'.drawertopin {animation-name: drawertopin; transform: translateY(0);}' +
-				'.drawertopout {animation-name: drawertopout; transform: translateY(-100%);}' +
-				'.drawerbottomin {animation-name: drawerbottomin; transform: translateY(0);}' +
-				'.drawerbottomout {animation-name: drawerbottomout; transform: translateY(100%);}' +
-				'.drawerleftin {animation-name: drawerleftin; transform: translateX(0);}' +
-				'.drawerleftout {animation-name: drawerleftout; transform: translateX(-100%);}' +
-				'.drawerrightin {animation-name: drawerrightin; transform: translateX(0);}' +
-				'.drawerrightout {animation-name: drawerrightout; transform: translateX(100%);}' +
+				'@-webkit-keyframes drawertopin {from {-webkit-transform: translateY(-100%);} to {-webkit-transform: translateY(0);}}' +
+				'@-webkit-keyframes drawertopout {from {-webkit-transform: translateY(0);} to {-webkit-transform: translateY(-100%);}}' +
+				'@-webkit-keyframes drawerbottomin {from {-webkit-transform: translateY(100%);} to {-webkit-transform: translateY(0);}}' +
+				'@-webkit-keyframes drawerbottomout {from {-webkit-transform: translateY(0);} to {-webkit-transform: translateY(100%);}}' +
+				'@-webkit-keyframes drawerleftin {from {-webkit-transform: translateX(-100%);} to {-webkit-transform: translateX(0);}}' +
+				'@-webkit-keyframes drawerleftout {from {-webkit-transform: translateX(0);} to {-webkit-transform: translateX(-100%);}}' +
+				'@-webkit-keyframes drawerrightin {from {-webkit-transform: translateX(100%);} to {-webkit-transform: translateX(0);}}' +
+				'@-webkit-keyframes drawerrightout {from {-webkit-transform: translateX(0);} to {-webkit-transform: translateX(100%);}}' +
+				'.drawertopin, .drawerbottomin, .drawerleftin, .drawerrightin {animation-duration: 225ms; animation-timing-function: ease-out; -webkit-animation-duration: 225ms; -webkit-animation-timing-function: ease-out;}' +
+				'.drawertopout, .drawerbottomout, .drawerleftout, .drawerrightout {animation-duration: 125ms; animation-timing-function: ease-in; -webkit-animation-duration: 125ms; -webkit-animation-timing-function: ease-in;}' +
+				'.drawertopin {animation-name: drawertopin; transform: translateY(0); -webkit-animation-name: drawertopin; -webkit-transform: translateY(0);}' +
+				'.drawertopout {animation-name: drawertopout; transform: translateY(-100%); -webkit-animation-name: drawertopout; -webkit-transform: translateY(-100%);}' +
+				'.drawerbottomin {animation-name: drawerbottomin; transform: translateY(0); -webkit-animation-name: drawerbottomin; -webkit-transform: translateY(0);}' +
+				'.drawerbottomout {animation-name: drawerbottomout; transform: translateY(100%); -webkit-animation-name: drawerbottomout; -webkit-transform: translateY(100%);}' +
+				'.drawerleftin {animation-name: drawerleftin; transform: translateX(0); -webkit-animation-name: drawerleftin; -webkit-transform: translateX(0);}' +
+				'.drawerleftout {animation-name: drawerleftout; transform: translateX(-100%); -webkit-animation-name: drawerleftout; -webkit-transform: translateX(-100%);}' +
+				'.drawerrightin {animation-name: drawerrightin; transform: translateX(0); -webkit-animation-name: drawerrightin; -webkit-transform: translateX(0);}' +
+				'.drawerrightout {animation-name: drawerrightout; transform: translateX(100%); -webkit-animation-name: drawerrightout; -webkit-transform: translateX(100%);}' +
 				'/* WebApp basic/required CSS rules. */' +
 				'.modal {background-color: rgba(0,0,0,0.5); position: fixed; top: 0; right: 0; bottom: 0; left: 0; overflow: auto; z-index: 3}' +
 				'.modal > * {background-color: white; margin: 10% auto 1em; max-width: 600px; width: 80%; overflow: hidden}'
@@ -773,8 +793,8 @@ var WebAppClass = function() {
 					// History stack management:
 					if (isHistoryManaged) {
 						var historyManipulations = 0;
-						var historyStackIndex = historyStack.indexOf(hashChangeEvent.newURL);
-						if (historyStack.length > 1 && historyStack[historyStack.length - 2] === hashChangeEvent.newURL) {
+						var historyStackIndex = historyStack.indexOf(window.location.href);
+						if (historyStack.length > 1 && historyStack[historyStack.length - 2] === window.location.href) {
 							historyManipulations = 1;
 							historyStack.pop();
 						} else if (isHistoryUnique && historyStack.length > 2 && historyStackIndex >= 0) {
@@ -902,6 +922,7 @@ var WebAppClass = function() {
 			var animationEnded = function() {
 				animationRunning = false;
 				element.removeEventListener('animationend', animationEnded);
+				element.removeEventListener('webkitAnimationEnd', animationEnded);
 				element.className = element.className.replace(new RegExp('(?:^|\\s)' + animation + '(?!\\S)', 'g'), '');
 				if (typeof callback === 'function') {
 					callback();
@@ -913,6 +934,7 @@ var WebAppClass = function() {
 				}
 			}, 1000); // 1000 = animation timeout.
 			element.addEventListener('animationend', animationEnded);
+			element.addEventListener('webkitAnimationEnd', animationEnded);
 			element.className += ' ' + animation;
 		}
 	}
