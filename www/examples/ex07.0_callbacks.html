@@ -42,19 +42,19 @@ WebApp.onResume = function() {
 // Set firstPage callbacks:
 var firstPageElement = document.getElementById('firstPage');
 firstPageElement.onShow = function(searchData, referrerElement) {
-	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#004;">firstPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
 firstPageElement.onHide = function(nextSearchData, nextElement) {
-	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
+	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#004;">firstPageElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
 };
 
 // Set secondPage callbacks:
 var secondPageElement = document.getElementById('secondPage');
 secondPageElement.onShow = function(searchData, referrerElement) {
-	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#040;">secondPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
 secondPageElement.onHide = function(nextSearchData, nextElement) {
-	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
+	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#040;">secondPageElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
 };
 </script>
 

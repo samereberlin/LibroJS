@@ -51,20 +51,32 @@
 <div class="page" id="firstPage">
 	<h1>WebApp - <span style="color:#004;">First Page</span></h1>
 	<p>If you are viewing this page (firstPage), it means that the current browser URL ends with "#firstPage"</p>
-	#firstPage | <a href="#secondPage">#secondPage</a>
+	#firstPage | <a href="#secondPage">#secondPage</a> | <a href="#thirdPage">#thirdPage</a> | <a href="#fourthPage">#fourthPage</a>
 </div>
 
 <div class="page" id="secondPage">
 	<h1>WebApp - <span style="color:#040;">Second Page</span></h1>
 	<p>If you are viewing this page (secondPage), it means that the current browser URL ends with "#secondPage"</p>
-	<a href="#firstPage">#firstPage</a> | #secondPage
+	<a href="#firstPage">#firstPage</a> | #secondPage | <a href="#thirdPage">#thirdPage</a> | <a href="#fourthPage">#fourthPage</a>
+</div>
+
+<div class="page" id="thirdPage">
+	<h1>WebApp - <span style="color:#400;">Third Page</span></h1>
+	<p>If you are viewing this page (thirdPage), it means that the current browser URL ends with "#thirdPage"</p>
+	<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a> | #thirdPage | <a href="#fourthPage">#fourthPage</a>
+</div>
+
+<div class="page" id="fourthPage">
+	<h1>WebApp - <span style="color:#440;">Fourth Page</span></h1>
+	<p>If you are viewing this page (fourthPage), it means that the current browser URL ends with "#fourthPage"</p>
+	<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a> | <a href="#thirdPage">#thirdPage</a> | #fourthPage
 </div>
 
 <div class="modal" id="modalWindow" onclick="window.history.back();">
 	<div style="padding: 0.5em;" onclick="event.stopPropagation();">
-		<h1>WebApp - <span style="color:#400;">Modal Window</span></h1>
+		<h1>WebApp - <span style="color:#044;">Modal Window</span></h1>
 		<p>If you are viewing this modal (modalWindow), it means that the current browser URL ends with "#modalWindow"</p>
-		<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a>
+		<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a> | <a href="#thirdPage">#thirdPage</a> | <a href="#fourthPage">#fourthPage</a>
 		<br><br>
 		<a href="javascript:window.history.back();">(hide modal)</a>
 	</div>
@@ -79,6 +91,15 @@
 
 <script>
 var logMonitor = document.getElementById('logMonitor');
+
+// Set browser error callback:
+window.onerror = function (msg, url, lineNo, columnNo, error) {
+	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:red;">window.onerror...' +
+		'<br>&nbsp;&nbsp;&nbsp;&nbsp;msg: ' + msg +
+		'<br>&nbsp;&nbsp;&nbsp;&nbsp;url: ' + url +
+		'<br>&nbsp;&nbsp;&nbsp;&nbsp;lineNo: ' + lineNo + ', columnNo: ' + columnNo +
+		'<br>&nbsp;&nbsp;&nbsp;&nbsp;error: ' + error + '</span>';
+};
 
 // Set global callbacks:
 WebApp.onLoad = function() {
@@ -98,8 +119,8 @@ WebApp.onResize = function() {
 }
 WebApp.onUpdateHash = function(hashChangeEvent) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onUpdateHash(hashChangeEvent)' +
-		'<br>&nbsp;&nbsp;&nbsp;&nbsp;hashChangeEvent.newURL: ' + hashChangeEvent.newURL +
-		'<br>&nbsp;&nbsp;&nbsp;&nbsp;hashChangeEvent.oldURL: ' + hashChangeEvent.oldURL + '</span>';
+		'<br>&nbsp;&nbsp;&nbsp;&nbsp; hashChangeEvent.newURL: ..' + (hashChangeEvent.newURL? hashChangeEvent.newURL.substring(hashChangeEvent.newURL.lastIndexOf('/')): '') +
+		'<br>&nbsp;&nbsp;&nbsp;&nbsp; hashChangeEvent.oldURL: ..' + (hashChangeEvent.oldURL? hashChangeEvent.oldURL.substring(hashChangeEvent.oldURL.lastIndexOf('/')): '') + '</span>';
 }
 WebApp.onSwitchPage = function(pageElement, referrerElement) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onSwitchPage(' + pageElement.id + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
@@ -114,37 +135,61 @@ WebApp.onKeyDown = function(keyEvent, pageElement) {
 // Set firstPage callbacks:
 var firstPageElement = document.getElementById('firstPage');
 firstPageElement.onShow = function(searchData, referrerElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#004;">firstPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
 firstPageElement.onHide = function(nextSearchData, nextElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#004;">firstPageElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
 };
 firstPageElement.onUpdateSearch = function(searchData) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:blue;">firstPageElement.onUpdateSearch(' + searchData + ')</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#004;">firstPageElement.onUpdateSearch(' + searchData + ')</span>';
 };
 
 // Set secondPage callbacks:
 var secondPageElement = document.getElementById('secondPage');
 secondPageElement.onShow = function(searchData, referrerElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#040;">secondPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
 secondPageElement.onHide = function(nextSearchData, nextElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#040;">secondPageElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
 };
 secondPageElement.onUpdateSearch = function(searchData) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">secondPageElement.onUpdateSearch(' + searchData + ')</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#040;">secondPageElement.onUpdateSearch(' + searchData + ')</span>';
+};
+
+//Set thirdPage callbacks:
+var thirdPageElement = document.getElementById('thirdPage');
+thirdPageElement.onShow = function(searchData, referrerElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">thirdPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+};
+thirdPageElement.onHide = function(nextSearchData, nextElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">thirdPageElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
+};
+thirdPageElement.onUpdateSearch = function(searchData) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">thirdPageElement.onUpdateSearch(' + searchData + ')</span>';
+};
+
+//Set fourthPage callbacks:
+var fourthPageElement = document.getElementById('fourthPage');
+fourthPageElement.onShow = function(searchData, referrerElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#440;">fourthPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+};
+fourthPageElement.onHide = function(nextSearchData, nextElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#440;">fourthPageElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
+};
+fourthPageElement.onUpdateSearch = function(searchData) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#440;">fourthPageElement.onUpdateSearch(' + searchData + ')</span>';
 };
 
 // Set modalWindow callbacks:
 var modalWindowElement = document.getElementById('modalWindow');
 modalWindowElement.onShow = function(searchData, referrerElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:darkred;">modalWindowElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalWindowElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
 modalWindowElement.onHide = function(nextSearchData, nextElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:darkred;">modalWindowElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalWindowElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
 };
 modalWindowElement.onUpdateSearch = function(searchData) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:darkred;">modalWindowElement.onUpdateSearch(' + searchData + ')</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalWindowElement.onUpdateSearch(' + searchData + ')</span>';
 };
 </script>
 
