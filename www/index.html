@@ -9,43 +9,12 @@
 
 <body>
 
-<div style="border: 1px solid gray; padding: .4em;">
-	Settings:
-	<label style="margin-left: 1em; white-space:nowrap;">
-		Page transition
-		<select onchange="WebApp.setDefaultPageTransition(this.value);">
-			<option value="none">None</option>
-			<option value="fade" selected>Fade</option>
-			<option value="pop">Pop</option>
-			<option value="flip">Flip</option>
-			<option value="fliprev">Flip Reverse</option>
-			<option value="fliporder">Flip Order</option>
-			<option value="slide">Slide</option>
-			<option value="sliderev">Slide Reverse</option>
-			<option value="slideorder">Slide Order</option>
-			<option value="drawertop">Drawer Top</option>
-			<option value="drawerbottom">Drawer Bottom</option>
-			<option value="drawerleft">Drawer Left</option>
-			<option value="drawerright">Drawer Right</option>
-		</select>
-	</label>
-	<label style="margin-left: 1em; white-space:nowrap;">
-		Modal transition
-		<select onchange="WebApp.setDefaultModalTransition(this.value);">
-			<option value="none">None</option>
-			<option value="fade">Fade</option>
-			<option value="pop" selected>Pop</option>
-			<option value="flip">Flip</option>
-			<option value="fliprev">Flip Reverse</option>
-			<option value="slide">Slide</option>
-			<option value="sliderev">Slide Reverse</option>
-			<option value="drawertop">Drawer Top</option>
-			<option value="drawerbottom">Drawer Bottom</option>
-			<option value="drawerleft">Drawer Left</option>
-			<option value="drawerright">Drawer Right</option>
-		</select>
-	</label>
-	<label style="margin-left: 1em; white-space:nowrap;"><input type="checkbox" onchange="WebApp.setLogEnabled(this.checked);" checked> Enable log.</label>
+<div style="border: 1px solid gray; padding: .4em; text-align: center;">
+	<button onclick="WebApp.previousPage()" style="float:left">&lt;&lt;</button>
+	<button onclick="WebApp.nextPage()" style="float:right">&gt;&gt;</button>
+	<button onclick="window.location.hash = 'modalSettings'">Modal Settings</button>
+	<button onclick="window.location.hash = 'modalSideMenu'">Side Menu</button>
+	<button onclick="window.location.hash = 'modalTopMenu'">Top Menu</button>
 </div>
 
 <div class="page" id="firstPage">
@@ -72,18 +41,92 @@
 	<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a> | <a href="#thirdPage">#thirdPage</a> | #fourthPage
 </div>
 
-<div class="modal" id="modalWindow" onclick="window.history.back();">
+<div class="modal" id="modalSettings" onclick="window.history.back();">
 	<div style="padding: 0.5em;" onclick="event.stopPropagation();">
-		<h1>WebApp - <span style="color:#044;">Modal Window</span></h1>
-		<p>If you are viewing this modal (modalWindow), it means that the current browser URL ends with "#modalWindow"</p>
+		<h1>Modal - <span style="color:#044;">Settings</span></h1>
+		<p>If you are viewing this modal (modalSettings), it means that the current browser URL ends with "#modalSettings"</p>
 		<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a> | <a href="#thirdPage">#thirdPage</a> | <a href="#fourthPage">#fourthPage</a>
-		<br><br>
+		<br>
+		<br>
+		<label style="margin-left: 1em; white-space:nowrap;">
+			Page transition
+			<select onchange="WebApp.setDefaultPageTransition(this.value);">
+				<option value="none">None</option>
+				<option value="fade" selected>Fade (default)</option>
+				<option value="pop">Pop</option>
+				<option value="flip">Flip</option>
+				<option value="fliprev">Flip Reverse</option>
+				<option value="fliporder">Flip Order</option>
+				<option value="slide">Slide</option>
+				<option value="sliderev">Slide Reverse</option>
+				<option value="slideorder">Slide Order</option>
+				<option value="drawertop">Drawer Top</option>
+				<option value="drawerbottom">Drawer Bottom</option>
+				<option value="drawerleft">Drawer Left</option>
+				<option value="drawerright">Drawer Right</option>
+			</select>
+		</label>
+		<br>
+		<br>
+		<label style="margin-left: 1em; white-space:nowrap;">
+			Modal transition
+			<select onchange="WebApp.setDefaultModalTransition(this.value);">
+				<option value="none">None</option>
+				<option value="fade">Fade</option>
+				<option value="pop" selected>Pop (default)</option>
+				<option value="flip">Flip</option>
+				<option value="fliprev">Flip Reverse</option>
+				<option value="slide">Slide</option>
+				<option value="sliderev">Slide Reverse</option>
+				<option value="drawertop">Drawer Top</option>
+				<option value="drawerbottom">Drawer Bottom</option>
+				<option value="drawerleft">Drawer Left</option>
+				<option value="drawerright">Drawer Right</option>
+			</select>
+		</label>
+		<br>
+		<br>
+		<label style="margin-left: 1em; white-space:nowrap;"><input type="checkbox" onchange="WebApp.setLogEnabled(this.checked);" checked> Enable log.</label>
+		<br>
+		<br>
 		<a href="javascript:window.history.back();">(hide modal)</a>
 	</div>
 </div>
 
-<br>
-<a href="#modalWindow">(show modal)</a>
+<div class="modal" id="modalSideMenu" onclick="window.history.back();">
+	<div transition="drawerleft" onclick="event.stopPropagation();"
+			style="border-radius: 0; margin: 0; max-width: 300px; padding: 0.5em;
+				position: fixed; top: 0; bottom: 0; left: 0; overflow: auto;">
+		<h2>Modal - <span style="color:#400;">Side Menu</span></h2>
+		<p>If you are viewing this modal (modalSideMenu), it means that the current browser URL ends with "#modalSideMenu"</p>
+		<a href="#firstPage">#firstPage</a><br>
+		<br>
+		<a href="#secondPage">#secondPage</a><br>
+		<br>
+		<a href="#thirdPage">#thirdPage</a><br>
+		<br>
+		<a href="#fourthPage">#fourthPage</a><br>
+		<br>
+		<a href="javascript:window.history.back();">(hide modal)</a>
+	</div>
+</div>
+
+<div class="modal" id="modalTopMenu" onclick="window.history.back();">
+	<div transition="drawertop" onclick="event.stopPropagation();"
+			style="border-radius: 0; margin: 0 0 auto auto; max-width: 300px; padding: 0.5em;">
+		<h2>Modal - <span style="color:#400;">Top Menu</span></h2>
+		<p>If you are viewing this modal (modalTopMenu), it means that the current browser URL ends with "#modalTopMenu"</p>
+		<a href="#firstPage">#firstPage</a><br>
+		<br>
+		<a href="#secondPage">#secondPage</a><br>
+		<br>
+		<a href="#thirdPage">#thirdPage</a><br>
+		<br>
+		<a href="#fourthPage">#fourthPage</a><br>
+		<br>
+		<a href="javascript:window.history.back();">(hide modal)</a>
+	</div>
+</div>
 
 <p id="logMonitor" style="font-family: monospace; color: darkgray;"></p>
 
@@ -156,7 +199,7 @@ secondPageElement.onUpdateSearch = function(searchData) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#040;">secondPageElement.onUpdateSearch(' + searchData + ')</span>';
 };
 
-//Set thirdPage callbacks:
+// Set thirdPage callbacks:
 var thirdPageElement = document.getElementById('thirdPage');
 thirdPageElement.onShow = function(searchData, referrerElement) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">thirdPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
@@ -168,7 +211,7 @@ thirdPageElement.onUpdateSearch = function(searchData) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">thirdPageElement.onUpdateSearch(' + searchData + ')</span>';
 };
 
-//Set fourthPage callbacks:
+// Set fourthPage callbacks:
 var fourthPageElement = document.getElementById('fourthPage');
 fourthPageElement.onShow = function(searchData, referrerElement) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#440;">fourthPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
@@ -180,16 +223,40 @@ fourthPageElement.onUpdateSearch = function(searchData) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#440;">fourthPageElement.onUpdateSearch(' + searchData + ')</span>';
 };
 
-// Set modalWindow callbacks:
-var modalWindowElement = document.getElementById('modalWindow');
-modalWindowElement.onShow = function(searchData, referrerElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalWindowElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+// Set modalSettings callbacks:
+var modalSettingsElement = document.getElementById('modalSettings');
+modalSettingsElement.onShow = function(searchData, referrerElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalSettingsElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
-modalWindowElement.onHide = function(nextSearchData, nextElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalWindowElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
+modalSettingsElement.onHide = function(nextSearchData, nextElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalSettingsElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
 };
-modalWindowElement.onUpdateSearch = function(searchData) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalWindowElement.onUpdateSearch(' + searchData + ')</span>';
+modalSettingsElement.onUpdateSearch = function(searchData) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalSettingsElement.onUpdateSearch(' + searchData + ')</span>';
+};
+
+// Set modalSideMenu callbacks:
+var modalSideMenuElement = document.getElementById('modalSideMenu');
+modalSideMenuElement.onShow = function(searchData, referrerElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalSideMenuElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+};
+modalSideMenuElement.onHide = function(nextSearchData, nextElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalSideMenuElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
+};
+modalSideMenuElement.onUpdateSearch = function(searchData) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalSideMenuElement.onUpdateSearch(' + searchData + ')</span>';
+};
+
+// Set modalTopMenu callbacks:
+var modalTopMenuElement = document.getElementById('modalTopMenu');
+modalTopMenuElement.onShow = function(searchData, referrerElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalTopMenuElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+};
+modalTopMenuElement.onHide = function(nextSearchData, nextElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalTopMenuElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
+};
+modalTopMenuElement.onUpdateSearch = function(searchData) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalTopMenuElement.onUpdateSearch(' + searchData + ')</span>';
 };
 </script>
 
