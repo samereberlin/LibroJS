@@ -975,6 +975,15 @@ var WebAppClass = function() {
 	// User interaction API:
 
 	/**
+	 * Dispatch keyDown keyboard event.
+	 * It is called automatically on window.onkeydown event,
+	 * but it is useful to simulate keyDown keyboard event for testing.
+	 *
+	 * @param {KeyboardEvent} keyEvent - The keyDown keyboard event.
+	 */
+	this.keyDown = keyDown;
+
+	/**
 	 * Go to the next page (when available),
 	 * according to the available pageIds (@see getPageIds).
 	 */

@@ -695,9 +695,9 @@ Set the default page firstly boolean state, which indicates if the default page 
 
 **Parameters:**
 
-| Name         | Type    | Description                              |
-|--------------|---------|------------------------------------------|
-| booleanState | boolean | The default page firstly boolean state.  |
+| Name         | Type    | Description                             |
+|--------------|---------|-----------------------------------------|
+| booleanState | boolean | The default page firstly boolean state. |
 
 #### isHistoryManaged()
 Returns the history managed boolean state, which indicates if the stack must be manipulate by WebApp.
@@ -805,8 +805,8 @@ Set the default transition type, to be used between every modal switching.
 
 **Parameters:**
 
-| Name           | Type   | Description                       |
-|----------------|--------|-----------------------------------|
+| Name           | Type   | Description                        |
+|----------------|--------|------------------------------------|
 | transitionType | string | The default modal transition type. |
 
 #### getNextModalTransition()
@@ -819,8 +819,8 @@ Set the next transition type, to be used between the next modal switching only.
 
 **Parameters:**
 
-| Name           | Type   | Description                    |
-|----------------|--------|--------------------------------|
+| Name           | Type   | Description                     |
+|----------------|--------|---------------------------------|
 | transitionType | string | The next modal transition type. |
 
 #### load()
@@ -831,6 +831,15 @@ Unload the WebApp framework library. It is called automatically after window.onu
 
 #### reset()
 Reset the WebApp framework library. It is called automatically after window.onunload event, but it is useful to simulate reset event for testing.
+
+#### keyDown(keyEvent)
+Dispatch keyDown keyboard event. It is called automatically on window.onkeydown event, but it is useful to simulate keyDown keyboard event for testing.
+
+**Parameters:**
+
+| Name     | Type          | Description                 |
+|----------|---------------|-----------------------------|
+| keyEvent | KeyboardEvent | The keyDown keyboard event. |
 
 #### nextPage()
 Go to the next page (when available), according to the available pageIds (@see getPageIds).
