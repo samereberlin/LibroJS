@@ -895,14 +895,12 @@ var WebAppClass = function() {
 		};
 		if (switchOn) {
 			hideElement(currentPage, searchData, modalElement);
-			animateElement(modalElement, 'fadein', null);
 			animateElement(modalElement.children[0], nextModalTransition + 'in', null);
 			showElement(modalElement, searchData, currentPage);
 			currentModal = modalElement;
 			onSwitchModal();
 		} else {
-			animateElement(modalElement.children[0], nextModalTransition + 'out', null);
-			animateElement(modalElement, 'fadeout', function() {
+			animateElement(modalElement.children[0], nextModalTransition + 'out', function() {
 				hideElement(modalElement, searchData, nextElement);
 				onSwitchModal();
 				showElement(currentPage, searchData, modalElement);
