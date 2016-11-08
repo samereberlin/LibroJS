@@ -659,6 +659,8 @@ var WebAppClass = function() {
 		element.style.display = 'none';
 		modalElements[element.id] = element;
 		modalIds.push(element.id);
+		element.onclick = function() {window.history.back();};
+		element.children[0].onclick = function(event) {event.stopPropagation();};
 		var transitionType = element.children[0].getAttribute('transition');
 		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) {
 			element.transitionType = transitionType;

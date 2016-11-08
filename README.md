@@ -16,7 +16,7 @@ WebApp is a lightweight (simple and efficient) WEB application framework (librar
 - [Tooltip widget API](#tooltip-widget-api) (coming soon);
 - [Click enhancement feature](#click-enhancement-feature) (coming soon);
 - [Swipe left/right feature](#Swipe-left-right-feature) (coming soon);
-- [Public API](#public-api);
+- [Extensive public API](#extensive-public-api);
 
 
 ## Minimum startup code:
@@ -77,7 +77,7 @@ Where:
 
 
 ## Default application page:
-The default application page is the first _body's child_ class _page_ element, which means that the first request to the basic URL _../index.html_ (without page specification) will be redirected to _../index.html#firstPage_. If we need to set any other element, we can use _WebApp.setDefaultPageId('pageId')_ function API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex02.0_setDefaultPageId.html#secondPage" target="_blank">live preview</a>):
+The default application page is the first _body's child_ class _page_ element, which means that the first request to the basic URL _../index.html_ (without page specification) will be redirected to _../index.html#firstPage_. If we need to set any other element, we can use _WebApp.setDefaultPageId('pageId')_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex02.0_setDefaultPageId.html#secondPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -98,11 +98,11 @@ The default application page is the first _body's child_ class _page_ element, w
 </script>
 ```
 
-**Important Note:** WebApp function APIs must be called after the inclusion of WebApp framework library.
+**Important Note:** WebApp public APIs must be called after the inclusion of WebApp framework library.
 
 
 ## Dynamic page creation:
-If we need to create another page after application startup, or dynamically during execution (on run-time), we can use _WebApp.createPage('pageId', 'extraClass', 'insertBeforeId', 'pageContent')_ function API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex03.0_createPage.html#firstPage" target="_blank">live preview</a>):
+If we need to create another page after application startup, or dynamically during execution (on run-time), we can use _WebApp.createPage('pageId', 'extraClass', 'insertBeforeId', 'pageContent')_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex03.0_createPage.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -119,7 +119,7 @@ WebApp.createPage('secondPage', null, null, '<h1>Second Page</h1>'
 </script>
 ```
 
-And _WebApp.deletePage('pageId')_ function API can be used to remove pages (useful to release memory resources). Checkout these other dynamic page creation examples, which demonstrate better some practical utilization cases: <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex03.1_deleteOnHide.html#firstPage" target="_blank">ex03.1_deleteOnHide.html</a>, <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex03.2_insertNextPage.html#1" target="_blank">ex03.2_insertNextPage.html</a>, <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex03.3_replaceNextPages.html#1" target="_blank">ex03.3_replaceNextPages.html</a>.
+And _WebApp.deletePage('pageId')_ public API can be used to remove pages (useful to release memory resources). Checkout these other dynamic page creation examples, which demonstrate better some practical utilization cases: <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex03.1_deleteOnHide.html#firstPage" target="_blank">ex03.1_deleteOnHide.html</a>, <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex03.2_insertNextPage.html#1" target="_blank">ex03.2_insertNextPage.html</a>, <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex03.3_replaceNextPages.html#1" target="_blank">ex03.3_replaceNextPages.html</a>.
 (note that these additional examples use _onShow_ / _onHide_ "life cycle callbacks", which were not presented yet, but are explained in the next sections)
 
 
@@ -151,7 +151,7 @@ Global elements are components that must always be displayed (common between the
 
 
 ## Page transitions:
-The soft/basic page transition "fade" is enabled by default, but if we need to set a different one, we can use _WebApp.setDefaultPageTransition('transitionType')_ function API. But if we need to set a different transition for an specific page only, we just need to set the _transition="transitionType"_ HTML DOM element property. The available transition types are:
+The soft/basic page transition "fade" is enabled by default, but if we need to set a different one, we can use _WebApp.setDefaultPageTransition('transitionType')_ public API. But if we need to set a different transition for an specific page only, we just need to set the _transition="transitionType"_ HTML DOM element property. The available transition types are:
 - 'fade' (which is the soft/basic default page transition);
 - 'pop' (which simulates the "pop" appearing effect);
 - 'flip' (which simulates the "flip" forward effect);
@@ -192,7 +192,7 @@ The different page transition types can be observed/compared in the following ex
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
 ```
 
-If we need to set an specific page transition to be used once only (without modify the default setting), we can use _WebApp.setNextPageTransition('transitionType')_ function API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex05.1_setNextPageTransition.html#firstPage" target="_blank">live preview</a>):
+If we need to set an specific page transition to be used once only (without modify the default setting), we can use _WebApp.setNextPageTransition('transitionType')_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex05.1_setNextPageTransition.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -329,7 +329,7 @@ Where:
 
 
 ## History stack management:
-The primary purpose of WebApp history stack management engine is to emulate "back key" event when the subsequent page is the same of the previous visited one, in order to keep the Internet browser history stack compliant with the user navigation flow (this feature is activated by default, but if we need to disable it, we can use _WebApp.setHistoryManaged(false)_ function API).
+The primary purpose of WebApp history stack management engine is to emulate "back key" event when the subsequent page is the same of the previous visited one, in order to keep the Internet browser history stack compliant with the user navigation flow (this feature is activated by default, but if we need to disable it, we can use _WebApp.setHistoryManaged(false)_ public API).
 
 ** User navigation example:**
 ```
@@ -344,7 +344,7 @@ loading     history     history
  #pg1        #pg1
 ```
 
-As a similar feature, this history management engine presents the "unique entry" stack concept, which compares the subsequent page with all previous visited ones, and emulates "back key" event(s) up to reach the matched instance (this feature is also activated by default, but if we need to disable it, we can use _WebApp.setHistoryUnique(false)_ function API).
+As a similar feature, this history management engine presents the "unique entry" stack concept, which compares the subsequent page with all previous visited ones, and emulates "back key" event(s) up to reach the matched instance (this feature is also activated by default, but if we need to disable it, we can use _WebApp.setHistoryUnique(false)_ public API).
 
 ** User navigation example:**
 ```
@@ -362,7 +362,7 @@ loading     history     (unique false)     (unique true)
  #pg1        #pg1            #pg1
 ```
 
-And another interesting behavior, is the "default page firstly" feature, which inserts the default page at the beginning of the history stack when any other page is explicitly requested firstly. (this feature is also activated by default, but if we need to disable it, we can use _WebApp.setDefaultPageFirstly(false)_ function API).
+And another interesting behavior, is the "default page firstly" feature, which inserts the default page at the beginning of the history stack when any other page is explicitly requested firstly. (this feature is also activated by default, but if we need to disable it, we can use _WebApp.setDefaultPageFirstly(false)_ public API).
 
 ** User navigation example:**
 ```
@@ -414,20 +414,7 @@ Modal window are elements designed to appear over page elements. The primary pur
 
 **Important Note:** the whole modal content must be inside another single element, in order to generate a single pop-up dialog (which in this case is using style padding: 0.5em). And notice also that these default pop-ups do not have round corners neither shadows (if we need such specific decorations, we can declare the appropriate CSS rules, as it is presented in the _WebApp.css_ style file).
 
-If we need a modal window that closes automatically on click outside the dialog content, we can use the following implementation with "onclick" handling instead (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.1_hideOnClickOutside.html#firstPage" target="_blank">live preview</a>):
-
-```html
-<div class="modal" id="modalWindow" onclick="window.history.back();">
-	<div style="padding: 0.5em;" onclick="event.stopPropagation();">
-		<h1>Modal Window</h1>
-		<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a>
-		<br><br>
-		<a href="javascript:window.history.back();">(hide modal)</a>
-	</div>
-</div>
-```
-
-If we need to create another modal after application startup, or dynamically during execution (on run-time), we can use _WebApp.createModal('modalId', 'extraClass', 'modalContent')_ function API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.2_createModal.html#firstPage" target="_blank">live preview</a>), and _WebApp.deleteModal('modalId')_ function API can be used to remove modals (useful to release memory resources):
+If we need to create another modal after application startup, or dynamically during execution (on run-time), we can use _WebApp.createModal('modalId', 'extraClass', 'modalContent')_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.1_createModal.html#firstPage" target="_blank">live preview</a>), and _WebApp.deleteModal('modalId')_ public API can be used to remove modals (useful to release memory resources):
 
 ```html
 <body>
@@ -460,7 +447,7 @@ WebApp.createModal('modalWindow', null, '<div style="padding: 0.5em;">'
 </body>
 ```
 
-The pop-up modal transition "pop" is enabled by default, but if we need to set a different one, we can use _WebApp.setDefaultModalTransition('transitionType')_ function API. But if we need to set a different transition for an specific modal only, we just need to set the _transition="transitionType"_ HTML DOM element property. And if we need to set an specific modal transition to be used once only (without modify the default setting), we can use _WebApp.setNextModalTransition('transitionType')_ function API, similar as described in the "page transitions" section. The following example demonstrates how to create a simple modal "drawer element" and a simple modal "top menu" (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.3_modalMenus.html#firstPage" target="_blank">live preview</a>):
+The pop-up modal transition "pop" is enabled by default, but if we need to set a different one, we can use _WebApp.setDefaultModalTransition('transitionType')_ public API. But if we need to set a different transition for an specific modal only, we just need to set the _transition="transitionType"_ HTML DOM element property. And if we need to set an specific modal transition to be used once only (without modify the default setting), we can use _WebApp.setNextModalTransition('transitionType')_ public API, similar as described in the "page transitions" section. The following example demonstrates how to create a simple modal "drawer element" and a simple modal "top menu" (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.2_modalMenus.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -469,20 +456,18 @@ The pop-up modal transition "pop" is enabled by default, but if we need to set a
 	<a href="#modalTopMenu">Top Menu</a>
 </div>
 
-<div class="modal" id="modalTopMenu" onclick="window.history.back();">
-	<div transition="drawertop" onclick="event.stopPropagation();"
-			style="border-radius: 0; margin: 0 0 auto auto; max-width: 300px; padding: 0.5em;">
-		<h2>Modal - Top Menu</h2>
+<div class="modal" id="modalSideMenu">
+	<div transition="drawerleft" style="margin: 0; max-width: 300px; padding: 0.5em;
+			position: fixed; top: 0; bottom: 0; left: 0; overflow: auto;">
+		<h2>Modal - Side Menu</h2>
 		<br>
 		<a href="javascript:window.history.back();">(hide modal)</a>
 	</div>
 </div>
 
-<div class="modal" id="modalSideMenu" onclick="window.history.back();">
-	<div transition="drawerleft" onclick="event.stopPropagation();"
-			style="border-radius: 0; margin: 0; max-width: 300px; padding: 0.5em;
-				position: fixed; top: 0; bottom: 0; left: 0; overflow: auto;">
-		<h2>Modal - Side Menu</h2>
+<div class="modal" id="modalTopMenu">
+	<div transition="drawertop" style="margin: 0 0 auto auto; max-width: 300px; padding: 0.5em;">
+		<h2>Modal - Top Menu</h2>
 		<br>
 		<a href="javascript:window.history.back();">(hide modal)</a>
 	</div>
@@ -491,7 +476,7 @@ The pop-up modal transition "pop" is enabled by default, but if we need to set a
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
 ```
 
-Another interesting use case for modal window pop-ups, is the "exit dialog" emulation possibility, which alerts the user when returning, in order to prevent data loss. The following example demonstrates how to create a simple "exit dialog" confirmation, which alerts the user when returning from the second to the first page (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.4_exitDialog.html#firstPage" target="_blank">live preview</a>):
+Another interesting use case for modal window pop-ups, is the "exit dialog" emulation possibility, which alerts the user when returning, in order to prevent data loss. The following example demonstrates how to create a simple "exit dialog" confirmation, which alerts the user when returning from the second to the first page (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.3_exitDialog.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -506,8 +491,8 @@ Another interesting use case for modal window pop-ups, is the "exit dialog" emul
 	<a href="javascript:window.history.back();">return to the previous</a>
 </div>
 
-<div class="modal" id="returnDialog" onclick="window.history.back();">
-	<div style="padding: 0.5em; text-align: center;" onclick="event.stopPropagation();">
+<div class="modal" id="returnDialog">
+	<div style="padding: 0.5em; text-align: center;">
 		<p>Are you sure you want to return to the previous page?</p>
 		<button onclick="window.history.back();">Cancel</button>&nbsp;&nbsp;
 		<button onclick="window.location.hash = '#firstPage';">Return</button>
@@ -561,7 +546,7 @@ Coming soon...
 Coming soon...
 
 
-## Public API:
+## Extensive public API:
 
 #### isLogEnabled()
 Returns the log enabled boolean state, which is responsible to show/hide WebApp console.log messages.
