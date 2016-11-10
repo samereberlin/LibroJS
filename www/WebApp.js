@@ -165,7 +165,7 @@ var WebAppClass = function() {
 	 * @return {node} The new page node element.
 	 */
 	this.createPage = function(pageId, extraClass, insertBeforeId, pageContent) {
-		if (pageElements[pageId] || typeof pageId !== 'string') {
+		if (pageElements[pageId] || (typeof pageId !== 'string')) {
 			return null;
 		} else {
 			var pageElement = document.createElement('div');
@@ -193,7 +193,7 @@ var WebAppClass = function() {
 	 */
 	this.deletePage = function(pageId) {
 		var pageElement = document.getElementById(pageId);
-		if (pageElement && pageElement.parentNode == document.body && isPage(pageElement)) {
+		if (pageElement && (pageElement.parentNode == document.body) && isPage(pageElement)) {
 			document.body.removeChild(pageElement);
 			pageIds.splice(pageIds.indexOf(pageId), 1);
 			delete pageElements[pageId];
@@ -253,7 +253,7 @@ var WebAppClass = function() {
 	 * @return {node} The new modal node element.
 	 */
 	this.createModal = function(modalId, extraClass, modalContent) {
-		if (modalElements[modalId] || typeof modalId !== 'string') {
+		if (modalElements[modalId] || (typeof modalId !== 'string')) {
 			return null;
 		} else {
 			var modalElement = document.createElement('div');
@@ -276,7 +276,7 @@ var WebAppClass = function() {
 	 */
 	this.deleteModal = function(modalId) {
 		var modalElement = document.getElementById(modalId);
-		if (modalElement && modalElement.parentNode == document.body && isModal(modalElement)) {
+		if (modalElement && (modalElement.parentNode == document.body) && isModal(modalElement)) {
 			document.body.removeChild(modalElement);
 			modalIds.splice(modalIds.indexOf(modalId), 1);
 			delete modalElements[modalId];
@@ -470,7 +470,7 @@ var WebAppClass = function() {
 	 * @param {function} callback - The function callback to be invoked after animation.
 	 */
 	this.animateElement = function(element, animation, callback) {
-		if (element && element.nodeType === 1 && animation && animationTypes.indexOf(animation) >= 0) {
+		if (element && (element.nodeType === 1) && animation && (animationTypes.indexOf(animation) >= 0)) {
 			animateElement(element, animation, callback);
 		}
 	};
@@ -508,7 +508,7 @@ var WebAppClass = function() {
 	 * @param {string} transitionType - The default page transition type.
 	 */
 	this.setDefaultPageTransition = function(transitionType) {
-		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) {
+		if (transitionType && (transitionTypes.indexOf(transitionType) >= 0)) {
 			defaultPageTransition = transitionType;
 		}
 	};
@@ -528,7 +528,7 @@ var WebAppClass = function() {
 	 * @param {string} transitionType - The next page transition type.
 	 */
 	this.setNextPageTransition = function(transitionType) {
-		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) {
+		if (transitionType && (transitionTypes.indexOf(transitionType) >= 0)) {
 			nextPageTransition = transitionType;
 		}
 	};
@@ -548,7 +548,7 @@ var WebAppClass = function() {
 	 * @param {string} transitionType - The default modal transition type.
 	 */
 	this.setDefaultModalTransition = function(transitionType) {
-		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) {
+		if (transitionType && (transitionTypes.indexOf(transitionType) >= 0)) {
 			defaultModalTransition = transitionType;
 		}
 	};
@@ -568,7 +568,7 @@ var WebAppClass = function() {
 	 * @param {string} transitionType - The next modal transition type.
 	 */
 	this.setNextModalTransition = function(transitionType) {
-		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) {
+		if (transitionType && (transitionTypes.indexOf(transitionType) >= 0)) {
 			nextModalTransition = transitionType;
 		}
 	};
@@ -709,7 +709,7 @@ var WebAppClass = function() {
 			pageIds.push(element.id);
 		}
 		var transitionType = element.getAttribute('transition');
-		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) {
+		if (transitionType && (transitionTypes.indexOf(transitionType) >= 0)) {
 			element.transitionType = transitionType;
 		}
 		if (element.tagName === 'CANVAS') {
@@ -735,7 +735,7 @@ var WebAppClass = function() {
 		modalElements[element.id] = element;
 		modalIds.push(element.id);
 		var transitionType = element.children[0].getAttribute('transition');
-		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) {
+		if (transitionType && (transitionTypes.indexOf(transitionType) >= 0)) {
 			element.transitionType = transitionType;
 		}
 		element.onclick = function() {window.history.back();};
@@ -861,7 +861,7 @@ var WebAppClass = function() {
 		} else {
 
 			// Set default page firstly:
-			if (isDefaultPageFirstly && hashChangeEvent.newURL === null && hashChangeEvent.oldURL === null && nextPage && nextHash !== defaultPageId) {
+			if (isDefaultPageFirstly && (hashChangeEvent.newURL === null) && (hashChangeEvent.oldURL === null) && nextPage && (nextHash !== defaultPageId)) {
 				window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#' + defaultPageId);
 				setTimeout(function() { // Timeout required to create history entry for WebKit browsers.
 					window.location.hash = nextHash + (nextSearch? '?' + nextSearch: '');
@@ -873,10 +873,10 @@ var WebAppClass = function() {
 					if (isHistoryManaged) {
 						var historyManipulations = 0;
 						var historyStackIndex = historyStack.indexOf(window.location.href);
-						if (historyStack.length > 1 && historyStack[historyStack.length - 2] === window.location.href) {
+						if ((historyStack.length > 1) && (historyStack[historyStack.length - 2] === window.location.href)) {
 							historyManipulations = 1;
 							historyStack.pop();
-						} else if (isHistoryUnique && historyStack.length > 2 && historyStackIndex >= 0) {
+						} else if (isHistoryUnique && (historyStack.length > 2) && (historyStackIndex >= 0)) {
 							historyManipulations = historyStack.length - 1 - historyStackIndex;
 							historyStack.splice(historyStackIndex + 1, historyManipulations);
 						} else {
@@ -931,9 +931,9 @@ var WebAppClass = function() {
 			nextPageTransition = pageElement.transitionType? pageElement.transitionType: defaultPageTransition;
 		}
 		if (nextPageTransition === 'fliporder') {
-			nextPageTransition = (currentPage && pageIds.indexOf(currentPage.id) > pageIds.indexOf(pageElement.id))? 'fliprev': 'flip';
+			nextPageTransition = (currentPage && (pageIds.indexOf(currentPage.id) > pageIds.indexOf(pageElement.id)))? 'fliprev': 'flip';
 		} else if (nextPageTransition === 'slideorder') {
-			nextPageTransition = (currentPage && pageIds.indexOf(currentPage.id) > pageIds.indexOf(pageElement.id))? 'sliderev': 'slide';
+			nextPageTransition = (currentPage && (pageIds.indexOf(currentPage.id) > pageIds.indexOf(pageElement.id)))? 'sliderev': 'slide';
 		}
 
 		var showNext = function(referrerElement) {
@@ -993,7 +993,7 @@ var WebAppClass = function() {
 	}
 
 	function animateElement(element, animation, callback) {
-		if (animation === 'nonein' || animation === 'noneout') {
+		if ((animation === 'nonein') || (animation === 'noneout')) {
 			if (typeof callback === 'function') {
 				callback();
 			}
@@ -1160,9 +1160,9 @@ var WebAppClass = function() {
 
 	function keyDown(keyEvent) {
 		if (isLogEnabled) console.log('WebApp.js: keyDown(keyEvent)... keyEvent.keyCode: ' + keyEvent.keyCode + ', currentPage.id: ' + (currentPage? currentPage.id: ''));
-		if (keyEvent.keyCode === 13 && keyEvent.target.onclick) {
+		if ((keyEvent.keyCode === 13) && keyEvent.target.onclick) {
 			keyEvent.target.onclick();
-		} else if (keyEvent.keyCode === 27 && currentModal) {
+		} else if ((keyEvent.keyCode === 27) && currentModal) {
 			window.history.back();
 		} else {
 			if (typeof WebApp.onKeyDown === 'function') {
