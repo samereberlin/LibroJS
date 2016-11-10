@@ -997,9 +997,7 @@ var WebAppClass = function() {
 				callback();
 			}
 		} else {
-			var animationRunning = true;
 			var animationEnded = function() {
-				animationRunning = false;
 				element.removeEventListener('animationend', animationEnded);
 				element.removeEventListener('webkitAnimationEnd', animationEnded);
 				element.className = element.className.replace(new RegExp('(?:^|\\s)' + animation + '(?!\\S)', 'g'), '');
@@ -1007,11 +1005,6 @@ var WebAppClass = function() {
 					callback();
 				}
 			};
-			setTimeout(function() {
-				if (animationRunning) {
-					animationEnded();
-				}
-			}, 1000); // 1000 = animation timeout.
 			element.addEventListener('animationend', animationEnded);
 			element.addEventListener('webkitAnimationEnd', animationEnded);
 			element.className += ' ' + animation;
