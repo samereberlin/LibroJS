@@ -284,6 +284,68 @@ var WebAppClass = function() {
 	};
 
 	//################################################################################//
+	// Canvas page settings:
+
+	var fpsDelay = 1000 / 24; // FPS = 24 frames per second.
+	var intervalDraw = 0;
+	var intervalUpdate = 0;
+
+	//################################################################################//
+	// Canvas page API:
+
+	/**
+	 * Returns the "frames per second" canvas page update/draw rate (default value: 24),
+	 * which indicates the number of times which canvas page is updated/drawn per second.
+	 *
+	 * @return {Number} The "frames per second" canvas page update/draw rate.
+	 */
+	this.getFps = function() {
+		return 1000 / fpsDelay;
+	};
+
+	/**
+	 * Set the "frames per second" canvas page update/draw rate (default value: 24),
+	 * which indicates the number of times which canvas page is updated/drawn per second.
+	 *
+	 * @param {Number} fpsRate - The "frames per second" canvas page update/draw rate.
+	 */
+	this.setFps = function(fpsRate) {
+		fpsDelay = 1000 / fpsRate;
+	};
+
+	//################################################################################//
+	// Touch settings:
+	var TOUCH_DELAY = 600;
+	var debugTouch = '';
+	var isMouseDown = false;
+	var isTouchManaged = true;
+	var isTouchSupported = (typeof window.ontouchstart !== 'undefined')? true: false;
+	var touchLastTime = 0; // Required to solve touchEvent.preventDefault() issue.
+
+	//################################################################################//
+	// Touch API:
+
+	/**
+	 * Returns the isTouchManaged boolean state,
+	 * which indicates if the WebApp manages canvas page touch/mouse events.
+	 *
+	 * @return {boolean} The isTouchManaged boolean state.
+	 */
+	this.isTouchManaged = function() {
+		return isTouchManaged;
+	};
+
+	/**
+	 * Set the isTouchManaged boolean state,
+	 * which indicates if the WebApp manages canvas page touch/mouse events.
+	 *
+	 * @param {boolean} booleanState - The isTouchManaged boolean state.
+	 */
+	this.setTouchManaged = function(booleanState) {
+		isTouchManaged = booleanState;
+	};
+
+	//################################################################################//
 	// History stack management settings:
 
 	var isDefaultPageFirstly = true;
@@ -332,7 +394,7 @@ var WebAppClass = function() {
 	 * @param {boolean} booleanState - The history managed boolean state.
 	 */
 	this.setHistoryManaged = function(booleanState) {
-		isHistoryManaged = (typeof window.history.replaceState !== 'undefined') && booleanState;
+		isHistoryManaged = booleanState && (typeof window.history.replaceState !== 'undefined');
 	};
 
 	/**
@@ -352,7 +414,7 @@ var WebAppClass = function() {
 	 * @param {boolean} booleanState - The history unique boolean state.
 	 */
 	this.setHistoryUnique = function(booleanState) {
-		isHistoryUnique = (typeof window.history.replaceState !== 'undefined') && booleanState;
+		isHistoryUnique = booleanState && (typeof window.history.replaceState !== 'undefined');
 	};
 
 	/**
@@ -373,7 +435,7 @@ var WebAppClass = function() {
 	 *
 	 * @param {boolean} booleanState - The redirection boolean state.
 	 */
-	this.setIsRedirection = function(booleanState) {
+	this.setRedirection = function(booleanState) {
 		isRedirection = booleanState;
 	};
 
@@ -388,7 +450,7 @@ var WebAppClass = function() {
 	};
 
 	//################################################################################//
-	// Animation/Transition settings:
+	// Transition settings:
 
 	var animationTypes = ['fadein', 'fadeout', 'popin', 'popout', 'flipin', 'flipout', 'fliprevin', 'fliprevout', 'slidein', 'slideout', 'sliderevin', 'sliderevout', 'drawertopin', 'drawertopout', 'drawerbottomin', 'drawerbottomout', 'drawerleftin', 'drawerleftout', 'drawerrightin', 'drawerrightout'];
 	var transitionTypes = ['none', 'fade', 'pop', 'flip', 'fliprev', 'fliporder', 'slide', 'sliderev', 'slideorder', 'drawertop', 'drawerbottom', 'drawerleft', 'drawerright'];
@@ -398,7 +460,7 @@ var WebAppClass = function() {
 	var nextModalTransition = null;
 
 	//################################################################################//
-	// Animation/Transition API:
+	// Transition API:
 
 	/**
 	 * Animate a node element, according to the supplied animation type (@see getAnimationTypes).
@@ -649,6 +711,18 @@ var WebAppClass = function() {
 		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) {
 			element.transitionType = transitionType;
 		}
+		if (element.tagName === 'CANVAS') {
+			element.canvasContext = element.getContext('2d');
+			if (typeof element.touchStart !== 'function') {
+				element.touchStart = function() {};
+			}
+			if (typeof element.touchMove !== 'function') {
+				element.touchMove = function() {};
+			}
+			if (typeof element.touchEnd !== 'function') {
+				element.touchEnd = function() {};
+			}
+		}
 	}
 
 	function isModal(element) {
@@ -659,21 +733,21 @@ var WebAppClass = function() {
 		element.style.display = 'none';
 		modalElements[element.id] = element;
 		modalIds.push(element.id);
-		element.onclick = function() {window.history.back();};
-		element.children[0].onclick = function(event) {event.stopPropagation();};
 		var transitionType = element.children[0].getAttribute('transition');
 		if (transitionType && transitionTypes.indexOf(transitionType) >= 0) {
 			element.transitionType = transitionType;
 		}
+		element.onclick = function() {window.history.back();};
+		element.children[0].onclick = function(event) {event.stopPropagation();};
 	}
 
 	function unload() {
 		if (isLogEnabled) console.log('WebApp.js: unload()');
-		if (typeof WebApp.onUnload === 'function') {
-			WebApp.onUnload();
-		}
 		if (isRunning) {
 			pause();
+		}
+		if (typeof WebApp.onUnload === 'function') {
+			WebApp.onUnload();
 		}
 		isLoaded = false;
 		reset();
@@ -687,9 +761,10 @@ var WebAppClass = function() {
 	}
 
 	function pause() {
-		if (isLogEnabled) console.log('WebApp.js: pause()');
+		if (isLogEnabled) console.log('WebApp.js: pause()... isRunning: ' + isRunning);
 		if (isRunning) {
 			isRunning = false;
+			setCanvasPage(false);
 			if (typeof WebApp.onPause === 'function') {
 				WebApp.onPause();
 			}
@@ -697,9 +772,10 @@ var WebAppClass = function() {
 	}
 
 	function resume() {
-		if (isLogEnabled) console.log('WebApp.js: resume()');
+		if (isLogEnabled) console.log('WebApp.js: resume()... isRunning: ' + isRunning);
 		if (!isRunning) {
 			isRunning = true;
+			setCanvasPage(true);
 			if (typeof WebApp.onResume === 'function') {
 				WebApp.onResume();
 			}
@@ -849,7 +925,7 @@ var WebAppClass = function() {
 	}
 
 	function switchPage(pageElement, searchData) {
-		if (isLogEnabled) console.log('WebApp.js: switchPage(pageElement, searchData)... pageElement.id = ' + pageElement.id + ', currentPage.id = ' + (currentPage? currentPage.id: ''));
+		if (isLogEnabled) console.log('WebApp.js: switchPage(pageElement, searchData)... pageElement.id = ' + pageElement.id + ', searchData: ' + searchData + ', currentPage.id = ' + (currentPage? currentPage.id: ''));
 		if (!nextPageTransition) {
 			nextPageTransition = pageElement.transitionType? pageElement.transitionType: defaultPageTransition;
 		}
@@ -860,7 +936,9 @@ var WebAppClass = function() {
 		}
 
 		var showNext = function(referrerElement) {
-			animateElement(pageElement, nextPageTransition + 'in', null);
+			animateElement(pageElement, nextPageTransition + 'in', function() {
+				setCanvasPage(true);
+			});
 			showElement(pageElement, searchData, referrerElement);
 			nextPageTransition = null;
 			if (typeof WebApp.onSwitchPage === 'function') {
@@ -869,6 +947,7 @@ var WebAppClass = function() {
 		};
 		if (currentPage) {
 			var referrerElement = currentPage;
+			setCanvasPage(false);
 			animateElement(referrerElement, nextPageTransition + 'out', function() {
 				hideElement(referrerElement, searchData, pageElement);
 				showNext(referrerElement);
@@ -879,8 +958,8 @@ var WebAppClass = function() {
 		currentPage = pageElement;
 	}
 
-	function switchModal(switchOn, modalElement, nextElement, searchData) {
-		if (isLogEnabled) console.log('WebApp.js: switchModal(switchOn, modalElement, nextElement, searchData)... switchOn: ' + switchOn + ', modalElement.id: ' + modalElement.id + ', nextElement.id = ' + (nextElement? nextElement.id: '') + ', currentPage.id = ' + (currentPage? currentPage.id: ''));
+	function switchModal(booleanState, modalElement, nextElement, searchData) {
+		if (isLogEnabled) console.log('WebApp.js: switchModal(booleanState, modalElement, nextElement, searchData)... booleanState: ' + booleanState + ', modalElement.id: ' + modalElement.id + ', nextElement.id = ' + (nextElement? nextElement.id: '') + ', searchData: ' + searchData + ', currentPage.id = ' + (currentPage? currentPage.id: ''));
 		if (!nextModalTransition) {
 			nextModalTransition = modalElement.transitionType? modalElement.transitionType: defaultModalTransition;
 		}
@@ -892,10 +971,10 @@ var WebAppClass = function() {
 
 		var onSwitchModal = function() {
 			if (typeof WebApp.onSwitchModal === 'function') {
-				WebApp.onSwitchModal(switchOn, modalElement, currentPage);
+				WebApp.onSwitchModal(booleanState, modalElement, currentPage);
 			}
 		};
-		if (switchOn) {
+		if (booleanState) {
 			hideElement(currentPage, searchData, modalElement);
 			animateElement(modalElement.children[0], nextModalTransition + 'in', null);
 			showElement(modalElement, searchData, currentPage);
@@ -940,6 +1019,7 @@ var WebAppClass = function() {
 	}
 
 	function showElement(element, searchData, referrerElement) {
+		if (isLogEnabled) console.log('WebApp.js: showElement(element, searchData, referrerElement)... element.id: ' + element.id + ', searchData: ' + searchData + ', referrerElement.id: ' + (referrerElement? referrerElement.id: ''));
 		if (!referrerElement || !modalElements[referrerElement.id]) {
 			element.style.display = 'block';
 		}
@@ -949,6 +1029,7 @@ var WebAppClass = function() {
 	}
 
 	function hideElement(element, nextSearchData, nextElement) {
+		if (isLogEnabled) console.log('WebApp.js: hideElement(element, nextSearchData, nextElement)... element.id: ' + element.id + ', nextSearchData: ' + nextSearchData + ', nextElement.id: ' + nextElement.id);
 		if (!nextElement || !modalElements[nextElement.id]) {
 			element.style.display = 'none';
 		}
@@ -958,10 +1039,115 @@ var WebAppClass = function() {
 	}
 
 	//################################################################################//
+	// Functions related to canvas page actions:
+
+	function setCanvasPage(booleanState) {
+		if (currentPage && currentPage.canvasContext) {
+			if (booleanState) {
+				if ((intervalUpdate === 0) && (intervalDraw === 0)) {
+					intervalUpdate = setInterval(currentPage.update, fpsDelay);
+					intervalDraw = setInterval(currentPage.draw, fpsDelay);
+					if (isTouchManaged) {
+						currentPage.addEventListener('mousedown', mouseManagedDown);
+						currentPage.addEventListener('mousemove', mouseManagedMove);
+						currentPage.addEventListener('mouseup', mouseManagedUp);
+						currentPage.addEventListener('mouseout', mouseManagedUp);
+						if (isTouchSupported) {
+							currentPage.addEventListener('touchstart', touchManagedStart);
+							currentPage.addEventListener('touchmove', touchManagedMove);
+							currentPage.addEventListener('touchend', touchManagedEnd);
+							currentPage.addEventListener('touchcancel', touchManagedEnd);
+						}
+					}
+				}
+			} else {
+				clearInterval(intervalUpdate);
+				clearInterval(intervalDraw);
+				intervalUpdate = 0;
+				intervalDraw = 0;
+				if (isTouchManaged) {
+					currentPage.removeEventListener('mousedown', mouseManagedDown);
+					currentPage.removeEventListener('mousemove', mouseManagedMove);
+					currentPage.removeEventListener('mouseup', mouseManagedUp);
+					currentPage.removeEventListener('mouseout', mouseManagedUp);
+					if (isTouchSupported) {
+						currentPage.removeEventListener('touchstart', touchManagedStart);
+						currentPage.removeEventListener('touchmove', touchManagedMove);
+						currentPage.removeEventListener('touchend', touchManagedEnd);
+						currentPage.removeEventListener('touchcancel', touchManagedEnd);
+					}
+				}
+			}
+		}
+	}
+
+	//################################################################################//
+	// Functions related to touch actions:
+
+	function mouseManagedDown(touchEvent) {
+		if (touchEvent.button === 0) {
+			if (!isTouchSupported || (Date.now() > touchLastTime + TOUCH_DELAY)) { // Required to solve touchEvent.preventDefault() issue.
+				if (isLogEnabled) console.log('WebApp.js: mouseDown(touchEvent)... X = ' + touchEvent.clientX + ', Y = ' + touchEvent.clientY);
+				touchEvent.stopPropagation();
+				touchEvent.preventDefault();
+				isMouseDown = true;
+				touchEvent.changedTouches = [{identifier: -1, clientX: touchEvent.clientX, clientY: touchEvent.clientY}];
+				currentPage.touchStart(touchEvent);
+			}
+		}
+	}
+	function mouseManagedMove(touchEvent) {
+		if (isMouseDown && (touchEvent.button === 0)) {
+			if (isLogEnabled) debugTouch += (touchEvent.clientX + ' ' + touchEvent.clientY + ', ');
+			touchEvent.stopPropagation();
+			touchEvent.preventDefault();
+			touchEvent.changedTouches = [{identifier: -1, clientX: touchEvent.clientX, clientY: touchEvent.clientY}];
+			currentPage.touchMove(touchEvent);
+		}
+	}
+	function mouseManagedUp(touchEvent) {
+		if (isMouseDown && (touchEvent.button === 0)) {
+			if (isLogEnabled) {
+				console.log('WebApp.js: mouseUp(touchEvent)... X = ' + touchEvent.clientX + ', Y = ' + touchEvent.clientY + ', debugTouch = ' + debugTouch);
+				debugTouch = '';
+			}
+			touchEvent.stopPropagation();
+			touchEvent.preventDefault();
+			isMouseDown = false;
+			touchEvent.changedTouches = [{identifier: -1, clientX: touchEvent.clientX, clientY: touchEvent.clientY}];
+			currentPage.touchEnd(touchEvent);
+		}
+	}
+
+	function touchManagedStart(touchEvent) {
+		if (isLogEnabled) console.log('WebApp.js: touchStart(touchEvent)... X = ' + touchEvent.changedTouches[0].clientX + ', Y = ' + touchEvent.changedTouches[0].clientY);
+		touchEvent.stopPropagation();
+		touchEvent.preventDefault();
+		touchLastTime = Date.now(); // Required to solve touchEvent.preventDefault() issue.
+		currentPage.touchStart(touchEvent);
+	}
+	function touchManagedMove(touchEvent) {
+		if (isLogEnabled) debugTouch += (touchEvent.changedTouches[0].clientX + ' ' + touchEvent.changedTouches[0].clientY + ', ');
+		touchEvent.stopPropagation();
+		touchEvent.preventDefault();
+		currentPage.touchMove(touchEvent);
+	}
+	function touchManagedEnd(touchEvent) {
+		if (isLogEnabled) {
+			console.log('WebApp.js: touchEnd(touchEvent)... X = ' + touchEvent.changedTouches[0].clientX + ', Y = ' + touchEvent.changedTouches[0].clientY + ', debugTouch = ' + debugTouch);
+			debugTouch = '';
+		}
+		touchEvent.stopPropagation();
+		touchEvent.preventDefault();
+		touchLastTime = Date.now(); // Required to solve touchEvent.preventDefault() issue.
+		currentPage.touchEnd(touchEvent);
+	}
+
+	//################################################################################//
 	// Functions related to user interaction:
 
 	function keyDown(keyEvent) {
-		if (isLogEnabled) console.log('WebApp.js: keyDown(' + keyEvent.keyCode + ', ' + (currentPage? currentPage.id: '') + ')');
+		if (isLogEnabled) console.log('WebApp.js: keyDown(keyEvent)... keyEvent.keyCode: ' + keyEvent.keyCode + ', currentPage.id: ' + (currentPage? currentPage.id: ''));
 		if (keyEvent.keyCode === 13 && keyEvent.target.onclick) {
 			keyEvent.target.onclick();
 		} else if (keyEvent.keyCode === 27 && currentModal) {

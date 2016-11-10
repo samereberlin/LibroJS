@@ -166,8 +166,8 @@ WebApp.onUpdateHash = function(hashChangeEvent) {
 WebApp.onSwitchPage = function(pageElement, referrerElement) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onSwitchPage(' + pageElement.id + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 }
-WebApp.onSwitchModal = function(switchOn, modalElement, referrerElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onSwitchModal(' + switchOn + ', ' + modalElement.id + ', ' + referrerElement.id + ')</span>';
+WebApp.onSwitchModal = function(booleanState, modalElement, referrerElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onSwitchModal(' + booleanState + ', ' + modalElement.id + ', ' + referrerElement.id + ')</span>';
 }
 WebApp.onKeyDown = function(keyEvent, pageElement) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onKeyDown(' + keyEvent.keyCode + ', ' + pageElement.id + ')</span>';

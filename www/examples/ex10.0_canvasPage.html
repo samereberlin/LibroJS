@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WebApp - ex01.0_minimum</title>
+</head>
+
+<body>
+
+<div class="page" id="firstPage">
+	<h1>WebApp - <span style="color:#004;">First Page</span></h1>
+	<p>If you are viewing this page (firstPage), it means that the current browser URL ends with "#firstPage"</p>
+	<a href="#secondPage">go to the second page</a>
+</div>
+
+<canvas class="page" id="secondPage" style="background-color: lightgray;"></canvas>
+
+<!-- script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script -->
+<script src="../WebApp.js"></script>
+
+<script>
+// Set canvas callbacks:
+var moveStep = 4;
+var boxSize = 10;
+var xPos = yPos = 0;
+var xGrow = yGrow = true;
+var secondPageElement = document.getElementById('secondPage');
+secondPageElement.update = function() {
+	if (xGrow) {
+		if (xPos + boxSize < secondPageElement.offsetWidth) {
+			xPos += moveStep;
+		} else xGrow = false;
+	} else {
+		if (xPos > 0) {
+			xPos -= moveStep;
+		} else xGrow = true;
+	}
+	if (yGrow) {
+		if (yPos + boxSize < secondPageElement.offsetHeight) {
+			yPos += moveStep;
+		} else yGrow = false;
+	} else {
+		if (yPos > 0) {
+			yPos -= moveStep;
+		} else yGrow = true;
+	}
+};
+secondPageElement.draw = function() {
+	secondPageElement.width = secondPageElement.width; // Required to clear the canvas.
+	secondPageElement.canvasContext.beginPath();
+	secondPageElement.canvasContext.fillRect(xPos,yPos,boxSize,boxSize);
+	secondPageElement.canvasContext.stroke();
+};
+secondPageElement.onclick = function() {
+	console.log('========> secondPageElement.onclick...!!!');
+};
+</script>
+
+</body>
+
+</html>

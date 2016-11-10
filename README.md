@@ -9,7 +9,7 @@ WebApp is a lightweight (simple and efficient) WEB application framework (librar
 - [Life cycle callbacks](#life-cycle-callbacks);
 - [History stack management](#history-stack-management);
 - [Modal window support](#modal-window-support);
-- [Canvas screen support](#canvas-screen-support) (coming soon);
+- [Canvas page support](#canvas-page-support) (coming soon);
 - [Language (i18n) support](#language-i18n-support) (coming soon);
 - [Simplified audio API](#simplified-audio-api) (coming soon);
 - [Header/Footer widget API](#headerfooter-widget-api) (coming soon);
@@ -314,7 +314,7 @@ secondPageElement.onHide = function(nextSearchData, nextElement) {
 - WebApp.onResize();
 - WebApp.onUpdateHash(hashChangeEvent);
 - WebApp.onSwitchPage(pageElement, referrerElement);
-- WebApp.onSwitchModal(switchOn, modalElement, referrerElement);
+- WebApp.onSwitchModal(booleanState, modalElement, referrerElement);
 - WebApp.onKeyDown(keyEvent, pageElement);
 - pageElement.onShow(searchData, referrerElement);
 - pageElement.onHide(nextSearchData, nextElement);
@@ -518,7 +518,7 @@ secondPageElement.onUpdateSearch = function(searchData) {
 ```
 
 
-## Canvas screen support:
+## Canvas page support:
 Coming soon...
 
 
@@ -670,6 +670,34 @@ Delete modal dynamically, and unload it, in order to release memory resources.
 |---------|--------|----------------------------|
 | modalId | string | The modal id string value. |
 
+#### getFps()
+Returns the "frames per second" canvas page update/draw rate (default value: 24), which indicates the number of times which canvas page is updated/drawn per second.
+
+**Returns:** {Number} The "frames per second" canvas page update/draw rate.
+
+#### setFps(fpsRate)
+Set the "frames per second" canvas page update/draw rate (default value: 24), which indicates the number of times which canvas page is updated/drawn per second.
+
+**Parameters:**
+
+| Name    | Type   | Description                                           |
+|---------|--------|-------------------------------------------------------|
+| fpsRate | Number | The "frames per second" canvas page update/draw rate. |
+
+#### isTouchManaged()
+Returns the isTouchManaged boolean state, which indicates if the WebApp manages canvas page touch/mouse events.
+
+**Returns:** {boolean} The isTouchManaged boolean state.
+
+#### setTouchManaged(booleanState)
+Set the isTouchManaged boolean state, which indicates if the WebApp manages canvas page touch/mouse events.
+
+**Parameters:**
+
+| Name         | Type    | Description                       |
+|--------------|---------|-----------------------------------|
+| booleanState | boolean | The isTouchManaged boolean state. |
+
 #### isDefaultPageFirstly()
 Returns the default page firstly boolean state, which indicates if the default page must be inserted firstly.
 
@@ -717,7 +745,7 @@ Returns the redirection boolean state, which indicates if the next updateHash ev
 
 **Returns:** {boolean} The redirection boolean state.
 
-#### setIsRedirection(booleanState)
+#### setRedirection(booleanState)
 Set the redirection boolean state, which indicates if the next updateHash event must be bypassed (useful to update searchData content without hash processing).
 
 **Parameters:**
