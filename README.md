@@ -102,7 +102,7 @@ The default application page is the first _body's child_ class _page_ element, w
 
 
 ## Dynamic page creation:
-If we need to create another page after application startup, or dynamically during execution (on run-time), we can use _WebApp.createPage('pageId', 'extraClass', 'insertBeforeId', 'pageContent')_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex03.0_createPage.html#firstPage" target="_blank">live preview</a>):
+If we need to create another page after application startup, or dynamically during execution (on run-time), we can use _WebApp.createPage('pageId', 'tagName', 'extraClass', 'insertBeforeId', 'pageContent')_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex03.0_createPage.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -114,7 +114,7 @@ If we need to create another page after application startup, or dynamically duri
 
 <script>
 // Create another page dynamically:
-WebApp.createPage('secondPage', null, null, '<h1>Second Page</h1>'
+WebApp.createPage('secondPage', null, null, null, '<h1>Second Page</h1>'
 		+ '<a href="#firstPage">go to the first page</a>');
 </script>
 ```
@@ -799,6 +799,7 @@ Create page dynamically, without any previous HTML code declaration, and load it
 | Name           | Type   | Description                          |
 |----------------|--------|--------------------------------------|
 | pageId         | string | The new page id string value.        |
+| tagName        | string | Root element (default value: 'div'). |
 | extraClass     | string | Extra class which must be assigned.  |
 | insertBeforeId | string | The existent page id to be the next. |
 | pageContent    | string | The new page content string value.   |

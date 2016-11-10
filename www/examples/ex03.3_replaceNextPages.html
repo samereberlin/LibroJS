@@ -32,7 +32,7 @@ function createNextPage(currentPageElement) {
 	var nextPageId = (currentIdIntValue + 1).toString();
 	var nextPageElement = document.getElementById(nextPageId);
 	if (!nextPageElement) {
-		nextPageElement = WebApp.createPage(nextPageId, null, null,
+		nextPageElement = WebApp.createPage(nextPageId, null, null, null,
 				'<h1>WebApp - Page ' + nextPageId + '</h1>'
 			 	+ '<p> This is the "replace next" dynamic page creation example, which never reaches the first/last application page.</p>'
 			 	+ '<p>This page has been created/replaced dynamically, without any previous HTML code declaration.</p>'
@@ -53,7 +53,7 @@ function createPreviousPage(currentPageElement) {
 	var previousPageId = (currentIdIntValue - 1).toString();
 	var previousPageElement = document.getElementById(previousPageId);
 	if (!previousPageElement) {
-		previousPageElement = WebApp.createPage(previousPageId, null, currentPageElement.id,
+		previousPageElement = WebApp.createPage(previousPageId, null, null, currentPageElement.id,
 				'<h1>WebApp - Page ' + previousPageId + '</h1>'
 			 	+ '<p> This is the "replace next" dynamic page creation example, which never reaches the first/last application page.</p>'
 			 	+ '<p>This page has been created/replaced dynamically, without any previous HTML code declaration.</p>'

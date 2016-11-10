@@ -158,17 +158,18 @@ var WebAppClass = function() {
 	 * and load it according to the insertBeforeId value.
 	 *
 	 * @param {string} pageId - The new page id string value.
+	 * @param {string} tagName - Root element (default value: 'div').
 	 * @param {string} extraClass - Extra class which must be assigned.
 	 * @param {string} insertBeforeId - The existent page id to be the next.
 	 * @param {string} pageContent - The new page content string value.
 	 * 
 	 * @return {node} The new page node element.
 	 */
-	this.createPage = function(pageId, extraClass, insertBeforeId, pageContent) {
+	this.createPage = function(pageId, tagName, extraClass, insertBeforeId, pageContent) {
 		if (pageElements[pageId] || (typeof pageId !== 'string')) {
 			return null;
 		} else {
-			var pageElement = document.createElement('div');
+			var pageElement = document.createElement(tagName? tagName: 'div');
 			pageElement.className = 'page' + (extraClass? ' ' + extraClass: '');
 			pageElement.id = pageId;
 			pageElement.innerHTML = pageContent;
