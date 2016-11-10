@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WebApp - ex01.0_minimum</title>
+</head>
+
+<body>
+
+<div class="page" id="firstPage">
+	<h1>WebApp - <span style="color:#004;">First Page</span></h1>
+	<p>If you are viewing this page (firstPage), it means that the current browser URL ends with "#firstPage"</p>
+	<a href="#secondPage">go to the second page</a>
+</div>
+
+<canvas class="page" id="secondPage"
+	style="background-color: lightgray; position: fixed; top: 0; left: 0;">
+</canvas>
+
+<!-- script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script -->
+<script src="../WebApp.js"></script>
+
+<script>
+// Define drawing settings:
+var circleSize = 10;
+var xPos = 150;
+var yPos = 130;
+
+// Set secondPage (canvas page) callbacks:
+var secondPageElement = document.getElementById('secondPage');
+secondPageElement.onDraw = function() {
+	secondPageElement.width = secondPageElement.width; // Required to clear the canvas.
+	secondPageElement.canvasContext.font="bold 40px serif";
+	secondPageElement.canvasContext.strokeText('Second Page', 10, 40);
+	secondPageElement.canvasContext.font="14px serif";
+	secondPageElement.canvasContext.fillText('It is a Canvas Page, press back to return.', 10, 70);
+	secondPageElement.canvasContext.fillText('(cick / touch on the canvas)', 50, 100);
+	secondPageElement.canvasContext.fillStyle="#FF0000";
+	secondPageElement.canvasContext.beginPath();
+	secondPageElement.canvasContext.arc(xPos, yPos, 10, 0, 2 * Math.PI);
+	secondPageElement.canvasContext.fill();
+};
+
+// Set touch related functions:
+function moveCircle(touchEvent) {
+	xPos = touchEvent.changedTouches[0].pageX - secondPageElement.offsetLeft;
+	yPos = touchEvent.changedTouches[0].pageY - secondPageElement.offsetTop;
+};
+secondPageElement.onTouchManagedStart = moveCircle;
+secondPageElement.onTouchManagedMove = moveCircle;
+secondPageElement.onTouchManagedEnd = moveCircle;
+
+// Set global onResize callback:
+WebApp.onResize = function() { 
+	secondPageElement.width = window.innerWidth;
+	secondPageElement.height = window.innerHeight;
+};
+</script>
+
+</body>
+
+</html>

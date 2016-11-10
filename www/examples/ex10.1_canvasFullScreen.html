@@ -14,7 +14,9 @@
 	<a href="#secondPage">go to the second page</a>
 </div>
 
-<canvas class="page" id="secondPage" style="background-color: lightgray;"></canvas>
+<canvas class="page" id="secondPage"
+	style="background-color: lightgray; position: fixed; top: 0; left: 0;">
+</canvas>
 
 <!-- script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script -->
 <script src="../WebApp.js"></script>
@@ -30,7 +32,14 @@ secondPageElement.onDraw = function() {
 	secondPageElement.canvasContext.fillText('It is a Canvas Page,', 10, 80);
 	secondPageElement.canvasContext.fillText('press back to return.', 10, 110);
 	secondPageElement.canvasContext.font = "14px serif";
-	secondPageElement.canvasContext.fillText('(default canvas size: 300 x 150 px)', 10, 140);
+	secondPageElement.canvasContext.fillText('(dynamic canvas size: ' +
+			secondPageElement.width + ' x ' + secondPageElement.height + ' px)', 10, 140);
+};
+
+//Set global onResize callback:
+WebApp.onResize = function() { 
+	secondPageElement.width = window.innerWidth;
+	secondPageElement.height = window.innerHeight;
 };
 </script>
 

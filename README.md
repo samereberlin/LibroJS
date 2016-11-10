@@ -9,7 +9,7 @@ WebApp is a lightweight (simple and efficient) WEB application framework (librar
 - [Life cycle callbacks](#life-cycle-callbacks);
 - [History stack management](#history-stack-management);
 - [Modal window support](#modal-window-support);
-- [Canvas page support](#canvas-page-support) (coming soon);
+- [Canvas page support](#canvas-page-support);
 - [Language (i18n) support](#language-i18n-support) (coming soon);
 - [Simplified audio API](#simplified-audio-api) (coming soon);
 - [Header/Footer widget API](#headerfooter-widget-api) (coming soon);
@@ -322,6 +322,14 @@ secondPageElement.onHide = function(nextSearchData, nextElement) {
 - modalElement.onShow(searchData, referrerElement);
 - modalElement.onHide(nextSearchData, nextElement);
 - modalElement.onUpdateSearch(searchData);
+- canvasPageElement.onShow(searchData, referrerElement);
+- canvasPageElement.onHide(nextSearchData, nextElement);
+- canvasPageElement.onUpdateSearch(searchData);
+- canvasPageElement.onDraw();
+- canvasPageElement.onUpdate();
+- canvasPageElement.onTouchManagedStart(touchEvent);
+- canvasPageElement.onTouchManagedMove(touchEvent);
+- canvasPageElement.onTouchManagedEnd(touchEvent);
 Where:
 - `searchData` is the URL hash content from the question mark (if present) to the end. For example, in case of `index.html#fistPage?foo=bar`, the searchData would be `foo=bar`.
 - `referrerElement` is the previous displayed page element.
@@ -480,14 +488,12 @@ Another interesting use case for modal window pop-ups, is the "exit dialog" emul
 
 ```html
 <div class="page" id="firstPage">
-	<h1>WebApp - <span style="color:#004;">First Page</span></h1>
-	<p>If you are viewing this page (firstPage), it means that the current browser URL ends with "#firstPage"</p>
+	<h1>First Page</h1>
 	<a href="#secondPage?modal">go to the next page</a>
 </div>
 
 <div class="page" id="secondPage">
-	<h1>WebApp - <span style="color:#040;">Second Page</span></h1>
-	<p>If you are viewing this page (secondPage), it means that the current browser URL ends with "#secondPage"</p>
+	<h1>Second Page</h1>
 	<a href="javascript:window.history.back();">return to the previous</a>
 </div>
 
@@ -519,7 +525,182 @@ secondPageElement.onUpdateSearch = function(searchData) {
 
 
 ## Canvas page support:
-Coming soon...
+Canvas page are elements designed to behave like regular pages, but instead of displays their inner HTML DOM elements, it renders drawing statements programmatically, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.0_canvasPage.html#firstPage" target="_blank">live preview</a>):
+
+```html
+<div class="page" id="firstPage">
+	<h1>First Page</h1>
+	<a href="#secondPage">go to the second page</a>
+</div>
+
+<canvas class="page" id="secondPage" style="background-color: lightgray;"></canvas>
+
+<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+
+<script>
+// Set secondPage (canvas page) callbacks:
+var secondPageElement = document.getElementById('secondPage');
+secondPageElement.onDraw = function() {
+	secondPageElement.width = secondPageElement.width; // Required to clear the canvas.
+	secondPageElement.canvasContext.font = "bold 40px serif";
+	secondPageElement.canvasContext.strokeText('Second Page', 10, 40);
+	secondPageElement.canvasContext.font = "24px serif";
+	secondPageElement.canvasContext.fillText('It is a Canvas Page,', 10, 80);
+	secondPageElement.canvasContext.fillText('press back to return.', 10, 110);
+	secondPageElement.canvasContext.font = "14px serif";
+	secondPageElement.canvasContext.fillText('(default canvas size: 300 x 150 px)', 10, 140);
+};
+</script>
+```
+
+As we can see in the above example, the context for 2D drawing can be accessed via canvas page's _canvasContext_ property (inside _canvasPageElement.onDraw()_ callback), which can be manipulated using standard HTML5 canvas drawing statements. And as we can also notice, the default HTML5 canvas element size is 300 x 150, which is not interesting to fit an application page, but we can get a full screen canvas page element by listening the global _WebApp.onResize()_ callback, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.1_canvasFullScreen.html#firstPage" target="_blank">live preview</a>)
+
+```html
+<div class="page" id="firstPage">
+	<h1>First Page</h1>
+	<a href="#secondPage">go to the second page</a>
+</div>
+
+<canvas class="page" id="secondPage"
+	style="background-color: lightgray; position: fixed; top: 0; left: 0;">
+</canvas>
+
+<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+
+<script>
+// Set secondPage (canvas page) callbacks:
+var secondPageElement = document.getElementById('secondPage');
+secondPageElement.onDraw = function() {
+	secondPageElement.width = secondPageElement.width; // Required to clear the canvas.
+	secondPageElement.canvasContext.font = "bold 40px serif";
+	secondPageElement.canvasContext.strokeText('Second Page', 10, 40);
+	secondPageElement.canvasContext.font = "24px serif";
+	secondPageElement.canvasContext.fillText('It is a Canvas Page,', 10, 80);
+	secondPageElement.canvasContext.fillText('press back to return.', 10, 110);
+	secondPageElement.canvasContext.font = "14px serif";
+	secondPageElement.canvasContext.fillText('(dynamic canvas size: ' +
+			secondPageElement.width + ' x ' + secondPageElement.height + ' px)', 10, 140);
+};
+
+//Set global onResize callback:
+WebApp.onResize = function() { 
+	secondPageElement.width = window.innerWidth;
+	secondPageElement.height = window.innerHeight;
+};
+</script>
+```
+
+For simplicity reasons, the above canvas page examples have static text contents only. But the _canvasPageElement.onDraw()_ callback is called 24 times per second (if we need to set a different frame per second rate, we can use _WebApp.setFps(fpsRate)_ public API), which makes it useful to animate the canvas content, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.2_canvasAnimation.html#firstPage" target="_blank">live preview</a>), and notice that there is another very useful callback (_canvasPageElement.onUpdate()_), which runs asynchronously, and can be used to update the drawing settings/coordinates: 
+
+```html
+<div class="page" id="firstPage">
+	<h1>First Page</h1>
+	<a href="#secondPage">go to the second page</a>
+</div>
+
+<canvas class="page" id="secondPage"
+	style="background-color: lightgray; position: fixed; top: 0; left: 0;">
+</canvas>
+
+<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+
+<script>
+// Define drawing settings:
+var moveStep = 10;
+var boxSize = 10;
+var xPos = yPos = 0;
+var xGrow = yGrow = true;
+
+// Set secondPage (canvas page) callbacks:
+var secondPageElement = document.getElementById('secondPage');
+secondPageElement.onUpdate = function() {
+	if (xGrow) {
+		if (xPos + boxSize < secondPageElement.offsetWidth) {
+			xPos += moveStep;
+		} else xGrow = false;
+	} else {
+		if (xPos > 0) {
+			xPos -= moveStep;
+		} else xGrow = true;
+	}
+	if (yGrow) {
+		if (yPos + boxSize < secondPageElement.offsetHeight) {
+			yPos += moveStep;
+		} else yGrow = false;
+	} else {
+		if (yPos > 0) {
+			yPos -= moveStep;
+		} else yGrow = true;
+	}
+};
+secondPageElement.onDraw = function() {
+	secondPageElement.width = secondPageElement.width; // Required to clear the canvas.
+	secondPageElement.canvasContext.font = "bold 40px serif";
+	secondPageElement.canvasContext.strokeText('Second Page', 10, 40);
+	secondPageElement.canvasContext.font = "14px serif";
+	secondPageElement.canvasContext.fillText('It is a Canvas Page, press back to return.', 10, 70);
+	secondPageElement.canvasContext.fillStyle = "#FF0000";
+	secondPageElement.canvasContext.fillRect(xPos, yPos, boxSize, boxSize);
+};
+
+// Set global onResize callback:
+WebApp.onResize = function() { 
+	secondPageElement.width = window.innerWidth;
+	secondPageElement.height = window.innerHeight;
+};
+</script>
+```
+
+Another interesting canvas page feature is the "touch managed" engine, which offers three additional callbacks (onTouchManagedStart, onTouchManagedMove, and onTouchManagedEnd), useful to handle with mouse/touch events. The interesting point here is that "touch managed" engine converts all mouse detected actions into equivalent touch events, which allow us to process pointer events easily at once, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.3_touchManaged.html#firstPage" target="_blank">live preview</a>), and _setTouchManaged(false)_ public API can be used when we prefer to handle pointer events by our selves:
+
+```html
+<div class="page" id="firstPage">
+	<h1>First Page</h1>
+	<a href="#secondPage">go to the second page</a>
+</div>
+
+<canvas class="page" id="secondPage"
+	style="background-color: lightgray; position: fixed; top: 0; left: 0;">
+</canvas>
+
+<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+
+<script>
+// Define drawing settings:
+var circleSize = 10;
+var xPos = 150;
+var yPos = 130;
+
+// Set secondPage (canvas page) callbacks:
+var secondPageElement = document.getElementById('secondPage');
+secondPageElement.onDraw = function() {
+	secondPageElement.width = secondPageElement.width; // Required to clear the canvas.
+	secondPageElement.canvasContext.font="bold 40px serif";
+	secondPageElement.canvasContext.strokeText('Second Page', 10, 40);
+	secondPageElement.canvasContext.font="14px serif";
+	secondPageElement.canvasContext.fillText('It is a Canvas Page, press back to return.', 10, 70);
+	secondPageElement.canvasContext.fillText('(cick / touch on the canvas)', 50, 100);
+	secondPageElement.canvasContext.fillStyle="#FF0000";
+	secondPageElement.canvasContext.beginPath();
+	secondPageElement.canvasContext.arc(xPos, yPos, 10, 0, 2 * Math.PI);
+	secondPageElement.canvasContext.fill();
+};
+
+// Set touch related functions:
+function moveCircle(touchEvent) {
+	xPos = touchEvent.changedTouches[0].pageX - secondPageElement.offsetLeft;
+	yPos = touchEvent.changedTouches[0].pageY - secondPageElement.offsetTop;
+};
+secondPageElement.onTouchManagedStart = moveCircle;
+secondPageElement.onTouchManagedMove = moveCircle;
+secondPageElement.onTouchManagedEnd = moveCircle;
+
+// Set global onResize callback:
+WebApp.onResize = function() { 
+	secondPageElement.width = window.innerWidth;
+	secondPageElement.height = window.innerHeight;
+};
+```
 
 
 ## Language (i18n) support:

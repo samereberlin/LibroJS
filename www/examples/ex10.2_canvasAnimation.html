@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WebApp - ex01.0_minimum</title>
+</head>
+
+<body>
+
+<div class="page" id="firstPage">
+	<h1>WebApp - <span style="color:#004;">First Page</span></h1>
+	<p>If you are viewing this page (firstPage), it means that the current browser URL ends with "#firstPage"</p>
+	<a href="#secondPage">go to the second page</a>
+</div>
+
+<canvas class="page" id="secondPage"
+	style="background-color: lightgray; position: fixed; top: 0; left: 0;">
+</canvas>
+
+<!-- script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script -->
+<script src="../WebApp.js"></script>
+
+<script>
+// Define drawing settings:
+var moveStep = 10;
+var boxSize = 10;
+var xPos = yPos = 0;
+var xGrow = yGrow = true;
+
+// Set secondPage (canvas page) callbacks:
+var secondPageElement = document.getElementById('secondPage');
+secondPageElement.onUpdate = function() {
+	if (xGrow) {
+		if (xPos + boxSize < secondPageElement.offsetWidth) {
+			xPos += moveStep;
+		} else xGrow = false;
+	} else {
+		if (xPos > 0) {
+			xPos -= moveStep;
+		} else xGrow = true;
+	}
+	if (yGrow) {
+		if (yPos + boxSize < secondPageElement.offsetHeight) {
+			yPos += moveStep;
+		} else yGrow = false;
+	} else {
+		if (yPos > 0) {
+			yPos -= moveStep;
+		} else yGrow = true;
+	}
+};
+secondPageElement.onDraw = function() {
+	secondPageElement.width = secondPageElement.width; // Required to clear the canvas.
+	secondPageElement.canvasContext.font = "bold 40px serif";
+	secondPageElement.canvasContext.strokeText('Second Page', 10, 40);
+	secondPageElement.canvasContext.font = "14px serif";
+	secondPageElement.canvasContext.fillText('It is a Canvas Page, press back to return.', 10, 70);
+	secondPageElement.canvasContext.fillStyle = "#FF0000";
+	secondPageElement.canvasContext.fillRect(xPos, yPos, boxSize, boxSize);
+};
+
+// Set global onResize callback:
+WebApp.onResize = function() { 
+	secondPageElement.width = window.innerWidth;
+	secondPageElement.height = window.innerHeight;
+};
+</script>
+
+</body>
+
+</html>

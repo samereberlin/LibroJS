@@ -687,6 +687,7 @@ var WebAppClass = function() {
 			window.onresize = function() {resize();};
 			window.onunload = function() {unload();};
 			resume(); // Required to dispatch initial onResume event.
+			resize(); // Required to set initial size for Desktop browsers.
 
 			// Setup page change listener:
 			window.addEventListener('hashchange', updateHash);
@@ -713,14 +714,14 @@ var WebAppClass = function() {
 		}
 		if (element.tagName === 'CANVAS') {
 			element.canvasContext = element.getContext('2d');
-			if (typeof element.touchStart !== 'function') {
-				element.touchStart = function() {};
+			if (typeof element.onTouchManagedStart !== 'function') {
+				element.onTouchManagedStart = function() {};
 			}
-			if (typeof element.touchMove !== 'function') {
-				element.touchMove = function() {};
+			if (typeof element.onTouchManagedMove !== 'function') {
+				element.onTouchManagedMove = function() {};
 			}
-			if (typeof element.touchEnd !== 'function') {
-				element.touchEnd = function() {};
+			if (typeof element.onTouchManagedEnd !== 'function') {
+				element.onTouchManagedEnd = function() {};
 			}
 		}
 	}
@@ -1038,8 +1039,8 @@ var WebAppClass = function() {
 		if (currentPage && currentPage.canvasContext) {
 			if (booleanState) {
 				if ((intervalUpdate === 0) && (intervalDraw === 0)) {
-					intervalUpdate = setInterval(currentPage.update, fpsDelay);
-					intervalDraw = setInterval(currentPage.draw, fpsDelay);
+					intervalUpdate = setInterval(currentPage.onUpdate, fpsDelay);
+					intervalDraw = setInterval(currentPage.onDraw, fpsDelay);
 					if (isTouchManaged) {
 						currentPage.addEventListener('mousedown', mouseManagedDown);
 						currentPage.addEventListener('mousemove', mouseManagedMove);
@@ -1084,8 +1085,14 @@ var WebAppClass = function() {
 				touchEvent.stopPropagation();
 				touchEvent.preventDefault();
 				isMouseDown = true;
-				touchEvent.changedTouches = [{identifier: -1, clientX: touchEvent.clientX, clientY: touchEvent.clientY}];
-				currentPage.touchStart(touchEvent);
+				touchEvent.changedTouches = [{
+					identifier: -1,
+					clientX: touchEvent.clientX,
+					clientY: touchEvent.clientY,
+					pageX: touchEvent.pageX,
+					pageY: touchEvent.pageY
+				}];
+				currentPage.onTouchManagedStart(touchEvent);
 			}
 		}
 	}
@@ -1094,8 +1101,14 @@ var WebAppClass = function() {
 			if (isLogEnabled) debugTouch += (touchEvent.clientX + ' ' + touchEvent.clientY + ', ');
 			touchEvent.stopPropagation();
 			touchEvent.preventDefault();
-			touchEvent.changedTouches = [{identifier: -1, clientX: touchEvent.clientX, clientY: touchEvent.clientY}];
-			currentPage.touchMove(touchEvent);
+			touchEvent.changedTouches = [{
+				identifier: -1,
+				clientX: touchEvent.clientX,
+				clientY: touchEvent.clientY,
+				pageX: touchEvent.pageX,
+				pageY: touchEvent.pageY
+			}];
+			currentPage.onTouchManagedMove(touchEvent);
 		}
 	}
 	function mouseManagedUp(touchEvent) {
@@ -1107,8 +1120,14 @@ var WebAppClass = function() {
 			touchEvent.stopPropagation();
 			touchEvent.preventDefault();
 			isMouseDown = false;
-			touchEvent.changedTouches = [{identifier: -1, clientX: touchEvent.clientX, clientY: touchEvent.clientY}];
-			currentPage.touchEnd(touchEvent);
+			touchEvent.changedTouches = [{
+				identifier: -1,
+				clientX: touchEvent.clientX,
+				clientY: touchEvent.clientY,
+				pageX: touchEvent.pageX,
+				pageY: touchEvent.pageY
+			}];
+			currentPage.onTouchManagedEnd(touchEvent);
 		}
 	}
 
@@ -1117,13 +1136,13 @@ var WebAppClass = function() {
 		touchEvent.stopPropagation();
 		touchEvent.preventDefault();
 		touchLastTime = Date.now(); // Required to solve touchEvent.preventDefault() issue.
-		currentPage.touchStart(touchEvent);
+		currentPage.onTouchManagedStart(touchEvent);
 	}
 	function touchManagedMove(touchEvent) {
 		if (isLogEnabled) debugTouch += (touchEvent.changedTouches[0].clientX + ' ' + touchEvent.changedTouches[0].clientY + ', ');
 		touchEvent.stopPropagation();
 		touchEvent.preventDefault();
-		currentPage.touchMove(touchEvent);
+		currentPage.onTouchManagedMove(touchEvent);
 	}
 	function touchManagedEnd(touchEvent) {
 		if (isLogEnabled) {
@@ -1133,7 +1152,7 @@ var WebAppClass = function() {
 		touchEvent.stopPropagation();
 		touchEvent.preventDefault();
 		touchLastTime = Date.now(); // Required to solve touchEvent.preventDefault() issue.
-		currentPage.touchEnd(touchEvent);
+		currentPage.onTouchManagedEnd(touchEvent);
 	}
 
 	//################################################################################//
