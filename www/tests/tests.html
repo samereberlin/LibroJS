@@ -189,20 +189,31 @@ var testCases = [
 			var getPageIdsLength = WebApp.getPageIds().length;
 			WebApp.onSwitchPage = function() {
 				WebApp.onSwitchPage = function() {
-					WebApp.onSwitchPage = null;
-					testElements(assert, 'firstPage', null, 1);
-					WebApp.deletePage(newPageElement.id);
-					assert.equal(WebApp.getPageElements()[newPageElement.id], null, 'New page element must be deleted.');
-					assert.equal(WebApp.getPageIds().length, getPageIdsLength, 'New page ID must be removed.');
-					done();
-					startNext();
+					WebApp.onSwitchPage = function() {
+						WebApp.onSwitchPage = function() {
+							WebApp.onSwitchPage = null;
+							testElements(assert, 'firstPage', null, 1);
+							WebApp.deletePage(newPageElement.id);
+							WebApp.deletePage(newCanvasPageElement.id);
+							assert.equal(WebApp.getPageElements()[newPageElement.id], null, 'New page elements must be deleted.');
+							assert.equal(WebApp.getPageIds().length, getPageIdsLength, 'New page IDs must be removed.');
+							done();
+							startNext();
+						};
+						WebApp.previousPage();
+					};
+					testElements(assert, newCanvasPageElement.id, null, 3);
+					WebApp.previousPage();
 				};
 				testElements(assert, newPageElement.id, null, 2);
-				WebApp.previousPage();
+				WebApp.nextPage();
 			};
 			var newPageElement = WebApp.createPage('newPage', null, null, 'secondPage', '<h1>WebApp - <span style="color:#444;">New Page</span></h1>');
+			var newCanvasPageElement = WebApp.createPage('newCanvasPage', 'canvas', null, 'secondPage', '');
 			assert.equal(WebApp.getPageElements()[newPageElement.id].id, newPageElement.id, 'New page element must be created.');
+			assert.equal(WebApp.getPageElements()[newCanvasPageElement.id].id, newCanvasPageElement.id, 'New canvas page element must be created.');
 			assert.equal(WebApp.getPageIds()[1], newPageElement.id, 'New page ID must be inserted before secondPage.');
+			assert.equal(WebApp.getPageIds()[2], newCanvasPageElement.id, 'New canvas page ID must be inserted before secondPage.');
 			WebApp.nextPage();
 		});
 	},
