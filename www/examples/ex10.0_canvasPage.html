@@ -14,7 +14,9 @@
 	<a href="#secondPage">go to the second page</a>
 </div>
 
-<canvas class="page" id="secondPage" style="background-color: lightgray;"></canvas>
+<canvas class="page" id="secondPage"
+	style="background-color: lightgray;">
+</canvas>
 
 <!-- script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script -->
 <script src="../WebApp.js"></script>
@@ -23,7 +25,11 @@
 // Set secondPage (canvas page) callbacks:
 var secondPageElement = document.getElementById('secondPage');
 secondPageElement.onDraw = function() {
-	secondPageElement.width = secondPageElement.width; // Required to clear the canvas.
+	// Clear the canvas:
+	secondPageElement.canvasContext.clearRect(0, 0,
+			secondPageElement.width, secondPageElement.height);
+	
+	// Draw text contents:
 	secondPageElement.canvasContext.font = "bold 40px serif";
 	secondPageElement.canvasContext.strokeText('Second Page', 10, 40);
 	secondPageElement.canvasContext.font = "24px serif";

@@ -15,7 +15,7 @@
 </div>
 
 <canvas class="page" id="secondPage"
-	style="background-color: lightgray; position: fixed; top: 0; left: 0;">
+	style="position: fixed; top: 0; left: 0;">
 </canvas>
 
 <!-- script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script -->
@@ -30,12 +30,19 @@ var yPos = 130;
 // Set secondPage (canvas page) callbacks:
 var secondPageElement = document.getElementById('secondPage');
 secondPageElement.onDraw = function() {
-	secondPageElement.width = secondPageElement.width; // Required to clear the canvas.
+	// Clear the canvas (smoothly):
+	secondPageElement.canvasContext.fillStyle = "rgba(211, 211, 211, 0.5)";
+	secondPageElement.canvasContext.fillRect(0, 0, secondPageElement.width, secondPageElement.height);
+
+	// Draw text contents:
+	secondPageElement.canvasContext.fillStyle = "#000000";
 	secondPageElement.canvasContext.font="bold 40px serif";
 	secondPageElement.canvasContext.strokeText('Second Page', 10, 40);
 	secondPageElement.canvasContext.font="14px serif";
 	secondPageElement.canvasContext.fillText('It is a Canvas Page, press back to return.', 10, 70);
 	secondPageElement.canvasContext.fillText('(cick / touch on the canvas)', 50, 100);
+
+	// Draw red circle, on the touched position:
 	secondPageElement.canvasContext.fillStyle="#FF0000";
 	secondPageElement.canvasContext.beginPath();
 	secondPageElement.canvasContext.arc(xPos, yPos, 10, 0, 2 * Math.PI);

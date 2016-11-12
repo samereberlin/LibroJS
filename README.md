@@ -533,7 +533,9 @@ Canvas page are elements designed to behave like regular pages, but instead of d
 	<a href="#secondPage">go to the second page</a>
 </div>
 
-<canvas class="page" id="secondPage" style="background-color: lightgray;"></canvas>
+<canvas class="page" id="secondPage"
+	style="background-color: lightgray;">
+</canvas>
 
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
 
@@ -541,7 +543,11 @@ Canvas page are elements designed to behave like regular pages, but instead of d
 // Set secondPage (canvas page) callbacks:
 var secondPageElement = document.getElementById('secondPage');
 secondPageElement.onDraw = function() {
-	secondPageElement.width = secondPageElement.width; // Required to clear the canvas.
+	// Clear the canvas:
+	secondPageElement.canvasContext.clearRect(0, 0,
+			secondPageElement.width, secondPageElement.height);
+	
+	// Draw text contents:
 	secondPageElement.canvasContext.font = "bold 40px serif";
 	secondPageElement.canvasContext.strokeText('Second Page', 10, 40);
 	secondPageElement.canvasContext.font = "24px serif";
@@ -573,7 +579,11 @@ As we can see in the above example, the context for 2D drawing can be accessed v
 // Set secondPage (canvas page) callbacks:
 var secondPageElement = document.getElementById('secondPage');
 secondPageElement.onDraw = function() {
-	secondPageElement.width = secondPageElement.width; // Required to clear the canvas.
+	// Clear the canvas:
+	secondPageElement.canvasContext.clearRect(0, 0,
+			secondPageElement.width, secondPageElement.height);
+
+	// Draw text contents:
 	secondPageElement.canvasContext.font = "bold 40px serif";
 	secondPageElement.canvasContext.strokeText('Second Page', 10, 40);
 	secondPageElement.canvasContext.font = "24px serif";
@@ -601,7 +611,7 @@ For simplicity reasons, the above canvas page examples have static text contents
 </div>
 
 <canvas class="page" id="secondPage"
-	style="background-color: lightgray; position: fixed; top: 0; left: 0;">
+	style="position: fixed; top: 0; left: 0;">
 </canvas>
 
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
@@ -636,11 +646,18 @@ secondPageElement.onUpdate = function() {
 	}
 };
 secondPageElement.onDraw = function() {
-	secondPageElement.width = secondPageElement.width; // Required to clear the canvas.
+	// Clear the canvas (smoothly):
+	secondPageElement.canvasContext.fillStyle = "rgba(211, 211, 211, 0.5)";
+	secondPageElement.canvasContext.fillRect(0, 0, secondPageElement.width, secondPageElement.height);
+
+	// Draw text contents:
+	secondPageElement.canvasContext.fillStyle = "#000000";
 	secondPageElement.canvasContext.font = "bold 40px serif";
 	secondPageElement.canvasContext.strokeText('Second Page', 10, 40);
 	secondPageElement.canvasContext.font = "14px serif";
 	secondPageElement.canvasContext.fillText('It is a Canvas Page, press back to return.', 10, 70);
+
+	// Draw the animated red rectangle:
 	secondPageElement.canvasContext.fillStyle = "#FF0000";
 	secondPageElement.canvasContext.fillRect(xPos, yPos, boxSize, boxSize);
 };
@@ -662,7 +679,7 @@ Another interesting canvas page feature is the "touch managed" engine, which off
 </div>
 
 <canvas class="page" id="secondPage"
-	style="background-color: lightgray; position: fixed; top: 0; left: 0;">
+	style="position: fixed; top: 0; left: 0;">
 </canvas>
 
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
@@ -676,12 +693,19 @@ var yPos = 130;
 // Set secondPage (canvas page) callbacks:
 var secondPageElement = document.getElementById('secondPage');
 secondPageElement.onDraw = function() {
-	secondPageElement.width = secondPageElement.width; // Required to clear the canvas.
+	// Clear the canvas (smoothly):
+	secondPageElement.canvasContext.fillStyle = "rgba(211, 211, 211, 0.5)";
+	secondPageElement.canvasContext.fillRect(0, 0, secondPageElement.width, secondPageElement.height);
+
+	// Draw text contents:
+	secondPageElement.canvasContext.fillStyle = "#000000";
 	secondPageElement.canvasContext.font="bold 40px serif";
 	secondPageElement.canvasContext.strokeText('Second Page', 10, 40);
 	secondPageElement.canvasContext.font="14px serif";
 	secondPageElement.canvasContext.fillText('It is a Canvas Page, press back to return.', 10, 70);
 	secondPageElement.canvasContext.fillText('(cick / touch on the canvas)', 50, 100);
+
+	// Draw red circle, on the clicked/touched position:
 	secondPageElement.canvasContext.fillStyle="#FF0000";
 	secondPageElement.canvasContext.beginPath();
 	secondPageElement.canvasContext.arc(xPos, yPos, 10, 0, 2 * Math.PI);
