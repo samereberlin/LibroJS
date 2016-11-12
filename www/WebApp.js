@@ -945,7 +945,7 @@ var WebAppClass = function() {
 
 		var showNext = function(referrerElement) {
 			animateElement(pageElement, nextPageTransition + 'in', function() {
-				setCanvasPage(true);
+				if (pageElement === currentPage) setCanvasPage(true);
 			});
 			showElement(pageElement, searchData, referrerElement);
 			nextPageTransition = null;

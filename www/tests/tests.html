@@ -32,11 +32,9 @@
 	<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a> | #thirdPage | <a href="#fourthPage">#fourthPage</a>
 </div>
 
-<div class="page" id="fourthPage">
-	<h1>WebApp - <span style="color:#440;">Fourth Page</span></h1>
-	<p>If you are viewing this page (fourthPage), it means that the current browser URL ends with "#fourthPage"</p>
-	<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a> | <a href="#thirdPage">#thirdPage</a> | #fourthPage
-</div>
+<canvas class="page" id="fourthPage"
+	style="background-color: lightgray;">
+</canvas>
 
 <div class="modal" id="modalWindow">
 	<div style="padding: 0.5em;">
@@ -67,6 +65,19 @@ var testCaseIndex = 0;
 var shortDelay = 10;
 var longDelay = 200;
 QUnit.config.testTimeout = 5000;
+
+var fourthPageElement = document.getElementById('fourthPage');
+fourthPageElement.onDraw = function() {
+	fourthPageElement.canvasContext.clearRect(0, 0,
+			fourthPageElement.width, fourthPageElement.height);
+	fourthPageElement.canvasContext.font = "bold 40px serif";
+	fourthPageElement.canvasContext.strokeText('Fourth Page', 10, 40);
+	fourthPageElement.canvasContext.font = "24px serif";
+	fourthPageElement.canvasContext.fillText('It is a Canvas Page,', 10, 80);
+	fourthPageElement.canvasContext.fillText('press back to return.', 10, 110);
+	fourthPageElement.canvasContext.font = "14px serif";
+	fourthPageElement.canvasContext.fillText('(default canvas size: 300 x 150 px)', 10, 140);
+};
 
 function startNext() {
 	if (testCases[testCaseIndex]) {
