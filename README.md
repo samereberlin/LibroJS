@@ -602,7 +602,8 @@ WebApp.onResize = function() {
 </script>
 ```
 
-For simplicity reasons, the above canvas page examples have static text contents only. But the _canvasPageElement.onDraw()_ callback is called 24 times per second (if we need to set a different frame per second rate, we can use _WebApp.setFps(fpsRate)_ public API), which makes it useful to animate the canvas content, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.2_canvasAnimation.html#firstPage" target="_blank">live preview</a>), and notice that there is another very useful callback (_canvasPageElement.onUpdate()_), which runs asynchronously, and can be used to update the drawing settings/coordinates: 
+For simplicity reasons, the above canvas page examples have static text contents only, but the _canvasPageElement.onDraw()_ callback is called repetitively several times per second (about ~60 times, using the requestAnimationFrame polyfill techniques), which makes it useful to animate the canvas content. And there is also another very useful callback (_canvasPageElement.onUpdate()_), which runs asynchronously (24 times per second, if we need to set a different frame rate, we can use _WebApp.setFps(fpsRate)_ public API), and can be used to update the drawing settings/coordinates, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.2_canvasAnimation.html#firstPage" target="_blank">live preview</a>):
+ate the drawing settings/coordinates: 
 
 ```html
 <div class="page" id="firstPage">
@@ -879,18 +880,18 @@ Delete modal dynamically, and unload it, in order to release memory resources.
 | modalId | string | The modal id string value. |
 
 #### getFps()
-Returns the "frames per second" canvas page update/draw rate (default value: 24), which indicates the number of times which canvas page is updated/drawn per second.
+Returns the "frames per second" canvas page update rate (default value: 24), which indicates the number of times which canvas page is updated per second.
 
-**Returns:** {Number} The "frames per second" canvas page update/draw rate.
+**Returns:** {Number} The "frames per second" canvas page update rate.
 
 #### setFps(fpsRate)
-Set the "frames per second" canvas page update/draw rate (default value: 24), which indicates the number of times which canvas page is updated/drawn per second.
+Set the "frames per second" canvas page update rate (default value: 24), which indicates the number of times which canvas page is updated per second.
 
 **Parameters:**
 
-| Name    | Type   | Description                                           |
-|---------|--------|-------------------------------------------------------|
-| fpsRate | Number | The "frames per second" canvas page update/draw rate. |
+| Name    | Type   | Description                                      |
+|---------|--------|--------------------------------------------------|
+| fpsRate | Number | The "frames per second" canvas page update rate. |
 
 #### isTouchManaged()
 Returns the isTouchManaged boolean state, which indicates if the WebApp manages canvas page touch/mouse events.

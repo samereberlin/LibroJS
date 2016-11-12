@@ -288,27 +288,30 @@ var WebAppClass = function() {
 	// Canvas page settings:
 
 	var fpsDelay = 1000 / 24; // FPS = 24 frames per second.
-	var intervalDraw = 0;
 	var intervalUpdate = 0;
+	var requestAnimation = window.requestAnimationFrame || window.webkitRequestAnimationFrame ||
+		function(callback, element){
+			window.setTimeout(callback, 1000 / 60);
+		};
 
 	//################################################################################//
 	// Canvas page API:
 
 	/**
-	 * Returns the "frames per second" canvas page update/draw rate (default value: 24),
-	 * which indicates the number of times which canvas page is updated/drawn per second.
+	 * Returns the "frames per second" canvas page update rate (default value: 24),
+	 * which indicates the number of times which canvas page is updated per second.
 	 *
-	 * @return {Number} The "frames per second" canvas page update/draw rate.
+	 * @return {Number} The "frames per second" canvas page update rate.
 	 */
 	this.getFps = function() {
 		return 1000 / fpsDelay;
 	};
 
 	/**
-	 * Set the "frames per second" canvas page update/draw rate (default value: 24),
-	 * which indicates the number of times which canvas page is updated/drawn per second.
+	 * Set the "frames per second" canvas page update rate (default value: 24),
+	 * which indicates the number of times which canvas page is updated per second.
 	 *
-	 * @param {Number} fpsRate - The "frames per second" canvas page update/draw rate.
+	 * @param {Number} fpsRate - The "frames per second" canvas page update rate.
 	 */
 	this.setFps = function(fpsRate) {
 		fpsDelay = 1000 / fpsRate;
@@ -715,6 +718,9 @@ var WebAppClass = function() {
 		}
 		if (element.tagName === 'CANVAS') {
 			element.canvasContext = element.getContext('2d');
+			if (typeof element.onDraw !== 'function') {
+				element.onDraw = function() {};
+			}
 			if (typeof element.onTouchManagedStart !== 'function') {
 				element.onTouchManagedStart = function() {};
 			}
@@ -1039,9 +1045,12 @@ var WebAppClass = function() {
 	function setCanvasPage(booleanState) {
 		if (currentPage && currentPage.canvasContext) {
 			if (booleanState) {
-				if ((intervalUpdate === 0) && (intervalDraw === 0)) {
+				if (intervalUpdate === 0) {
 					intervalUpdate = setInterval(currentPage.onUpdate, fpsDelay);
-					intervalDraw = setInterval(currentPage.onDraw, fpsDelay);
+					(function draw() {
+						currentPage.onDraw();
+						if (isRunning) requestAnimation(draw);
+					})();
 					if (isTouchManaged) {
 						currentPage.addEventListener('mousedown', mouseManagedDown);
 						currentPage.addEventListener('mousemove', mouseManagedMove);
@@ -1057,9 +1066,7 @@ var WebAppClass = function() {
 				}
 			} else {
 				clearInterval(intervalUpdate);
-				clearInterval(intervalDraw);
 				intervalUpdate = 0;
-				intervalDraw = 0;
 				if (isTouchManaged) {
 					currentPage.removeEventListener('mousedown', mouseManagedDown);
 					currentPage.removeEventListener('mousemove', mouseManagedMove);
