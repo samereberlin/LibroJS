@@ -717,7 +717,7 @@ secondPageElement.onDraw = function() {
 function moveCircle(touchEvent) {
 	xPos = touchEvent.changedTouches[0].pageX - secondPageElement.offsetLeft;
 	yPos = touchEvent.changedTouches[0].pageY - secondPageElement.offsetTop;
-};
+}
 secondPageElement.onTouchManagedStart = moveCircle;
 secondPageElement.onTouchManagedMove = moveCircle;
 secondPageElement.onTouchManagedEnd = moveCircle;
