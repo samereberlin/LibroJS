@@ -926,14 +926,14 @@ var WebAppClass = function() {
 	}
 
 	function updateSearch(searchData, element) {
-		if (isLogEnabled) console.log('WebApp.js: updateSearch(searchData, element)... searchData: ' + searchData + ', element.id: ' + element.id);
+		if (isLogEnabled) console.log('WebApp.js: updateSearch(searchData, element)... searchData: ' + searchData + ', element.id: ' + (element? element.id: ''));
 		if (typeof element.onUpdateSearch === 'function') {
 			element.onUpdateSearch(searchData);
 		}
 	}
 
 	function switchPage(pageElement, searchData) {
-		if (isLogEnabled) console.log('WebApp.js: switchPage(pageElement, searchData)... pageElement.id = ' + pageElement.id + ', searchData: ' + searchData + ', currentPage.id = ' + (currentPage? currentPage.id: ''));
+		if (isLogEnabled) console.log('WebApp.js: switchPage(pageElement, searchData)... pageElement.id = ' + (pageElement? pageElement.id: '') + ', searchData: ' + searchData + ', currentPage.id = ' + (currentPage? currentPage.id: ''));
 		if (!nextPageTransition) {
 			nextPageTransition = pageElement.transitionType? pageElement.transitionType: defaultPageTransition;
 		}
@@ -967,7 +967,7 @@ var WebAppClass = function() {
 	}
 
 	function switchModal(booleanState, modalElement, nextElement, searchData) {
-		if (isLogEnabled) console.log('WebApp.js: switchModal(booleanState, modalElement, nextElement, searchData)... booleanState: ' + booleanState + ', modalElement.id: ' + modalElement.id + ', nextElement.id = ' + (nextElement? nextElement.id: '') + ', searchData: ' + searchData + ', currentPage.id = ' + (currentPage? currentPage.id: ''));
+		if (isLogEnabled) console.log('WebApp.js: switchModal(booleanState, modalElement, nextElement, searchData)... booleanState: ' + booleanState + ', modalElement.id: ' + (modalElement? modalElement.id: '') + ', nextElement.id = ' + (nextElement? nextElement.id: '') + ', searchData: ' + searchData + ', currentPage.id = ' + (currentPage? currentPage.id: ''));
 		if (!nextModalTransition) {
 			nextModalTransition = modalElement.transitionType? modalElement.transitionType: defaultModalTransition;
 		}
@@ -1020,7 +1020,7 @@ var WebAppClass = function() {
 	}
 
 	function showElement(element, searchData, referrerElement) {
-		if (isLogEnabled) console.log('WebApp.js: showElement(element, searchData, referrerElement)... element.id: ' + element.id + ', searchData: ' + searchData + ', referrerElement.id: ' + (referrerElement? referrerElement.id: ''));
+		if (isLogEnabled) console.log('WebApp.js: showElement(element, searchData, referrerElement)... element.id: ' + (element? element.id: '') + ', searchData: ' + searchData + ', referrerElement.id: ' + (referrerElement? referrerElement.id: ''));
 		if (!referrerElement || !modalElements[referrerElement.id]) {
 			element.style.display = 'block';
 		}
@@ -1030,7 +1030,7 @@ var WebAppClass = function() {
 	}
 
 	function hideElement(element, nextSearchData, nextElement) {
-		if (isLogEnabled) console.log('WebApp.js: hideElement(element, nextSearchData, nextElement)... element.id: ' + element.id + ', nextSearchData: ' + nextSearchData + ', nextElement.id: ' + nextElement.id);
+		if (isLogEnabled) console.log('WebApp.js: hideElement(element, nextSearchData, nextElement)... element.id: ' + (element? element.id: '') + ', nextSearchData: ' + nextSearchData + ', nextElement.id: ' + (nextElement? nextElement.id: ''));
 		if (!nextElement || !modalElements[nextElement.id]) {
 			element.style.display = 'none';
 		}
