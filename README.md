@@ -595,7 +595,7 @@ secondPageElement.onDraw = function() {
 };
 
 //Set global onResize callback:
-WebApp.onResize = function() { 
+WebApp.onResize = function() {
 	secondPageElement.width = window.innerWidth;
 	secondPageElement.height = window.innerHeight;
 };
@@ -664,7 +664,7 @@ secondPageElement.onDraw = function() {
 };
 
 // Set global onResize callback:
-WebApp.onResize = function() { 
+WebApp.onResize = function() {
 	secondPageElement.width = window.innerWidth;
 	secondPageElement.height = window.innerHeight;
 };
@@ -723,7 +723,7 @@ secondPageElement.onTouchManagedMove = moveCircle;
 secondPageElement.onTouchManagedEnd = moveCircle;
 
 // Set global onResize callback:
-WebApp.onResize = function() { 
+WebApp.onResize = function() {
 	secondPageElement.width = window.innerWidth;
 	secondPageElement.height = window.innerHeight;
 };
