@@ -12,7 +12,6 @@
 <div style="border: 1px solid gray; padding: .4em; text-align: center;">
 	<button onclick="WebApp.previousPage()" style="float:left">&lt;&lt;</button>
 	<button onclick="WebApp.nextPage()" style="float:right">&gt;&gt;</button>
-	<button onclick="window.location.hash = 'modalSettings'">Modal Settings</button>
 	<button onclick="window.location.hash = 'modalSideMenu'">Side Menu</button>
 	<button onclick="window.location.hash = 'modalTopMenu'">Top Menu</button>
 </div>
@@ -41,14 +40,25 @@
 	<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a> | <a href="#thirdPage">#thirdPage</a> | #fourthPage
 </div>
 
-<div class="modal" id="modalSettings">
+<div class="modal" id="modalWindow">
 	<div style="padding: 0.5em;">
-		<h1>Modal - <span style="color:#044;">Settings</span></h1>
-		<p>If you are viewing this modal (modalSettings), it means that the current browser URL ends with "#modalSettings"</p>
+		<h1>WebApp - <span style="color:#400;">Modal Window</span></h1>
+		<p>If you are viewing this modal (modalWindow), it means that the current browser URL ends with "#modalWindow"</p>
 		<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a> | <a href="#thirdPage">#thirdPage</a> | <a href="#fourthPage">#fourthPage</a>
-		<br>
-		<br>
-		<label style="margin-left: 1em; white-space:nowrap;">
+		<br><br>
+		<a href="javascript:window.history.back();">(hide modal)</a>
+	</div>
+</div>
+
+<br>
+<a href="#modalWindow">(show modal)</a> <label style="margin-left: 1em; white-space:nowrap;"><input type="checkbox" onchange="WebApp.setLogEnabled(this.checked);" checked> Enable log.</label>
+
+<div class="modal" id="modalSideMenu">
+	<div transition="drawerleft" style="border-radius: 0; margin: 0; max-width: 300px; padding: 0.5em;
+			position: fixed; top: 0; bottom: 0; left: 0; overflow: auto;">
+		<h2>Modal - <span style="color:#400;">Side Menu</span></h2>
+		<p>If you are viewing this modal (modalSideMenu), it means that the current browser URL ends with "#modalSideMenu"</p>
+		<label style="white-space:nowrap;">
 			Page transition
 			<select onchange="WebApp.setDefaultPageTransition(this.value);">
 				<option value="none">None</option>
@@ -68,7 +78,7 @@
 		</label>
 		<br>
 		<br>
-		<label style="margin-left: 1em; white-space:nowrap;">
+		<label style="white-space:nowrap;">
 			Modal transition
 			<select onchange="WebApp.setDefaultModalTransition(this.value);">
 				<option value="none">None</option>
@@ -86,32 +96,12 @@
 		</label>
 		<br>
 		<br>
-		<label style="margin-left: 1em; white-space:nowrap;"><input type="checkbox" onchange="WebApp.setLogEnabled(this.checked);" checked> Enable log.</label>
-		<br>
-		<br>
-		<a href="javascript:window.history.back();">(hide modal)</a>
-	</div>
-</div>
-
-<div class="modal" id="modalSideMenu">
-	<div transition="drawerleft" style="margin: 0; max-width: 300px; padding: 0.5em;
-			position: fixed; top: 0; bottom: 0; left: 0; overflow: auto;">
-		<h2>Modal - <span style="color:#400;">Side Menu</span></h2>
-		<p>If you are viewing this modal (modalSideMenu), it means that the current browser URL ends with "#modalSideMenu"</p>
-		<a href="#firstPage">#firstPage</a><br>
-		<br>
-		<a href="#secondPage">#secondPage</a><br>
-		<br>
-		<a href="#thirdPage">#thirdPage</a><br>
-		<br>
-		<a href="#fourthPage">#fourthPage</a><br>
-		<br>
 		<a href="javascript:window.history.back();">(hide modal)</a>
 	</div>
 </div>
 
 <div class="modal" id="modalTopMenu">
-	<div transition="drawertop" style="margin: 0 0 auto auto; max-width: 300px; padding: 0.5em;">
+	<div transition="drawertop" style="border-radius: 0; margin: 0 0 auto auto; max-width: 300px; padding: 0.5em;">
 		<h2>Modal - <span style="color:#400;">Top Menu</span></h2>
 		<p>If you are viewing this modal (modalTopMenu), it means that the current browser URL ends with "#modalTopMenu"</p>
 		<a href="#firstPage">#firstPage</a><br>
@@ -221,16 +211,16 @@ fourthPageElement.onUpdateSearch = function(searchData) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#440;">fourthPageElement.onUpdateSearch(' + searchData + ')</span>';
 };
 
-// Set modalSettings callbacks:
-var modalSettingsElement = document.getElementById('modalSettings');
-modalSettingsElement.onShow = function(searchData, referrerElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalSettingsElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+// Set modalWindow callbacks:
+var modalWindowElement = document.getElementById('modalWindow');
+modalWindowElement.onShow = function(searchData, referrerElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalWindowElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
-modalSettingsElement.onHide = function(nextSearchData, nextElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalSettingsElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
+modalWindowElement.onHide = function(nextSearchData, nextElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalWindowElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
 };
-modalSettingsElement.onUpdateSearch = function(searchData) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalSettingsElement.onUpdateSearch(' + searchData + ')</span>';
+modalWindowElement.onUpdateSearch = function(searchData) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalWindowElement.onUpdateSearch(' + searchData + ')</span>';
 };
 
 // Set modalSideMenu callbacks:
