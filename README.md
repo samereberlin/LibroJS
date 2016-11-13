@@ -546,7 +546,7 @@ secondPageElement.onDraw = function() {
 	// Clear the canvas:
 	secondPageElement.canvasContext.clearRect(0, 0,
 			secondPageElement.width, secondPageElement.height);
-	
+
 	// Draw text contents:
 	secondPageElement.canvasContext.font = "bold 40px serif";
 	secondPageElement.canvasContext.strokeText('Second Page', 10, 40);
