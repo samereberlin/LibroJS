@@ -917,9 +917,9 @@ var WebAppClass = function() {
 				} else if (defaultPageId) {
 					window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#' + defaultPageId);
 				}
-				currentSearch = nextSearch;
 			}
 		}
+		currentSearch = nextSearch;
 		if (typeof WebApp.onUpdateHash === 'function') {
 			WebApp.onUpdateHash(hashChangeEvent);
 		}
