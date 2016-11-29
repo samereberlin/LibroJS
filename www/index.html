@@ -12,8 +12,17 @@
 <div style="border: 1px solid gray; padding: .4em; text-align: center;">
 	<button onclick="WebApp.previousPage()" style="float:left">&lt;&lt;</button>
 	<button onclick="WebApp.nextPage()" style="float:right">&gt;&gt;</button>
-	<button onclick="window.location.hash = 'modalSideMenu'">Side Menu</button>
-	<button onclick="window.location.hash = 'modalTopMenu'">Top Menu</button>
+	<button onclick="window.location.hash = 'modalSideMenu'">⇄</button>
+	<button onclick="window.location.hash = 'modalWindow'">modal</button>
+	<button onclick="window.location.hash = 'modalTopMenu'">⇅</button>
+</div>
+
+<div class="modal" id="returnDialog">
+	<div style="padding: 0.5em; text-align: center;">
+		<p>Are you sure you want to return to the previous page?</p>
+		<button onclick="window.history.back();">Cancel</button>&nbsp;&nbsp;
+		<button onclick="window.history.go(-2);" id="returnButton">Return</button>
+	</div>
 </div>
 
 <div class="page" id="firstPage">
@@ -49,9 +58,6 @@
 		<a href="javascript:window.history.back();">(hide modal)</a>
 	</div>
 </div>
-
-<br>
-<a href="#modalWindow">(show modal)</a> <label style="margin-left: 1em; white-space:nowrap;"><input type="checkbox" onchange="WebApp.setLogEnabled(this.checked);" checked> Enable log.</label>
 
 <div class="modal" id="modalSideMenu">
 	<div transition="drawerleft" style="border-radius: 0; margin: 0; max-width: 300px; padding: 0.5em;
@@ -104,19 +110,22 @@
 	<div transition="drawertop" style="border-radius: 0; margin: 0 0 auto auto; max-width: 300px; padding: 0.5em;">
 		<h2>Modal - <span style="color:#400;">Top Menu</span></h2>
 		<p>If you are viewing this modal (modalTopMenu), it means that the current browser URL ends with "#modalTopMenu"</p>
-		<a href="#firstPage">#firstPage</a><br>
+		<a href="javascript:createCanvasPage();">Canvas Page</a><br>
 		<br>
-		<a href="#secondPage">#secondPage</a><br>
+		<a href="javascript:createDynamicPages();">Dynamic Pages</a><br>
 		<br>
-		<a href="#thirdPage">#thirdPage</a><br>
+		<a href="javascript:window.history.back(); if (confirm('Open Folder Examples?')) window.location.href = 'examples/';">Folder Examples</a><br>
 		<br>
-		<a href="#fourthPage">#fourthPage</a><br>
+		<a href="javascript:window.history.back(); if (confirm('Execute QUnit Test Cases?')) window.location.href = 'tests/tests.html';">QUnit Test Cases</a><br>
 		<br>
 		<a href="javascript:window.history.back();">(hide modal)</a>
 	</div>
 </div>
 
-<p id="logMonitor" style="font-family: monospace; color: darkgray;"></p>
+<br>
+<button onclick="logMonitor.innerHTML = '';">Clear log.</button> <label style="margin-left: 1em; white-space:nowrap;"><input type="checkbox" onchange="WebApp.setLogEnabled(this.checked);" checked> Enable log.</label>
+
+<div id="logMonitor" style="font-family: monospace; color: darkgray;"></div>
 
 <script src="WebApp.js"></script>
 
@@ -163,16 +172,38 @@ WebApp.onKeyDown = function(keyEvent, pageElement) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onKeyDown(' + keyEvent.keyCode + ', ' + pageElement.id + ')</span>';
 };
 
+// Set returnDialog callbacks:
+var returnDialogElement = document.getElementById('returnDialog');
+var returnButtonElement = document.getElementById('returnButton');
+returnDialogElement.onShow = function(searchData, referrerElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">returnDialogElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+	returnButtonElement.focus();
+};
+returnDialogElement.onHide = function(nextSearchData, nextElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">returnDialogElement.onHide(' + nextSearchData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
+};
+returnDialogElement.onUpdateSearch = function(searchData) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">returnDialogElement.onUpdateSearch(' + searchData + ')</span>';
+};
+
 // Set firstPage callbacks:
 var firstPageElement = document.getElementById('firstPage');
 firstPageElement.onShow = function(searchData, referrerElement) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#004;">firstPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+	if (searchData && searchData === 'modal') {
+		setTimeout(function() { // Timeout required to create history entry for WebKit browsers.
+			window.location.hash = 'firstPage';
+		}, 10);
+	}
 };
 firstPageElement.onHide = function(nextSearchData, nextElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#004;">firstPageElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#004;">firstPageElement.onHide(' + nextSearchData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
 };
 firstPageElement.onUpdateSearch = function(searchData) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#004;">firstPageElement.onUpdateSearch(' + searchData + ')</span>';
+	if (searchData && searchData === 'modal') {
+		window.location.hash = 'returnDialog';
+	}
 };
 
 // Set secondPage callbacks:
@@ -181,7 +212,7 @@ secondPageElement.onShow = function(searchData, referrerElement) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#040;">secondPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
 secondPageElement.onHide = function(nextSearchData, nextElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#040;">secondPageElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#040;">secondPageElement.onHide(' + nextSearchData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
 };
 secondPageElement.onUpdateSearch = function(searchData) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#040;">secondPageElement.onUpdateSearch(' + searchData + ')</span>';
@@ -193,7 +224,7 @@ thirdPageElement.onShow = function(searchData, referrerElement) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">thirdPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
 thirdPageElement.onHide = function(nextSearchData, nextElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">thirdPageElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">thirdPageElement.onHide(' + nextSearchData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
 };
 thirdPageElement.onUpdateSearch = function(searchData) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">thirdPageElement.onUpdateSearch(' + searchData + ')</span>';
@@ -205,7 +236,7 @@ fourthPageElement.onShow = function(searchData, referrerElement) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#440;">fourthPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
 fourthPageElement.onHide = function(nextSearchData, nextElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#440;">fourthPageElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#440;">fourthPageElement.onHide(' + nextSearchData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
 };
 fourthPageElement.onUpdateSearch = function(searchData) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#440;">fourthPageElement.onUpdateSearch(' + searchData + ')</span>';
@@ -214,38 +245,187 @@ fourthPageElement.onUpdateSearch = function(searchData) {
 // Set modalWindow callbacks:
 var modalWindowElement = document.getElementById('modalWindow');
 modalWindowElement.onShow = function(searchData, referrerElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalWindowElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">modalWindowElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
 modalWindowElement.onHide = function(nextSearchData, nextElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalWindowElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">modalWindowElement.onHide(' + nextSearchData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
 };
 modalWindowElement.onUpdateSearch = function(searchData) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalWindowElement.onUpdateSearch(' + searchData + ')</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">modalWindowElement.onUpdateSearch(' + searchData + ')</span>';
 };
 
 // Set modalSideMenu callbacks:
 var modalSideMenuElement = document.getElementById('modalSideMenu');
 modalSideMenuElement.onShow = function(searchData, referrerElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalSideMenuElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">modalSideMenuElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
 modalSideMenuElement.onHide = function(nextSearchData, nextElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalSideMenuElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">modalSideMenuElement.onHide(' + nextSearchData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
 };
 modalSideMenuElement.onUpdateSearch = function(searchData) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalSideMenuElement.onUpdateSearch(' + searchData + ')</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">modalSideMenuElement.onUpdateSearch(' + searchData + ')</span>';
 };
 
 // Set modalTopMenu callbacks:
 var modalTopMenuElement = document.getElementById('modalTopMenu');
 modalTopMenuElement.onShow = function(searchData, referrerElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalTopMenuElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">modalTopMenuElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
 modalTopMenuElement.onHide = function(nextSearchData, nextElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalTopMenuElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">modalTopMenuElement.onHide(' + nextSearchData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
 };
 modalTopMenuElement.onUpdateSearch = function(searchData) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#044;">modalTopMenuElement.onUpdateSearch(' + searchData + ')</span>';
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">modalTopMenuElement.onUpdateSearch(' + searchData + ')</span>';
 };
+
+// Create Canvas Page and set its callbacks/functions/variables:
+var moveStep = 5;
+var boxSize = 10;
+var xPos = yPos = 0;
+var xGrow = yGrow = true;
+var canvasPageElement = null;
+function createCanvasPage() {
+	// Create a new page element:
+	canvasPageElement = WebApp.createPage('canvasPage', 'canvas', null, 'modalWindow', null);
+	canvasPageElement.width = 320;
+	// Set the new created page callbacks:
+	canvasPageElement.onShow = canvasOnShow;
+	canvasPageElement.onHide = canvasOnHide;
+	canvasPageElement.onUpdateSearch = canvasOnUpdateSearch;
+	canvasPageElement.onTouchManagedStart = canvasOnTouch;
+	canvasPageElement.onTouchManagedMove = canvasOnTouch;
+	canvasPageElement.onUpdate = canvasOnUpdate;
+	canvasPageElement.onDraw = canvasOnDraw;
+	// Go to the new created page:
+	window.location.hash = 'canvasPage?modal';
+}
+function canvasOnShow(searchData, referrerElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">canvasPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+	if (searchData && searchData === 'modal') {
+		window.location.hash = 'canvasPage';
+	}
+};
+function canvasOnHide(nextSearchData, nextElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">canvasPageElement.onHide(' + nextSearchData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
+	if (nextElement && nextElement.id !== 'returnDialog') {
+		WebApp.deletePage('canvasPage');
+		canvasPageElement = null;
+	}
+};
+function canvasOnUpdateSearch(searchData) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">canvasPageElement.onUpdateSearch(' + searchData + ')</span>';
+	if (searchData && searchData === 'modal') {
+		window.location.hash = 'returnDialog';
+	}
+};
+function canvasOnTouch(touchEvent) {
+	xPos = touchEvent.changedTouches[0].pageX - canvasPageElement.offsetLeft;
+	yPos = touchEvent.changedTouches[0].pageY - canvasPageElement.offsetTop;
+}
+function canvasOnUpdate() {
+	if (xGrow) {
+		if (xPos + boxSize < canvasPageElement.offsetWidth) {
+			xPos += moveStep;
+		} else xGrow = false;
+	} else {
+		if (xPos > 0) {
+			xPos -= moveStep;
+		} else xGrow = true;
+	}
+	if (yGrow) {
+		if (yPos + boxSize < canvasPageElement.offsetHeight) {
+			yPos += moveStep;
+		} else yGrow = false;
+	} else {
+		if (yPos > 0) {
+			yPos -= moveStep;
+		} else yGrow = true;
+	}
+};
+function canvasOnDraw() {
+	// Clear the canvas (smoothly):
+	canvasPageElement.canvasContext.fillStyle = "rgba(211, 211, 211, 0.25)";
+	canvasPageElement.canvasContext.fillRect(0, 0, canvasPageElement.width, canvasPageElement.height);
+	// Draw text contents:
+	canvasPageElement.canvasContext.fillStyle = "#000000";
+	canvasPageElement.canvasContext.font = "bold 40px serif";
+	canvasPageElement.canvasContext.strokeText('Canvas Page', 10, 40);
+	canvasPageElement.canvasContext.font = "14px serif";
+	canvasPageElement.canvasContext.fillText('It is a Canvas Page, press back to return.', 10, 70);
+	// Draw the animated red rectangle:
+	canvasPageElement.canvasContext.fillStyle = "#FF0000";
+	canvasPageElement.canvasContext.fillRect(xPos, yPos, boxSize, boxSize);
+};
+
+// Create Dynamic Pages and set its callbacks/functions/variables:
+var dynamicPagesIds = [];
+function createDynamicPages() {
+	// Create a new page element:
+	var dynamicPageElement = WebApp.createPage('1', null, null, 'modalWindow', 
+			'<h1>WebApp - Page 1</h1>'
+		 	+ '<p> This is the "replace next" dynamic page creation example, which never reaches the first/last application page.</p>'
+		 	+ '<p>This page has been created/replaced dynamically, without any previous HTML code declaration.</p>'
+			+ '<a href="#0">previous page</a> | <a href="#2">next page</a>');
+	// Set the new created page callbacks:
+	dynamicPageElement.onShow = function(searchData, referrerElement) {
+		if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">"dynamicPage:' + dynamicPageElement.id + '".onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+		createNextPage(dynamicPageElement);
+		createPreviousPage(dynamicPageElement);
+		dynamicPagesIds = ["0", "1", "2"];
+	};
+	dynamicPageElement.onHide = dynamicOnHide;
+	// Go to the new created page:
+	window.location.hash = dynamicPageElement.id;
+}
+function dynamicOnHide(nextSearchData, nextElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">"dynamicPage:' + this.id + '".onHide(' + nextSearchData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
+	if (nextElement && isNaN(nextElement.id)) {
+		dynamicPagesIds.forEach(function(item, index) {
+			WebApp.deletePage(item);
+		})
+		dynamicPagesIds = [];
+	}
+}
+function createNextPage(currentPageElement) {
+	var currentIdIntValue = parseInt(currentPageElement.id);
+	var nextPageId = (currentIdIntValue + 1).toString();
+	var nextPageElement = document.getElementById(nextPageId);
+	if (!nextPageElement) {
+		nextPageElement = WebApp.createPage(nextPageId, null, null, 'modalWindow',
+				'<h1>WebApp - Page ' + nextPageId + '</h1>'
+			 	+ '<p> This is the "replace next" dynamic page creation example, which never reaches the first/last application page.</p>'
+			 	+ '<p>This page has been created/replaced dynamically, without any previous HTML code declaration.</p>'
+				+ '<a href="#' + currentPageElement.id + '">previous page</a> | <a href="#' + (currentIdIntValue + 2).toString() + '">next page</a>');
+	}
+	nextPageElement.onShow = function(searchData, referrerElement) {
+		if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">"dynamicPage:' + this.id + '".onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+		createNextPage(nextPageElement);
+		createPreviousPage(nextPageElement);
+		dynamicPagesIds = [currentIdIntValue.toString(), nextPageId, (currentIdIntValue + 2).toString()];
+		WebApp.deletePage((currentIdIntValue - 1).toString());
+		this.onHide = dynamicOnHide;
+	};
+}
+function createPreviousPage(currentPageElement) {
+	var currentIdIntValue = parseInt(currentPageElement.id);
+	var previousPageId = (currentIdIntValue - 1).toString();
+	var previousPageElement = document.getElementById(previousPageId);
+	if (!previousPageElement) {
+		previousPageElement = WebApp.createPage(previousPageId, null, null, currentPageElement.id,
+				'<h1>WebApp - Page ' + previousPageId + '</h1>'
+			 	+ '<p> This is the "replace next" dynamic page creation example, which never reaches the first/last application page.</p>'
+			 	+ '<p>This page has been created/replaced dynamically, without any previous HTML code declaration.</p>'
+				+ '<a href="#' + (currentIdIntValue - 2).toString() + '">previous page</a> | <a href="#' + currentPageElement.id + '">next page</a>');
+	}
+	previousPageElement.onShow = function(searchData, referrerElement) {
+		if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">"dynamicPage:' + this.id + '".onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+		createPreviousPage(previousPageElement);
+		createNextPage(previousPageElement);
+		dynamicPagesIds = [(currentIdIntValue - 2).toString(), previousPageId, currentIdIntValue.toString()];
+		WebApp.deletePage((currentIdIntValue + 1).toString());
+		this.onHide = dynamicOnHide;
+	};
+}
 </script>
 
 </body>

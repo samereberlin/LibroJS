@@ -1,5 +1,5 @@
 # WebApp
-WebApp is a lightweight (simple and efficient) WEB application framework (library for HTML5 projects), which allow us to fit multiple pages into a single HTML file (following the "single-page application" concept), and also provides a rich set of facilities like:
+WebApp is a lightweight (simple and efficient) WEB application framework (library for HTML5 projects), which allow us to fit multiple pages into a single HTML file (following the "single-page application" concept, <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index.html#firstPage?modal" target="_blank">live preview</a>), and also provides a rich set of facilities like:
 - [Minimum startup code](#minimum-startup-code);
 - [Default application page](#default-application-page);
 - [Dynamic page creation](#dynamic-page-creation);
