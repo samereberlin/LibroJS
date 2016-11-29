@@ -20,7 +20,7 @@ WebApp is a lightweight (simple and efficient) WEB application framework (librar
 
 
 ## Minimum startup code:
-The following HTML crumb is the minimum startup code required to use WebApp framework. As we can easily guess, it creates an application containing two simple pages (_firstPage_ and _secondPage_), accessible through the corresponding file URLs _../index.html#firstPage_ and _../index.html#secondPage_ (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex01.0_minimum.html#firstPage" target="_blank">live preview</a>):
+The following HTML crumb is the minimum startup code required to use WebApp framework. As we can easily guess, it creates an application composed by two simple pages (_firstPage_ and _secondPage_), accessible through the corresponding file URLs _../index.html#firstPage_ and _../index.html#secondPage_ (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex01.0_minimum.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <body>
@@ -119,8 +119,7 @@ WebApp.createPage('secondPage', null, null, null, '<h1>Second Page</h1>'
 </script>
 ```
 
-And _WebApp.deletePage('pageId')_ public API can be used to remove pages (useful to release memory resources). Checkout these other dynamic page creation examples, which demonstrate better some practical utilization cases: <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex03.1_deleteOnHide.html#firstPage" target="_blank">ex03.1_deleteOnHide.html</a>, <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex03.2_insertNextPage.html#1" target="_blank">ex03.2_insertNextPage.html</a>, <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex03.3_replaceNextPages.html#1" target="_blank">ex03.3_replaceNextPages.html</a>.
-(note that these additional examples use _onShow_ / _onHide_ "life cycle callbacks", which were not presented yet, but are explained in the next sections)
+And _WebApp.deletePage('pageId')_ public API can be used to remove pages (useful to release memory resources). Checkout these other dynamic page creation examples, which demonstrate better some practical utilization cases: <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex03.1_deleteOnHide.html#firstPage" target="_blank">ex03.1_deleteOnHide.html</a>, <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex03.2_insertNextPage.html#1" target="_blank">ex03.2_insertNextPage.html</a>, <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex03.3_replaceNextPages.html#1" target="_blank">ex03.3_replaceNextPages.html</a>. Note that these additional examples use _onShow_ / _onHide_ "life cycle callbacks", which were not presented yet, but are explained in the next sections.
 
 
 ## Global elements:
@@ -165,6 +164,7 @@ The soft/basic page transition "fade" is enabled by default, but if we need to s
 - 'drawerleft' (which slides the pages "in" from the left, and slides it "out" also to the left, simulating a kind of drawer in the left);
 - 'drawerright' (which slides the pages "in" from the right, and slides it "out" also to the right, simulating a kind of drawer in the right);
 - 'none' (which disables page transition).
+
 The different page transition types can be observed/compared in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex05.0_setDefaultPageTransition.html#firstPage" target="_blank">live preview</a>):
 
 ```html
@@ -330,6 +330,7 @@ secondPageElement.onHide = function(nextSearchData, nextElement) {
 - canvasPageElement.onTouchManagedStart(touchEvent);
 - canvasPageElement.onTouchManagedMove(touchEvent);
 - canvasPageElement.onTouchManagedEnd(touchEvent);
+
 Where:
 - `searchData` is the URL hash content from the question mark (if present) to the end. For example, in case of `index.html#fistPage?foo=bar`, the searchData would be `foo=bar`.
 - `referrerElement` is the previous displayed page element.
@@ -388,7 +389,7 @@ back key    back key ^             back key ^
 
 
 ## Modal window support:
-Modal window are elements designed to appear over page elements. The primary purpose is to display pop-up dialogs, but it can also be customized to display smaller components, like a simple menu, for example. Similar to page elements, modal windows visibility is also controlled by the file URL hash data, which must contain the corresponding element "id". And this mechanism is interesting because it allow us to hide/close the modal by pressing the browser back key. Also similar to page nodes, the code required to use modal elements must be placed as a _body's child_ element, an it also must have the class _modal_, and a unique _id_, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.0_modalWindow.html#firstPage" target="_blank">live preview</a>):
+Modal window are elements designed to appear over page elements. The primary purpose is to display pop-up dialogs, but it can also be customized to display smaller components, like a simple menu, for example. Similar to page elements, modal windows visibility is also controlled by the file URL hash data, which must contain the corresponding element "id". And this mechanism is interesting because it allows us to hide/close the modal by pressing the browser back key. Also similar to page nodes, the code required to use modal elements must be placed as a _body's child_ element, an it also must have the class _modal_, and a unique _id_, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.0_modalWindow.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <body>
@@ -559,9 +560,9 @@ secondPageElement.onDraw = function() {
 </script>
 ```
 
-If we need to create another canvas page after application startup, or dynamically during execution (on run-time), we can use the same _WebApp.createPage('pageId', 'tagName', 'extraClass', 'insertBeforeId', 'pageContent')_ public API (explained in the section "Dynamic page creation"), by passing the _'tagName'_ attribute as _'canvas'_.
+If we need to create another canvas page after application startup, or dynamically during execution (on run-time), we can use the same _WebApp.createPage('pageId', 'tagName', 'extraClass', 'insertBeforeId', 'pageContent')_ public API (explained in the section "Dynamic page creation"), by passing _'canvas'_ as the _'tagName'_ parameter.
 
-As we can see in the above example, the context for 2D drawing can be accessed via canvas page's _canvasContext_ property (inside _canvasPageElement.onDraw()_ callback), which can be manipulated using standard HTML5 canvas drawing statements. And as we can also notice, the default HTML5 canvas element size is 300 x 150, which is not interesting to fit an application page, but we can get a full screen canvas page element by listening the global _WebApp.onResize()_ callback, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.1_canvasFullScreen.html#firstPage" target="_blank">live preview</a>)
+As we can see in the above example, the context for 2D drawing can be accessed via canvas page's _canvasContext_ property (inside _canvasPageElement.onDraw()_ callback), which can be manipulated using standard HTML5 canvas drawing statements. And as we can also notice, the default HTML5 canvas element size is 300 x 150, which is not interesting to fit an application page, but we can get a full screen canvas page element by listening to the global _WebApp.onResize()_ callback, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.1_canvasFullScreen.html#firstPage" target="_blank">live preview</a>)
 
 ```html
 <div class="page" id="firstPage">
@@ -602,8 +603,7 @@ WebApp.onResize = function() {
 </script>
 ```
 
-For simplicity reasons, the above canvas page examples have static text contents only, but the _canvasPageElement.onDraw()_ callback is called repetitively several times per second (about ~60 times, using the requestAnimationFrame polyfill techniques), which makes it useful to animate the canvas content. And there is also another very useful callback (_canvasPageElement.onUpdate()_), which runs asynchronously (24 times per second, if we need to set a different frame rate, we can use _WebApp.setFps(fpsRate)_ public API), and can be used to update the drawing settings/coordinates, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.2_canvasAnimation.html#firstPage" target="_blank">live preview</a>):
-ate the drawing settings/coordinates: 
+For simplicity reasons, the above canvas page examples have static text contents only, but the _canvasPageElement.onDraw()_ callback is called repetitively several times per second (about ~60 times, using requestAnimationFrame polyfill techniques), which makes it useful to animate the canvas content. And there is also another very useful callback, _canvasPageElement.onUpdate()_, which runs asynchronously (24 times per second by default, and if we need to set a different frame rate, we can use _WebApp.setFps(fpsRate)_ public API), and can be used to update the drawing settings/coordinates, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.2_canvasAnimation.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
