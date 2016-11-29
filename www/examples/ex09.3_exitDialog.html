@@ -11,7 +11,7 @@
 <div class="page" id="firstPage">
 	<h1>WebApp - <span style="color:#004;">First Page</span></h1>
 	<p>If you are viewing this page (firstPage), it means that the current browser URL ends with "#firstPage"</p>
-	<a href="#secondPage?modal">go to the next page</a>
+	<a href="#secondPage?returnDialog">go to the next page</a>
 </div>
 
 <div class="page" id="secondPage">
@@ -35,20 +35,26 @@
 // Set secondPage callbacks:
 var secondPageElement = document.getElementById('secondPage');
 secondPageElement.onShow = function(searchData, referrerElement) {
-	if (searchData && searchData === 'modal') {
+	if (searchData && (searchData === 'returnDialog')) {
 		window.location.hash = 'secondPage';
 	}
 };
 secondPageElement.onUpdateSearch = function(searchData) {
-	if (searchData && searchData === 'modal') {
+	if (searchData && (searchData === 'returnDialog')) {
 		window.location.hash = 'returnDialog';
 	}
 };
 
-// Set focus into "Return" buton:
+// Set returnDialog callbacks:
+var returnDialogElement = document.getElementById('returnDialog');
 var returnButtonElement = document.getElementById('returnButton');
-document.getElementById('returnDialog').onShow = function() {
+returnDialogElement.onShow = function() {
 	returnButtonElement.focus();
+}
+returnDialogElement.onHide = function(nextSearchData, nextElement) {
+	if (nextSearchData && (nextSearchData === 'returnDialog')) {
+		window.location.hash = nextElement.id;
+	}
 }
 </script>
 

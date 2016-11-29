@@ -1,5 +1,5 @@
 # WebApp
-WebApp is a lightweight (simple and efficient) WEB application framework (library for HTML5 projects), which allow us to fit multiple pages into a single HTML file (following the "single-page application" concept, <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index.html#firstPage?modal" target="_blank">live preview</a>), and also provides a rich set of facilities like:
+WebApp is a lightweight (simple and efficient) WEB application framework (library for HTML5 projects), which allow us to fit multiple pages into a single HTML file (following the "single-page application" concept, <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index.html#firstPage?returnDialog" target="_blank">live preview</a>), and also provides a rich set of facilities like:
 - [Minimum startup code](#minimum-startup-code);
 - [Default application page](#default-application-page);
 - [Dynamic page creation](#dynamic-page-creation);
@@ -490,7 +490,7 @@ Another interesting use case for modal window pop-ups, is the "exit dialog" emul
 ```html
 <div class="page" id="firstPage">
 	<h1>First Page</h1>
-	<a href="#secondPage?modal">go to the next page</a>
+	<a href="#secondPage?returnDialog">go to the next page</a>
 </div>
 
 <div class="page" id="secondPage">
@@ -512,15 +512,23 @@ Another interesting use case for modal window pop-ups, is the "exit dialog" emul
 // Set secondPage callbacks:
 var secondPageElement = document.getElementById('secondPage');
 secondPageElement.onShow = function(searchData, referrerElement) {
-	if (searchData && searchData === 'modal') {
+	if (searchData && searchData === 'returnDialog') {
 		window.location.hash = 'secondPage';
 	}
 };
 secondPageElement.onUpdateSearch = function(searchData) {
-	if (searchData && searchData === 'modal') {
+	if (searchData && searchData === 'returnDialog') {
 		window.location.hash = 'returnDialog';
 	}
 };
+
+// Set returnDialog callbacks:
+var returnDialogElement = document.getElementById('returnDialog');
+returnDialogElement.onHide = function(nextSearchData, nextElement) {
+	if (nextSearchData && (nextSearchData === 'returnDialog')) {
+		window.location.hash = nextElement.id;
+	}
+}
 </script>
 ```
 

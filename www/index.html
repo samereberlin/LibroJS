@@ -181,6 +181,9 @@ returnDialogElement.onShow = function(searchData, referrerElement) {
 };
 returnDialogElement.onHide = function(nextSearchData, nextElement) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">returnDialogElement.onHide(' + nextSearchData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
+	if (nextSearchData && (nextSearchData === 'returnDialog')) {
+		window.location.hash = nextElement.id;
+	}
 };
 returnDialogElement.onUpdateSearch = function(searchData) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">returnDialogElement.onUpdateSearch(' + searchData + ')</span>';
@@ -190,7 +193,7 @@ returnDialogElement.onUpdateSearch = function(searchData) {
 var firstPageElement = document.getElementById('firstPage');
 firstPageElement.onShow = function(searchData, referrerElement) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#004;">firstPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
-	if (searchData && searchData === 'modal') {
+	if (searchData && (searchData === 'returnDialog')) {
 		setTimeout(function() { // Timeout required to create history entry for WebKit browsers.
 			window.location.hash = 'firstPage';
 		}, 10);
@@ -201,7 +204,7 @@ firstPageElement.onHide = function(nextSearchData, nextElement) {
 };
 firstPageElement.onUpdateSearch = function(searchData) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#004;">firstPageElement.onUpdateSearch(' + searchData + ')</span>';
-	if (searchData && searchData === 'modal') {
+	if (searchData && (searchData === 'returnDialog')) {
 		window.location.hash = 'returnDialog';
 	}
 };
@@ -297,24 +300,24 @@ function createCanvasPage() {
 	canvasPageElement.onUpdate = canvasOnUpdate;
 	canvasPageElement.onDraw = canvasOnDraw;
 	// Go to the new created page:
-	window.location.hash = 'canvasPage?modal';
+	window.location.hash = 'canvasPage?returnDialog';
 }
 function canvasOnShow(searchData, referrerElement) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">canvasPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
-	if (searchData && searchData === 'modal') {
+	if (searchData && (searchData === 'returnDialog')) {
 		window.location.hash = 'canvasPage';
 	}
 };
 function canvasOnHide(nextSearchData, nextElement) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">canvasPageElement.onHide(' + nextSearchData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
-	if (nextElement && nextElement.id !== 'returnDialog') {
+	if (nextElement) {
 		WebApp.deletePage('canvasPage');
 		canvasPageElement = null;
 	}
 };
 function canvasOnUpdateSearch(searchData) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">canvasPageElement.onUpdateSearch(' + searchData + ')</span>';
-	if (searchData && searchData === 'modal') {
+	if (searchData && (searchData === 'returnDialog')) {
 		window.location.hash = 'returnDialog';
 	}
 };

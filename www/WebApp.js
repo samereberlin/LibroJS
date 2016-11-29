@@ -983,7 +983,6 @@ var WebAppClass = function() {
 			}
 		};
 		if (booleanState) {
-			hideElement(currentPage, searchData, modalElement);
 			animateElement(modalElement.children[0], nextModalTransition + 'in', null);
 			showElement(modalElement, searchData, currentPage);
 			currentModal = modalElement;
@@ -992,7 +991,6 @@ var WebAppClass = function() {
 			animateElement(modalElement.children[0], nextModalTransition + 'out', function() {
 				hideElement(modalElement, searchData, nextElement);
 				onSwitchModal();
-				showElement(currentPage, searchData, modalElement);
 			});
 			currentModal = null;
 			nextModalTransition = null;
@@ -1021,9 +1019,7 @@ var WebAppClass = function() {
 
 	function showElement(element, searchData, referrerElement) {
 		if (isLogEnabled) console.log('WebApp.js: showElement(element, searchData, referrerElement)... element.id: ' + (element? element.id: '') + ', searchData: ' + searchData + ', referrerElement.id: ' + (referrerElement? referrerElement.id: ''));
-		if (!referrerElement || !modalElements[referrerElement.id]) {
-			element.style.display = 'block';
-		}
+		element.style.display = 'block';
 		if (typeof element.onShow === 'function') {
 			element.onShow(searchData, referrerElement);
 		}
@@ -1031,9 +1027,7 @@ var WebAppClass = function() {
 
 	function hideElement(element, nextSearchData, nextElement) {
 		if (isLogEnabled) console.log('WebApp.js: hideElement(element, nextSearchData, nextElement)... element.id: ' + (element? element.id: '') + ', nextSearchData: ' + nextSearchData + ', nextElement.id: ' + (nextElement? nextElement.id: ''));
-		if (!nextElement || !modalElements[nextElement.id]) {
-			element.style.display = 'none';
-		}
+		element.style.display = 'none';
 		if (typeof element.onHide === 'function') {
 			element.onHide(nextSearchData, nextElement);
 		}
