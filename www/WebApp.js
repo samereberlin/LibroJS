@@ -616,13 +616,13 @@ var WebAppClass = function() {
 				'@-webkit-keyframes fadein {from {opacity: 0;} to {opacity: 1;}}' +
 				'@-webkit-keyframes fadeout {from {opacity: 1;} to {opacity: 0;}}' +
 				'.fadein {animation-name: fadein; animation-duration: 225ms; -webkit-animation-name: fadein; -webkit-animation-duration: 225ms; opacity: 1;}' +
-				'.fadeout {animation-name: fadeout; animation-duration: 125ms; -webkit-animation-name: fadeout; -webkit-animation-duration: 125ms; opacity: 0;}' +
+				'.fadeout {animation-name: fadeout; animation-duration: 215ms; -webkit-animation-name: fadeout; -webkit-animation-duration: 215ms; opacity: 0;}' +
 				'@keyframes popin {from {transform: scale(.8); opacity: 0;} to {transform: scale(1); opacity: 1;}}' +
 				'@keyframes popout {from {transform: scale(1); opacity: 1;} to {transform: scale(.8); opacity: 0;}}' +
 				'@-webkit-keyframes popin {from {-webkit-transform: scale(.8); opacity: 0;} to {-webkit-transform: scale(1); opacity: 1;}}' +
 				'@-webkit-keyframes popout {from {-webkit-transform: scale(1); opacity: 1;} to {-webkit-transform: scale(.8); opacity: 0;}}' +
 				'.popin {animation-name: popin; animation-duration: 225ms; animation-timing-function: ease-out; -webkit-animation-name: popin; -webkit-animation-duration: 225ms; -webkit-animation-timing-function: ease-out; opacity: 1;}' +
-				'.popout {animation-name: popout; animation-duration: 125ms; animation-timing-function: ease-in; -webkit-animation-name: popout; -webkit-animation-duration: 125ms; -webkit-animation-timing-function: ease-in; opacity: 0;}' +
+				'.popout {animation-name: popout; animation-duration: 215ms; animation-timing-function: ease-in; -webkit-animation-name: popout; -webkit-animation-duration: 215ms; -webkit-animation-timing-function: ease-in; opacity: 0;}' +
 				'@keyframes flipin {from {transform: matrix(0.2,0.2,0,1,0,0); opacity: 0;} to {transform: matrix(1,0,0,1,0,0); opacity: 1;}}' +
 				'@keyframes flipout {from {transform: matrix(1,0,0,1,0,0); opacity: 1;} to {transform: matrix(0.2,-0.2,0,1,0,0); opacity: 0;}}' +
 				'@keyframes fliprevin {from {transform: matrix(0.2,-0.2,0,1,0,0); opacity: 0;} to {transform: matrix(1,0,0,1,0,0); opacity: 1;}}' +
@@ -632,7 +632,7 @@ var WebAppClass = function() {
 				'@-webkit-keyframes fliprevin {from {-webkit-transform: matrix(0.2,-0.2,0,1,0,0); opacity: 0;} to {-webkit-transform: matrix(1,0,0,1,0,0); opacity: 1;}}' +
 				'@-webkit-keyframes fliprevout {from {-webkit-transform: matrix(1,0,0,1,0,0); opacity: 1;} to {-webkit-transform: matrix(0.2,0.2,0,1,0,0); opacity: 0;}}' +
 				'.flipin, .fliprevin {animation-duration: 225ms; animation-timing-function: ease-out; -webkit-animation-duration: 225ms; -webkit-animation-timing-function: ease-out;}' +
-				'.flipout, .fliprevout {animation-duration: 125ms; animation-timing-function: ease-in; -webkit-animation-duration: 125ms; -webkit-animation-timing-function: ease-in;}' +
+				'.flipout, .fliprevout {animation-duration: 215ms; animation-timing-function: ease-in; -webkit-animation-duration: 215ms; -webkit-animation-timing-function: ease-in;}' +
 				'.flipin {animation-name: flipin; -webkit-animation-name: flipin; opacity: 1;}' +
 				'.flipout {animation-name: flipout; -webkit-animation-name: flipout; opacity: 0;}' +
 				'.fliprevin {animation-name: fliprevin; -webkit-animation-name: fliprevin; opacity: 1;}' +
@@ -646,7 +646,7 @@ var WebAppClass = function() {
 				'@-webkit-keyframes sliderevin {from {-webkit-transform: translateX(-100%);} to {-webkit-transform: translateX(0);}}' +
 				'@-webkit-keyframes sliderevout {from {-webkit-transform: translateX(0);} to {-webkit-transform: translateX(100%);}}' +
 				'.slidein, .sliderevin {animation-duration: 225ms; animation-timing-function: ease-out; -webkit-animation-duration: 225ms; -webkit-animation-timing-function: ease-out;}' +
-				'.slideout, .sliderevout {animation-duration: 125ms; animation-timing-function: ease-in; -webkit-animation-duration: 125ms; -webkit-animation-timing-function: ease-in;}' +
+				'.slideout, .sliderevout {animation-duration: 215ms; animation-timing-function: ease-in; -webkit-animation-duration: 215ms; -webkit-animation-timing-function: ease-in;}' +
 				'.slidein {animation-name: slidein; transform: translateX(0); -webkit-animation-name: slidein; -webkit-transform: translateX(0);}' +
 				'.slideout {animation-name: slideout; transform: translateX(-100%); -webkit-animation-name: slideout; -webkit-transform: translateX(-100%);}' +
 				'.sliderevin {animation-name: sliderevin; transform: translateX(0); -webkit-animation-name: sliderevin; -webkit-transform: translateX(0);}' +
@@ -668,7 +668,7 @@ var WebAppClass = function() {
 				'@-webkit-keyframes drawerrightin {from {-webkit-transform: translateX(100%);} to {-webkit-transform: translateX(0);}}' +
 				'@-webkit-keyframes drawerrightout {from {-webkit-transform: translateX(0);} to {-webkit-transform: translateX(100%);}}' +
 				'.drawertopin, .drawerbottomin, .drawerleftin, .drawerrightin {animation-duration: 225ms; animation-timing-function: ease-out; -webkit-animation-duration: 225ms; -webkit-animation-timing-function: ease-out;}' +
-				'.drawertopout, .drawerbottomout, .drawerleftout, .drawerrightout {animation-duration: 125ms; animation-timing-function: ease-in; -webkit-animation-duration: 125ms; -webkit-animation-timing-function: ease-in;}' +
+				'.drawertopout, .drawerbottomout, .drawerleftout, .drawerrightout {animation-duration: 215ms; animation-timing-function: ease-in; -webkit-animation-duration: 215ms; -webkit-animation-timing-function: ease-in;}' +
 				'.drawertopin {animation-name: drawertopin; transform: translateY(0); -webkit-animation-name: drawertopin; -webkit-transform: translateY(0);}' +
 				'.drawertopout {animation-name: drawertopout; transform: translateY(-100%); -webkit-animation-name: drawertopout; -webkit-transform: translateY(-100%);}' +
 				'.drawerbottomin {animation-name: drawerbottomin; transform: translateY(0); -webkit-animation-name: drawerbottomin; -webkit-transform: translateY(0);}' +
@@ -678,8 +678,8 @@ var WebAppClass = function() {
 				'.drawerrightin {animation-name: drawerrightin; transform: translateX(0); -webkit-animation-name: drawerrightin; -webkit-transform: translateX(0);}' +
 				'.drawerrightout {animation-name: drawerrightout; transform: translateX(100%); -webkit-animation-name: drawerrightout; -webkit-transform: translateX(100%);}' +
 				'/* WebApp basic/required CSS rules. */' +
-				'.modal {background-color: rgba(0,0,0,0.5); position: fixed; top: 0; right: 0; bottom: 0; left: 0; overflow: auto; z-index: 3}' +
-				'.modal > * {background-color: white; margin: 10% auto 1em; max-width: 600px; width: 80%; overflow: hidden}'
+				'.modal {position: fixed; top: 0; right: 0; bottom: 0; left: 0; overflow: auto; z-index: 3}' +
+				'.modal > * {background-color: white; border: 1px solid gray; margin: 10% auto 1em; max-width: 600px; width: 80%; overflow: hidden}'
 			;
 			var head = document.getElementsByTagName('head')[0];
 			head.insertBefore(style, head.firstChild);
@@ -983,12 +983,14 @@ var WebAppClass = function() {
 			}
 		};
 		if (booleanState) {
+			animateElement(modalElement, 'fadein', null);
 			animateElement(modalElement.children[0], nextModalTransition + 'in', null);
 			showElement(modalElement, searchData, currentPage);
 			currentModal = modalElement;
 			onSwitchModal();
 		} else {
-			animateElement(modalElement.children[0], nextModalTransition + 'out', function() {
+			animateElement(modalElement.children[0], nextModalTransition + 'out', null);
+			animateElement(modalElement, 'fadeout', function() {
 				hideElement(modalElement, searchData, nextElement);
 				onSwitchModal();
 			});
