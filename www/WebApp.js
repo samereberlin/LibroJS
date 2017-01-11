@@ -1043,8 +1043,9 @@ var WebAppClass = function() {
 			if (booleanState) {
 				if (intervalUpdate === 0) {
 					intervalUpdate = setInterval(currentPage.onUpdate, fpsDelay);
+					var canvasPage = currentPage; // Local variable required to absorb the last requestAnimation call.
 					(function draw() {
-						currentPage.onDraw();
+						canvasPage.onDraw();
 						if (isRunning) requestAnimation(draw);
 					})();
 					if (isTouchManaged) {

@@ -312,7 +312,6 @@ function canvasOnHide(nextSearchData, nextElement) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">canvasPageElement.onHide(' + nextSearchData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
 	if (nextElement) {
 		WebApp.deletePage('canvasPage');
-		canvasPageElement = null;
 	}
 };
 function canvasOnUpdateSearch(searchData) {
