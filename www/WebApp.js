@@ -357,6 +357,7 @@ var WebAppClass = function() {
 	var isHistoryUnique = isHistoryManaged;
 	var isRedirection = false;
 	var historyStack = [];
+	var historyState = null;
 
 	//################################################################################//
 	// History stack management API:
@@ -695,6 +696,7 @@ var WebAppClass = function() {
 
 			// Setup page change listener:
 			window.addEventListener('hashchange', updateHash);
+			window.addEventListener('popstate', function(event) {historyState = event.state;}); // Required to track previously visited pages.
 			updateHash({'type': 'hashchange', 'newURL': null, 'oldURL': null}); // Required to set initial page.
 		}
 	}
@@ -892,11 +894,11 @@ var WebAppClass = function() {
 						// If there are history manipulations:
 						if (historyManipulations) {
 							// And if browser back key has not been pressed:
-							if (!window.history.state) {
+							if (!historyState) { // Required to track previously visited pages.
 								window.history.go(-(historyManipulations + 1));
 							}
 						} else {
-							window.history.replaceState(true, "", "");
+							window.history.replaceState(true, "", ""); // Required to track previously visited pages.
 						}
 					}
 
