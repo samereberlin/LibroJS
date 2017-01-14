@@ -947,6 +947,7 @@ var WebAppClass = function() {
 
 		var setElementFixed = function(referrerElement, isFixed) {
 			referrerElement.style.position = isFixed? 'fixed': '';
+			referrerElement.style.zIndex = isFixed? '-1': '';
 			referrerElement.style.right = isFixed? '0': '';
 			referrerElement.style.left = isFixed? '0': '';
 			referrerElement.style.top = isFixed? referrerElement.offsetTop + 'px': '';
