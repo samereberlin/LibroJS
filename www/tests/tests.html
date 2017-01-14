@@ -223,7 +223,7 @@ var testCases = [
 			WebApp.onUpdateHash = function() {
 				WebApp.onUpdateHash = function() {
 					WebApp.onUpdateHash = null;
-					assert.equal(WebApp.getDefaultPageTransition(), 'slide', 'Final default page transition must be "slide".');
+					assert.equal(WebApp.getDefaultPageTransition(), 'pop', 'Final default page transition must be "pop".');
 					assert.equal(WebApp.getNextPageTransition(), 'flip', 'Final next page transition must be "flip".');
 					setTimeout(function() { // Required to restore the initial state (#firstPage).
 						WebApp.setDefaultPageTransition('fade');
@@ -231,14 +231,14 @@ var testCases = [
 						startNext();
 					}, longDelay); // longDelay is required due to the onUpdateHash processing.
 				};
-				assert.equal(WebApp.getDefaultPageTransition(), 'slide', 'Intermediate default page transition must be "slide".');
-				assert.equal(WebApp.getNextPageTransition(), 'slide', 'Intermediate next page transition must be "slide".');
+				assert.equal(WebApp.getDefaultPageTransition(), 'pop', 'Intermediate default page transition must be "pop".');
+				assert.equal(WebApp.getNextPageTransition(), 'pop', 'Intermediate next page transition must be "pop".');
 				WebApp.setNextPageTransition('flip');
 				setTimeout(function() {WebApp.previousPage();}, shortDelay);
 			};
 			assert.equal(WebApp.getDefaultPageTransition(), 'fade', 'Initial default page transition must be "fade".');
 			assert.equal(WebApp.getNextPageTransition(), null, 'Initial next page transition must be null.');
-			WebApp.setDefaultPageTransition('slide');
+			WebApp.setDefaultPageTransition('pop');
 			setTimeout(function() {WebApp.nextPage();}, shortDelay);
 		});
 	},

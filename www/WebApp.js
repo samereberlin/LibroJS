@@ -639,15 +639,15 @@ var WebAppClass = function() {
 				'.fliprevin {animation-name: fliprevin; -webkit-animation-name: fliprevin; opacity: 1;}' +
 				'.fliprevout {animation-name: fliprevout; -webkit-animation-name: fliprevout; opacity: 0;}' +
 				'@keyframes slidein {from {transform: translateX(100%);} to {transform: translateX(0);}}' +
-				'@keyframes slideout {from {transform: translateX(0);} to {transform: translateX(-100%);}}' +
+				'@keyframes slideout {from {transform: translateX(0); opacity: 1;} to {transform: translateX(-100%); opacity: 0;}}' +
 				'@keyframes sliderevin {from {transform: translateX(-100%);} to {transform: translateX(0);}}' +
-				'@keyframes sliderevout {from {transform: translateX(0);} to {transform: translateX(100%);}}' +
+				'@keyframes sliderevout {from {transform: translateX(0); opacity: 1;} to {transform: translateX(100%); opacity: 0;}}' +
 				'@-webkit-keyframes slidein {from {-webkit-transform: translateX(100%);} to {-webkit-transform: translateX(0);}}' +
-				'@-webkit-keyframes slideout {from {-webkit-transform: translateX(0);} to {-webkit-transform: translateX(-100%);}}' +
+				'@-webkit-keyframes slideout {from {-webkit-transform: translateX(0); opacity: 1;} to {-webkit-transform: translateX(-100%); opacity: 0;}}' +
 				'@-webkit-keyframes sliderevin {from {-webkit-transform: translateX(-100%);} to {-webkit-transform: translateX(0);}}' +
-				'@-webkit-keyframes sliderevout {from {-webkit-transform: translateX(0);} to {-webkit-transform: translateX(100%);}}' +
+				'@-webkit-keyframes sliderevout {from {-webkit-transform: translateX(0); opacity: 1;} to {-webkit-transform: translateX(100%); opacity: 0;}}' +
 				'.slidein, .sliderevin {animation-duration: 225ms; animation-timing-function: ease-out; -webkit-animation-duration: 225ms; -webkit-animation-timing-function: ease-out;}' +
-				'.slideout, .sliderevout {animation-duration: 215ms; animation-timing-function: ease-in; -webkit-animation-duration: 215ms; -webkit-animation-timing-function: ease-in;}' +
+				'.slideout, .sliderevout {animation-duration: 225ms; animation-timing-function: ease-in; -webkit-animation-duration: 225ms; -webkit-animation-timing-function: ease-in; opacity: 0;}' +
 				'.slidein {animation-name: slidein; transform: translateX(0); -webkit-animation-name: slidein; -webkit-transform: translateX(0);}' +
 				'.slideout {animation-name: slideout; transform: translateX(-100%); -webkit-animation-name: slideout; -webkit-transform: translateX(-100%);}' +
 				'.sliderevin {animation-name: sliderevin; transform: translateX(0); -webkit-animation-name: sliderevin; -webkit-transform: translateX(0);}' +
@@ -945,6 +945,12 @@ var WebAppClass = function() {
 			nextPageTransition = (currentPage && (pageIds.indexOf(currentPage.id) > pageIds.indexOf(pageElement.id)))? 'sliderev': 'slide';
 		}
 
+		var setElementFixed = function(referrerElement, isFixed) {
+			referrerElement.style.position = isFixed? 'fixed': '';
+			referrerElement.style.right = isFixed? '0': '';
+			referrerElement.style.left = isFixed? '0': '';
+			referrerElement.style.top = isFixed? referrerElement.offsetTop + 'px': '';
+		};
 		var showNext = function(referrerElement) {
 			animateElement(pageElement, nextPageTransition + 'in', function() {
 				if (pageElement === currentPage) setCanvasPage(true);
@@ -958,10 +964,19 @@ var WebAppClass = function() {
 		if (currentPage) {
 			var referrerElement = currentPage;
 			setCanvasPage(false);
-			animateElement(referrerElement, nextPageTransition + 'out', function() {
-				hideElement(referrerElement, searchData, pageElement);
+			if (nextPageTransition.lastIndexOf('slide', 0) === 0) {
+				setElementFixed(referrerElement, true);
+				animateElement(referrerElement, nextPageTransition + 'out', function() {
+					hideElement(referrerElement, searchData, pageElement);
+					setElementFixed(referrerElement, false);
+				});
 				showNext(referrerElement);
-			});
+			} else {
+				animateElement(referrerElement, nextPageTransition + 'out', function() {
+					hideElement(referrerElement, searchData, pageElement);
+					showNext(referrerElement);
+				});
+			}
 		} else {
 			showNext(currentPage);
 		}
