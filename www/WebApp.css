@@ -1,7 +1,10 @@
 @CHARSET "UTF-8";
 
 /* WebApp useful rules. */
-.page, .modal {
+a, canvas {
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+.modal, .page {
 	display:none;
 }
 .modal {
