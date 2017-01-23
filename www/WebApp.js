@@ -686,11 +686,11 @@ var WebAppClass = function() {
 			head.insertBefore(style, head.firstChild);
 
 			// Setup application life cycle callbacks:
-			window.onblur = function() {pause();};
-			window.onfocus = function() {resume();};
-			window.onkeydown = function(arg) {keyDown(arg);};
-			window.onresize = function() {resize();};
-			window.onunload = function() {unload();};
+			window.addEventListener('blur', pause);
+			window.addEventListener('focus', resume);
+			window.addEventListener('keydown', keyDown);
+			window.addEventListener('resize', resize);
+			window.addEventListener('unload', unload);
 			resume(); // Required to dispatch initial onResume event.
 			resize(); // Required to set initial size for Desktop browsers.
 
