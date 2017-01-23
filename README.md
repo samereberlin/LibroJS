@@ -808,7 +808,7 @@ Set the default page id string value, which must be shown in the first request t
 |--------|--------|-----------------------------------|
 | pageId | string | The default page id string value. |
 
-#### createPage(pageId, extraClass, insertBeforeId, pageContent)
+#### createPage(pageId, tagName, extraClass, insertBeforeId, pageContent)
 Create page dynamically, without any previous HTML code declaration, and load it according to the insertBeforeId value.
 
 **Parameters:**
