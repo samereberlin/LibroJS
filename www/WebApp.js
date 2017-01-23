@@ -17,12 +17,16 @@ var WebApp = null;
 var WebAppClass = function() {
 
 	//################################################################################//
-	// Platform settings:
+	// Application settings:
 
+	var HASH_DELAY = 200;
+	var isLoaded = false;
 	var isLogEnabled = true;
+	var isRunning = false;
 
 	//################################################################################//
-	// Platform API:
+	// Application API:
+
 
 	/**
 	 * Returns the log enabled boolean state,
@@ -43,16 +47,6 @@ var WebAppClass = function() {
 	this.setLogEnabled = function(booleanState) {
 		isLogEnabled = booleanState;
 	};
-
-	//################################################################################//
-	// Application settings:
-
-	var HASH_DELAY = 200;
-	var isLoaded = false;
-	var isRunning = false;
-
-	//################################################################################//
-	// Application API:
 
 	/**
 	 * Returns the running boolean state,
