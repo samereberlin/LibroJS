@@ -679,8 +679,9 @@ var WebAppClass = function() {
 				'.drawerrightin {animation-name: drawerrightin; transform: translateX(0); -webkit-animation-name: drawerrightin; -webkit-transform: translateX(0);}' +
 				'.drawerrightout {animation-name: drawerrightout; transform: translateX(100%); -webkit-animation-name: drawerrightout; -webkit-transform: translateX(100%);}' +
 				'/* WebApp basic/required CSS rules. */' +
-				'.modal {position: fixed; top: 0; right: 0; bottom: 0; left: 0; overflow: auto; z-index: 3}' +
-				'.modal > * {background-color: white; border: 1px solid gray; margin: 10% auto 1em; max-width: 600px; width: 80%; overflow: hidden}'
+				'.modal {background-color: rgba(0,0,0,0.5); position: fixed; top: 0; right: 0; bottom: 0; left: 0; overflow: auto; z-index: 3}' +
+				'.modal > * {background-color: white; border-radius: 0.3125em; box-shadow: 0 2px 6px rgba(0,0,0,0.6); margin: 10% auto 1em; max-width: 600px; width: 80%; overflow: hidden}' +
+				'.page {background-color: white;}'
 			;
 			var head = document.getElementsByTagName('head')[0];
 			head.insertBefore(style, head.firstChild);

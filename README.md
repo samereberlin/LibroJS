@@ -10,10 +10,6 @@ WebApp is a lightweight (simple and efficient) WEB application framework (librar
 - [History stack management](#history-stack-management);
 - [Modal window support](#modal-window-support);
 - [Canvas page support](#canvas-page-support);
-- [Language (i18n) support](#language-i18n-support) (coming soon);
-- [Simplified audio API](#simplified-audio-api) (coming soon);
-- [Header/Footer widget API](#headerfooter-widget-api) (coming soon);
-- [Tooltip widget API](#tooltip-widget-api) (coming soon);
 - [Click enhancement feature](#click-enhancement-feature) (coming soon);
 - [Swipe left/right feature](#Swipe-left-right-feature) (coming soon);
 - [Extensive public API](#extensive-public-api);
@@ -421,7 +417,7 @@ Modal window are elements designed to appear over page elements. The primary pur
 </body>
 ```
 
-**Important Note:** the whole modal content must be inside another single element, in order to generate a single pop-up dialog (which in this case is using style padding: 0.5em). And notice also that these default pop-ups do not have round corners neither shadows (if we need such specific decorations, we can declare the appropriate CSS rules, as it is presented in the _WebApp.css_ style file).
+**Important Note:** the whole modal content must be inside another single element, in order to generate a single pop-up dialog (which in this case is using style padding: 0.5em). And notice also that these default pop-ups have rounded corners and dark background overlays (if we need different decorations, we can declare the appropriate CSS rules, as it is presented in the _WebApp.css_ style sheet file).
 
 If we need to create another modal after application startup, or dynamically during execution (on run-time), we can use _WebApp.createModal('modalId', 'extraClass', 'modalContent')_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.1_createModal.html#firstPage" target="_blank">live preview</a>), and _WebApp.deleteModal('modalId')_ public API can be used to remove modals (useful to release memory resources):
 
@@ -466,7 +462,8 @@ The pop-up modal transition "pop" is enabled by default, but if we need to set a
 </div>
 
 <div class="modal" id="modalSideMenu">
-	<div transition="drawerleft" style="margin: 0; max-width: 300px; padding: 0.5em;
+	<div transition="drawerleft"
+			style="border-radius: 0; margin: 0; max-width: 300px; padding: 0.5em;
 			position: fixed; top: 0; bottom: 0; left: 0; overflow: auto;">
 		<h2>Modal - Side Menu</h2>
 		<br>
@@ -475,7 +472,8 @@ The pop-up modal transition "pop" is enabled by default, but if we need to set a
 </div>
 
 <div class="modal" id="modalTopMenu">
-	<div transition="drawertop" style="margin: 0 0 auto auto; max-width: 300px; padding: 0.5em;">
+	<div transition="drawertop"
+			style="border-radius: 0; margin: 0 0 auto auto; max-width: 300px; padding: 0.5em;">
 		<h2>Modal - Top Menu</h2>
 		<br>
 		<a href="javascript:window.history.back();">(hide modal)</a>
@@ -736,22 +734,6 @@ WebApp.onResize = function() {
 	secondPageElement.height = window.innerHeight;
 };
 ```
-
-
-## Language (i18n) support:
-Coming soon...
-
-
-## Simplified audio API:
-Coming soon...
-
-
-## Header/Footer widget API:
-Coming soon...
-
-
-## Tooltip widget API:
-Coming soon...
 
 
 ## Click enhancement feature:

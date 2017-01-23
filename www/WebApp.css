@@ -7,17 +7,9 @@ a, canvas {
 .modal, .page {
 	display:none;
 }
-.modal {
-	background-color: rgba(0,0,0,0.5);
-}
 .modal.menu {
 	background-color: inherit;
 }
-.modal > * {
-	border: 0;
-	border-radius: 0.3125em;
-	box-shadow: 0 2px 6px rgba(0,0,0,0.6);
-}
-.page {
-	background-color: white;
+.modal.menu > * {
+	border-radius: 0;
 }
