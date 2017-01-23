@@ -709,7 +709,7 @@ var WebAppClass = function() {
 		} else {
 			pageIds.push(element.id);
 		}
-		var transitionType = element.getAttribute('transition');
+		var transitionType = element.getAttribute('transitionType');
 		if (transitionType && (transitionTypes.indexOf(transitionType) >= 0)) {
 			element.transitionType = transitionType;
 		}
@@ -738,7 +738,7 @@ var WebAppClass = function() {
 		element.style.display = 'none';
 		modalElements[element.id] = element;
 		modalIds.push(element.id);
-		var transitionType = element.children[0].getAttribute('transition');
+		var transitionType = element.getAttribute('transitionType');
 		if (transitionType && (transitionTypes.indexOf(transitionType) >= 0)) {
 			element.transitionType = transitionType;
 		}
