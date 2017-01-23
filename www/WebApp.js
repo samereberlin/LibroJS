@@ -533,6 +533,49 @@ var WebAppClass = function() {
 	};
 
 	/**
+	 * Get the transition type, to be used when switching to the specified page.
+	 *
+	 * @param {string} pageId - The page id string value.
+	 *
+	 * @return {string} The transition type.
+	 */
+	this.getPageTransition = function(pageId) {
+		var transitionType = null;
+		if (isLoaded) {
+			if (pageElements[pageId]) {
+				transitionType = pageElements[pageId].transitionType;
+			}
+		} else {
+			var pageElement = document.getElementById(pageId);
+			if (pageElement && (pageElement.parentNode == document.body) && isPage(pageElement)) {
+				transitionType = pageElement.getAttribute('transition');
+			}
+		}
+		return transitionType;
+	};
+
+	/**
+	 * Set the transition type, to be used when switching to the specified page.
+	 *
+	 * @param {string} pageId - The page id string value.
+	 * @param {string} transitionType - The transition type.
+	 */
+	this.setPageTransition = function(pageId, transitionType) {
+		if (transitionType && (transitionTypes.indexOf(transitionType) >= 0)) {
+			if (isLoaded) {
+				if (pageElements[pageId]) {
+					pageElements[pageId].transitionType = transitionType;
+				}
+			} else {
+				var pageElement = document.getElementById(pageId);
+				if (pageElement && (pageElement.parentNode == document.body) && isPage(pageElement)) {
+					pageElement.setAttribute('transition', transitionType);
+				}
+			}
+		}
+	};
+
+	/**
 	 * Get the default transition type, to be used between every modal switching.
 	 *
 	 * @return {string} The default modal transition type.
@@ -569,6 +612,49 @@ var WebAppClass = function() {
 	this.setNextModalTransition = function(transitionType) {
 		if (transitionType && (transitionTypes.indexOf(transitionType) >= 0)) {
 			nextModalTransition = transitionType;
+		}
+	};
+
+	/**
+	 * Get the transition type, to be used when switching to this specific modal.
+	 *
+	 * @param {string} modalId - The modal id string value.
+	 *
+	 * @return {string} The transition type.
+	 */
+	this.getModalTransition = function(modalId) {
+		var transitionType = null;
+		if (isLoaded) {
+			if (modalElements[modalId]) {
+				transitionType = modalElements[modalId].transitionType;
+			}
+		} else {
+			var modalElement = document.getElementById(modalId);
+			if (modalElement && (modalElement.parentNode == document.body) && isModal(modalElement)) {
+				transitionType = modalElement.getAttribute('transition');
+			}
+		}
+		return transitionType;
+	};
+
+	/**
+	 * Set the transition type, to be used when switching to the specified modal.
+	 *
+	 * @param {string} modalId - The modal id string value.
+	 * @param {string} transitionType - The transition type.
+	 */
+	this.setModalTransition = function(modalId, transitionType) {
+		if (transitionType && (transitionTypes.indexOf(transitionType) >= 0)) {
+			if (isLoaded) {
+				if (modalElements[modalId]) {
+					modalElements[modalId].transitionType = transitionType;
+				}
+			} else {
+				var modalElement = document.getElementById(modalId);
+				if (modalElement && (modalElement.parentNode == document.body) && isModal(modalElement)) {
+					modalElement.setAttribute('transition', transitionType);
+				}
+			}
 		}
 	};
 
@@ -709,7 +795,7 @@ var WebAppClass = function() {
 		} else {
 			pageIds.push(element.id);
 		}
-		var transitionType = element.getAttribute('transitionType');
+		var transitionType = element.getAttribute('transition');
 		if (transitionType && (transitionTypes.indexOf(transitionType) >= 0)) {
 			element.transitionType = transitionType;
 		}
@@ -738,7 +824,7 @@ var WebAppClass = function() {
 		element.style.display = 'none';
 		modalElements[element.id] = element;
 		modalIds.push(element.id);
-		var transitionType = element.getAttribute('transitionType');
+		var transitionType = element.getAttribute('transition');
 		if (transitionType && (transitionTypes.indexOf(transitionType) >= 0)) {
 			element.transitionType = transitionType;
 		}

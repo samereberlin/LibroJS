@@ -146,7 +146,7 @@ Global elements are components that must always be displayed (common between the
 
 
 ## Page transitions:
-The soft/basic page transition "fade" is enabled by default, but if we need to set a different one, we can use _WebApp.setDefaultPageTransition('transitionType')_ public API. But if we need to set a different transition for an specific page only, we just need to set the _transitionType="transitionType"_ HTML DOM element property (which can also be set via JavaScript for dynamically created pages). The available transition types are:
+The soft/basic page transition "fade" is enabled by default, but if we need to set a different one, we can use _WebApp.setDefaultPageTransition('transitionType')_ public API. But if we need to set a different transition for an specific page only, we just need to set the _transition="transitionType"_ HTML DOM element property (or use _WebApp.setPageTransition('pageId', 'transitionType')_ public API). The available transition types are:
 - 'fade' (which is the soft/basic default page transition);
 - 'pop' (which simulates the "pop" appearing effect);
 - 'flip' (which simulates the "flip" forward effect);
@@ -452,7 +452,7 @@ WebApp.createModal('modalWindow', null, '<div style="padding: 0.5em;">'
 </body>
 ```
 
-The pop-up modal transition "pop" is enabled by default, but if we need to set a different one, we can use _WebApp.setDefaultModalTransition('transitionType')_ public API. But if we need to set a different transition for an specific modal only, we just need to set the _transitionType="transitionType"_ HTML DOM element property (which can also be set via JavaScript for dynamically created modals). And if we need to set an specific modal transition to be used once only (without modify the default setting), we can use _WebApp.setNextModalTransition('transitionType')_ public API, similar as described in the "page transitions" section. The following example demonstrates how to create a simple modal "drawer element" and a simple modal "top menu" (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.2_modalMenus.html#firstPage" target="_blank">live preview</a>):
+The pop-up modal transition "pop" is enabled by default, but if we need to set a different one, we can use _WebApp.setDefaultModalTransition('transitionType')_ public API. But if we need to set a different transition for an specific modal only, we just need to set the _transition="transitionType"_ HTML DOM element property (or use _WebApp.setModalTransition('modalId', 'transitionType')_ public API). And if we need to set an specific modal transition to be used once only (without modify the default setting), we can use _WebApp.setNextModalTransition('transitionType')_ public API, similar as described in the "page transitions" section. The following example demonstrates how to create a simple modal "drawer element" and a simple modal "top menu" (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.2_modalMenus.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -461,7 +461,7 @@ The pop-up modal transition "pop" is enabled by default, but if we need to set a
 	<a href="#modalTopMenu">Top Menu</a>
 </div>
 
-<div class="modal" id="modalSideMenu" transitionType="drawerleft">
+<div class="modal" id="modalSideMenu" transition="drawerleft">
 	<div style="border-radius: 0; margin: 0; max-width: 300px; padding: 0.5em;
 			position: fixed; top: 0; bottom: 0; left: 0; overflow: auto;">
 		<h2>Modal - Side Menu</h2>
@@ -470,7 +470,7 @@ The pop-up modal transition "pop" is enabled by default, but if we need to set a
 	</div>
 </div>
 
-<div class="modal" id="modalTopMenu" transitionType="drawertop">
+<div class="modal" id="modalTopMenu" transition="drawertop">
 	<div style="border-radius: 0; margin: 0 0 auto auto; max-width: 300px; padding: 0.5em;">
 		<h2>Modal - Top Menu</h2>
 		<br>
@@ -1005,6 +1005,27 @@ Set the next transition type, to be used between the next page switching only.
 |----------------|--------|--------------------------------|
 | transitionType | string | The next page transition type. |
 
+#### getPageTransition(pageId)
+Get the transition type, to be used when switching to the specified page.
+
+**Parameters:**
+
+| Name   | Type   | Description               |
+|--------|--------|---------------------------|
+| pageId | string | The page id string value. |
+
+**Returns:** {string} The transition type.
+
+#### setPageTransition(pageId, transitionType)
+Set the transition type, to be used when switching to the specified page.
+
+**Parameters:**
+
+| Name           | Type   | Description               |
+|----------------|--------|---------------------------|
+| pageId         | string | The page id string value. |
+| transitionType | string | The transition type.      |
+
 #### getDefaultModalTransition()
 Get the default transition type, to be used between every modal switching.
 
@@ -1032,6 +1053,27 @@ Set the next transition type, to be used between the next modal switching only.
 | Name           | Type   | Description                     |
 |----------------|--------|---------------------------------|
 | transitionType | string | The next modal transition type. |
+
+#### getModalTransition(modalId)
+Get the transition type, to be used when switching to the specified modal.
+
+**Parameters:**
+
+| Name    | Type   | Description                |
+|---------|--------|----------------------------|
+| modalId | string | The modal id string value. |
+
+**Returns:** {string} The transition type.
+
+#### setModalTransition(modalId, transitionType)
+Set the transition type, to be used when switching to the specified modal.
+
+**Parameters:**
+
+| Name           | Type   | Description                |
+|----------------|--------|----------------------------|
+| modalId        | string | The modal id string value. |
+| transitionType | string | The transition type.       |
 
 #### load()
 Load the WebApp framework library. It is called automatically after DOMContentLoaded event, but it is useful to reset/reload page elements (according to the current body's children nodes).
