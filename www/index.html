@@ -167,6 +167,9 @@ WebApp.onSwitchPage = function(pageElement, referrerElement) {
 }
 WebApp.onSwitchModal = function(booleanState, modalElement, referrerElement) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onSwitchModal(' + booleanState + ', ' + modalElement.id + ', ' + referrerElement.id + ')</span>';
+	if (referrerElement.id === 'canvasPage' && (modalElement.id === 'returnDialog' || modalElement.id === 'modalWindow')) {
+		WebApp.setRunning(!booleanState); // Pause while returnDialog or modalWindow appears over canvasPage.
+	}
 }
 WebApp.onKeyDown = function(keyEvent, pageElement) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onKeyDown(' + keyEvent.keyCode + ', ' + pageElement.id + ')</span>';
