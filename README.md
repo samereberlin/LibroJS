@@ -417,7 +417,7 @@ Modal window are elements designed to appear over page elements. The primary pur
 </body>
 ```
 
-**Important Note:** the whole modal content must be inside another single element, in order to generate a single pop-up dialog (which in this case is using style padding: 0.5em). And notice also that these default pop-ups have rounded corners and dark background overlays (if we need different decorations, we can declare the appropriate CSS rules, as it is presented in the _WebApp.css_ style sheet file).
+**Important Note:** the whole modal content must be inside another single element, in order to generate a single pop-up dialog (which in this case is using style padding: 0.5em). And notice also that these default pop-ups have rounded corners and dark background overlays (if we need different decorations, we can declare the appropriate CSS rules, as it is presented in the _style.css_ style sheet file).
 
 If we need to create another modal after application startup, or dynamically during execution (on run-time), we can use _WebApp.createModal('modalId', 'extraClass', 'modalContent')_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.1_createModal.html#firstPage" target="_blank">live preview</a>), and _WebApp.deleteModal('modalId')_ public API can be used to remove modals (useful to release memory resources):
 
