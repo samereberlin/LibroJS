@@ -541,15 +541,9 @@ var WebAppClass = function() {
 	 */
 	this.getPageTransition = function(pageId) {
 		var transitionType = null;
-		if (isLoaded) {
-			if (pageElements[pageId]) {
-				transitionType = pageElements[pageId].transitionType;
-			}
-		} else {
-			var pageElement = document.getElementById(pageId);
-			if (pageElement && (pageElement.parentNode == document.body) && isPage(pageElement)) {
-				transitionType = pageElement.getAttribute('transition');
-			}
+		var pageElement = document.getElementById(pageId);
+		if (pageElement && (pageElement.parentNode == document.body) && isPage(pageElement)) {
+			transitionType = pageElement.getAttribute('transition');
 		}
 		return transitionType;
 	};
@@ -562,15 +556,12 @@ var WebAppClass = function() {
 	 */
 	this.setPageTransition = function(pageId, transitionType) {
 		if (transitionType && (transitionTypes.indexOf(transitionType) >= 0)) {
+			var pageElement = document.getElementById(pageId);
+			if (pageElement && (pageElement.parentNode == document.body) && isPage(pageElement)) {
+				pageElement.setAttribute('transition', transitionType);
+			}
 			if (isLoaded) {
-				if (pageElements[pageId]) {
-					pageElements[pageId].transitionType = transitionType;
-				}
-			} else {
-				var pageElement = document.getElementById(pageId);
-				if (pageElement && (pageElement.parentNode == document.body) && isPage(pageElement)) {
-					pageElement.setAttribute('transition', transitionType);
-				}
+				pageElement.transitionType = transitionType;
 			}
 		}
 	};
@@ -624,15 +615,9 @@ var WebAppClass = function() {
 	 */
 	this.getModalTransition = function(modalId) {
 		var transitionType = null;
-		if (isLoaded) {
-			if (modalElements[modalId]) {
-				transitionType = modalElements[modalId].transitionType;
-			}
-		} else {
-			var modalElement = document.getElementById(modalId);
-			if (modalElement && (modalElement.parentNode == document.body) && isModal(modalElement)) {
-				transitionType = modalElement.getAttribute('transition');
-			}
+		var modalElement = document.getElementById(modalId);
+		if (modalElement && (modalElement.parentNode == document.body) && isModal(modalElement)) {
+			transitionType = modalElement.getAttribute('transition');
 		}
 		return transitionType;
 	};
@@ -645,15 +630,12 @@ var WebAppClass = function() {
 	 */
 	this.setModalTransition = function(modalId, transitionType) {
 		if (transitionType && (transitionTypes.indexOf(transitionType) >= 0)) {
+			var modalElement = document.getElementById(modalId);
+			if (modalElement && (modalElement.parentNode == document.body) && isModal(modalElement)) {
+				modalElement.setAttribute('transition', transitionType);
+			}
 			if (isLoaded) {
-				if (modalElements[modalId]) {
-					modalElements[modalId].transitionType = transitionType;
-				}
-			} else {
-				var modalElement = document.getElementById(modalId);
-				if (modalElement && (modalElement.parentNode == document.body) && isModal(modalElement)) {
-					modalElement.setAttribute('transition', transitionType);
-				}
+				modalElement.transitionType = transitionType;
 			}
 		}
 	};
