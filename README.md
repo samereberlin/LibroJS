@@ -5,13 +5,12 @@ WebApp is a lightweight (simple and efficient) WEB application framework (librar
 - [Dynamic page creation](#dynamic-page-creation);
 - [Global elements](#global-elements);
 - [Page transitions](#page-transitions);
+- [Swipe transition](#swipe-transition) (coming soon);
 - [Key pressed callbacks](#key-pressed-callbacks);
 - [Life cycle callbacks](#life-cycle-callbacks);
 - [History stack management](#history-stack-management);
 - [Modal window support](#modal-window-support);
 - [Canvas page support](#canvas-page-support);
-- [Click enhancement feature](#click-enhancement-feature) (coming soon);
-- [Swipe left/right feature](#Swipe-left-right-feature) (coming soon);
 - [Extensive public API](#extensive-public-api);
 
 
@@ -219,6 +218,10 @@ If we need to set an specific page transition to be used once only (without modi
 
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
 ```
+
+
+## Swipe transition:
+Coming soon...
 
 
 ## Key pressed callbacks:
@@ -732,14 +735,6 @@ WebApp.onResize = function() {
 	secondPageElement.height = window.innerHeight;
 };
 ```
-
-
-## Click enhancement feature:
-Coming soon...
-
-
-## Swipe left/right feature:
-Coming soon...
 
 
 ## Extensive public API:
