@@ -326,9 +326,9 @@ secondPageElement.onHide = function(nextSearchData, nextElement) {
 - canvasPageElement.onUpdateSearch(searchData);
 - canvasPageElement.onDraw();
 - canvasPageElement.onUpdate();
-- canvasPageElement.onTouchManagedStart(touchEvent);
-- canvasPageElement.onTouchManagedMove(touchEvent);
-- canvasPageElement.onTouchManagedEnd(touchEvent);
+- canvasPageElement.onCanvasTouchStart(touchEvent);
+- canvasPageElement.onCanvasTouchMove(touchEvent);
+- canvasPageElement.onCanvasTouchEnd(touchEvent);
 
 Where:
 - `searchData` is the URL hash content from the question mark (if present) to the end. For example, in case of `index.html#fistPage?foo=bar`, the searchData would be `foo=bar`.
@@ -678,7 +678,7 @@ WebApp.onResize = function() {
 </script>
 ```
 
-Another interesting canvas page feature is the "touch managed" engine, which offers three additional callbacks (onTouchManagedStart, onTouchManagedMove, and onTouchManagedEnd), useful to handle with mouse/touch events. The interesting point here is that "touch managed" engine converts all mouse detected actions into equivalent touch events, which allow us to process pointer events easily at once, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.3_touchManaged.html#firstPage" target="_blank">live preview</a>), and _setTouchManaged(false)_ public API can be used when we prefer to handle pointer events by our selves:
+Another interesting canvas page feature is the "canvas touch" engine, which offers three additional callbacks (onCanvasTouchStart, onCanvasTouchMove, and onCanvasTouchEnd), useful to handle with mouse/touch events. The interesting point here is that "canvas touch" engine converts all mouse detected actions into equivalent touch events, which allow us to process pointer events easily at once, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.3_canvasTouch.html#firstPage" target="_blank">live preview</a>), and _setCanvasTouch(false)_ public API can be used when we prefer to handle pointer events by our selves:
 
 ```html
 <div class="page" id="firstPage">
@@ -725,9 +725,9 @@ function moveCircle(touchEvent) {
 	xPos = touchEvent.changedTouches[0].pageX - secondPageElement.offsetLeft;
 	yPos = touchEvent.changedTouches[0].pageY - secondPageElement.offsetTop;
 }
-secondPageElement.onTouchManagedStart = moveCircle;
-secondPageElement.onTouchManagedMove = moveCircle;
-secondPageElement.onTouchManagedEnd = moveCircle;
+secondPageElement.onCanvasTouchStart = moveCircle;
+secondPageElement.onCanvasTouchMove = moveCircle;
+secondPageElement.onCanvasTouchEnd = moveCircle;
 
 // Set global onResize callback:
 WebApp.onResize = function() {
@@ -876,19 +876,19 @@ Set the "frames per second" canvas page update rate (default value: 24), which i
 |---------|--------|--------------------------------------------------|
 | fpsRate | Number | The "frames per second" canvas page update rate. |
 
-#### isTouchManaged()
-Returns the isTouchManaged boolean state, which indicates if the WebApp manages canvas page touch/mouse events.
+#### isCanvasTouch()
+Returns the isCanvasTouch boolean state, which indicates if the WebApp manages canvas page touch/mouse events.
 
-**Returns:** {boolean} The isTouchManaged boolean state.
+**Returns:** {boolean} The isCanvasTouch boolean state.
 
-#### setTouchManaged(booleanState)
-Set the isTouchManaged boolean state, which indicates if the WebApp manages canvas page touch/mouse events.
+#### setCanvasTouch(booleanState)
+Set the isCanvasTouch boolean state, which indicates if the WebApp manages canvas page touch/mouse events.
 
 **Parameters:**
 
 | Name         | Type    | Description                       |
 |--------------|---------|-----------------------------------|
-| booleanState | boolean | The isTouchManaged boolean state. |
+| booleanState | boolean | The isCanvasTouch boolean state. |
 
 #### isDefaultPageFirstly()
 Returns the default page firstly boolean state, which indicates if the default page must be inserted firstly.

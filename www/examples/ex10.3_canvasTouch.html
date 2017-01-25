@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WebApp - ex10.3_touchManaged</title>
+<title>WebApp - ex10.3_canvasTouch</title>
 </head>
 
 <body>
@@ -55,9 +55,9 @@ function moveCircle(touchEvent) {
 	xPos = touchEvent.changedTouches[0].pageX - secondPageElement.offsetLeft;
 	yPos = touchEvent.changedTouches[0].pageY - secondPageElement.offsetTop;
 }
-secondPageElement.onTouchManagedStart = moveCircle;
-secondPageElement.onTouchManagedMove = moveCircle;
-secondPageElement.onTouchManagedEnd = moveCircle;
+secondPageElement.onCanvasTouchStart = moveCircle;
+secondPageElement.onCanvasTouchMove = moveCircle;
+secondPageElement.onCanvasTouchEnd = moveCircle;
 
 // Set global onResize callback:
 WebApp.onResize = function() {

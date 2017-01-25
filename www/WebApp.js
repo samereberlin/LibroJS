@@ -27,7 +27,6 @@ var WebAppClass = function() {
 	//################################################################################//
 	// Application API:
 
-
 	/**
 	 * Returns the log enabled boolean state,
 	 * which is responsible to show/hide WebApp console.log messages.
@@ -312,140 +311,36 @@ var WebAppClass = function() {
 	};
 
 	//################################################################################//
-	// Touch settings:
-	var TOUCH_DELAY = 600;
+	// Canvas touch settings:
+
+	var TOUCH_DELAY = 600; // Required to solve touchEvent.preventDefault() issue.
+	var touchLastTime = 0; // Required to solve touchEvent.preventDefault() issue.
 	var debugTouch = '';
 	var isMouseDown = false;
-	var isTouchManaged = true;
+	var isCanvasTouch = true;
 	var isTouchSupported = (typeof window.ontouchstart !== 'undefined')? true: false;
-	var touchLastTime = 0; // Required to solve touchEvent.preventDefault() issue.
 
 	//################################################################################//
-	// Touch API:
+	// Canvas touch API:
 
 	/**
-	 * Returns the isTouchManaged boolean state,
+	 * Returns the isCanvasTouch boolean state,
 	 * which indicates if the WebApp manages canvas page touch/mouse events.
 	 *
-	 * @return {boolean} The isTouchManaged boolean state.
+	 * @return {boolean} The isCanvasTouch boolean state.
 	 */
-	this.isTouchManaged = function() {
-		return isTouchManaged;
+	this.isCanvasTouch = function() {
+		return isCanvasTouch;
 	};
 
 	/**
-	 * Set the isTouchManaged boolean state,
+	 * Set the isCanvasTouch boolean state,
 	 * which indicates if the WebApp manages canvas page touch/mouse events.
 	 *
-	 * @param {boolean} booleanState - The isTouchManaged boolean state.
+	 * @param {boolean} booleanState - The isCanvasTouch boolean state.
 	 */
-	this.setTouchManaged = function(booleanState) {
-		isTouchManaged = booleanState;
-	};
-
-	//################################################################################//
-	// History stack management settings:
-
-	var isDefaultPageFirstly = true;
-	var isHistoryManaged = (typeof window.history.replaceState !== 'undefined')? true: false;
-	var isHistoryUnique = isHistoryManaged;
-	var isRedirection = false;
-	var historyStack = [];
-	var historyState = null;
-
-	//################################################################################//
-	// History stack management API:
-
-	/**
-	 * Returns the default page firstly boolean state,
-	 * which indicates if the default page must be inserted firstly.
-	 *
-	 * @return {boolean} The default page firstly boolean state.
-	 */
-	this.isDefaultPageFirstly = function() {
-		return isDefaultPageFirstly;
-	};
-
-	/**
-	 * Set the default page firstly boolean state,
-	 * which indicates if the default page must be inserted firstly.
-	 *
-	 * @param {boolean} booleanState - The default page firstly boolean state.
-	 */
-	this.setDefaultPageFirstly = function(booleanState) {
-		isDefaultPageFirstly = booleanState;
-	};
-
-	/**
-	 * Returns the history managed boolean state,
-	 * which indicates if the stack must be manipulate by WebApp.
-	 *
-	 * @return {boolean} The history managed boolean state.
-	 */
-	this.isHistoryManaged = function() {
-		return isHistoryManaged;
-	};
-
-	/**
-	 * Set the history managed boolean state,
-	 * which indicates if the stack must be manipulate by WebApp.
-	 *
-	 * @param {boolean} booleanState - The history managed boolean state.
-	 */
-	this.setHistoryManaged = function(booleanState) {
-		isHistoryManaged = booleanState && (typeof window.history.replaceState !== 'undefined');
-	};
-
-	/**
-	 * Returns the history unique boolean state,
-	 * which indicates if the page entries must be unique in the stack.
-	 *
-	 * @return {boolean} The history unique boolean state.
-	 */
-	this.isHistoryUnique = function() {
-		return isHistoryUnique;
-	};
-
-	/**
-	 * Set the history unique boolean state,
-	 * which indicates if the page entries must be unique in the stack.
-	 *
-	 * @param {boolean} booleanState - The history unique boolean state.
-	 */
-	this.setHistoryUnique = function(booleanState) {
-		isHistoryUnique = booleanState && (typeof window.history.replaceState !== 'undefined');
-	};
-
-	/**
-	 * Returns the redirection boolean state,
-	 * which indicates if the next updateHash event must be bypassed
-	 * (useful to update searchData content without hash processing).
-	 *
-	 * @return {boolean} The redirection boolean state.
-	 */
-	this.isRedirection = function() {
-		return isRedirection;
-	};
-
-	/**
-	 * Set the redirection boolean state,
-	 * which indicates if the next updateHash event must be bypassed
-	 * (useful to update searchData content without hash processing).
-	 *
-	 * @param {boolean} booleanState - The redirection boolean state.
-	 */
-	this.setRedirection = function(booleanState) {
-		isRedirection = booleanState;
-	};
-
-	/**
-	 * Get the historyStack array values,
-	 * which contains the href historyStack, according to the history stack management.
-	 *
-	 * @return {array} The href historyStack, according to the history stack management.
-	 */
-	this.getHistoryStack = function() {
-		return historyStack;
+	this.setCanvasTouch = function(booleanState) {
+		isCanvasTouch = booleanState;
 	};
 
 	//################################################################################//
@@ -641,6 +536,111 @@ var WebAppClass = function() {
 	};
 
 	//################################################################################//
+	// History stack management settings:
+
+	var isDefaultPageFirstly = true;
+	var isHistoryManaged = (typeof window.history.replaceState !== 'undefined')? true: false;
+	var isHistoryUnique = isHistoryManaged;
+	var isRedirection = false;
+	var historyStack = [];
+	var historyState = null;
+
+	//################################################################################//
+	// History stack management API:
+
+	/**
+	 * Returns the default page firstly boolean state,
+	 * which indicates if the default page must be inserted firstly.
+	 *
+	 * @return {boolean} The default page firstly boolean state.
+	 */
+	this.isDefaultPageFirstly = function() {
+		return isDefaultPageFirstly;
+	};
+
+	/**
+	 * Set the default page firstly boolean state,
+	 * which indicates if the default page must be inserted firstly.
+	 *
+	 * @param {boolean} booleanState - The default page firstly boolean state.
+	 */
+	this.setDefaultPageFirstly = function(booleanState) {
+		isDefaultPageFirstly = booleanState;
+	};
+
+	/**
+	 * Returns the history managed boolean state,
+	 * which indicates if the stack must be manipulate by WebApp.
+	 *
+	 * @return {boolean} The history managed boolean state.
+	 */
+	this.isHistoryManaged = function() {
+		return isHistoryManaged;
+	};
+
+	/**
+	 * Set the history managed boolean state,
+	 * which indicates if the stack must be manipulate by WebApp.
+	 *
+	 * @param {boolean} booleanState - The history managed boolean state.
+	 */
+	this.setHistoryManaged = function(booleanState) {
+		isHistoryManaged = booleanState && (typeof window.history.replaceState !== 'undefined');
+	};
+
+	/**
+	 * Returns the history unique boolean state,
+	 * which indicates if the page entries must be unique in the stack.
+	 *
+	 * @return {boolean} The history unique boolean state.
+	 */
+	this.isHistoryUnique = function() {
+		return isHistoryUnique;
+	};
+
+	/**
+	 * Set the history unique boolean state,
+	 * which indicates if the page entries must be unique in the stack.
+	 *
+	 * @param {boolean} booleanState - The history unique boolean state.
+	 */
+	this.setHistoryUnique = function(booleanState) {
+		isHistoryUnique = booleanState && (typeof window.history.replaceState !== 'undefined');
+	};
+
+	/**
+	 * Returns the redirection boolean state,
+	 * which indicates if the next updateHash event must be bypassed
+	 * (useful to update searchData content without hash processing).
+	 *
+	 * @return {boolean} The redirection boolean state.
+	 */
+	this.isRedirection = function() {
+		return isRedirection;
+	};
+
+	/**
+	 * Set the redirection boolean state,
+	 * which indicates if the next updateHash event must be bypassed
+	 * (useful to update searchData content without hash processing).
+	 *
+	 * @param {boolean} booleanState - The redirection boolean state.
+	 */
+	this.setRedirection = function(booleanState) {
+		isRedirection = booleanState;
+	};
+
+	/**
+	 * Get the historyStack array values,
+	 * which contains the href historyStack, according to the history stack management.
+	 *
+	 * @return {array} The href historyStack, according to the history stack management.
+	 */
+	this.getHistoryStack = function() {
+		return historyStack;
+	};
+
+	//################################################################################//
 	// Functions related to application life cycle:
 
 	function load() {
@@ -786,14 +786,14 @@ var WebAppClass = function() {
 			if (typeof element.onDraw !== 'function') {
 				element.onDraw = function() {};
 			}
-			if (typeof element.onTouchManagedStart !== 'function') {
-				element.onTouchManagedStart = function() {};
+			if (typeof element.onCanvasTouchStart !== 'function') {
+				element.onCanvasTouchStart = function() {};
 			}
-			if (typeof element.onTouchManagedMove !== 'function') {
-				element.onTouchManagedMove = function() {};
+			if (typeof element.onCanvasTouchMove !== 'function') {
+				element.onCanvasTouchMove = function() {};
 			}
-			if (typeof element.onTouchManagedEnd !== 'function') {
-				element.onTouchManagedEnd = function() {};
+			if (typeof element.onCanvasTouchEnd !== 'function') {
+				element.onCanvasTouchEnd = function() {};
 			}
 		}
 	}
@@ -1129,32 +1129,32 @@ var WebAppClass = function() {
 						canvasPage.onDraw();
 						if (isRunning) requestAnimation(draw);
 					})();
-					if (isTouchManaged) {
-						currentPage.addEventListener('mousedown', mouseManagedDown);
-						currentPage.addEventListener('mousemove', mouseManagedMove);
-						currentPage.addEventListener('mouseup', mouseManagedUp);
-						currentPage.addEventListener('mouseout', mouseManagedUp);
+					if (isCanvasTouch) {
+						currentPage.addEventListener('mousedown', canvasMouseDown);
+						currentPage.addEventListener('mousemove', canvasMouseMove);
+						currentPage.addEventListener('mouseup', canvasMouseUp);
+						currentPage.addEventListener('mouseout', canvasMouseUp);
 						if (isTouchSupported) {
-							currentPage.addEventListener('touchstart', touchManagedStart);
-							currentPage.addEventListener('touchmove', touchManagedMove);
-							currentPage.addEventListener('touchend', touchManagedEnd);
-							currentPage.addEventListener('touchcancel', touchManagedEnd);
+							currentPage.addEventListener('touchstart', canvasTouchStart);
+							currentPage.addEventListener('touchmove', canvasTouchMove);
+							currentPage.addEventListener('touchend', canvasTouchEnd);
+							currentPage.addEventListener('touchcancel', canvasTouchEnd);
 						}
 					}
 				}
 			} else {
 				clearInterval(intervalUpdate);
 				intervalUpdate = 0;
-				if (isTouchManaged) {
-					currentPage.removeEventListener('mousedown', mouseManagedDown);
-					currentPage.removeEventListener('mousemove', mouseManagedMove);
-					currentPage.removeEventListener('mouseup', mouseManagedUp);
-					currentPage.removeEventListener('mouseout', mouseManagedUp);
+				if (isCanvasTouch) {
+					currentPage.removeEventListener('mousedown', canvasMouseDown);
+					currentPage.removeEventListener('mousemove', canvasMouseMove);
+					currentPage.removeEventListener('mouseup', canvasMouseUp);
+					currentPage.removeEventListener('mouseout', canvasMouseUp);
 					if (isTouchSupported) {
-						currentPage.removeEventListener('touchstart', touchManagedStart);
-						currentPage.removeEventListener('touchmove', touchManagedMove);
-						currentPage.removeEventListener('touchend', touchManagedEnd);
-						currentPage.removeEventListener('touchcancel', touchManagedEnd);
+						currentPage.removeEventListener('touchstart', canvasTouchStart);
+						currentPage.removeEventListener('touchmove', canvasTouchMove);
+						currentPage.removeEventListener('touchend', canvasTouchEnd);
+						currentPage.removeEventListener('touchcancel', canvasTouchEnd);
 					}
 				}
 			}
@@ -1162,12 +1162,12 @@ var WebAppClass = function() {
 	}
 
 	//################################################################################//
-	// Functions related to touch actions:
+	// Functions related to canvas touch actions:
 
-	function mouseManagedDown(touchEvent) {
+	function canvasMouseDown(touchEvent) {
 		if (touchEvent.button === 0) {
 			if (!isTouchSupported || (Date.now() > touchLastTime + TOUCH_DELAY)) { // Required to solve touchEvent.preventDefault() issue.
-				if (isLogEnabled) console.log('WebApp.js: mouseDown(touchEvent)... X = ' + touchEvent.clientX + ', Y = ' + touchEvent.clientY);
+				if (isLogEnabled) console.log('WebApp.js: canvasMouseDown(touchEvent)... X = ' + touchEvent.clientX + ', Y = ' + touchEvent.clientY);
 				touchEvent.stopPropagation();
 				touchEvent.preventDefault();
 				isMouseDown = true;
@@ -1178,11 +1178,11 @@ var WebAppClass = function() {
 					pageX: touchEvent.pageX,
 					pageY: touchEvent.pageY
 				}];
-				currentPage.onTouchManagedStart(touchEvent);
+				currentPage.onCanvasTouchStart(touchEvent);
 			}
 		}
 	}
-	function mouseManagedMove(touchEvent) {
+	function canvasMouseMove(touchEvent) {
 		if (isMouseDown && (touchEvent.button === 0)) {
 			if (isLogEnabled) debugTouch += (touchEvent.clientX + ' ' + touchEvent.clientY + ', ');
 			touchEvent.stopPropagation();
@@ -1194,13 +1194,13 @@ var WebAppClass = function() {
 				pageX: touchEvent.pageX,
 				pageY: touchEvent.pageY
 			}];
-			currentPage.onTouchManagedMove(touchEvent);
+			currentPage.onCanvasTouchMove(touchEvent);
 		}
 	}
-	function mouseManagedUp(touchEvent) {
+	function canvasMouseUp(touchEvent) {
 		if (isMouseDown && (touchEvent.button === 0)) {
 			if (isLogEnabled) {
-				console.log('WebApp.js: mouseUp(touchEvent)... X = ' + touchEvent.clientX + ', Y = ' + touchEvent.clientY + ', debugTouch = ' + debugTouch);
+				console.log('WebApp.js: canvasMouseUp(touchEvent)... X = ' + touchEvent.clientX + ', Y = ' + touchEvent.clientY + ', debugTouch = ' + debugTouch);
 				debugTouch = '';
 			}
 			touchEvent.stopPropagation();
@@ -1213,32 +1213,32 @@ var WebAppClass = function() {
 				pageX: touchEvent.pageX,
 				pageY: touchEvent.pageY
 			}];
-			currentPage.onTouchManagedEnd(touchEvent);
+			currentPage.onCanvasTouchEnd(touchEvent);
 		}
 	}
 
-	function touchManagedStart(touchEvent) {
-		if (isLogEnabled) console.log('WebApp.js: touchStart(touchEvent)... X = ' + touchEvent.changedTouches[0].clientX + ', Y = ' + touchEvent.changedTouches[0].clientY);
+	function canvasTouchStart(touchEvent) {
+		if (isLogEnabled) console.log('WebApp.js: canvasTouchStart(touchEvent)... X = ' + touchEvent.changedTouches[0].clientX + ', Y = ' + touchEvent.changedTouches[0].clientY);
 		touchEvent.stopPropagation();
 		touchEvent.preventDefault();
 		touchLastTime = Date.now(); // Required to solve touchEvent.preventDefault() issue.
-		currentPage.onTouchManagedStart(touchEvent);
+		currentPage.onCanvasTouchStart(touchEvent);
 	}
-	function touchManagedMove(touchEvent) {
+	function canvasTouchMove(touchEvent) {
 		if (isLogEnabled) debugTouch += (touchEvent.changedTouches[0].clientX + ' ' + touchEvent.changedTouches[0].clientY + ', ');
 		touchEvent.stopPropagation();
 		touchEvent.preventDefault();
-		currentPage.onTouchManagedMove(touchEvent);
+		currentPage.onCanvasTouchMove(touchEvent);
 	}
-	function touchManagedEnd(touchEvent) {
+	function canvasTouchEnd(touchEvent) {
 		if (isLogEnabled) {
-			console.log('WebApp.js: touchEnd(touchEvent)... X = ' + touchEvent.changedTouches[0].clientX + ', Y = ' + touchEvent.changedTouches[0].clientY + ', debugTouch = ' + debugTouch);
+			console.log('WebApp.js: canvasTouchEnd(touchEvent)... X = ' + touchEvent.changedTouches[0].clientX + ', Y = ' + touchEvent.changedTouches[0].clientY + ', debugTouch = ' + debugTouch);
 			debugTouch = '';
 		}
 		touchEvent.stopPropagation();
 		touchEvent.preventDefault();
 		touchLastTime = Date.now(); // Required to solve touchEvent.preventDefault() issue.
-		currentPage.onTouchManagedEnd(touchEvent);
+		currentPage.onCanvasTouchEnd(touchEvent);
 	}
 
 	//################################################################################//
