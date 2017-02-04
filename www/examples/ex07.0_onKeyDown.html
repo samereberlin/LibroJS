@@ -37,6 +37,9 @@ WebApp.onKeyDown = function(keyEvent, pageElement) {
 		WebApp.previousPage();
 	}
 };
+WebApp.onKeyUp = function(keyEvent, pageElement) {
+	console.log('onKeyUp is called when we release the key: ' + keyEvent.keyCode);
+}
 </script>
 
 </body>

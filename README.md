@@ -6,7 +6,7 @@ WebApp is a lightweight (simple and efficient) WEB application framework (librar
 - [Dynamic page creation](#dynamic-page-creation);
 - [Global elements](#global-elements);
 - [Page transitions](#page-transitions);
-- [Key pressed callbacks](#key-pressed-callbacks);
+- [Keyboard callbacks](#keyboard-callbacks);
 - [Life cycle callbacks](#life-cycle-callbacks);
 - [History stack management](#history-stack-management);
 - [Modal window support](#modal-window-support);
@@ -243,8 +243,8 @@ If we need to set an specific page transition to be used once only (without modi
 ```
 
 
-## Key pressed callbacks:
-Key pressed callbacks are useful to set page shortcut keys, for example if we want to navigate between the available pages using left/right keys, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex06.0_onKeyDown.html#firstPage" target="_blank">live preview</a>):
+## Keyboard callbacks:
+Keyboard callbacks are useful to set page shortcut keys, for example if we want to navigate between the available pages using left/right keys, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex06.0_onKeyDown.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -268,10 +268,13 @@ WebApp.onKeyDown = function(keyEvent, pageElement) {
 		WebApp.previousPage();
 	}
 };
+WebApp.onKeyUp = function(keyEvent, pageElement) {
+	console.log('onKeyUp is called when we release the key: ' + keyEvent.keyCode);
+}
 </script>
 ```
 
-And as we can see in the above example, onKeyDown event is dispatched globally to the WebApp object, but it can be distinguished/filtered according to the pageElement argument.
+And as we can see in the above example, onKeyDown and onKeyUp events are dispatched globally to the WebApp object, but it can be distinguished/filtered according to the pageElement argument.
 
 
 ## Life cycle callbacks:

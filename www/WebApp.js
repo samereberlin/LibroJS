@@ -799,6 +799,7 @@ var WebAppClass = function() {
 			window.addEventListener('blur', pause);
 			window.addEventListener('focus', resume);
 			window.addEventListener('keydown', keyDown);
+			window.addEventListener('keyup', keyUp);
 			window.addEventListener('resize', resize);
 			window.addEventListener('unload', unload);
 			resume(); // Required to dispatch initial onResume event.
@@ -1556,6 +1557,13 @@ var WebAppClass = function() {
 			if (typeof WebApp.onKeyDown === 'function') {
 				WebApp.onKeyDown(keyEvent, currentPage);
 			}
+		}
+	}
+
+	function keyUp(keyEvent) {
+		if (isLogEnabled) console.log('WebApp.js: keyUp(keyEvent)... keyEvent.keyCode: ' + keyEvent.keyCode + ', currentPage.id: ' + (currentPage? currentPage.id: ''));
+		if (typeof WebApp.onKeyUp === 'function') {
+			WebApp.onKeyUp(keyEvent, currentPage);
 		}
 	}
 
