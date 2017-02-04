@@ -23,6 +23,7 @@ var WebAppClass = function() {
 	var isLoaded = false;
 	var isLogEnabled = true;
 	var isRunning = false;
+	var isTouchSupported = (typeof window.ontouchstart !== 'undefined')? true: false;
 
 	//################################################################################//
 	// Application API:
@@ -304,7 +305,7 @@ var WebAppClass = function() {
 	 * Set the "frames per second" canvas page update rate (default value: 24),
 	 * which indicates the number of times which canvas page is updated per second.
 	 *
-	 * @param {Number} fpsRate - The "frames per second" canvas page update rate.
+	 * @param {number} fpsRate - The "frames per second" canvas page update rate.
 	 */
 	this.setFps = function(fpsRate) {
 		fpsDelay = 1000 / fpsRate;
@@ -313,12 +314,11 @@ var WebAppClass = function() {
 	//################################################################################//
 	// Canvas touch settings:
 
-	var TOUCH_DELAY = 600; // Required to solve touchEvent.preventDefault() issue.
-	var touchLastTime = 0; // Required to solve touchEvent.preventDefault() issue.
-	var debugTouch = '';
-	var isMouseDown = false;
+	var CANVAS_TOUCH_DELAY = 600; // Required to solve touchEvent.preventDefault() issue.
+	var canvasTouchLastTime = 0; // Required to solve touchEvent.preventDefault() issue.
+	var canvasDebugTouch = '';
+	var isCanvasMouseDown = false;
 	var isCanvasTouch = true;
-	var isTouchSupported = (typeof window.ontouchstart !== 'undefined')? true: false;
 
 	//################################################################################//
 	// Canvas touch API:
@@ -536,6 +536,53 @@ var WebAppClass = function() {
 	};
 
 	//################################################################################//
+	// Swipe page settings:
+
+	var SWIPE_TOUCH_DELAY = 600; // Required to emulate touchEvent.preventDefault().
+	var swipeTouchLastTime = 0; // Required to emulate touchEvent.preventDefault().
+	var swipeDebugTouch = '';
+	var isSwipeMouseDown = false;
+	var isSwipeEnabled = true;
+	var swipeCurrentIndex = 0;
+	var swipeDestinationPage = null;
+	var swipeMoving = false, swipeMovingPrevious = false, swipeMovingNext = false;
+	var swipeStartX = 0, swipeStartY = 0, swipeMoveX = 0, swipeMoveY = 0;
+
+	//################################################################################//
+	// Swipe page API:
+
+	/**
+	 * Returns the swipe enabled boolean state,
+	 * which is responsible to enable/disable swipe page switch.
+	 *
+	 * @return {boolean} The swipe enabled boolean state.
+	 */
+	this.isSwipeEnabled = function() {
+		return isSwipeEnabled;
+	};
+
+	/**
+	 * Set the swipe enabled boolean state,
+	 * which is responsible to enable/disable swipe page switch.
+	 *
+	 * @param {boolean} booleanState - The swipe enabled boolean state.
+	 */
+	this.setSwipeEnabled = function(booleanState) {
+		isSwipeEnabled = booleanState;
+	};
+
+	/**
+	 * Swipe a node element horizontally, according to the supplied fromPx and toPx coordinates.
+	 *
+	 * @param {node} element - The node element to be swiped.
+	 * @param {number} fromPx - The swipe movement start position (in pixels).
+	 * @param {number} toPx - The swipe movement destination position (in pixels).
+	 * @param {number} stepPx - The swipe movement step length (in pixels).
+	 * @param {function} callback - The function callback to be invoked after swipe.
+	 */
+	this.swipeElement = swipeElement;
+
+	//################################################################################//
 	// History stack management settings:
 
 	var isDefaultPageFirstly = true;
@@ -743,7 +790,7 @@ var WebAppClass = function() {
 				'/* WebApp basic/required CSS rules. */' +
 				'.modal {background-color: rgba(0,0,0,0.5); position: fixed; top: 0; right: 0; bottom: 0; left: 0; overflow: auto; z-index: 3}' +
 				'.modal > * {background-color: white; border-radius: 0.3125em; box-shadow: 0 2px 6px rgba(0,0,0,0.6); margin: 10% auto 1em; max-width: 600px; width: 80%; overflow: hidden}' +
-				'.page {background-color: white;}'
+				'.page {background-color: white; width: 100%;} canvas.page {width: auto;}'
 			;
 			var head = document.getElementsByTagName('head')[0];
 			head.insertBefore(style, head.firstChild);
@@ -837,7 +884,7 @@ var WebAppClass = function() {
 		if (isLogEnabled) console.log('WebApp.js: pause()... isRunning: ' + isRunning);
 		if (isRunning) {
 			isRunning = false;
-			setCanvasPage(false);
+			setPage(false);
 			if (typeof WebApp.onPause === 'function') {
 				WebApp.onPause();
 			}
@@ -848,7 +895,7 @@ var WebAppClass = function() {
 		if (isLogEnabled) console.log('WebApp.js: resume()... isRunning: ' + isRunning);
 		if (!isRunning) {
 			isRunning = true;
-			setCanvasPage(true);
+			setPage(true);
 			if (typeof WebApp.onResume === 'function') {
 				WebApp.onResume();
 			}
@@ -868,14 +915,14 @@ var WebAppClass = function() {
 
 	/**
 	 * Unload the WebApp framework library.
-	 * It is called automatically on window.onunload event,
+	 * It is called automatically on window unload event,
 	 * but it is useful to simulate unload event for testing.
 	 */
 	this.unload = unload;
 
 	/**
 	 * Reset the WebApp framework library.
-	 * It is called automatically after window.onunload event,
+	 * It is called automatically after window unload event,
 	 * but it is useful to simulate reset event for testing.
 	 */
 	this.reset = reset;
@@ -1008,43 +1055,146 @@ var WebAppClass = function() {
 			nextPageTransition = (currentPage && (pageIds.indexOf(currentPage.id) > pageIds.indexOf(pageElement.id)))? 'sliderev': 'slide';
 		}
 
-		var setElementFixed = function(referrerElement, isFixed) {
-			referrerElement.style.position = isFixed? 'fixed': '';
-			referrerElement.style.zIndex = isFixed? '-1': '';
-			referrerElement.style.right = isFixed? '0': '';
-			referrerElement.style.left = isFixed? '0': '';
-			referrerElement.style.top = isFixed? referrerElement.offsetTop + 'px': '';
-		};
-		var showNext = function(referrerElement) {
-			animateElement(pageElement, nextPageTransition + 'in', function() {
-				if (pageElement === currentPage) setCanvasPage(true);
-			});
-			showElement(pageElement, searchData, referrerElement);
+		var onSwitchPage = function(referrerElement) {
 			nextPageTransition = null;
 			if (typeof WebApp.onSwitchPage === 'function') {
 				WebApp.onSwitchPage(pageElement, referrerElement);
 			}
 		};
-		if (currentPage) {
+
+		if (nextPageTransition.lastIndexOf('swipe', 0) === 0) {
 			var referrerElement = currentPage;
-			setCanvasPage(false);
-			if (nextPageTransition.lastIndexOf('slide', 0) === 0) {
-				setElementFixed(referrerElement, true);
-				animateElement(referrerElement, nextPageTransition + 'out', function() {
-					hideElement(referrerElement, searchData, pageElement);
-					setElementFixed(referrerElement, false);
-				});
-				showNext(referrerElement);
-			} else {
-				animateElement(referrerElement, nextPageTransition + 'out', function() {
-					hideElement(referrerElement, searchData, pageElement);
-					showNext(referrerElement);
-				});
-			}
+			setPage(false);
+			var referrerFromPx = parseInt(referrerElement.style.transform.substring(
+					referrerElement.style.transform.lastIndexOf('(') + 1,
+					referrerElement.style.transform.lastIndexOf('p')));
+			var referrerToPx = window.innerWidth * ((nextPageTransition === 'swipe')? -1: 1);
+			var pageFromPx = parseInt(pageElement.style.transform.substring(
+					pageElement.style.transform.lastIndexOf('(') + 1,
+					pageElement.style.transform.lastIndexOf('p')));
+			swipeElement(referrerElement, referrerFromPx, referrerToPx, 25, function() {
+				hideElement(referrerElement, searchData, pageElement);
+				referrerElement.style.position = '';
+				referrerElement.style.top = '';
+			});
+			swipeElement(pageElement, pageFromPx, 0, 25, function() {
+				pageElement.style.position = '';
+				pageElement.style.top = '';
+				showElement(pageElement, searchData, referrerElement);
+				onSwitchPage(referrerElement);
+				setPage(true);
+			});
 		} else {
-			showNext(currentPage);
+			var showNext = function(referrerElement) {
+				animateElement(pageElement, nextPageTransition + 'in', function() {
+					if (pageElement === currentPage) {
+						setPage(true);
+					}
+				});
+				showElement(pageElement, searchData, referrerElement);
+				onSwitchPage(referrerElement);
+			};
+			if (currentPage) {
+				var referrerElement = currentPage;
+				setPage(false);
+				if (nextPageTransition.lastIndexOf('slide', 0) === 0) {
+					referrerElement.style.position = 'fixed';
+					referrerElement.style.zIndex = '-1';
+					referrerElement.style.right = '0';
+					referrerElement.style.left = '0';
+					referrerElement.style.top = referrerElement.offsetTop + 'px';
+					animateElement(referrerElement, nextPageTransition + 'out', function() {
+						hideElement(referrerElement, searchData, pageElement);
+						referrerElement.style.position = '';
+						referrerElement.style.zIndex = '';
+						referrerElement.style.right = '';
+						referrerElement.style.left = '';
+						referrerElement.style.top = '';
+					});
+					showNext(referrerElement);
+				} else {
+					animateElement(referrerElement, nextPageTransition + 'out', function() {
+						hideElement(referrerElement, searchData, pageElement);
+						showNext(referrerElement);
+					});
+				}
+			} else {
+				showNext(currentPage);
+			}
 		}
 		currentPage = pageElement;
+	}
+
+	function setPage(booleanState) {
+		if (currentPage) {
+			if (currentPage.canvasContext) {
+				if (booleanState) {
+					if (intervalUpdate === 0) {
+						intervalUpdate = setInterval(currentPage.onUpdate, fpsDelay);
+						var canvasPage = currentPage; // Local variable required to absorb the last requestAnimation call.
+						(function draw() {
+							canvasPage.onDraw();
+							if (isRunning) {
+								requestAnimation(draw);
+							}
+						})();
+						if (isCanvasTouch) {
+							currentPage.addEventListener('mousedown', canvasMouseDown);
+							currentPage.addEventListener('mousemove', canvasMouseMove);
+							currentPage.addEventListener('mouseup', canvasMouseUp);
+							currentPage.addEventListener('mouseout', canvasMouseUp);
+							if (isTouchSupported) {
+								currentPage.addEventListener('touchstart', canvasTouchStart);
+								currentPage.addEventListener('touchmove', canvasTouchMove);
+								currentPage.addEventListener('touchend', canvasTouchEnd);
+								currentPage.addEventListener('touchcancel', canvasTouchEnd);
+							}
+						}
+					}
+				} else {
+					clearInterval(intervalUpdate);
+					intervalUpdate = 0;
+					if (isCanvasTouch) {
+						currentPage.removeEventListener('mousedown', canvasMouseDown);
+						currentPage.removeEventListener('mousemove', canvasMouseMove);
+						currentPage.removeEventListener('mouseup', canvasMouseUp);
+						currentPage.removeEventListener('mouseout', canvasMouseUp);
+						if (isTouchSupported) {
+							currentPage.removeEventListener('touchstart', canvasTouchStart);
+							currentPage.removeEventListener('touchmove', canvasTouchMove);
+							currentPage.removeEventListener('touchend', canvasTouchEnd);
+							currentPage.removeEventListener('touchcancel', canvasTouchEnd);
+						}
+					}
+				}
+			} else {
+				if (isSwipeEnabled) {
+					if (booleanState) {
+						currentPage.addEventListener('mousedown', swipeMouseDown);
+						currentPage.addEventListener('mousemove', swipeMouseMove);
+						currentPage.addEventListener('mouseup', swipeMouseUp);
+						currentPage.addEventListener('mouseout', swipeMouseUp);
+						if (isTouchSupported) {
+							currentPage.addEventListener('touchstart', swipeTouchStart);
+							currentPage.addEventListener('touchmove', swipeTouchMove);
+							currentPage.addEventListener('touchend', swipeTouchEnd);
+							currentPage.addEventListener('touchcancel', swipeTouchEnd);
+						}
+					} else {
+						currentPage.removeEventListener('mousedown', swipeMouseDown);
+						currentPage.removeEventListener('mousemove', swipeMouseMove);
+						currentPage.removeEventListener('mouseup', swipeMouseUp);
+						currentPage.removeEventListener('mouseout', swipeMouseUp);
+						if (isTouchSupported) {
+							currentPage.removeEventListener('touchstart', swipeTouchStart);
+							currentPage.removeEventListener('touchmove', swipeTouchMove);
+							currentPage.removeEventListener('touchend', swipeTouchEnd);
+							currentPage.removeEventListener('touchcancel', swipeTouchEnd);
+						}
+					}
+				}
+			}
+		}
 	}
 
 	function switchModal(booleanState, modalElement, nextElement, searchData) {
@@ -1117,60 +1267,15 @@ var WebAppClass = function() {
 	}
 
 	//################################################################################//
-	// Functions related to canvas page actions:
-
-	function setCanvasPage(booleanState) {
-		if (currentPage && currentPage.canvasContext) {
-			if (booleanState) {
-				if (intervalUpdate === 0) {
-					intervalUpdate = setInterval(currentPage.onUpdate, fpsDelay);
-					var canvasPage = currentPage; // Local variable required to absorb the last requestAnimation call.
-					(function draw() {
-						canvasPage.onDraw();
-						if (isRunning) requestAnimation(draw);
-					})();
-					if (isCanvasTouch) {
-						currentPage.addEventListener('mousedown', canvasMouseDown);
-						currentPage.addEventListener('mousemove', canvasMouseMove);
-						currentPage.addEventListener('mouseup', canvasMouseUp);
-						currentPage.addEventListener('mouseout', canvasMouseUp);
-						if (isTouchSupported) {
-							currentPage.addEventListener('touchstart', canvasTouchStart);
-							currentPage.addEventListener('touchmove', canvasTouchMove);
-							currentPage.addEventListener('touchend', canvasTouchEnd);
-							currentPage.addEventListener('touchcancel', canvasTouchEnd);
-						}
-					}
-				}
-			} else {
-				clearInterval(intervalUpdate);
-				intervalUpdate = 0;
-				if (isCanvasTouch) {
-					currentPage.removeEventListener('mousedown', canvasMouseDown);
-					currentPage.removeEventListener('mousemove', canvasMouseMove);
-					currentPage.removeEventListener('mouseup', canvasMouseUp);
-					currentPage.removeEventListener('mouseout', canvasMouseUp);
-					if (isTouchSupported) {
-						currentPage.removeEventListener('touchstart', canvasTouchStart);
-						currentPage.removeEventListener('touchmove', canvasTouchMove);
-						currentPage.removeEventListener('touchend', canvasTouchEnd);
-						currentPage.removeEventListener('touchcancel', canvasTouchEnd);
-					}
-				}
-			}
-		}
-	}
-
-	//################################################################################//
 	// Functions related to canvas touch actions:
 
 	function canvasMouseDown(touchEvent) {
 		if (touchEvent.button === 0) {
-			if (!isTouchSupported || (Date.now() > touchLastTime + TOUCH_DELAY)) { // Required to solve touchEvent.preventDefault() issue.
+			if (!isTouchSupported || (Date.now() > canvasTouchLastTime + CANVAS_TOUCH_DELAY)) { // Required to solve touchEvent.preventDefault() issue.
 				if (isLogEnabled) console.log('WebApp.js: canvasMouseDown(touchEvent)... X = ' + touchEvent.clientX + ', Y = ' + touchEvent.clientY);
 				touchEvent.stopPropagation();
 				touchEvent.preventDefault();
-				isMouseDown = true;
+				isCanvasMouseDown = true;
 				touchEvent.changedTouches = [{
 					identifier: -1,
 					clientX: touchEvent.clientX,
@@ -1183,8 +1288,8 @@ var WebAppClass = function() {
 		}
 	}
 	function canvasMouseMove(touchEvent) {
-		if (isMouseDown && (touchEvent.button === 0)) {
-			if (isLogEnabled) debugTouch += (touchEvent.clientX + ' ' + touchEvent.clientY + ', ');
+		if (isCanvasMouseDown && (touchEvent.button === 0)) {
+			if (isLogEnabled) canvasDebugTouch += (touchEvent.clientX + ' ' + touchEvent.clientY + ', ');
 			touchEvent.stopPropagation();
 			touchEvent.preventDefault();
 			touchEvent.changedTouches = [{
@@ -1198,14 +1303,14 @@ var WebAppClass = function() {
 		}
 	}
 	function canvasMouseUp(touchEvent) {
-		if (isMouseDown && (touchEvent.button === 0)) {
+		if (isCanvasMouseDown && (touchEvent.button === 0)) {
 			if (isLogEnabled) {
-				console.log('WebApp.js: canvasMouseUp(touchEvent)... X = ' + touchEvent.clientX + ', Y = ' + touchEvent.clientY + ', debugTouch = ' + debugTouch);
-				debugTouch = '';
+				console.log('WebApp.js: canvasMouseUp(touchEvent)... X = ' + touchEvent.clientX + ', Y = ' + touchEvent.clientY + ', canvasDebugTouch = ' + canvasDebugTouch);
+				canvasDebugTouch = '';
 			}
 			touchEvent.stopPropagation();
 			touchEvent.preventDefault();
-			isMouseDown = false;
+			isCanvasMouseDown = false;
 			touchEvent.changedTouches = [{
 				identifier: -1,
 				clientX: touchEvent.clientX,
@@ -1221,24 +1326,221 @@ var WebAppClass = function() {
 		if (isLogEnabled) console.log('WebApp.js: canvasTouchStart(touchEvent)... X = ' + touchEvent.changedTouches[0].clientX + ', Y = ' + touchEvent.changedTouches[0].clientY);
 		touchEvent.stopPropagation();
 		touchEvent.preventDefault();
-		touchLastTime = Date.now(); // Required to solve touchEvent.preventDefault() issue.
+		canvasTouchLastTime = Date.now(); // Required to solve touchEvent.preventDefault() issue.
 		currentPage.onCanvasTouchStart(touchEvent);
 	}
 	function canvasTouchMove(touchEvent) {
-		if (isLogEnabled) debugTouch += (touchEvent.changedTouches[0].clientX + ' ' + touchEvent.changedTouches[0].clientY + ', ');
+		if (isLogEnabled) canvasDebugTouch += (touchEvent.changedTouches[0].clientX + ' ' + touchEvent.changedTouches[0].clientY + ', ');
 		touchEvent.stopPropagation();
 		touchEvent.preventDefault();
 		currentPage.onCanvasTouchMove(touchEvent);
 	}
 	function canvasTouchEnd(touchEvent) {
 		if (isLogEnabled) {
-			console.log('WebApp.js: canvasTouchEnd(touchEvent)... X = ' + touchEvent.changedTouches[0].clientX + ', Y = ' + touchEvent.changedTouches[0].clientY + ', debugTouch = ' + debugTouch);
-			debugTouch = '';
+			console.log('WebApp.js: canvasTouchEnd(touchEvent)... X = ' + touchEvent.changedTouches[0].clientX + ', Y = ' + touchEvent.changedTouches[0].clientY + ', canvasDebugTouch = ' + canvasDebugTouch);
+			canvasDebugTouch = '';
 		}
 		touchEvent.stopPropagation();
 		touchEvent.preventDefault();
-		touchLastTime = Date.now(); // Required to solve touchEvent.preventDefault() issue.
+		canvasTouchLastTime = Date.now(); // Required to solve touchEvent.preventDefault() issue.
 		currentPage.onCanvasTouchEnd(touchEvent);
+	}
+
+	//################################################################################//
+	// Functions related to swipe touch actions:
+
+	function swipeMouseDown(touchEvent) {
+		if (touchEvent.button === 0) {
+			if (!isTouchSupported || (Date.now() > swipeTouchLastTime + SWIPE_TOUCH_DELAY)) { // Required to emulate touchEvent.preventDefault().
+				if (isLogEnabled) console.log('WebApp.js: swipeMouseDown(touchEvent)... X = ' + touchEvent.clientX + ', Y = ' + touchEvent.clientY);
+				isSwipeMouseDown = true;
+				touchEvent.changedTouches = [{
+					identifier: -1,
+					clientX: touchEvent.clientX,
+					clientY: touchEvent.clientY,
+					pageX: touchEvent.pageX,
+					pageY: touchEvent.pageY
+				}];
+				swipeActionStart(touchEvent);
+			}
+		}
+	}
+	function swipeMouseMove(touchEvent) {
+		if (isSwipeMouseDown && (touchEvent.button === 0)) {
+			if (isLogEnabled) swipeDebugTouch += (touchEvent.clientX + ' ' + touchEvent.clientY + ', ');
+			touchEvent.changedTouches = [{
+				identifier: -1,
+				clientX: touchEvent.clientX,
+				clientY: touchEvent.clientY,
+				pageX: touchEvent.pageX,
+				pageY: touchEvent.pageY
+			}];
+			swipeActionMove(touchEvent);
+		}
+	}
+	function swipeMouseUp(touchEvent) {
+		if (isSwipeMouseDown && (touchEvent.button === 0)) {
+			if (isLogEnabled) {
+				console.log('WebApp.js: swipeMouseUp(touchEvent)... X = ' + touchEvent.clientX + ', Y = ' + touchEvent.clientY + ', swipeDebugTouch = ' + swipeDebugTouch);
+				swipeDebugTouch = '';
+			}
+			isSwipeMouseDown = false;
+			touchEvent.changedTouches = [{
+				identifier: -1,
+				clientX: touchEvent.clientX,
+				clientY: touchEvent.clientY,
+				pageX: touchEvent.pageX,
+				pageY: touchEvent.pageY
+			}];
+			swipeActionEnd(touchEvent);
+		}
+	}
+
+	function swipeTouchStart(touchEvent) {
+		if (isLogEnabled) console.log('WebApp.js: swipeTouchStart(touchEvent)... X = ' + touchEvent.changedTouches[0].clientX + ', Y = ' + touchEvent.changedTouches[0].clientY);
+		swipeTouchLastTime = Date.now(); // Required to emulate touchEvent.preventDefault().
+		swipeActionStart(touchEvent);
+	}
+	function swipeTouchMove(touchEvent) {
+		if (isLogEnabled) swipeDebugTouch += (touchEvent.changedTouches[0].clientX + ' ' + touchEvent.changedTouches[0].clientY + ', ');
+		swipeActionMove(touchEvent);
+	}
+	function swipeTouchEnd(touchEvent) {
+		if (isLogEnabled) {
+			console.log('WebApp.js: swipeTouchEnd(touchEvent)... X = ' + touchEvent.changedTouches[0].clientX + ', Y = ' + touchEvent.changedTouches[0].clientY + ', swipeDebugTouch = ' + swipeDebugTouch);
+			swipeDebugTouch = '';
+		}
+		swipeTouchLastTime = Date.now(); // Required to emulate touchEvent.preventDefault().
+		swipeActionEnd(touchEvent);
+	}
+
+	function swipeActionStart(touchEvent) {
+		swipeStartX = touchEvent.changedTouches[0].clientX;
+		swipeStartY = touchEvent.changedTouches[0].clientY;
+	}
+	function swipeActionMove(touchEvent) {
+		swipeMoveX = touchEvent.changedTouches[0].clientX - swipeStartX;
+		swipeMoveY = touchEvent.changedTouches[0].clientY - swipeStartY;
+		if (!swipeMoving && (Math.abs(swipeMoveX) > Math.abs(swipeMoveY * 2))) {
+			swipeMoving = true;
+			currentPage.style.position = 'fixed';
+			currentPage.style.top = currentPage.offsetTop + 'px';
+			swipeCurrentIndex = pageIds.indexOf(currentPage.id);
+			if (swipeMoveX > 0) {
+				swipeMovingPrevious = true;
+				swipeDestinationPage = pageElements[pageIds[swipeCurrentIndex - 1]];
+			} else {
+				swipeMovingNext = true;
+				swipeDestinationPage = pageElements[pageIds[swipeCurrentIndex + 1]];
+			}
+			if (swipeDestinationPage) {
+				swipeDestinationPage.style.display = 'block';
+				swipeDestinationPage.style.position = 'fixed';
+				swipeDestinationPage.style.top = swipeDestinationPage.offsetTop + 'px';
+			}
+		}
+		if (swipeMoving) {
+			touchEvent.stopPropagation();
+			touchEvent.preventDefault();
+			if (swipeMovingPrevious && swipeMoveX < 0) {
+				swipeMovingPrevious = false;
+				swipeMovingNext = true;
+				if (swipeDestinationPage) {
+					swipeDestinationPage.style.display = 'none';
+					swipeDestinationPage.style.position = '';
+					swipeDestinationPage.style.top = '';
+					swipeDestinationPage.style.transform = '';
+					swipeDestinationPage.style.webkitTransform = '';
+				}
+				swipeDestinationPage = pageElements[pageIds[swipeCurrentIndex + 1]];
+				if (swipeDestinationPage) {
+					swipeDestinationPage.style.display = 'block';
+					swipeDestinationPage.style.position = 'fixed';
+					swipeDestinationPage.style.top = swipeDestinationPage.offsetTop + 'px';
+				}
+			} else if (swipeMovingNext && swipeMoveX > 0) {
+				swipeMovingPrevious = true;
+				swipeMovingNext = false;
+				if (swipeDestinationPage) {
+					swipeDestinationPage.style.display = 'none';
+					swipeDestinationPage.style.position = '';
+					swipeDestinationPage.style.top = '';
+					swipeDestinationPage.style.transform = '';
+					swipeDestinationPage.style.webkitTransform = '';
+				}
+				swipeDestinationPage = pageElements[pageIds[swipeCurrentIndex - 1]];
+				if (swipeDestinationPage) {
+					swipeDestinationPage.style.display = 'block';
+					swipeDestinationPage.style.position = 'fixed';
+					swipeDestinationPage.style.top = swipeDestinationPage.offsetTop + 'px';
+				}
+			}
+			currentPage.style.transform = 'translateX(' + swipeMoveX + 'px)';
+			currentPage.style.webkitTransform = 'translateX(' + swipeMoveX + 'px)';
+			if (swipeDestinationPage) {
+				if (swipeMovingPrevious) {
+					swipeDestinationPage.style.transform = 'translateX(' + (swipeMoveX - window.innerWidth) + 'px)';
+					swipeDestinationPage.style.webkitTransform = 'translateX(' + (swipeMoveX - window.innerWidth) + 'px)';
+				} else {
+					swipeDestinationPage.style.transform = 'translateX(' + (window.innerWidth + swipeMoveX) + 'px)';
+					swipeDestinationPage.style.webkitTransform = 'translateX(' + (window.innerWidth + swipeMoveX) + 'px)';
+				}
+			}
+		}
+	}
+	function swipeActionEnd(touchEvent) {
+		if (swipeMoving) {
+			touchEvent.stopPropagation();
+			touchEvent.preventDefault();
+			if (Math.abs(swipeMoveX) > (window.innerWidth / 4) && swipeDestinationPage) {
+				if (swipeMovingNext) {
+					nextPageTransition = 'swipe';
+				} else {
+					nextPageTransition = 'swiperev';
+				}
+				window.location.hash = swipeDestinationPage.id;
+			} else {
+				currentPage.style.position = '';
+				currentPage.style.top = '';
+				currentPage.style.transform = '';
+				currentPage.style.webkitTransform = '';
+				if (swipeDestinationPage) {
+					swipeDestinationPage.style.display = 'none';
+					swipeDestinationPage.style.position = '';
+					swipeDestinationPage.style.top = '';
+					swipeDestinationPage.style.transform = '';
+					swipeDestinationPage.style.webkitTransform = '';
+				}
+			}
+			swipeMoving = false;
+			swipeMovingPrevious = false;
+			swipeMovingNext = false;
+			swipeDestinationPage = null;
+		}
+		swipeStartX = 0;
+		swipeStartY = 0;
+		swipeMoveX = 0;
+		swipeMoveY = 0;
+	}
+
+	function swipeElement(element, fromPx, toPx, stepPx, callback) {
+		var newFromPx = fromPx;
+		var lengthPx = Math.abs(toPx - fromPx);
+		stepPx = Math.abs(stepPx) * ((toPx > fromPx)? 1: -1);
+		(function swipeElementAgain() {
+			newFromPx += stepPx;
+			if (Math.abs(newFromPx - fromPx) >= lengthPx) {
+				element.style.transform = '';
+				element.style.webkitTransform = '';
+				if (typeof callback === 'function') {
+					callback();
+				}
+			} else {
+				element.style.transform = 'translateX(' + newFromPx + 'px)';
+				element.style.webkitTransform = 'translateX(' + newFromPx + 'px)';
+				requestAnimation(swipeElementAgain);
+			}
+		})();
 	}
 
 	//################################################################################//
@@ -1262,7 +1564,7 @@ var WebAppClass = function() {
 
 	/**
 	 * Dispatch keyDown keyboard event.
-	 * It is called automatically on window.onkeydown event,
+	 * It is called automatically on window keydown event,
 	 * but it is useful to simulate keyDown keyboard event for testing.
 	 *
 	 * @param {KeyboardEvent} keyEvent - The keyDown keyboard event.

@@ -1,11 +1,11 @@
 # WebApp
 WebApp is a lightweight (simple and efficient) WEB application framework (library for HTML5 projects), which allow us to fit multiple pages into a single HTML file (following the "single-page application" concept, <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index.html#firstPage?returnDialog" target="_blank">live preview</a>), and also provides a rich set of facilities like:
 - [Minimum startup code](#minimum-startup-code);
+- [Swipe page switch](#swipe-page-switch);
 - [Default application page](#default-application-page);
 - [Dynamic page creation](#dynamic-page-creation);
 - [Global elements](#global-elements);
 - [Page transitions](#page-transitions);
-- [Swipe transition](#swipe-transition) (coming soon);
 - [Key pressed callbacks](#key-pressed-callbacks);
 - [Life cycle callbacks](#life-cycle-callbacks);
 - [History stack management](#history-stack-management);
@@ -71,6 +71,31 @@ Where:
 ```
 
 
+## Swipe page switch:
+Another very common and interesting way to switch between the available pages is "swiping" over them, and WebApp also offers that possibility. Swipe page switch feature is enable by default, but if we need to disable it, we can use _WebApp.setSwipeEnabled(false)_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex02.0_disableSwipe.html#firstPage" target="_blank">live preview</a>):
+
+```html
+<div class="page" id="firstPage">
+	<h1>First Page</h1>
+	<a href="#secondPage">go to the second page</a>
+</div>
+
+<div class="page" id="secondPage">
+	<h1>Second Page</h1>
+	<a href="#firstPage">go to the first page</a>
+</div>
+
+<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+
+<script>
+// Disable swipe page switch:
+WebApp.setSwipeEnabled(false);
+</script>
+```
+
+**Important Note:** WebApp public APIs must be called after the inclusion of WebApp framework library.
+
+
 ## Default application page:
 The default application page is the first _body's child_ class _page_ element, which means that the first request to the basic URL _../index.html_ (without page specification) will be redirected to _../index.html#firstPage_. If we need to set any other element, we can use _WebApp.setDefaultPageId('pageId')_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex02.0_setDefaultPageId.html#secondPage" target="_blank">live preview</a>):
 
@@ -88,12 +113,10 @@ The default application page is the first _body's child_ class _page_ element, w
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
 
 <script>
-	// Set default application page id:
-	WebApp.setDefaultPageId('secondPage');
+// Set default application page id:
+WebApp.setDefaultPageId('secondPage');
 </script>
 ```
-
-**Important Note:** WebApp public APIs must be called after the inclusion of WebApp framework library.
 
 
 ## Dynamic page creation:
@@ -218,10 +241,6 @@ If we need to set an specific page transition to be used once only (without modi
 
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
 ```
-
-
-## Swipe transition:
-Coming soon...
 
 
 ## Key pressed callbacks:
@@ -865,7 +884,7 @@ Delete modal dynamically, and unload it, in order to release memory resources.
 #### getFps()
 Returns the "frames per second" canvas page update rate (default value: 24), which indicates the number of times which canvas page is updated per second.
 
-**Returns:** {Number} The "frames per second" canvas page update rate.
+**Returns:** {number} The "frames per second" canvas page update rate.
 
 #### setFps(fpsRate)
 Set the "frames per second" canvas page update rate (default value: 24), which indicates the number of times which canvas page is updated per second.
@@ -874,7 +893,7 @@ Set the "frames per second" canvas page update rate (default value: 24), which i
 
 | Name    | Type   | Description                                      |
 |---------|--------|--------------------------------------------------|
-| fpsRate | Number | The "frames per second" canvas page update rate. |
+| fpsRate | number | The "frames per second" canvas page update rate. |
 
 #### isCanvasTouch()
 Returns the isCanvasTouch boolean state, which indicates if the WebApp manages canvas page touch/mouse events.
@@ -889,67 +908,6 @@ Set the isCanvasTouch boolean state, which indicates if the WebApp manages canva
 | Name         | Type    | Description                       |
 |--------------|---------|-----------------------------------|
 | booleanState | boolean | The isCanvasTouch boolean state. |
-
-#### isDefaultPageFirstly()
-Returns the default page firstly boolean state, which indicates if the default page must be inserted firstly.
-
-**Returns:** {boolean} The default page firstly boolean state.
-
-#### setDefaultPageFirstly(booleanState)
-Set the default page firstly boolean state, which indicates if the default page must be inserted firstly.
-
-**Parameters:**
-
-| Name         | Type    | Description                             |
-|--------------|---------|-----------------------------------------|
-| booleanState | boolean | The default page firstly boolean state. |
-
-#### isHistoryManaged()
-Returns the history managed boolean state, which indicates if the stack must be manipulate by WebApp.
-
-**Returns:** {boolean} The history managed boolean state.
-
-#### setHistoryManaged(booleanState)
-Set the history managed boolean state, which indicates if the stack must be manipulate by WebApp.
-
-**Parameters:**
-
-| Name         | Type    | Description                        |
-|--------------|---------|------------------------------------|
-| booleanState | boolean | The history managed boolean state. |
-
-#### isHistoryUnique()
-Returns the history unique boolean state, which indicates if the page entries must be unique in the stack.
-
-**Returns:** {boolean} The history unique boolean state.
-
-#### setHistoryUnique(booleanState)
-Set the history unique boolean state, which indicates if the page entries must be unique in the stack.
-
-**Parameters:**
-
-| Name         | Type    | Description                       |
-|--------------|---------|-----------------------------------|
-| booleanState | boolean | The history unique boolean state. |
-
-#### isRedirection()
-Returns the redirection boolean state, which indicates if the next updateHash event must be bypassed (useful to update searchData content without hash processing).
-
-**Returns:** {boolean} The redirection boolean state.
-
-#### setRedirection(booleanState)
-Set the redirection boolean state, which indicates if the next updateHash event must be bypassed (useful to update searchData content without hash processing).
-
-**Parameters:**
-
-| Name         | Type    | Description                    |
-|--------------|---------|--------------------------------|
-| booleanState | boolean | The redirection boolean state. |
-
-#### getHistoryStack()
-Get the historyStack array values, which contains the href historyStack, according to the history stack management.
-
-**Returns:** {array} The href historyStack, according to the history stack management.
 
 #### animateElement(element, animation, callback)
 Animate a node element, according to the supplied animation type (@see getAnimationTypes).
@@ -1069,6 +1027,94 @@ Set the transition type, to be used when switching to the specified modal.
 |----------------|--------|----------------------------|
 | modalId        | string | The modal id string value. |
 | transitionType | string | The transition type.       |
+
+#### isSwipeEnabled()
+Returns the swipe enabled boolean state, which is responsible to enable/disable swipe page switch.
+
+**Returns:** {boolean} The swipe enabled boolean state.
+
+#### setSwipeEnabled(booleanState)
+Set the swipe enabled boolean state, which is responsible to enable/disable swipe page switch.
+
+**Parameters:**
+
+| Name         | Type    | Description                      |
+|--------------|---------|----------------------------------|
+| booleanState | boolean | The swipe enabled boolean state. |
+
+#### swipeElement(element, fromPx, toPx, stepPx, callback)
+Swipe a node element horizontally, according to the supplied fromPx and toPx coordinates.
+
+**Parameters:**
+
+| Name     | Type     | Description                                          |
+|----------|----------|------------------------------------------------------|
+| element  | node     | The node element to be swiped.                       |
+| fromPx   | number   | The swipe movement start position (in pixels).       |
+| toPx     | number   | The swipe movement destination position (in pixels). |
+| stepPx   | number   | The swipe movement step length (in pixels).          |
+| callback | function | The function callback to be invoked after swipe.     |
+
+#### isDefaultPageFirstly()
+Returns the default page firstly boolean state, which indicates if the default page must be inserted firstly.
+
+**Returns:** {boolean} The default page firstly boolean state.
+
+#### setDefaultPageFirstly(booleanState)
+Set the default page firstly boolean state, which indicates if the default page must be inserted firstly.
+
+**Parameters:**
+
+| Name         | Type    | Description                             |
+|--------------|---------|-----------------------------------------|
+| booleanState | boolean | The default page firstly boolean state. |
+
+#### isHistoryManaged()
+Returns the history managed boolean state, which indicates if the stack must be manipulate by WebApp.
+
+**Returns:** {boolean} The history managed boolean state.
+
+#### setHistoryManaged(booleanState)
+Set the history managed boolean state, which indicates if the stack must be manipulate by WebApp.
+
+**Parameters:**
+
+| Name         | Type    | Description                        |
+|--------------|---------|------------------------------------|
+| booleanState | boolean | The history managed boolean state. |
+
+#### isHistoryUnique()
+Returns the history unique boolean state, which indicates if the page entries must be unique in the stack.
+
+**Returns:** {boolean} The history unique boolean state.
+
+#### setHistoryUnique(booleanState)
+Set the history unique boolean state, which indicates if the page entries must be unique in the stack.
+
+**Parameters:**
+
+| Name         | Type    | Description                       |
+|--------------|---------|-----------------------------------|
+| booleanState | boolean | The history unique boolean state. |
+
+#### isRedirection()
+Returns the redirection boolean state, which indicates if the next updateHash event must be bypassed (useful to update searchData content without hash processing).
+
+**Returns:** {boolean} The redirection boolean state.
+
+#### setRedirection(booleanState)
+Set the redirection boolean state, which indicates if the next updateHash event must be bypassed (useful to update searchData content without hash processing).
+
+**Parameters:**
+
+| Name         | Type    | Description                    |
+|--------------|---------|--------------------------------|
+| booleanState | boolean | The redirection boolean state. |
+
+#### getHistoryStack()
+Get the historyStack array values, which contains the href historyStack, according to the history stack management.
+
+**Returns:** {array} The href historyStack, according to the history stack management.
 
 #### load()
 Load the WebApp framework library. It is called automatically after DOMContentLoaded event, but it is useful to reset/reload page elements (according to the current body's children nodes).
