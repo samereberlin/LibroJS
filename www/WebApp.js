@@ -544,6 +544,7 @@ var WebAppClass = function() {
 	var isSwipeMouseDown = false;
 	var isSwipeEnabled = true;
 	var swipeCurrentIndex = 0;
+	var swipeCurrentTop = '0px';
 	var swipeDestinationPage = null;
 	var swipeMoving = false, swipeMovingPrevious = false, swipeMovingNext = false;
 	var swipeStartX = 0, swipeStartY = 0, swipeMoveX = 0, swipeMoveY = 0;
@@ -790,7 +791,7 @@ var WebAppClass = function() {
 				'/* WebApp basic/required CSS rules. */' +
 				'.modal {background-color: rgba(0,0,0,0.5); position: fixed; top: 0; right: 0; bottom: 0; left: 0; overflow: auto; z-index: 3}' +
 				'.modal > * {background-color: white; border-radius: 0.3125em; box-shadow: 0 2px 6px rgba(0,0,0,0.6); margin: 10% auto 1em; max-width: 600px; width: 80%; overflow: hidden}' +
-				'.page {background-color: white; width: 100%;} canvas.page {width: auto;}'
+				'.page {background-color: white; overflow: auto; width: 100%;} canvas.page {width: auto;}'
 			;
 			var head = document.getElementsByTagName('head')[0];
 			head.insertBefore(style, head.firstChild);
@@ -1075,8 +1076,6 @@ var WebAppClass = function() {
 					pageElement.style.transform.lastIndexOf('p')));
 			swipeElement(referrerElement, referrerFromPx, referrerToPx, 25, function() {
 				hideElement(referrerElement, searchData, pageElement);
-				referrerElement.style.position = '';
-				referrerElement.style.top = '';
 			});
 			swipeElement(pageElement, pageFromPx, 0, 25, function() {
 				pageElement.style.position = '';
@@ -1099,18 +1098,15 @@ var WebAppClass = function() {
 				var referrerElement = currentPage;
 				setPage(false);
 				if (nextPageTransition.lastIndexOf('slide', 0) === 0) {
-					referrerElement.style.position = 'fixed';
-					referrerElement.style.zIndex = '-1';
-					referrerElement.style.right = '0';
-					referrerElement.style.left = '0';
-					referrerElement.style.top = referrerElement.offsetTop + 'px';
+					pageElement.style.position = 'fixed';
+					pageElement.style.zIndex = '1';
+					pageElement.style.top = ((referrerElement.offsetTop - window.pageYOffset > 0)?
+							referrerElement.offsetTop - window.pageYOffset: 0) + 'px';
 					animateElement(referrerElement, nextPageTransition + 'out', function() {
 						hideElement(referrerElement, searchData, pageElement);
-						referrerElement.style.position = '';
-						referrerElement.style.zIndex = '';
-						referrerElement.style.right = '';
-						referrerElement.style.left = '';
-						referrerElement.style.top = '';
+						pageElement.style.position = '';
+						pageElement.style.zIndex = '';
+						pageElement.style.top = '';
 					});
 					showNext(referrerElement);
 				} else {
@@ -1424,9 +1420,9 @@ var WebAppClass = function() {
 		swipeMoveY = touchEvent.changedTouches[0].clientY - swipeStartY;
 		if (!swipeMoving && (Math.abs(swipeMoveX) > Math.abs(swipeMoveY * 2))) {
 			swipeMoving = true;
-			currentPage.style.position = 'fixed';
-			currentPage.style.top = currentPage.offsetTop + 'px';
 			swipeCurrentIndex = pageIds.indexOf(currentPage.id);
+			swipeCurrentTop = ((currentPage.offsetTop - window.pageYOffset > 0)?
+					currentPage.offsetTop - window.pageYOffset: 0) + 'px';
 			if (swipeMoveX > 0) {
 				swipeMovingPrevious = true;
 				swipeDestinationPage = pageElements[pageIds[swipeCurrentIndex - 1]];
@@ -1437,7 +1433,7 @@ var WebAppClass = function() {
 			if (swipeDestinationPage) {
 				swipeDestinationPage.style.display = 'block';
 				swipeDestinationPage.style.position = 'fixed';
-				swipeDestinationPage.style.top = swipeDestinationPage.offsetTop + 'px';
+				swipeDestinationPage.style.top = swipeCurrentTop;
 			}
 		}
 		if (swipeMoving) {
@@ -1457,7 +1453,7 @@ var WebAppClass = function() {
 				if (swipeDestinationPage) {
 					swipeDestinationPage.style.display = 'block';
 					swipeDestinationPage.style.position = 'fixed';
-					swipeDestinationPage.style.top = swipeDestinationPage.offsetTop + 'px';
+					swipeDestinationPage.style.top = swipeCurrentTop;
 				}
 			} else if (swipeMovingNext && swipeMoveX > 0) {
 				swipeMovingPrevious = true;
@@ -1473,7 +1469,7 @@ var WebAppClass = function() {
 				if (swipeDestinationPage) {
 					swipeDestinationPage.style.display = 'block';
 					swipeDestinationPage.style.position = 'fixed';
-					swipeDestinationPage.style.top = swipeDestinationPage.offsetTop + 'px';
+					swipeDestinationPage.style.top = swipeCurrentTop;
 				}
 			}
 			currentPage.style.transform = 'translateX(' + swipeMoveX + 'px)';
@@ -1501,8 +1497,6 @@ var WebAppClass = function() {
 				}
 				window.location.hash = swipeDestinationPage.id;
 			} else {
-				currentPage.style.position = '';
-				currentPage.style.top = '';
 				currentPage.style.transform = '';
 				currentPage.style.webkitTransform = '';
 				if (swipeDestinationPage) {
