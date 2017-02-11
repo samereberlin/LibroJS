@@ -1080,6 +1080,7 @@ var WebAppClass = function() {
 			swipeElement(pageElement, pageFromPx, 0, 25, function() {
 				pageElement.style.position = '';
 				pageElement.style.top = '';
+				pageElement.style.width = ''; // Required to solve WebKit unstable width issue.
 				showElement(pageElement, searchData, referrerElement);
 				onSwitchPage(referrerElement);
 				setPage(true);
@@ -1434,6 +1435,7 @@ var WebAppClass = function() {
 				swipeDestinationPage.style.display = 'block';
 				swipeDestinationPage.style.position = 'fixed';
 				swipeDestinationPage.style.top = swipeCurrentTop;
+				swipeDestinationPage.style.width = window.innerWidth + 'px'; // Required to solve WebKit unstable width issue.
 			}
 		}
 		if (swipeMoving) {
@@ -1446,6 +1448,7 @@ var WebAppClass = function() {
 					swipeDestinationPage.style.display = 'none';
 					swipeDestinationPage.style.position = '';
 					swipeDestinationPage.style.top = '';
+					swipeDestinationPage.style.width = ''; // Required to solve WebKit unstable width issue.
 					swipeDestinationPage.style.transform = '';
 					swipeDestinationPage.style.webkitTransform = '';
 				}
@@ -1454,6 +1457,7 @@ var WebAppClass = function() {
 					swipeDestinationPage.style.display = 'block';
 					swipeDestinationPage.style.position = 'fixed';
 					swipeDestinationPage.style.top = swipeCurrentTop;
+					swipeDestinationPage.style.width = window.innerWidth + 'px'; // Required to solve WebKit unstable width issue.
 				}
 			} else if (swipeMovingNext && swipeMoveX > 0) {
 				swipeMovingPrevious = true;
@@ -1462,6 +1466,7 @@ var WebAppClass = function() {
 					swipeDestinationPage.style.display = 'none';
 					swipeDestinationPage.style.position = '';
 					swipeDestinationPage.style.top = '';
+					swipeDestinationPage.style.width = ''; // Required to solve WebKit unstable width issue.
 					swipeDestinationPage.style.transform = '';
 					swipeDestinationPage.style.webkitTransform = '';
 				}
@@ -1470,6 +1475,7 @@ var WebAppClass = function() {
 					swipeDestinationPage.style.display = 'block';
 					swipeDestinationPage.style.position = 'fixed';
 					swipeDestinationPage.style.top = swipeCurrentTop;
+					swipeDestinationPage.style.width = window.innerWidth + 'px'; // Required to solve WebKit unstable width issue.
 				}
 			}
 			currentPage.style.transform = 'translateX(' + swipeMoveX + 'px)';
@@ -1503,6 +1509,7 @@ var WebAppClass = function() {
 					swipeDestinationPage.style.display = 'none';
 					swipeDestinationPage.style.position = '';
 					swipeDestinationPage.style.top = '';
+					swipeDestinationPage.style.width = ''; // Required to solve WebKit unstable width issue.
 					swipeDestinationPage.style.transform = '';
 					swipeDestinationPage.style.webkitTransform = '';
 				}
