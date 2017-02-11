@@ -886,7 +886,7 @@ var WebAppClass = function() {
 		if (isLogEnabled) console.log('WebApp.js: pause()... isRunning: ' + isRunning);
 		if (isRunning) {
 			isRunning = false;
-			setPage(false);
+			setPage(currentPage, false);
 			if (typeof WebApp.onPause === 'function') {
 				WebApp.onPause();
 			}
@@ -897,7 +897,7 @@ var WebAppClass = function() {
 		if (isLogEnabled) console.log('WebApp.js: resume()... isRunning: ' + isRunning);
 		if (!isRunning) {
 			isRunning = true;
-			setPage(true);
+			setPage(currentPage, true);
 			if (typeof WebApp.onResume === 'function') {
 				WebApp.onResume();
 			}
@@ -1066,7 +1066,7 @@ var WebAppClass = function() {
 
 		if (nextPageTransition.lastIndexOf('swipe', 0) === 0) {
 			var referrerElement = currentPage;
-			setPage(false);
+			setPage(referrerElement, false);
 			var referrerFromPx = parseInt(referrerElement.style.transform.substring(
 					referrerElement.style.transform.lastIndexOf('(') + 1,
 					referrerElement.style.transform.lastIndexOf('p')));
@@ -1083,13 +1083,13 @@ var WebAppClass = function() {
 				pageElement.style.width = ''; // Required to solve WebKit unstable width issue.
 				showElement(pageElement, searchData, referrerElement);
 				onSwitchPage(referrerElement);
-				setPage(true);
+				setPage(pageElement, true);
 			});
 		} else {
 			var showNext = function(referrerElement) {
 				animateElement(pageElement, nextPageTransition + 'in', function() {
 					if (pageElement === currentPage) {
-						setPage(true);
+						setPage(pageElement, true);
 					}
 				});
 				showElement(pageElement, searchData, referrerElement);
@@ -1097,7 +1097,7 @@ var WebAppClass = function() {
 			};
 			if (currentPage) {
 				var referrerElement = currentPage;
-				setPage(false);
+				setPage(referrerElement, false);
 				if (nextPageTransition.lastIndexOf('slide', 0) === 0) {
 					pageElement.style.position = 'fixed';
 					pageElement.style.zIndex = '1';
@@ -1123,13 +1123,13 @@ var WebAppClass = function() {
 		currentPage = pageElement;
 	}
 
-	function setPage(booleanState) {
-		if (currentPage) {
-			if (currentPage.canvasContext) {
+	function setPage(pageElement, booleanState) {
+		if (pageElement) {
+			if (pageElement.canvasContext) {
 				if (booleanState) {
 					if (intervalUpdate === 0) {
-						intervalUpdate = setInterval(currentPage.onUpdate, fpsDelay);
-						var canvasPage = currentPage; // Local variable required to absorb the last requestAnimation call.
+						intervalUpdate = setInterval(pageElement.onUpdate, fpsDelay);
+						var canvasPage = pageElement; // Local variable required to absorb the last requestAnimation call.
 						(function draw() {
 							canvasPage.onDraw();
 							if (isRunning) {
@@ -1137,15 +1137,15 @@ var WebAppClass = function() {
 							}
 						})();
 						if (isCanvasTouch) {
-							currentPage.addEventListener('mousedown', canvasMouseDown);
-							currentPage.addEventListener('mousemove', canvasMouseMove);
-							currentPage.addEventListener('mouseup', canvasMouseUp);
-							currentPage.addEventListener('mouseout', canvasMouseUp);
+							pageElement.addEventListener('mousedown', canvasMouseDown);
+							pageElement.addEventListener('mousemove', canvasMouseMove);
+							pageElement.addEventListener('mouseup', canvasMouseUp);
+							pageElement.addEventListener('mouseout', canvasMouseUp);
 							if (isTouchSupported) {
-								currentPage.addEventListener('touchstart', canvasTouchStart);
-								currentPage.addEventListener('touchmove', canvasTouchMove);
-								currentPage.addEventListener('touchend', canvasTouchEnd);
-								currentPage.addEventListener('touchcancel', canvasTouchEnd);
+								pageElement.addEventListener('touchstart', canvasTouchStart);
+								pageElement.addEventListener('touchmove', canvasTouchMove);
+								pageElement.addEventListener('touchend', canvasTouchEnd);
+								pageElement.addEventListener('touchcancel', canvasTouchEnd);
 							}
 						}
 					}
@@ -1153,41 +1153,41 @@ var WebAppClass = function() {
 					clearInterval(intervalUpdate);
 					intervalUpdate = 0;
 					if (isCanvasTouch) {
-						currentPage.removeEventListener('mousedown', canvasMouseDown);
-						currentPage.removeEventListener('mousemove', canvasMouseMove);
-						currentPage.removeEventListener('mouseup', canvasMouseUp);
-						currentPage.removeEventListener('mouseout', canvasMouseUp);
+						pageElement.removeEventListener('mousedown', canvasMouseDown);
+						pageElement.removeEventListener('mousemove', canvasMouseMove);
+						pageElement.removeEventListener('mouseup', canvasMouseUp);
+						pageElement.removeEventListener('mouseout', canvasMouseUp);
 						if (isTouchSupported) {
-							currentPage.removeEventListener('touchstart', canvasTouchStart);
-							currentPage.removeEventListener('touchmove', canvasTouchMove);
-							currentPage.removeEventListener('touchend', canvasTouchEnd);
-							currentPage.removeEventListener('touchcancel', canvasTouchEnd);
+							pageElement.removeEventListener('touchstart', canvasTouchStart);
+							pageElement.removeEventListener('touchmove', canvasTouchMove);
+							pageElement.removeEventListener('touchend', canvasTouchEnd);
+							pageElement.removeEventListener('touchcancel', canvasTouchEnd);
 						}
 					}
 				}
 			} else {
 				if (isSwipeEnabled) {
 					if (booleanState) {
-						currentPage.addEventListener('mousedown', swipeMouseDown);
-						currentPage.addEventListener('mousemove', swipeMouseMove);
-						currentPage.addEventListener('mouseup', swipeMouseUp);
-						currentPage.addEventListener('mouseout', swipeMouseUp);
+						pageElement.addEventListener('mousedown', swipeMouseDown);
+						pageElement.addEventListener('mousemove', swipeMouseMove);
+						pageElement.addEventListener('mouseup', swipeMouseUp);
+						pageElement.addEventListener('mouseout', swipeMouseUp);
 						if (isTouchSupported) {
-							currentPage.addEventListener('touchstart', swipeTouchStart);
-							currentPage.addEventListener('touchmove', swipeTouchMove);
-							currentPage.addEventListener('touchend', swipeTouchEnd);
-							currentPage.addEventListener('touchcancel', swipeTouchEnd);
+							pageElement.addEventListener('touchstart', swipeTouchStart);
+							pageElement.addEventListener('touchmove', swipeTouchMove);
+							pageElement.addEventListener('touchend', swipeTouchEnd);
+							pageElement.addEventListener('touchcancel', swipeTouchEnd);
 						}
 					} else {
-						currentPage.removeEventListener('mousedown', swipeMouseDown);
-						currentPage.removeEventListener('mousemove', swipeMouseMove);
-						currentPage.removeEventListener('mouseup', swipeMouseUp);
-						currentPage.removeEventListener('mouseout', swipeMouseUp);
+						pageElement.removeEventListener('mousedown', swipeMouseDown);
+						pageElement.removeEventListener('mousemove', swipeMouseMove);
+						pageElement.removeEventListener('mouseup', swipeMouseUp);
+						pageElement.removeEventListener('mouseout', swipeMouseUp);
 						if (isTouchSupported) {
-							currentPage.removeEventListener('touchstart', swipeTouchStart);
-							currentPage.removeEventListener('touchmove', swipeTouchMove);
-							currentPage.removeEventListener('touchend', swipeTouchEnd);
-							currentPage.removeEventListener('touchcancel', swipeTouchEnd);
+							pageElement.removeEventListener('touchstart', swipeTouchStart);
+							pageElement.removeEventListener('touchmove', swipeTouchMove);
+							pageElement.removeEventListener('touchend', swipeTouchEnd);
+							pageElement.removeEventListener('touchcancel', swipeTouchEnd);
 						}
 					}
 				}
