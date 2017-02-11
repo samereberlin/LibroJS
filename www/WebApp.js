@@ -341,6 +341,9 @@ var WebAppClass = function() {
 	 */
 	this.setCanvasTouch = function(booleanState) {
 		isCanvasTouch = booleanState;
+		if (currentPage && currentPage.canvasContext) {
+			setPageCanvasTouch(currentPage, booleanState);
+		}
 	};
 
 	//################################################################################//
@@ -570,6 +573,9 @@ var WebAppClass = function() {
 	 */
 	this.setSwipeEnabled = function(booleanState) {
 		isSwipeEnabled = booleanState;
+		if (currentPage && !currentPage.canvasContext) {
+			setPageSwipeEnabled(currentPage, booleanState);
+		}
 	};
 
 	/**
@@ -1134,61 +1140,70 @@ var WebAppClass = function() {
 								requestAnimation(draw);
 							}
 						})();
-						if (isCanvasTouch) {
-							pageElement.addEventListener('mousedown', canvasMouseDown);
-							pageElement.addEventListener('mousemove', canvasMouseMove);
-							pageElement.addEventListener('mouseup', canvasMouseUp);
-							pageElement.addEventListener('mouseout', canvasMouseUp);
-							if (isTouchSupported) {
-								pageElement.addEventListener('touchstart', canvasTouchStart);
-								pageElement.addEventListener('touchmove', canvasTouchMove);
-								pageElement.addEventListener('touchend', canvasTouchEnd);
-								pageElement.addEventListener('touchcancel', canvasTouchEnd);
-							}
-						}
 					}
 				} else {
 					clearInterval(intervalUpdate);
 					intervalUpdate = 0;
-					if (isCanvasTouch) {
-						pageElement.removeEventListener('mousedown', canvasMouseDown);
-						pageElement.removeEventListener('mousemove', canvasMouseMove);
-						pageElement.removeEventListener('mouseup', canvasMouseUp);
-						pageElement.removeEventListener('mouseout', canvasMouseUp);
-						if (isTouchSupported) {
-							pageElement.removeEventListener('touchstart', canvasTouchStart);
-							pageElement.removeEventListener('touchmove', canvasTouchMove);
-							pageElement.removeEventListener('touchend', canvasTouchEnd);
-							pageElement.removeEventListener('touchcancel', canvasTouchEnd);
-						}
-					}
+				}
+				if (isCanvasTouch) {
+					setPageCanvasTouch(pageElement, booleanState);
 				}
 			} else {
 				if (isSwipeEnabled) {
-					if (booleanState) {
-						pageElement.addEventListener('mousedown', swipeMouseDown);
-						pageElement.addEventListener('mousemove', swipeMouseMove);
-						pageElement.addEventListener('mouseup', swipeMouseUp);
-						pageElement.addEventListener('mouseout', swipeMouseUp);
-						if (isTouchSupported) {
-							pageElement.addEventListener('touchstart', swipeTouchStart);
-							pageElement.addEventListener('touchmove', swipeTouchMove);
-							pageElement.addEventListener('touchend', swipeTouchEnd);
-							pageElement.addEventListener('touchcancel', swipeTouchEnd);
-						}
-					} else {
-						pageElement.removeEventListener('mousedown', swipeMouseDown);
-						pageElement.removeEventListener('mousemove', swipeMouseMove);
-						pageElement.removeEventListener('mouseup', swipeMouseUp);
-						pageElement.removeEventListener('mouseout', swipeMouseUp);
-						if (isTouchSupported) {
-							pageElement.removeEventListener('touchstart', swipeTouchStart);
-							pageElement.removeEventListener('touchmove', swipeTouchMove);
-							pageElement.removeEventListener('touchend', swipeTouchEnd);
-							pageElement.removeEventListener('touchcancel', swipeTouchEnd);
-						}
-					}
+					setPageSwipeEnabled(pageElement, booleanState);
 				}
+			}
+		}
+	}
+
+	function setPageCanvasTouch(pageElement, booleanState) {
+		if (booleanState) {
+			pageElement.addEventListener('mousedown', canvasMouseDown);
+			pageElement.addEventListener('mousemove', canvasMouseMove);
+			pageElement.addEventListener('mouseup', canvasMouseUp);
+			pageElement.addEventListener('mouseout', canvasMouseUp);
+			if (isTouchSupported) {
+				pageElement.addEventListener('touchstart', canvasTouchStart);
+				pageElement.addEventListener('touchmove', canvasTouchMove);
+				pageElement.addEventListener('touchend', canvasTouchEnd);
+				pageElement.addEventListener('touchcancel', canvasTouchEnd);
+			}
+		} else {
+			pageElement.removeEventListener('mousedown', canvasMouseDown);
+			pageElement.removeEventListener('mousemove', canvasMouseMove);
+			pageElement.removeEventListener('mouseup', canvasMouseUp);
+			pageElement.removeEventListener('mouseout', canvasMouseUp);
+			if (isTouchSupported) {
+				pageElement.removeEventListener('touchstart', canvasTouchStart);
+				pageElement.removeEventListener('touchmove', canvasTouchMove);
+				pageElement.removeEventListener('touchend', canvasTouchEnd);
+				pageElement.removeEventListener('touchcancel', canvasTouchEnd);
+			}
+		}
+	}
+
+	function setPageSwipeEnabled(pageElement, booleanState) {
+		if (booleanState) {
+			pageElement.addEventListener('mousedown', swipeMouseDown);
+			pageElement.addEventListener('mousemove', swipeMouseMove);
+			pageElement.addEventListener('mouseup', swipeMouseUp);
+			pageElement.addEventListener('mouseout', swipeMouseUp);
+			if (isTouchSupported) {
+				pageElement.addEventListener('touchstart', swipeTouchStart);
+				pageElement.addEventListener('touchmove', swipeTouchMove);
+				pageElement.addEventListener('touchend', swipeTouchEnd);
+				pageElement.addEventListener('touchcancel', swipeTouchEnd);
+			}
+		} else {
+			pageElement.removeEventListener('mousedown', swipeMouseDown);
+			pageElement.removeEventListener('mousemove', swipeMouseMove);
+			pageElement.removeEventListener('mouseup', swipeMouseUp);
+			pageElement.removeEventListener('mouseout', swipeMouseUp);
+			if (isTouchSupported) {
+				pageElement.removeEventListener('touchstart', swipeTouchStart);
+				pageElement.removeEventListener('touchmove', swipeTouchMove);
+				pageElement.removeEventListener('touchend', swipeTouchEnd);
+				pageElement.removeEventListener('touchcancel', swipeTouchEnd);
 			}
 		}
 	}
