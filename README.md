@@ -72,7 +72,7 @@ Where:
 
 
 ## Swipe page switch:
-Another very common and interesting way to switch between the available pages is "swiping" over them, and WebApp also offers that possibility. Swipe page switch feature is enable by default, but if we need to disable it, we can use _WebApp.setSwipeEnabled(false)_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex02.0_disableSwipe.html#firstPage" target="_blank">live preview</a>):
+Another very common and interesting way to switch between the available pages is "swiping" over them, and WebApp also offers that possibility. Swipe page switch feature is disable by default, and to enable it, we can use _WebApp.setSwipeEnabled(true)_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex02.0_enableSwipe.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -88,8 +88,8 @@ Another very common and interesting way to switch between the available pages is
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
 
 <script>
-// Disable swipe page switch:
-WebApp.setSwipeEnabled(false);
+// Enable swipe page switch:
+WebApp.setSwipeEnabled(true);
 </script>
 ```
 

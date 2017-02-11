@@ -102,6 +102,12 @@
 		</label>
 		<br>
 		<br>
+		<label style="white-space:nowrap;"><input style="vertical-align: middle;" type="checkbox" onchange="WebApp.setSwipeEnabled(this.checked);" checked> WebApp.setSwipeEnabled</label>
+		<br>
+		<br>
+		<label style="white-space:nowrap;"><input style="vertical-align: middle;" type="checkbox" onchange="WebApp.setCanvasTouch(this.checked);" checked> WebApp.setCanvasTouch</label>
+		<br>
+		<br>
 		<a href="javascript:window.history.back();">(hide modal)</a>
 	</div>
 </div>
@@ -134,6 +140,9 @@
 <script>
 var logMonitor = document.getElementById('logMonitor');
 
+// Enable swipe page switch:
+WebApp.setSwipeEnabled(true);
+
 // Set browser error callback:
 window.onerror = function (msg, url, lineNo, columnNo, error) {
 	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:red;">window.onerror...' +
@@ -142,14 +151,6 @@ window.onerror = function (msg, url, lineNo, columnNo, error) {
 		'<br>&nbsp;&nbsp;&nbsp;&nbsp;lineNo: ' + lineNo + ', columnNo: ' + columnNo +
 		'<br>&nbsp;&nbsp;&nbsp;&nbsp;error: ' + error + '</span>';
 };
-
-// Set command button action:
-function executeCommand() {
-	var command = prompt('Type the command to be executed:');
-	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:red;">command... ' +
-		'<br>&nbsp;&nbsp;&nbsp;&nbsp;input: ' + command +
-		'<br>&nbsp;&nbsp;&nbsp;&nbsp;output: ' + eval(command);
-}
 
 // Set global callbacks:
 WebApp.onLoad = function() {
@@ -443,6 +444,14 @@ function createPreviousPage(currentPageElement) {
 		WebApp.deletePage((currentIdIntValue + 1).toString());
 		this.onHide = dynamicOnHide;
 	};
+}
+
+// Create command button prompt and execute action:
+function executeCommand() {
+	var command = prompt('Type the command to be executed:');
+	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:green;">command... ' +
+		'<br>&nbsp;&nbsp;&nbsp;&nbsp;input: ' + command +
+		'<br>&nbsp;&nbsp;&nbsp;&nbsp;output: ' + eval(command);
 }
 </script>
 
