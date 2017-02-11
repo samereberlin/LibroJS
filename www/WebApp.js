@@ -1088,9 +1088,7 @@ var WebAppClass = function() {
 		} else {
 			var showNext = function(referrerElement) {
 				animateElement(pageElement, nextPageTransition + 'in', function() {
-					if (pageElement === currentPage) {
-						setPage(pageElement, true);
-					}
+					setPage(pageElement, true);
 				});
 				showElement(pageElement, searchData, referrerElement);
 				onSwitchPage(referrerElement);
