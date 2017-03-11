@@ -892,7 +892,9 @@ var WebAppClass = function() {
 		if (isLogEnabled) console.log('WebApp.js: pause()... isRunning: ' + isRunning);
 		if (isRunning) {
 			isRunning = false;
-			setPage(currentPage, false);
+			if (currentPage) {
+				setPage(currentPage, false);
+			}
 			if (typeof WebApp.onPause === 'function') {
 				WebApp.onPause();
 			}
@@ -903,7 +905,9 @@ var WebAppClass = function() {
 		if (isLogEnabled) console.log('WebApp.js: resume()... isRunning: ' + isRunning);
 		if (!isRunning) {
 			isRunning = true;
-			setPage(currentPage, true);
+			if (currentPage) {
+				setPage(currentPage, true);
+			}
 			if (typeof WebApp.onResume === 'function') {
 				WebApp.onResume();
 			}
@@ -1128,30 +1132,28 @@ var WebAppClass = function() {
 	}
 
 	function setPage(pageElement, booleanState) {
-		if (pageElement) {
-			if (pageElement.canvasContext) {
-				if (booleanState) {
-					if (intervalUpdate === 0) {
-						intervalUpdate = setInterval(pageElement.onUpdate, fpsDelay);
-						var canvasPage = pageElement; // Local variable required to absorb the last requestAnimation call.
-						(function draw() {
-							canvasPage.onDraw();
-							if (isRunning) {
-								requestAnimation(draw);
-							}
-						})();
-					}
-				} else {
-					clearInterval(intervalUpdate);
-					intervalUpdate = 0;
+		if (pageElement.canvasContext) {
+			if (booleanState) {
+				if (intervalUpdate === 0) {
+					intervalUpdate = setInterval(pageElement.onUpdate, fpsDelay);
+					var canvasPage = pageElement; // Local variable required to absorb the last requestAnimation call.
+					(function draw() {
+						canvasPage.onDraw();
+						if (isRunning) {
+							requestAnimation(draw);
+						}
+					})();
 				}
-				if (isCanvasTouchable) {
-					setPageCanvasTouchable(pageElement, booleanState);
-				}
+			} else {
+				clearInterval(intervalUpdate);
+				intervalUpdate = 0;
 			}
-			if (isSwipePageSwitch) {
-				setPageSwipePageSwitch(pageElement, booleanState);
+			if (isCanvasTouchable) {
+				setPageCanvasTouchable(pageElement, booleanState);
 			}
+		}
+		if (isSwipePageSwitch) {
+			setPageSwipePageSwitch(pageElement, booleanState);
 		}
 	}
 
