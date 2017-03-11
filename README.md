@@ -72,7 +72,7 @@ Where:
 
 
 ## Swipe page switch:
-Another very common and interesting way to switch between the available pages is "swiping" over them, and WebApp also offers that possibility. Swipe page switch feature is disable by default, and to enable it, we can use _WebApp.setSwipeEnabled(true)_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex02.0_enableSwipe.html#firstPage" target="_blank">live preview</a>):
+Another very common and interesting way to switch between the available pages is "swiping" over them, and WebApp also offers that possibility. Swipe page switch feature is disable by default, and to enable it, we can use _WebApp.setSwipePageSwitch(true)_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex02.0_enableSwipe.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -89,7 +89,7 @@ Another very common and interesting way to switch between the available pages is
 
 <script>
 // Enable swipe page switch:
-WebApp.setSwipeEnabled(true);
+WebApp.setSwipePageSwitch(true);
 </script>
 ```
 
@@ -348,9 +348,9 @@ secondPageElement.onHide = function(nextSearchData, nextElement) {
 - canvasPageElement.onUpdateSearch(searchData);
 - canvasPageElement.onDraw();
 - canvasPageElement.onUpdate();
-- canvasPageElement.onCanvasTouchStart(touchEvent);
-- canvasPageElement.onCanvasTouchMove(touchEvent);
-- canvasPageElement.onCanvasTouchEnd(touchEvent);
+- canvasPageElement.onCanvasTouchableStart(touchEvent);
+- canvasPageElement.onCanvasTouchableMove(touchEvent);
+- canvasPageElement.onCanvasTouchableEnd(touchEvent);
 
 Where:
 - `searchData` is the URL hash content from the question mark (if present) to the end. For example, in case of `index.html#fistPage?foo=bar`, the searchData would be `foo=bar`.
@@ -700,7 +700,7 @@ WebApp.onResize = function() {
 </script>
 ```
 
-Another interesting canvas page feature is the "canvas touch" engine, which offers three additional callbacks (onCanvasTouchStart, onCanvasTouchMove, and onCanvasTouchEnd), useful to handle with mouse/touch events. The interesting point here is that "canvas touch" engine converts all mouse detected actions into equivalent touch events, which allow us to process pointer events easily at once, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.3_canvasTouch.html#firstPage" target="_blank">live preview</a>), and _setCanvasTouch(false)_ public API can be used when we prefer to handle pointer events by our selves:
+Another interesting canvas page feature is the "canvas touch" engine, which offers three additional callbacks (onCanvasTouchableStart, onCanvasTouchableMove, and onCanvasTouchableEnd), useful to handle with mouse/touch events. The interesting point here is that "canvas touch" engine converts all mouse detected actions into equivalent touch events, which allow us to process pointer events easily at once, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.3_canvasTouch.html#firstPage" target="_blank">live preview</a>), and _setCanvasTouchable(false)_ public API can be used when we prefer to handle pointer events by our selves:
 
 ```html
 <div class="page" id="firstPage">
@@ -747,9 +747,9 @@ function moveCircle(touchEvent) {
 	xPos = touchEvent.changedTouches[0].pageX - secondPageElement.offsetLeft;
 	yPos = touchEvent.changedTouches[0].pageY - secondPageElement.offsetTop;
 }
-secondPageElement.onCanvasTouchStart = moveCircle;
-secondPageElement.onCanvasTouchMove = moveCircle;
-secondPageElement.onCanvasTouchEnd = moveCircle;
+secondPageElement.onCanvasTouchableStart = moveCircle;
+secondPageElement.onCanvasTouchableMove = moveCircle;
+secondPageElement.onCanvasTouchableEnd = moveCircle;
 
 // Set global onResize callback:
 WebApp.onResize = function() {
@@ -898,19 +898,19 @@ Set the "frames per second" canvas page update rate (default value: 24), which i
 |---------|--------|--------------------------------------------------|
 | fpsRate | number | The "frames per second" canvas page update rate. |
 
-#### isCanvasTouch()
-Returns the isCanvasTouch boolean state, which indicates if the WebApp manages canvas page touch/mouse events.
+#### isCanvasTouchable()
+Returns the isCanvasTouchable boolean state, which indicates if the WebApp manages canvas page touch/mouse events.
 
-**Returns:** {boolean} The isCanvasTouch boolean state.
+**Returns:** {boolean} The isCanvasTouchable boolean state.
 
-#### setCanvasTouch(booleanState)
-Set the isCanvasTouch boolean state, which indicates if the WebApp manages canvas page touch/mouse events.
+#### setCanvasTouchable(booleanState)
+Set the isCanvasTouchable boolean state, which indicates if the WebApp manages canvas page touch/mouse events.
 
 **Parameters:**
 
-| Name         | Type    | Description                       |
-|--------------|---------|-----------------------------------|
-| booleanState | boolean | The isCanvasTouch boolean state. |
+| Name         | Type    | Description                          |
+|--------------|---------|--------------------------------------|
+| booleanState | boolean | The isCanvasTouchable boolean state. |
 
 #### animateElement(element, animation, callback)
 Animate a node element, according to the supplied animation type (@see getAnimationTypes).
@@ -1031,12 +1031,12 @@ Set the transition type, to be used when switching to the specified modal.
 | modalId        | string | The modal id string value. |
 | transitionType | string | The transition type.       |
 
-#### isSwipeEnabled()
+#### isSwipePageSwitch()
 Returns the swipe enabled boolean state, which is responsible to enable/disable swipe page switch.
 
 **Returns:** {boolean} The swipe enabled boolean state.
 
-#### setSwipeEnabled(booleanState)
+#### setSwipePageSwitch(booleanState)
 Set the swipe enabled boolean state, which is responsible to enable/disable swipe page switch.
 
 **Parameters:**

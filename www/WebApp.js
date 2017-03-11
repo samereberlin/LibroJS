@@ -318,31 +318,31 @@ var WebAppClass = function() {
 	var canvasTouchLastTime = 0; // Required to solve touchEvent.preventDefault() issue.
 	var canvasDebugTouch = '';
 	var isCanvasMouseDown = false;
-	var isCanvasTouch = true;
+	var isCanvasTouchable = true;
 
 	//################################################################################//
 	// Canvas touch API:
 
 	/**
-	 * Returns the isCanvasTouch boolean state,
+	 * Returns the isCanvasTouchable boolean state,
 	 * which indicates if the WebApp manages canvas page touch/mouse events.
 	 *
-	 * @return {boolean} The isCanvasTouch boolean state.
+	 * @return {boolean} The isCanvasTouchable boolean state.
 	 */
-	this.isCanvasTouch = function() {
-		return isCanvasTouch;
+	this.isCanvasTouchable = function() {
+		return isCanvasTouchable;
 	};
 
 	/**
-	 * Set the isCanvasTouch boolean state,
+	 * Set the isCanvasTouchable boolean state,
 	 * which indicates if the WebApp manages canvas page touch/mouse events.
 	 *
-	 * @param {boolean} booleanState - The isCanvasTouch boolean state.
+	 * @param {boolean} booleanState - The isCanvasTouchable boolean state.
 	 */
-	this.setCanvasTouch = function(booleanState) {
-		isCanvasTouch = booleanState;
+	this.setCanvasTouchable = function(booleanState) {
+		isCanvasTouchable = booleanState;
 		if (currentPage && currentPage.canvasContext) {
-			setPageCanvasTouch(currentPage, booleanState);
+			setPageCanvasTouchable(currentPage, booleanState);
 		}
 	};
 
@@ -545,7 +545,7 @@ var WebAppClass = function() {
 	var swipeTouchLastTime = 0; // Required to emulate touchEvent.preventDefault().
 	var swipeDebugTouch = '';
 	var isSwipeMouseDown = false;
-	var isSwipeEnabled = false;
+	var isSwipePageSwitch = false;
 	var swipeCurrentIndex = 0;
 	var swipeCurrentTop = '0px';
 	var swipeDestinationPage = null;
@@ -561,8 +561,8 @@ var WebAppClass = function() {
 	 *
 	 * @return {boolean} The swipe enabled boolean state.
 	 */
-	this.isSwipeEnabled = function() {
-		return isSwipeEnabled;
+	this.isSwipePageSwitch = function() {
+		return isSwipePageSwitch;
 	};
 
 	/**
@@ -571,10 +571,10 @@ var WebAppClass = function() {
 	 *
 	 * @param {boolean} booleanState - The swipe enabled boolean state.
 	 */
-	this.setSwipeEnabled = function(booleanState) {
-		isSwipeEnabled = booleanState;
+	this.setSwipePageSwitch = function(booleanState) {
+		isSwipePageSwitch = booleanState;
 		if (currentPage && !currentPage.canvasContext) {
-			setPageSwipeEnabled(currentPage, booleanState);
+			setPageSwipePageSwitch(currentPage, booleanState);
 		}
 	};
 
@@ -841,14 +841,14 @@ var WebAppClass = function() {
 			if (typeof element.onDraw !== 'function') {
 				element.onDraw = function() {};
 			}
-			if (typeof element.onCanvasTouchStart !== 'function') {
-				element.onCanvasTouchStart = function() {};
+			if (typeof element.onCanvasTouchableStart !== 'function') {
+				element.onCanvasTouchableStart = function() {};
 			}
-			if (typeof element.onCanvasTouchMove !== 'function') {
-				element.onCanvasTouchMove = function() {};
+			if (typeof element.onCanvasTouchableMove !== 'function') {
+				element.onCanvasTouchableMove = function() {};
 			}
-			if (typeof element.onCanvasTouchEnd !== 'function') {
-				element.onCanvasTouchEnd = function() {};
+			if (typeof element.onCanvasTouchableEnd !== 'function') {
+				element.onCanvasTouchableEnd = function() {};
 			}
 		}
 	}
@@ -1145,18 +1145,18 @@ var WebAppClass = function() {
 					clearInterval(intervalUpdate);
 					intervalUpdate = 0;
 				}
-				if (isCanvasTouch) {
-					setPageCanvasTouch(pageElement, booleanState);
+				if (isCanvasTouchable) {
+					setPageCanvasTouchable(pageElement, booleanState);
 				}
 			} else {
-				if (isSwipeEnabled) {
-					setPageSwipeEnabled(pageElement, booleanState);
+				if (isSwipePageSwitch) {
+					setPageSwipePageSwitch(pageElement, booleanState);
 				}
 			}
 		}
 	}
 
-	function setPageCanvasTouch(pageElement, booleanState) {
+	function setPageCanvasTouchable(pageElement, booleanState) {
 		if (booleanState) {
 			pageElement.addEventListener('mousedown', canvasMouseDown);
 			pageElement.addEventListener('mousemove', canvasMouseMove);
@@ -1182,7 +1182,7 @@ var WebAppClass = function() {
 		}
 	}
 
-	function setPageSwipeEnabled(pageElement, booleanState) {
+	function setPageSwipePageSwitch(pageElement, booleanState) {
 		if (booleanState) {
 			pageElement.addEventListener('mousedown', swipeMouseDown);
 			pageElement.addEventListener('mousemove', swipeMouseMove);
@@ -1294,7 +1294,7 @@ var WebAppClass = function() {
 					pageX: touchEvent.pageX,
 					pageY: touchEvent.pageY
 				}];
-				currentPage.onCanvasTouchStart(touchEvent);
+				currentPage.onCanvasTouchableStart(touchEvent);
 			}
 		}
 	}
@@ -1310,7 +1310,7 @@ var WebAppClass = function() {
 				pageX: touchEvent.pageX,
 				pageY: touchEvent.pageY
 			}];
-			currentPage.onCanvasTouchMove(touchEvent);
+			currentPage.onCanvasTouchableMove(touchEvent);
 		}
 	}
 	function canvasMouseUp(touchEvent) {
@@ -1329,7 +1329,7 @@ var WebAppClass = function() {
 				pageX: touchEvent.pageX,
 				pageY: touchEvent.pageY
 			}];
-			currentPage.onCanvasTouchEnd(touchEvent);
+			currentPage.onCanvasTouchableEnd(touchEvent);
 		}
 	}
 
@@ -1338,13 +1338,13 @@ var WebAppClass = function() {
 		touchEvent.stopPropagation();
 		touchEvent.preventDefault();
 		canvasTouchLastTime = Date.now(); // Required to solve touchEvent.preventDefault() issue.
-		currentPage.onCanvasTouchStart(touchEvent);
+		currentPage.onCanvasTouchableStart(touchEvent);
 	}
 	function canvasTouchMove(touchEvent) {
 		if (isLogEnabled) canvasDebugTouch += (touchEvent.changedTouches[0].clientX + ' ' + touchEvent.changedTouches[0].clientY + ', ');
 		touchEvent.stopPropagation();
 		touchEvent.preventDefault();
-		currentPage.onCanvasTouchMove(touchEvent);
+		currentPage.onCanvasTouchableMove(touchEvent);
 	}
 	function canvasTouchEnd(touchEvent) {
 		if (isLogEnabled) {
@@ -1354,7 +1354,7 @@ var WebAppClass = function() {
 		touchEvent.stopPropagation();
 		touchEvent.preventDefault();
 		canvasTouchLastTime = Date.now(); // Required to solve touchEvent.preventDefault() issue.
-		currentPage.onCanvasTouchEnd(touchEvent);
+		currentPage.onCanvasTouchableEnd(touchEvent);
 	}
 
 	//################################################################################//

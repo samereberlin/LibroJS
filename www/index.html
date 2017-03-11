@@ -102,10 +102,10 @@
 		</label>
 		<br>
 		<br>
-		<label style="white-space:nowrap;"><input style="vertical-align: middle;" type="checkbox" onchange="WebApp.setSwipeEnabled(this.checked);" checked> WebApp.setSwipeEnabled</label>
+		<label style="white-space:nowrap;"><input style="vertical-align: middle;" type="checkbox" onchange="WebApp.setSwipePageSwitch(this.checked);" checked> WebApp.setSwipePageSwitch</label>
 		<br>
 		<br>
-		<label style="white-space:nowrap;"><input style="vertical-align: middle;" type="checkbox" onchange="WebApp.setCanvasTouch(this.checked);" checked> WebApp.setCanvasTouch</label>
+		<label style="white-space:nowrap;"><input style="vertical-align: middle;" type="checkbox" onchange="WebApp.setCanvasTouchable(this.checked);" checked> WebApp.setCanvasTouchable</label>
 		<br>
 		<br>
 		<a href="javascript:window.history.back();">(hide modal)</a>
@@ -141,7 +141,7 @@
 var logMonitor = document.getElementById('logMonitor');
 
 // Enable swipe page switch:
-WebApp.setSwipeEnabled(true);
+WebApp.setSwipePageSwitch(true);
 
 // Set browser error callback:
 window.onerror = function (msg, url, lineNo, columnNo, error) {
@@ -312,8 +312,8 @@ function createCanvasPage() {
 	canvasPageElement.onShow = canvasOnShow;
 	canvasPageElement.onHide = canvasOnHide;
 	canvasPageElement.onUpdateSearch = canvasOnUpdateSearch;
-	canvasPageElement.onCanvasTouchStart = canvasOnTouch;
-	canvasPageElement.onCanvasTouchMove = canvasOnTouch;
+	canvasPageElement.onCanvasTouchableStart = canvasOnTouch;
+	canvasPageElement.onCanvasTouchableMove = canvasOnTouch;
 	canvasPageElement.onUpdate = canvasOnUpdate;
 	canvasPageElement.onDraw = canvasOnDraw;
 	// Go to the new created page:

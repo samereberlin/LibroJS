@@ -55,9 +55,9 @@ function moveCircle(touchEvent) {
 	xPos = touchEvent.changedTouches[0].pageX - secondPageElement.offsetLeft;
 	yPos = touchEvent.changedTouches[0].pageY - secondPageElement.offsetTop;
 }
-secondPageElement.onCanvasTouchStart = moveCircle;
-secondPageElement.onCanvasTouchMove = moveCircle;
-secondPageElement.onCanvasTouchEnd = moveCircle;
+secondPageElement.onCanvasTouchableStart = moveCircle;
+secondPageElement.onCanvasTouchableMove = moveCircle;
+secondPageElement.onCanvasTouchableEnd = moveCircle;
 
 // Set global onResize callback:
 WebApp.onResize = function() {
