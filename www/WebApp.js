@@ -1148,10 +1148,9 @@ var WebAppClass = function() {
 				if (isCanvasTouchable) {
 					setPageCanvasTouchable(pageElement, booleanState);
 				}
-			} else {
-				if (isSwipePageSwitch) {
-					setPageSwipePageSwitch(pageElement, booleanState);
-				}
+			}
+			if (isSwipePageSwitch) {
+				setPageSwipePageSwitch(pageElement, booleanState);
 			}
 		}
 	}
