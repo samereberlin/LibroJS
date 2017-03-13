@@ -97,7 +97,7 @@ WebApp.setSwipePageSwitch(true);
 
 
 ## Default application page:
-The default application page is the first _body's child_ class _page_ element, which means that the first request to the basic URL _../index.html_ (without page specification) will be redirected to _../index.html#firstPage_. If we need to set any other element, we can use _WebApp.setDefaultPageId('pageId')_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex02.0_setDefaultPageId.html#secondPage" target="_blank">live preview</a>):
+The default application page is the first _body's child_ class _page_ element, which means that the first request to the basic URL _../index.html_ (without page specification) will be redirected to _../index.html#firstPage_. If we need to set any other element, we can use _WebApp.setDefaultPageId('pageId')_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex03.0_setDefaultPageId.html#secondPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -120,7 +120,7 @@ WebApp.setDefaultPageId('secondPage');
 
 
 ## Dynamic page creation:
-If we need to create another page after application startup, or dynamically during execution (on run-time), we can use _WebApp.createPage('pageId', 'tagName', 'extraClass', 'insertBeforeId', 'pageContent')_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex03.0_createPage.html#firstPage" target="_blank">live preview</a>):
+If we need to create another page after application startup, or dynamically during execution (on run-time), we can use _WebApp.createPage('pageId', 'tagName', 'extraClass', 'insertBeforeId', 'pageContent')_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex04.0_createPage.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -137,11 +137,11 @@ WebApp.createPage('secondPage', null, null, null, '<h1>Second Page</h1>'
 </script>
 ```
 
-And _WebApp.deletePage('pageId')_ public API can be used to remove pages (useful to release memory resources). Checkout these other dynamic page creation examples, which demonstrate better some practical utilization cases: <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex03.1_deleteOnHide.html#firstPage" target="_blank">ex03.1_deleteOnHide.html</a>, <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex03.2_insertNextPage.html#1" target="_blank">ex03.2_insertNextPage.html</a>, <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex03.3_replaceNextPages.html#1" target="_blank">ex03.3_replaceNextPages.html</a>. Note that these additional examples use _onShow_ / _onHide_ "life cycle callbacks", which were not presented yet, but are explained in the next sections.
+And _WebApp.deletePage('pageId')_ public API can be used to remove pages (useful to release memory resources). Checkout these other dynamic page creation examples, which demonstrate better some practical utilization cases: <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex04.1_deleteOnHide.html#firstPage" target="_blank">ex03.1_deleteOnHide.html</a>, <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex04.2_insertNextPage.html#1" target="_blank">ex03.2_insertNextPage.html</a>, <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex04.3_replaceNextPages.html#1" target="_blank">ex03.3_replaceNextPages.html</a>. Note that these additional examples use _onShow_ / _onHide_ "life cycle callbacks", which were not presented yet, but are explained in the next sections.
 
 
 ## Global elements:
-Global elements are components that must always be displayed (common between the pages, e.g.: toolbar, statusbar, menus, etc). To define an element as global, place it as a _body's child_ element (exactly as a regular page), but without the class _page_, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex04.0_globalElement.html#firstPage" target="_blank">live preview</a>):
+Global elements are components that must always be displayed (common between the pages, e.g.: toolbar, statusbar, menus, etc). To define an element as global, place it as a _body's child_ element (exactly as a regular page), but without the class _page_, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex05.0_globalElement.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div style="border: 1px solid gray; padding: .4em;">
@@ -183,7 +183,7 @@ The soft/basic page transition "fade" is enabled by default, but if we need to s
 - 'drawerright' (which slides the pages "in" from the right, and slides it "out" also to the right, simulating a kind of drawer in the right);
 - 'none' (which disables page transition).
 
-The different page transition types can be observed/compared in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex05.0_setDefaultPageTransition.html#firstPage" target="_blank">live preview</a>):
+The different page transition types can be observed/compared in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex06.0_setDefaultPageTransition.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div style="border: 1px solid gray; padding: .4em;">
@@ -210,7 +210,7 @@ The different page transition types can be observed/compared in the following ex
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
 ```
 
-If we need to set an specific page transition to be used once only (without modify the default setting), we can use _WebApp.setNextPageTransition('transitionType')_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex05.1_setNextPageTransition.html#firstPage" target="_blank">live preview</a>):
+If we need to set an specific page transition to be used once only (without modify the default setting), we can use _WebApp.setNextPageTransition('transitionType')_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex06.1_setNextPageTransition.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -244,7 +244,7 @@ If we need to set an specific page transition to be used once only (without modi
 
 
 ## Keyboard callbacks:
-Keyboard callbacks are useful to set page shortcut keys, for example if we want to navigate between the available pages using left/right keys, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex06.0_onKeyDown.html#firstPage" target="_blank">live preview</a>):
+Keyboard callbacks are useful to set page shortcut keys, for example if we want to navigate between the available pages using left/right keys, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex07.0_onKeyDown.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -280,7 +280,7 @@ And as we can see in the above example, onKeyDown and onKeyUp events are dispatc
 ## Life cycle callbacks:
 Application life cycle process is a set of pre-defined events that occurs during the application execution, which must be monitored (through callbacks) in order to execute the appropriate actions. For example, if we are developing a game, we need to know when the user minimizes the application (in order to pause the game execution, timers, etc.), and we also need to know when the user returns to the application (in order to resume the game from the point where it was paused). That is why the process callbacks are so relevant.
 
-If you do not understand the above explanation, do not be afraid. The use of callbacks is much easier than the explanation by itself :) To implement an application callback, we just need to get the _page_ element reference (or WebApp object for global callbacks), and implement the desired function, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex07.0_callbacks.html#firstPage" target="_blank">live preview</a>):
+If you do not understand the above explanation, do not be afraid. The use of callbacks is much easier than the explanation by itself :) To implement an application callback, we just need to get the _page_ element reference (or WebApp object for global callbacks), and implement the desired function, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex08.0_callbacks.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -410,7 +410,7 @@ back key    back key ^             back key ^
 
 
 ## Modal window support:
-Modal window are elements designed to appear over page elements. The primary purpose is to display pop-up dialogs, but it can also be customized to display smaller components, like a simple menu, for example. Similar to page elements, modal windows visibility is also controlled by the file URL hash data, which must contain the corresponding element "id". And this mechanism is interesting because it allows us to hide/close the modal by pressing the browser back key. Also similar to page nodes, the code required to use modal elements must be placed as a _body's child_ element, an it also must have the class _modal_, and a unique _id_, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.0_modalWindow.html#firstPage" target="_blank">live preview</a>):
+Modal windows are elements designed to appear over page elements. The primary purpose is to display pop-up dialogs, but it can also be customized to display smaller components, like a simple menu, for example. Similar to page elements, modal windows visibility is also controlled by the file URL hash data, which must contain the corresponding element "id". And this mechanism is interesting because it allows us to hide/close the modal by pressing the browser back key. Also similar to page nodes, the code required to use modal elements must be placed as a _body's child_ element, an it also must have the class _modal_, and a unique _id_, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.0_modalWindow.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <body>
@@ -444,7 +444,7 @@ Modal window are elements designed to appear over page elements. The primary pur
 
 **Important Note:** the whole modal content must be inside another single element, in order to generate a single pop-up dialog (which in this case is using style padding: 0.5em). And notice also that these default pop-ups have rounded corners and dark background overlays (if we need different decorations, we can declare the appropriate CSS rules, as it is presented in the _style.css_ style sheet file).
 
-If we need to create another modal after application startup, or dynamically during execution (on run-time), we can use _WebApp.createModal('modalId', 'extraClass', 'modalContent')_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.1_createModal.html#firstPage" target="_blank">live preview</a>), and _WebApp.deleteModal('modalId')_ public API can be used to remove modals (useful to release memory resources):
+If we need to create another modal after application startup, or dynamically during execution (on run-time), we can use _WebApp.createModal('modalId', 'extraClass', 'modalContent')_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.1_createModal.html#firstPage" target="_blank">live preview</a>), and _WebApp.deleteModal('modalId')_ public API can be used to remove modals (useful to release memory resources):
 
 ```html
 <body>
@@ -477,22 +477,12 @@ WebApp.createModal('modalWindow', null, '<div style="padding: 0.5em;">'
 </body>
 ```
 
-The pop-up modal transition "pop" is enabled by default, but if we need to set a different one, we can use _WebApp.setDefaultModalTransition('transitionType')_ public API. But if we need to set a different transition for an specific modal only, we just need to set the _transition="transitionType"_ HTML DOM element property (or use _WebApp.setModalTransition('modalId', 'transitionType')_ public API). And if we need to set an specific modal transition to be used once only (without modify the default setting), we can use _WebApp.setNextModalTransition('transitionType')_ public API, similar as described in the "page transitions" section. The following example demonstrates how to create a simple modal "drawer element" and a simple modal "top menu" (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.2_modalMenus.html#firstPage" target="_blank">live preview</a>):
+The pop-up modal transition "pop" is enabled by default, but if we need to set a different one, we can use _WebApp.setDefaultModalTransition('transitionType')_ public API. But if we need to set a different transition for an specific modal only, we just need to set the _transition="transitionType"_ HTML DOM element property (or use _WebApp.setModalTransition('modalId', 'transitionType')_ public API). And if we need to set an specific modal transition to be used once only (without modify the default setting), we can use _WebApp.setNextModalTransition('transitionType')_ public API, similar as described in the "page transitions" section. The following example demonstrates how to create a modal customized to appears like a top menu (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.2_modalTopMenu.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
 	<h1>First Page</h1>
-	<a href="#modalSideMenu">Side Menu</a> |
 	<a href="#modalTopMenu">Top Menu</a>
-</div>
-
-<div class="modal" id="modalSideMenu" transition="drawerleft">
-	<div style="border-radius: 0; margin: 0; max-width: 300px; padding: 0.5em;
-			position: fixed; top: 0; bottom: 0; left: 0; overflow: auto;">
-		<h2>Modal - Side Menu</h2>
-		<br>
-		<a href="javascript:window.history.back();">(hide modal)</a>
-	</div>
 </div>
 
 <div class="modal" id="modalTopMenu" transition="drawertop">
@@ -506,7 +496,42 @@ The pop-up modal transition "pop" is enabled by default, but if we need to set a
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
 ```
 
-Another interesting use case for modal window pop-ups, is the "exit dialog" emulation possibility, which alerts the user when returning, in order to prevent data loss. The following example demonstrates how to create a simple "exit dialog" confirmation, which alerts the user when returning from the second to the first page (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex09.3_exitDialog.html#firstPage" target="_blank">live preview</a>):
+Swipe feature is also available over modal windows, but it only hides the current modal (instead of switch to the next/previous one). Swipe modal switch feature is disable by default, and to enable it, we can use _WebApp.setSwipeModalSwitch(true)_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.3_swipeModal.html#firstPage" target="_blank">live preview</a>):
+
+```html
+<div class="page" id="firstPage">
+	<h1>First Page</h1>
+	<a href="#modalRightSideMenu">Right Side Menu</a> |
+	<a href="#modalLeftSideMenu">Left Side Menu</a>
+</div>
+
+<div class="modal" id="modalRightSideMenu" transition="drawerleft">
+	<div style="border-radius: 0; margin: 0; max-width: 300px; padding: 0.5em;
+			position: fixed; top: 0; bottom: 0; left: 0; overflow: auto;">
+		<h2>Modal - Right Side Menu</h2>
+		<br>
+		<a href="javascript:window.history.back();">(hide modal)</a>
+	</div>
+</div>
+
+<div class="modal" id="modalLeftSideMenu" transition="drawerright">
+	<div style="border-radius: 0; margin: 0; max-width: 300px; padding: 0.5em;
+			position: fixed; top: 0; bottom: 0; right: 0; overflow: auto;">
+		<h2>Modal - Left Side Menu</h2>
+		<br>
+		<a href="javascript:window.history.back();">(hide modal)</a>
+	</div>
+</div>
+
+<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+
+<script>
+// Enable swipe modal switch:
+WebApp.setSwipeModalSwitch(true);
+</script>
+```
+
+Another interesting use case for modal window pop-ups, is the "exit dialog" emulation possibility, which alerts the user when returning, in order to prevent data loss. The following example demonstrates how to create a simple "exit dialog" confirmation, which alerts the user when returning from the second to the first page (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.4_exitDialog.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -555,7 +580,7 @@ returnDialogElement.onHide = function(nextSearchData, nextElement) {
 
 
 ## Canvas page support:
-Canvas page are elements designed to behave like regular pages, but instead of displays their inner HTML DOM elements, it renders drawing statements programmatically, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.0_canvasPage.html#firstPage" target="_blank">live preview</a>):
+Canvas pages are elements designed to behave like regular pages, but instead of displays their inner HTML DOM elements, it renders drawing statements programmatically, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.0_canvasPage.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -1032,18 +1057,32 @@ Set the transition type, to be used when switching to the specified modal.
 | transitionType | string | The transition type.       |
 
 #### isSwipePageSwitch()
-Returns the swipe enabled boolean state, which is responsible to enable/disable swipe page switch.
+Returns the swipe page boolean state, which is responsible to enable/disable swipe page switch.
 
-**Returns:** {boolean} The swipe enabled boolean state.
+**Returns:** {boolean} The swipe page boolean state.
 
 #### setSwipePageSwitch(booleanState)
-Set the swipe enabled boolean state, which is responsible to enable/disable swipe page switch.
+Set the swipe page boolean state, which is responsible to enable/disable swipe page switch.
 
 **Parameters:**
 
-| Name         | Type    | Description                      |
-|--------------|---------|----------------------------------|
-| booleanState | boolean | The swipe enabled boolean state. |
+| Name         | Type    | Description                   |
+|--------------|---------|-------------------------------|
+| booleanState | boolean | The swipe page boolean state. |
+
+#### isSwipeModalSwitch()
+Returns the swipe modal boolean state, which is responsible to enable/disable swipe modal switch.
+
+**Returns:** {boolean} The swipe modal boolean state.
+
+#### setSwipeModalSwitch(booleanState)
+Set the swipe modal boolean state, which is responsible to enable/disable swipe modal switch.
+
+**Parameters:**
+
+| Name         | Type    | Description                    |
+|--------------|---------|--------------------------------|
+| booleanState | boolean | The swipe modal boolean state. |
 
 #### swipeElement(element, fromPx, toPx, stepPx, callback)
 Swipe a node element horizontally, according to the supplied fromPx and toPx coordinates.

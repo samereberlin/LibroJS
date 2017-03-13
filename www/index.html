@@ -105,6 +105,9 @@
 		<label style="white-space:nowrap;"><input style="vertical-align: middle;" type="checkbox" onchange="WebApp.setSwipePageSwitch(this.checked);" checked> WebApp.setSwipePageSwitch</label>
 		<br>
 		<br>
+		<label style="white-space:nowrap;"><input style="vertical-align: middle;" type="checkbox" onchange="WebApp.setSwipeModalSwitch(this.checked);" checked> WebApp.setSwipeModalSwitch</label>
+		<br>
+		<br>
 		<label style="white-space:nowrap;"><input style="vertical-align: middle;" type="checkbox" onchange="WebApp.setCanvasTouchable(this.checked);" checked> WebApp.setCanvasTouchable</label>
 		<br>
 		<br>
@@ -142,6 +145,9 @@ var logMonitor = document.getElementById('logMonitor');
 
 // Enable swipe page switch:
 WebApp.setSwipePageSwitch(true);
+
+// Enable swipe modal switch:
+WebApp.setSwipeModalSwitch(true);
 
 // Set browser error callback:
 window.onerror = function (msg, url, lineNo, columnNo, error) {

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WebApp - ex10.3_swipeModal</title>
+</head>
+
+<body>
+
+<div class="page" id="firstPage">
+	<h1>WebApp - <span style="color:#004;">First Page</span></h1>
+	<p>If you are viewing this page (firstPage), it means that the current browser URL ends with "#firstPage"</p>
+	<a href="#modalRightSideMenu">Right Side Menu</a> |
+	<a href="#modalLeftSideMenu">Left Side Menu</a>
+</div>
+
+<div class="modal" id="modalRightSideMenu" transition="drawerleft">
+	<div style="border-radius: 0; margin: 0; max-width: 300px; padding: 0.5em;
+			position: fixed; top: 0; bottom: 0; left: 0; overflow: auto;">
+		<h2>Modal - <span style="color:#444;">Right Side Menu</span></h2>
+		<p>If you are viewing this modal (modalRightSideMenu), it means that the current browser URL ends with "#modalRightSideMenu"</p>
+		<br>
+		<a href="javascript:window.history.back();">(hide modal)</a>
+	</div>
+</div>
+
+<div class="modal" id="modalLeftSideMenu" transition="drawerright">
+	<div style="border-radius: 0; margin: 0; max-width: 300px; padding: 0.5em;
+			position: fixed; top: 0; bottom: 0; right: 0; overflow: auto;">
+		<h2>Modal - <span style="color:#444;">Left Side Menu</span></h2>
+		<p>If you are viewing this modal (modalLeftSideMenu), it means that the current browser URL ends with "#modalLeftSideMenu"</p>
+		<br>
+		<a href="javascript:window.history.back();">(hide modal)</a>
+	</div>
+</div>
+
+<!-- script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script -->
+<script src="../WebApp.js"></script>
+
+<script>
+// Enable swipe modal switch:
+WebApp.setSwipeModalSwitch(true);
+</script>
+
+</body>
+
+</html>

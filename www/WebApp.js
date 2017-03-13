@@ -312,7 +312,7 @@ var WebAppClass = function() {
 	};
 
 	//################################################################################//
-	// Canvas touch settings:
+	// Canvas touchable settings:
 
 	var CANVAS_TOUCH_DELAY = 600; // Required to solve touchEvent.preventDefault() issue.
 	var canvasTouchLastTime = 0; // Required to solve touchEvent.preventDefault() issue.
@@ -321,7 +321,7 @@ var WebAppClass = function() {
 	var isCanvasTouchable = true;
 
 	//################################################################################//
-	// Canvas touch API:
+	// Canvas touchable API:
 
 	/**
 	 * Returns the isCanvasTouchable boolean state,
@@ -342,7 +342,7 @@ var WebAppClass = function() {
 	this.setCanvasTouchable = function(booleanState) {
 		isCanvasTouchable = booleanState;
 		if (currentPage && currentPage.canvasContext) {
-			setPageCanvasTouchable(currentPage, booleanState);
+			setCanvasTouchable(currentPage, booleanState);
 		}
 	};
 
@@ -539,13 +539,16 @@ var WebAppClass = function() {
 	};
 
 	//################################################################################//
-	// Swipe page settings:
+	// Swipe page/modal settings:
 
 	var SWIPE_TOUCH_DELAY = 600; // Required to emulate touchEvent.preventDefault().
 	var swipeTouchLastTime = 0; // Required to emulate touchEvent.preventDefault().
 	var swipeDebugTouch = '';
 	var isSwipeMouseDown = false;
 	var isSwipePageSwitch = false;
+	var isSwipeModalSwitch = false;
+	var isSwipeModalSwitchLeft = false;
+	var isSwipeModalSwitchRight = false;
 	var swipeCurrentIndex = 0;
 	var swipeCurrentTop = '0px';
 	var swipeDestinationPage = null;
@@ -553,28 +556,51 @@ var WebAppClass = function() {
 	var swipeStartX = 0, swipeStartY = 0, swipeMoveX = 0, swipeMoveY = 0;
 
 	//################################################################################//
-	// Swipe page API:
+	// Swipe page/modal API:
 
 	/**
-	 * Returns the swipe enabled boolean state,
+	 * Returns the swipe page boolean state,
 	 * which is responsible to enable/disable swipe page switch.
 	 *
-	 * @return {boolean} The swipe enabled boolean state.
+	 * @return {boolean} The swipe page boolean state.
 	 */
 	this.isSwipePageSwitch = function() {
 		return isSwipePageSwitch;
 	};
 
 	/**
-	 * Set the swipe enabled boolean state,
+	 * Set the swipe page boolean state,
 	 * which is responsible to enable/disable swipe page switch.
 	 *
-	 * @param {boolean} booleanState - The swipe enabled boolean state.
+	 * @param {boolean} booleanState - The swipe page boolean state.
 	 */
 	this.setSwipePageSwitch = function(booleanState) {
 		isSwipePageSwitch = booleanState;
-		if (currentPage && !currentPage.canvasContext) {
-			setPageSwipePageSwitch(currentPage, booleanState);
+		if (currentPage) {
+			setSwipeSwitch(currentPage, booleanState);
+		}
+	};
+
+	/**
+	 * Returns the swipe modal boolean state,
+	 * which is responsible to enable/disable swipe modal switch.
+	 *
+	 * @return {boolean} The swipe modal boolean state.
+	 */
+	this.isSwipeModalSwitch = function() {
+		return isSwipeModalSwitch;
+	};
+
+	/**
+	 * Set the swipe modal boolean state,
+	 * which is responsible to enable/disable swipe modal switch.
+	 *
+	 * @param {boolean} booleanState - The swipe modal boolean state.
+	 */
+	this.setSwipeModalSwitch = function(booleanState) {
+		isSwipeModalSwitch = booleanState;
+		if (currentModal) {
+			setSwipeSwitch(currentModal.children[0], booleanState);
 		}
 	};
 
@@ -1149,15 +1175,15 @@ var WebAppClass = function() {
 				intervalUpdate = 0;
 			}
 			if (isCanvasTouchable) {
-				setPageCanvasTouchable(pageElement, booleanState);
+				setCanvasTouchable(pageElement, booleanState);
 			}
 		}
 		if (isSwipePageSwitch) {
-			setPageSwipePageSwitch(pageElement, booleanState);
+			setSwipeSwitch(pageElement, booleanState);
 		}
 	}
 
-	function setPageCanvasTouchable(pageElement, booleanState) {
+	function setCanvasTouchable(pageElement, booleanState) {
 		if (booleanState) {
 			pageElement.addEventListener('mousedown', canvasMouseDown);
 			pageElement.addEventListener('mousemove', canvasMouseMove);
@@ -1183,28 +1209,28 @@ var WebAppClass = function() {
 		}
 	}
 
-	function setPageSwipePageSwitch(pageElement, booleanState) {
+	function setSwipeSwitch(element, booleanState) {
 		if (booleanState) {
-			pageElement.addEventListener('mousedown', swipeMouseDown);
-			pageElement.addEventListener('mousemove', swipeMouseMove);
-			pageElement.addEventListener('mouseup', swipeMouseUp);
-			pageElement.addEventListener('mouseout', swipeMouseUp);
+			element.addEventListener('mousedown', swipeMouseDown);
+			element.addEventListener('mousemove', swipeMouseMove);
+			element.addEventListener('mouseup', swipeMouseUp);
+			element.addEventListener('mouseout', swipeMouseUp);
 			if (isTouchSupported) {
-				pageElement.addEventListener('touchstart', swipeTouchStart);
-				pageElement.addEventListener('touchmove', swipeTouchMove);
-				pageElement.addEventListener('touchend', swipeTouchEnd);
-				pageElement.addEventListener('touchcancel', swipeTouchEnd);
+				element.addEventListener('touchstart', swipeTouchStart);
+				element.addEventListener('touchmove', swipeTouchMove);
+				element.addEventListener('touchend', swipeTouchEnd);
+				element.addEventListener('touchcancel', swipeTouchEnd);
 			}
 		} else {
-			pageElement.removeEventListener('mousedown', swipeMouseDown);
-			pageElement.removeEventListener('mousemove', swipeMouseMove);
-			pageElement.removeEventListener('mouseup', swipeMouseUp);
-			pageElement.removeEventListener('mouseout', swipeMouseUp);
+			element.removeEventListener('mousedown', swipeMouseDown);
+			element.removeEventListener('mousemove', swipeMouseMove);
+			element.removeEventListener('mouseup', swipeMouseUp);
+			element.removeEventListener('mouseout', swipeMouseUp);
 			if (isTouchSupported) {
-				pageElement.removeEventListener('touchstart', swipeTouchStart);
-				pageElement.removeEventListener('touchmove', swipeTouchMove);
-				pageElement.removeEventListener('touchend', swipeTouchEnd);
-				pageElement.removeEventListener('touchcancel', swipeTouchEnd);
+				element.removeEventListener('touchstart', swipeTouchStart);
+				element.removeEventListener('touchmove', swipeTouchMove);
+				element.removeEventListener('touchend', swipeTouchEnd);
+				element.removeEventListener('touchcancel', swipeTouchEnd);
 			}
 		}
 	}
@@ -1225,6 +1251,14 @@ var WebAppClass = function() {
 				WebApp.onSwitchModal(booleanState, modalElement, currentPage);
 			}
 		};
+
+		if (isSwipeModalSwitch) {
+			setSwipeSwitch(modalElement.children[0], booleanState);
+			if (booleanState) {
+				isSwipeModalSwitchLeft = (nextModalTransition === 'drawerright')? false: true;
+				isSwipeModalSwitchRight = (nextModalTransition === 'drawerleft')? false: true;
+			}
+		}
 		if (booleanState) {
 			animateElement(modalElement, 'fadein', null);
 			animateElement(modalElement.children[0], nextModalTransition + 'in', null);
@@ -1232,7 +1266,15 @@ var WebAppClass = function() {
 			currentModal = modalElement;
 			onSwitchModal();
 		} else {
-			animateElement(modalElement.children[0], nextModalTransition + 'out', null);
+			if (nextModalTransition.lastIndexOf('swipe', 0) === 0) {
+				var modalFromPx = parseInt(currentModal.children[0].style.transform.substring(
+						currentModal.children[0].style.transform.lastIndexOf('(') + 1,
+						currentModal.children[0].style.transform.lastIndexOf('p')));
+				var modalToPx = window.innerWidth * ((nextModalTransition === 'swipe')? -1: 1);
+				swipeElement(currentModal.children[0], modalFromPx, modalToPx, 25, null);
+			} else {
+				animateElement(modalElement.children[0], nextModalTransition + 'out', null);
+			}
 			animateElement(modalElement, 'fadeout', function() {
 				hideElement(modalElement, searchData, nextElement);
 				onSwitchModal();
@@ -1279,7 +1321,7 @@ var WebAppClass = function() {
 	}
 
 	//################################################################################//
-	// Functions related to canvas touch actions:
+	// Functions related to canvas touchable actions:
 
 	function canvasMouseDown(touchEvent) {
 		if (touchEvent.button === 0) {
@@ -1359,7 +1401,7 @@ var WebAppClass = function() {
 	}
 
 	//################################################################################//
-	// Functions related to swipe touch actions:
+	// Functions related to swipe page/modal actions:
 
 	function swipeMouseDown(touchEvent) {
 		if (touchEvent.button === 0) {
@@ -1434,73 +1476,98 @@ var WebAppClass = function() {
 		swipeMoveX = touchEvent.changedTouches[0].clientX - swipeStartX;
 		swipeMoveY = touchEvent.changedTouches[0].clientY - swipeStartY;
 		if (!swipeMoving && (Math.abs(swipeMoveX) > Math.abs(swipeMoveY * 2))) {
-			swipeMoving = true;
-			swipeCurrentIndex = pageIds.indexOf(currentPage.id);
-			swipeCurrentTop = ((currentPage.offsetTop - window.pageYOffset > 0)?
-					currentPage.offsetTop - window.pageYOffset: 0) + 'px';
-			if (swipeMoveX > 0) {
-				swipeMovingPrevious = true;
-				swipeDestinationPage = pageElements[pageIds[swipeCurrentIndex - 1]];
+			if (currentModal) {
+				if (swipeMoveX > 0 && isSwipeModalSwitchRight) {
+					swipeMoving = true;
+					swipeMovingPrevious = true;
+				} else if (isSwipeModalSwitchLeft) {
+					swipeMoving = true;
+					swipeMovingNext = true;
+				}
 			} else {
-				swipeMovingNext = true;
-				swipeDestinationPage = pageElements[pageIds[swipeCurrentIndex + 1]];
-			}
-			if (swipeDestinationPage) {
-				swipeDestinationPage.style.display = 'block';
-				swipeDestinationPage.style.position = 'fixed';
-				swipeDestinationPage.style.top = swipeCurrentTop;
-				swipeDestinationPage.style.width = window.innerWidth + 'px'; // Required to solve WebKit unstable width issue.
+				swipeMoving = true;
+				swipeCurrentIndex = pageIds.indexOf(currentPage.id);
+				swipeCurrentTop = ((currentPage.offsetTop - window.pageYOffset > 0)?
+						currentPage.offsetTop - window.pageYOffset: 0) + 'px';
+				if (swipeMoveX > 0) {
+					swipeMovingPrevious = true;
+					swipeDestinationPage = pageElements[pageIds[swipeCurrentIndex - 1]];
+				} else {
+					swipeMovingNext = true;
+					swipeDestinationPage = pageElements[pageIds[swipeCurrentIndex + 1]];
+				}
+				if (swipeDestinationPage) {
+					swipeDestinationPage.style.display = 'block';
+					swipeDestinationPage.style.position = 'fixed';
+					swipeDestinationPage.style.top = swipeCurrentTop;
+					swipeDestinationPage.style.width = window.innerWidth + 'px'; // Required to solve WebKit unstable width issue.
+				}
 			}
 		}
 		if (swipeMoving) {
 			touchEvent.stopPropagation();
 			touchEvent.preventDefault();
-			if (swipeMovingPrevious && swipeMoveX < 0) {
-				swipeMovingPrevious = false;
-				swipeMovingNext = true;
-				if (swipeDestinationPage) {
-					swipeDestinationPage.style.display = 'none';
-					swipeDestinationPage.style.position = '';
-					swipeDestinationPage.style.top = '';
-					swipeDestinationPage.style.width = ''; // Required to solve WebKit unstable width issue.
-					swipeDestinationPage.style.transform = '';
-					swipeDestinationPage.style.webkitTransform = '';
+			if (currentModal) {
+				if (swipeMovingPrevious && swipeMoveX < 0) {
+					swipeMovingPrevious = false;
+					swipeMovingNext = true;
+				} else if (swipeMovingNext && swipeMoveX > 0) {
+					swipeMovingPrevious = true;
+					swipeMovingNext = false;
 				}
-				swipeDestinationPage = pageElements[pageIds[swipeCurrentIndex + 1]];
-				if (swipeDestinationPage) {
-					swipeDestinationPage.style.display = 'block';
-					swipeDestinationPage.style.position = 'fixed';
-					swipeDestinationPage.style.top = swipeCurrentTop;
-					swipeDestinationPage.style.width = window.innerWidth + 'px'; // Required to solve WebKit unstable width issue.
+				if ((swipeMovingPrevious && isSwipeModalSwitchRight) ||
+						(swipeMovingNext && isSwipeModalSwitchLeft)) {
+					currentModal.children[0].style.transform = 'translateX(' + swipeMoveX + 'px)';
+					currentModal.children[0].style.webkitTransform = 'translateX(' + swipeMoveX + 'px)';
 				}
-			} else if (swipeMovingNext && swipeMoveX > 0) {
-				swipeMovingPrevious = true;
-				swipeMovingNext = false;
-				if (swipeDestinationPage) {
-					swipeDestinationPage.style.display = 'none';
-					swipeDestinationPage.style.position = '';
-					swipeDestinationPage.style.top = '';
-					swipeDestinationPage.style.width = ''; // Required to solve WebKit unstable width issue.
-					swipeDestinationPage.style.transform = '';
-					swipeDestinationPage.style.webkitTransform = '';
+			} else {
+				if (swipeMovingPrevious && swipeMoveX < 0) {
+					swipeMovingPrevious = false;
+					swipeMovingNext = true;
+					if (swipeDestinationPage) {
+						swipeDestinationPage.style.display = 'none';
+						swipeDestinationPage.style.position = '';
+						swipeDestinationPage.style.top = '';
+						swipeDestinationPage.style.width = ''; // Required to solve WebKit unstable width issue.
+						swipeDestinationPage.style.transform = '';
+						swipeDestinationPage.style.webkitTransform = '';
+					}
+					swipeDestinationPage = pageElements[pageIds[swipeCurrentIndex + 1]];
+					if (swipeDestinationPage) {
+						swipeDestinationPage.style.display = 'block';
+						swipeDestinationPage.style.position = 'fixed';
+						swipeDestinationPage.style.top = swipeCurrentTop;
+						swipeDestinationPage.style.width = window.innerWidth + 'px'; // Required to solve WebKit unstable width issue.
+					}
+				} else if (swipeMovingNext && swipeMoveX > 0) {
+					swipeMovingPrevious = true;
+					swipeMovingNext = false;
+					if (swipeDestinationPage) {
+						swipeDestinationPage.style.display = 'none';
+						swipeDestinationPage.style.position = '';
+						swipeDestinationPage.style.top = '';
+						swipeDestinationPage.style.width = ''; // Required to solve WebKit unstable width issue.
+						swipeDestinationPage.style.transform = '';
+						swipeDestinationPage.style.webkitTransform = '';
+					}
+					swipeDestinationPage = pageElements[pageIds[swipeCurrentIndex - 1]];
+					if (swipeDestinationPage) {
+						swipeDestinationPage.style.display = 'block';
+						swipeDestinationPage.style.position = 'fixed';
+						swipeDestinationPage.style.top = swipeCurrentTop;
+						swipeDestinationPage.style.width = window.innerWidth + 'px'; // Required to solve WebKit unstable width issue.
+					}
 				}
-				swipeDestinationPage = pageElements[pageIds[swipeCurrentIndex - 1]];
+				currentPage.style.transform = 'translateX(' + swipeMoveX + 'px)';
+				currentPage.style.webkitTransform = 'translateX(' + swipeMoveX + 'px)';
 				if (swipeDestinationPage) {
-					swipeDestinationPage.style.display = 'block';
-					swipeDestinationPage.style.position = 'fixed';
-					swipeDestinationPage.style.top = swipeCurrentTop;
-					swipeDestinationPage.style.width = window.innerWidth + 'px'; // Required to solve WebKit unstable width issue.
-				}
-			}
-			currentPage.style.transform = 'translateX(' + swipeMoveX + 'px)';
-			currentPage.style.webkitTransform = 'translateX(' + swipeMoveX + 'px)';
-			if (swipeDestinationPage) {
-				if (swipeMovingPrevious) {
-					swipeDestinationPage.style.transform = 'translateX(' + (swipeMoveX - window.innerWidth) + 'px)';
-					swipeDestinationPage.style.webkitTransform = 'translateX(' + (swipeMoveX - window.innerWidth) + 'px)';
-				} else {
-					swipeDestinationPage.style.transform = 'translateX(' + (window.innerWidth + swipeMoveX) + 'px)';
-					swipeDestinationPage.style.webkitTransform = 'translateX(' + (window.innerWidth + swipeMoveX) + 'px)';
+					if (swipeMovingPrevious) {
+						swipeDestinationPage.style.transform = 'translateX(' + (swipeMoveX - window.innerWidth) + 'px)';
+						swipeDestinationPage.style.webkitTransform = 'translateX(' + (swipeMoveX - window.innerWidth) + 'px)';
+					} else {
+						swipeDestinationPage.style.transform = 'translateX(' + (window.innerWidth + swipeMoveX) + 'px)';
+						swipeDestinationPage.style.webkitTransform = 'translateX(' + (window.innerWidth + swipeMoveX) + 'px)';
+					}
 				}
 			}
 		}
@@ -1509,23 +1576,39 @@ var WebAppClass = function() {
 		if (swipeMoving) {
 			touchEvent.stopPropagation();
 			touchEvent.preventDefault();
-			if (Math.abs(swipeMoveX) > (window.innerWidth / 4) && swipeDestinationPage) {
-				if (swipeMovingNext) {
-					nextPageTransition = 'swipe';
+			if (currentModal) {
+				if ((Math.abs(swipeMoveX) > (currentModal.children[0].offsetWidth / 4)) &&
+						((swipeMovingPrevious && isSwipeModalSwitchRight) ||
+								(swipeMovingNext && isSwipeModalSwitchLeft))) {
+					if (swipeMovingNext) {
+						nextModalTransition = 'swipe';
+					} else {
+						nextModalTransition = 'swiperev';
+					}
+					window.history.back();
 				} else {
-					nextPageTransition = 'swiperev';
+					currentModal.children[0].style.transform = '';
+					currentModal.children[0].style.webkitTransform = '';
 				}
-				window.location.hash = swipeDestinationPage.id;
 			} else {
-				currentPage.style.transform = '';
-				currentPage.style.webkitTransform = '';
-				if (swipeDestinationPage) {
-					swipeDestinationPage.style.display = 'none';
-					swipeDestinationPage.style.position = '';
-					swipeDestinationPage.style.top = '';
-					swipeDestinationPage.style.width = ''; // Required to solve WebKit unstable width issue.
-					swipeDestinationPage.style.transform = '';
-					swipeDestinationPage.style.webkitTransform = '';
+				if (Math.abs(swipeMoveX) > (window.innerWidth / 4) && swipeDestinationPage) {
+					if (swipeMovingNext) {
+						nextPageTransition = 'swipe';
+					} else {
+						nextPageTransition = 'swiperev';
+					}
+					window.location.hash = swipeDestinationPage.id;
+				} else {
+					currentPage.style.transform = '';
+					currentPage.style.webkitTransform = '';
+					if (swipeDestinationPage) {
+						swipeDestinationPage.style.display = 'none';
+						swipeDestinationPage.style.position = '';
+						swipeDestinationPage.style.top = '';
+						swipeDestinationPage.style.width = ''; // Required to solve WebKit unstable width issue.
+						swipeDestinationPage.style.transform = '';
+						swipeDestinationPage.style.webkitTransform = '';
+					}
 				}
 			}
 			swipeMoving = false;
