@@ -1267,11 +1267,16 @@ var WebAppClass = function() {
 			onSwitchModal();
 		} else {
 			if (nextModalTransition.lastIndexOf('swipe', 0) === 0) {
-				var modalFromPx = parseInt(currentModal.children[0].style.transform.substring(
-						currentModal.children[0].style.transform.lastIndexOf('(') + 1,
-						currentModal.children[0].style.transform.lastIndexOf('p')));
+				var modalFromPx = parseInt(modalElement.children[0].style.transform.substring(
+						modalElement.children[0].style.transform.lastIndexOf('(') + 1,
+						modalElement.children[0].style.transform.lastIndexOf('p')));
 				var modalToPx = window.innerWidth * ((nextModalTransition === 'swipe')? -1: 1);
-				swipeElement(currentModal.children[0], modalFromPx, modalToPx, 25, null);
+				swipeElement(modalElement.children[0], modalFromPx, modalToPx, 25, function() {
+					modalElement.children[0].style.display = 'none'; // Required to hide modal children, while fadeing out.
+					setTimeout(function() { // Timeout required to restore modal children visibility.
+						modalElement.children[0].style.display = '';
+					}, HASH_DELAY);
+				});
 			} else {
 				animateElement(modalElement.children[0], nextModalTransition + 'out', null);
 			}
