@@ -725,7 +725,7 @@ WebApp.onResize = function() {
 </script>
 ```
 
-Another interesting canvas page feature is the "canvas touch" engine, which offers three additional callbacks (onCanvasTouchableStart, onCanvasTouchableMove, and onCanvasTouchableEnd), useful to handle with mouse/touch events. The interesting point here is that "canvas touch" engine converts all mouse detected actions into equivalent touch events, which allow us to process pointer events easily at once, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.3_canvasTouch.html#firstPage" target="_blank">live preview</a>), and _setCanvasTouchable(false)_ public API can be used when we prefer to handle pointer events by our selves:
+Another interesting canvas page feature is the "canvas touchable" engine, which offers three additional callbacks (onCanvasTouchableStart, onCanvasTouchableMove, and onCanvasTouchableEnd), useful to handle with mouse/touch events. The interesting point here is that "canvas touch" engine converts all mouse detected actions into equivalent touch events, which allow us to process pointer events easily at once, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.3_canvasTouch.html#firstPage" target="_blank">live preview</a>), and _setCanvasTouchable(false)_ public API can be used when we prefer to handle pointer events by our selves:
 
 ```html
 <div class="page" id="firstPage">
