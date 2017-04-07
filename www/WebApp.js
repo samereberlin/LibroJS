@@ -1087,10 +1087,9 @@ var WebAppClass = function() {
 		if (!nextPageTransition) {
 			nextPageTransition = pageElement.transitionType? pageElement.transitionType: defaultPageTransition;
 		}
-		if (nextPageTransition === 'fliporder') {
-			nextPageTransition = (currentPage && (pageIds.indexOf(currentPage.id) > pageIds.indexOf(pageElement.id)))? 'fliprev': 'flip';
-		} else if (nextPageTransition === 'slideorder') {
-			nextPageTransition = (currentPage && (pageIds.indexOf(currentPage.id) > pageIds.indexOf(pageElement.id)))? 'sliderev': 'slide';
+		if (nextPageTransition.substring(nextPageTransition.length - 5, nextPageTransition.length) === 'order') {
+			nextPageTransition = nextPageTransition.substring(0, nextPageTransition.length - 5) +
+					((currentPage && (pageIds.indexOf(currentPage.id) > pageIds.indexOf(pageElement.id)))? 'rev': '');
 		}
 
 		var onSwitchPage = function(referrerElement) {
@@ -1240,10 +1239,8 @@ var WebAppClass = function() {
 		if (!nextModalTransition) {
 			nextModalTransition = modalElement.transitionType? modalElement.transitionType: defaultModalTransition;
 		}
-		if (nextModalTransition === 'fliporder') {
-			nextModalTransition = 'flip';
-		} else if (nextModalTransition === 'slideorder') {
-			nextPageTransition = 'slide';
+		if (nextModalTransition.substring(nextModalTransition.length - 5, nextModalTransition.length) === 'order') {
+			nextModalTransition = nextModalTransition.substring(0, nextModalTransition.length - 5);
 		}
 
 		var onSwitchModal = function() {
