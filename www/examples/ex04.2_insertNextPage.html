@@ -10,7 +10,7 @@
 
 <div class="page" id="1">
 	<h1>WebApp - Page 1</h1>
-	<p> This is the "infinite next" dynamic page creation example, which never reaches the last application page.</p>
+	<p>This is the "infinite next" dynamic page creation example, which never reaches the last application page.</p>
 	<a href="#2">go to the next page</a>
 </div>
 
@@ -27,11 +27,12 @@ function insertNextPage(currentId) {
 	if (WebApp.getPageIds().indexOf((parseInt(currentId) + 1).toString()) < 0) {
 		// Create a new page according to the pageId argument + 1:
 		var nextPageId = (parseInt(currentId) + 1).toString();
-		var nextPageElement = WebApp.createPage(nextPageId, null, null, null,
-				'<h1>WebApp - Page ' + nextPageId + '</h1>'
-			 	+ '<p> This is the "infinite next" dynamic page creation example, which never reaches the last application page.</p>'
-			 	+ '<p>This page has been created dynamically, without any previous HTML code declaration.</p>'
-				+ '<a href="#' + currentId + '">previous page</a> | <a href="#' + (parseInt(nextPageId) + 1).toString() + '">next page</a>');
+		var nextPageElement = WebApp.createPage('<div class="page" id="' + nextPageId + '">' +
+				'<h1>WebApp - Page ' + nextPageId + '</h1>' +
+				'<p>This is the "infinite next" dynamic page creation example, which never reaches the last application page.</p>' +
+				'<p>This page has been created dynamically, without any previous HTML code declaration.</p>' +
+				'<a href="#' + currentId + '">previous page</a> | ' +
+				'<a href="#' + (parseInt(nextPageId) + 1).toString() + '">next page</a></div>', null);
 
 		// Create another page in case of onShow callback, in order to prepare next interaction:
 		nextPageElement.onShow = function() {insertNextPage(nextPageId);};

@@ -312,7 +312,7 @@ var xGrow = yGrow = true;
 var canvasPageElement = null;
 function createCanvasPage() {
 	// Create a new page element:
-	canvasPageElement = WebApp.createPage('canvasPage', 'canvas', null, 'modalWindow', null);
+	canvasPageElement = WebApp.createPage('<canvas class="page" id="canvasPage"></canvas>', 'modalWindow');
 	canvasPageElement.width = 320;
 	// Set the new created page callbacks:
 	canvasPageElement.onShow = canvasOnShow;
@@ -386,11 +386,11 @@ function canvasOnDraw() {
 var dynamicPagesIds = [];
 function createDynamicPages() {
 	// Create a new page element:
-	var dynamicPageElement = WebApp.createPage('1', null, null, 'modalWindow', 
-			'<h1>WebApp - Page 1</h1>'
-		 	+ '<p> This is the "replace next" dynamic page creation example, which never reaches the first/last application page.</p>'
-		 	+ '<p>This page has been created/replaced dynamically, without any previous HTML code declaration.</p>'
-			+ '<a href="#0">previous page</a> | <a href="#2">next page</a>');
+	var dynamicPageElement = WebApp.createPage('<div class="page" id="1">' +
+			'<h1>WebApp - Page 1</h1>' +
+			'<p> This is the "replace next" dynamic page creation example, which never reaches the first/last application page.</p>' +
+			'<p>This page has been created/replaced dynamically, without any previous HTML code declaration.</p>' +
+			'<a href="#0">previous page</a> | <a href="#2">next page</a></div>', 'modalWindow');
 	// Set the new created page callbacks:
 	dynamicPageElement.onShow = function(searchData, referrerElement) {
 		if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">"dynamicPage:' + dynamicPageElement.id + '".onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
@@ -416,11 +416,12 @@ function createNextPage(currentPageElement) {
 	var nextPageId = (currentIdIntValue + 1).toString();
 	var nextPageElement = document.getElementById(nextPageId);
 	if (!nextPageElement) {
-		nextPageElement = WebApp.createPage(nextPageId, null, null, 'modalWindow',
-				'<h1>WebApp - Page ' + nextPageId + '</h1>'
-			 	+ '<p> This is the "replace next" dynamic page creation example, which never reaches the first/last application page.</p>'
-			 	+ '<p>This page has been created/replaced dynamically, without any previous HTML code declaration.</p>'
-				+ '<a href="#' + currentPageElement.id + '">previous page</a> | <a href="#' + (currentIdIntValue + 2).toString() + '">next page</a>');
+		nextPageElement = WebApp.createPage('<div class="page" id="' + nextPageId + '">' +
+				'<h1>WebApp - Page ' + nextPageId + '</h1>' +
+				'<p>This is the "replace next" dynamic page creation example, which never reaches the first/last application page.</p>' +
+				'<p>This page has been created/replaced dynamically, without any previous HTML code declaration.</p>' +
+				'<a href="#' + currentPageElement.id + '">previous page</a> | ' +
+				'<a href="#' + (currentIdIntValue + 2).toString() + '">next page</a></div>', 'modalWindow');
 	}
 	nextPageElement.onShow = function(searchData, referrerElement) {
 		if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">"dynamicPage:' + this.id + '".onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
@@ -436,11 +437,12 @@ function createPreviousPage(currentPageElement) {
 	var previousPageId = (currentIdIntValue - 1).toString();
 	var previousPageElement = document.getElementById(previousPageId);
 	if (!previousPageElement) {
-		previousPageElement = WebApp.createPage(previousPageId, null, null, currentPageElement.id,
-				'<h1>WebApp - Page ' + previousPageId + '</h1>'
-			 	+ '<p> This is the "replace next" dynamic page creation example, which never reaches the first/last application page.</p>'
-			 	+ '<p>This page has been created/replaced dynamically, without any previous HTML code declaration.</p>'
-				+ '<a href="#' + (currentIdIntValue - 2).toString() + '">previous page</a> | <a href="#' + currentPageElement.id + '">next page</a>');
+		previousPageElement = WebApp.createPage('<div class="page" id="' + previousPageId + '">' +
+				'<h1>WebApp - Page ' + previousPageId + '</h1>' +
+				'<p>This is the "replace next" dynamic page creation example, which never reaches the first/last application page.</p>' +
+				'<p>This page has been created/replaced dynamically, without any previous HTML code declaration.</p>' +
+				'<a href="#' + (currentIdIntValue - 2).toString() + '">previous page</a> | ' +
+				'<a href="#' + currentPageElement.id + '">next page</a></div>', currentPageElement.id);
 	}
 	previousPageElement.onShow = function(searchData, referrerElement) {
 		if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">"dynamicPage:' + this.id + '".onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';

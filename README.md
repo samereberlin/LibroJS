@@ -120,7 +120,7 @@ WebApp.setDefaultPageId('secondPage');
 
 
 ## Dynamic page creation:
-If we need to create another page after application startup, or dynamically during execution (on run-time), we can use _WebApp.createPage('pageId', 'tagName', 'extraClass', 'insertBeforeId', 'pageContent')_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex04.0_createPage.html#firstPage" target="_blank">live preview</a>):
+If we need to create another page after application startup, or dynamically during execution (on run-time), we can use _WebApp.createPage('pageContent', 'insertBeforeId')_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex04.0_createPage.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -132,12 +132,14 @@ If we need to create another page after application startup, or dynamically duri
 
 <script>
 // Create another page dynamically:
-WebApp.createPage('secondPage', null, null, null, '<h1>Second Page</h1>'
-		+ '<a href="#firstPage">go to the first page</a>');
+WebApp.createPage('<div class="page" id="secondPage">' +
+		'<h1>Second Page</h1>' +
+		'<a href="#firstPage">go to the first page</a>' +
+		'</div>', null);
 </script>
 ```
 
-And _WebApp.deletePage('pageId')_ public API can be used to remove pages (useful to release memory resources). Checkout these other dynamic page creation examples, which demonstrate better some practical utilization cases: <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex04.1_deleteOnHide.html#firstPage" target="_blank">ex03.1_deleteOnHide.html</a>, <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex04.2_insertNextPage.html#1" target="_blank">ex03.2_insertNextPage.html</a>, <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex04.3_replaceNextPages.html#1" target="_blank">ex03.3_replaceNextPages.html</a>. Note that these additional examples use _onShow_ / _onHide_ "life cycle callbacks", which were not presented yet, but are explained in the next sections.
+And _WebApp.deletePage('pageId')_ public API can be used to remove pages (useful to release memory resources). Checkout these other dynamic page creation examples, which demonstrate better some practical utilization cases: <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex04.1_deleteOnHide.html#firstPage" target="_blank">ex04.1_deleteOnHide.html</a>, <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex04.2_insertNextPage.html#1" target="_blank">ex04.2_insertNextPage.html</a>, <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex04.3_replaceNextPages.html#1" target="_blank">ex04.3_replaceNextPages.html</a>. Note that these additional examples use _onShow_ / _onHide_ "life cycle callbacks", which were not presented yet, but are explained in the next sections.
 
 
 ## Global elements:
@@ -444,7 +446,7 @@ Modal windows are elements designed to appear over page elements. The primary pu
 
 **Important Note:** the whole modal content must be inside another single element, in order to generate a single pop-up dialog (which in this case is using style padding: 0.5em). And notice also that these default pop-ups have rounded corners and dark background overlays (if we need different decorations, we can declare the appropriate CSS rules, as it is presented in the _style.css_ style sheet file).
 
-If we need to create another modal after application startup, or dynamically during execution (on run-time), we can use _WebApp.createModal('modalId', 'extraClass', 'modalContent')_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.1_createModal.html#firstPage" target="_blank">live preview</a>), and _WebApp.deleteModal('modalId')_ public API can be used to remove modals (useful to release memory resources):
+If we need to create another modal after application startup, or dynamically during execution (on run-time), we can use _WebApp.createModal('modalContent')_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.1_createModal.html#firstPage" target="_blank">live preview</a>), and _WebApp.deleteModal('modalId')_ public API can be used to remove modals (useful to release memory resources):
 
 ```html
 <body>
@@ -466,12 +468,12 @@ If we need to create another modal after application startup, or dynamically dur
 
 <script>
 // Create modal dynamically:
-WebApp.createModal('modalWindow', null, '<div style="padding: 0.5em;">'
-		+ '<h1>Modal Window</h1>'
-		+ '<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a>'
-		+ '<br><br>'
-		+ '<a href="javascript:window.history.back();">(hide modal)</a>'
-		+ '</div>');
+WebApp.createModal('<div class="modal" id="modalWindow"><div style="padding: 0.5em;">' +
+		'<h1>Modal Window</h1>' +
+		'<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a>' +
+		'<br><br>' +
+		'<a href="javascript:window.history.back();">(hide modal)</a>' +
+		'</div></div>');
 </script>
 
 </body>
@@ -614,7 +616,7 @@ secondPageElement.onDraw = function() {
 </script>
 ```
 
-If we need to create another canvas page after application startup, or dynamically during execution (on run-time), we can use the same _WebApp.createPage('pageId', 'tagName', 'extraClass', 'insertBeforeId', 'pageContent')_ public API (explained in the section "Dynamic page creation"), by passing _'canvas'_ as the _'tagName'_ parameter.
+If we need to create another canvas page after application startup, or dynamically during execution (on run-time), we can use the same _WebApp.createPage('pageContent', 'insertBeforeId')_ public API, explained in the section "Dynamic page creation".
 
 As we can see in the above example, the context for 2D drawing can be accessed via canvas page's _canvasContext_ property (inside _canvasPageElement.onDraw()_ callback), which can be manipulated using standard HTML5 canvas drawing statements. And as we can also notice, the default HTML5 canvas element size is 300 x 150, which is not interesting to fit an application page, but we can get a full screen canvas page element by listening to the global _WebApp.onResize()_ callback, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.1_canvasFullScreen.html#firstPage" target="_blank">live preview</a>)
 
@@ -848,18 +850,15 @@ Set the default page id string value, which must be shown in the first request t
 |--------|--------|-----------------------------------|
 | pageId | string | The default page id string value. |
 
-#### createPage(pageId, tagName, extraClass, insertBeforeId, pageContent)
+#### createPage(pageContent, insertBeforeId)
 Create page dynamically, without any previous HTML code declaration, and load it according to the insertBeforeId value.
 
 **Parameters:**
 
 | Name           | Type   | Description                          |
 |----------------|--------|--------------------------------------|
-| pageId         | string | The new page id string value.        |
-| tagName        | string | Root element (default value: 'div'). |
-| extraClass     | string | Extra class which must be assigned.  |
-| insertBeforeId | string | The existent page id to be the next. |
 | pageContent    | string | The new page content string value.   |
+| insertBeforeId | string | The existent page id to be the next. |
 
 **Returns:** {node} The new page node element.
 
@@ -887,15 +886,13 @@ Get the currentModal HTML DOM element reference, which represents the currently 
 
 **Returns:** {HTML DOM element} The currentModal HTML DOM element reference.
 
-#### createModal(modalId, extraClass, modalContent)
+#### createModal(modalContent)
 Create modal dynamically, without any previous HTML code declaration, and load it.
 
 **Parameters:**
 
 | Name         | Type   | Description                         |
 |--------------|--------|-------------------------------------|
-| modalId      | string | The new modal id string value.      |
-| extraClass   | string | Extra class which must be assigned. |
 | modalContent | string | The new modal content string value. |
 
 **Returns:** {node} The new modal node element.

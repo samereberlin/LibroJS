@@ -159,14 +159,13 @@ var WebAppClass = function() {
 	 * 
 	 * @return {node} The new page node element.
 	 */
-	this.createPage = function(pageId, tagName, extraClass, insertBeforeId, pageContent) {
-		if (pageElements[pageId] || (typeof pageId !== 'string')) {
+	this.createPage = function(pageContent, insertBeforeId) {
+		var pageElement = document.createElement('div');
+		pageElement.innerHTML = pageContent;
+		pageElement = pageElement.firstChild;
+		if ((pageElement.id.length === 0) || pageElements[pageElement.id]) {
 			return null;
 		} else {
-			var pageElement = document.createElement(tagName? tagName: 'div');
-			pageElement.className = 'page' + (extraClass? ' ' + extraClass: '');
-			pageElement.id = pageId;
-			pageElement.innerHTML = pageContent;
 			if (isLoaded) {
 				loadPage(pageElement, insertBeforeId);
 			}
@@ -247,14 +246,13 @@ var WebAppClass = function() {
 	 * 
 	 * @return {node} The new modal node element.
 	 */
-	this.createModal = function(modalId, extraClass, modalContent) {
-		if (modalElements[modalId] || (typeof modalId !== 'string')) {
+	this.createModal = function(modalContent) {
+		var modalElement = document.createElement('div');
+		modalElement.innerHTML = modalContent;
+		modalElement = modalElement.firstChild;
+		if ((modalElement.id.length === 0) || modalElements[modalElement.id]) {
 			return null;
 		} else {
-			var modalElement = document.createElement('div');
-			modalElement.className = 'modal' + (extraClass? ' ' + extraClass: '');
-			modalElement.id = modalId;
-			modalElement.innerHTML = modalContent;
 			if (isLoaded) {
 				loadModal(modalElement);
 			}

@@ -20,10 +20,10 @@
 <script>
 function goToPage(pageId) {
 	// Create a new page according to the pageId argument:
-	var newPageElement = WebApp.createPage(pageId, null, null, null,
-			'<h1>WebApp - <span style="color:#444;">Page ' + pageId + '</span></h1>'
-		 	+ '<p>This page has been created dynamically, without any previous HTML code declaration.</p>'
-			+ '<a href="#firstPage">go to the first page</a>');
+	var newPageElement = WebApp.createPage('<div class="page" id="' + pageId + '">' +
+			'<h1>WebApp - <span style="color:#444;">Page ' + pageId + '</span></h1>' +
+			'<p>This page has been created dynamically, without any previous HTML code declaration.</p>' +
+			'<a href="#firstPage">go to the first page</a></div>', null);
 
 	// Remove the new page in case of onHide callback, in order to release memory resources:
 	newPageElement.onHide = function() {WebApp.deletePage(pageId);};

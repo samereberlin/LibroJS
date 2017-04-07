@@ -208,8 +208,8 @@ var testCases = [
 				testElements(assert, newPageElement.id, null, 2);
 				WebApp.nextPage();
 			};
-			var newPageElement = WebApp.createPage('newPage', null, null, 'secondPage', '<h1>WebApp - <span style="color:#444;">New Page</span></h1>');
-			var newCanvasPageElement = WebApp.createPage('newCanvasPage', 'canvas', null, 'secondPage', '');
+			var newPageElement = WebApp.createPage('<div class="page" id="newPage"><h1>WebApp - <span style="color:#444;">New Page</span></h1></div>', 'secondPage');
+			var newCanvasPageElement = WebApp.createPage('<canvas class="page" id="newCanvasPage"></canvas>', 'secondPage');
 			assert.equal(WebApp.getPageElements()[newPageElement.id].id, newPageElement.id, 'New page element must be created.');
 			assert.equal(WebApp.getPageElements()[newCanvasPageElement.id].id, newCanvasPageElement.id, 'New canvas page element must be created.');
 			assert.equal(WebApp.getPageIds()[1], newPageElement.id, 'New page ID must be inserted before secondPage.');
@@ -560,7 +560,7 @@ var testCases = [
 									setTimeout(function() {window.location.hash = 'firstPage';}, longDelay); // longDelay is required due to the modal redirecting processing.
 								};
 								testElements(assert, 'secondPage', null, 2);
-								var newModalElement = WebApp.createModal('newModal', null, '<div style="padding: 0.5em;"><h1>New Modal Window</h1></div>');
+								var newModalElement = WebApp.createModal('<div class="modal" id="newModal"><div style="padding: 0.5em;"><h1>New Modal Window</h1></div></div>');
 								assert.equal(WebApp.getModalElements()[newModalElement.id].id, newModalElement.id, 'New modal element must be created.');
 								assert.equal(WebApp.getModalIds()[WebApp.getModalIds().length - 1], newModalElement.id, 'New modal ID must be inserted at the end.');
 								window.location.hash = newModalElement.id;
