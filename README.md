@@ -170,7 +170,7 @@ Global elements are components that must always be displayed (common between the
 
 
 ## Page transitions:
-The soft/basic page transition "fade" is enabled by default, but if we need to set a different one, we can use _WebApp.setDefaultPageTransition('transitionType')_ public API. But if we need to set a different transition for an specific page only, we just need to set the _transition="transitionType"_ HTML DOM element property (or use _WebApp.setPageTransition('pageId', 'transitionType')_ public API). The available transition types are:
+The soft/basic page transition "fade" is enabled by default, but if we need to set a different one, we can use _WebApp.setDefaultPageTransition('transitionType')_ public API. But if we need to set a different transition for an specific page only, we just need to set the _transition="transitionType"_ HTML DOM element attribute (or use _WebApp.setPageTransition('pageId', 'transitionType')_ public API). The available transition types are:
 - 'fade' (which is the soft/basic default page transition);
 - 'pop' (which simulates the "pop" appearing effect);
 - 'flip' (which simulates the "flip" forward effect);
@@ -479,7 +479,7 @@ WebApp.createModal('<div class="modal" id="modalWindow"><div style="padding: 0.5
 </body>
 ```
 
-The pop-up modal transition "pop" is enabled by default, but if we need to set a different one, we can use _WebApp.setDefaultModalTransition('transitionType')_ public API. But if we need to set a different transition for an specific modal only, we just need to set the _transition="transitionType"_ HTML DOM element property (or use _WebApp.setModalTransition('modalId', 'transitionType')_ public API). And if we need to set an specific modal transition to be used once only (without modify the default setting), we can use _WebApp.setNextModalTransition('transitionType')_ public API, similar as described in the "page transitions" section. The following example demonstrates how to create a modal customized to appears like a top menu (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.2_modalTopMenu.html#firstPage" target="_blank">live preview</a>):
+The pop-up modal transition "pop" is enabled by default, but if we need to set a different one, we can use _WebApp.setDefaultModalTransition('transitionType')_ public API. But if we need to set a different transition for an specific modal only, we just need to set the _transition="transitionType"_ HTML DOM element attribute (or use _WebApp.setModalTransition('modalId', 'transitionType')_ public API). And if we need to set an specific modal transition to be used once only (without modify the default setting), we can use _WebApp.setNextModalTransition('transitionType')_ public API, similar as described in the "page transitions" section. The following example demonstrates how to create a modal customized to appears like a top menu (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.2_modalTopMenu.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
