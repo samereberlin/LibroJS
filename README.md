@@ -250,13 +250,13 @@ Keyboard callbacks are useful to set page shortcut keys, for example if we want 
 
 ```html
 <div class="page" id="firstPage">
-    <h1>First Page</h1>
-    <a href="#secondPage">go to the second page</a>
+	<h1>First Page</h1>
+	<a href="#secondPage">go to the second page</a>
 </div>
 
 <div class="page" id="secondPage">
-    <h1>Second Page</h1>
-    <a href="#firstPage">go to the first page</a>
+	<h1>Second Page</h1>
+	<a href="#firstPage">go to the first page</a>
 </div>
 
 <script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
