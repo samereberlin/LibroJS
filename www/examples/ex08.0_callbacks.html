@@ -41,20 +41,20 @@ WebApp.onResume = function() {
 
 // Set firstPage callbacks:
 var firstPageElement = document.getElementById('firstPage');
-firstPageElement.onShow = function(searchData, referrerElement) {
-	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#004;">firstPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+firstPageElement.onShow = function(queryData, referrerElement) {
+	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#004;">firstPageElement.onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
-firstPageElement.onHide = function(nextSearchData, nextElement) {
-	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#004;">firstPageElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
+firstPageElement.onHide = function(nextQueryData, nextElement) {
+	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#004;">firstPageElement.onHide(' + nextQueryData + ', ' + nextElement.id + ')</span>';
 };
 
 // Set secondPage callbacks:
 var secondPageElement = document.getElementById('secondPage');
-secondPageElement.onShow = function(searchData, referrerElement) {
-	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#040;">secondPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+secondPageElement.onShow = function(queryData, referrerElement) {
+	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#040;">secondPageElement.onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
-secondPageElement.onHide = function(nextSearchData, nextElement) {
-	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#040;">secondPageElement.onHide(' + nextSearchData + ', ' + nextElement.id + ')</span>';
+secondPageElement.onHide = function(nextQueryData, nextElement) {
+	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#040;">secondPageElement.onHide(' + nextQueryData + ', ' + nextElement.id + ')</span>';
 };
 </script>
 

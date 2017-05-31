@@ -34,13 +34,13 @@
 <script>
 // Set secondPage callbacks:
 var secondPageElement = document.getElementById('secondPage');
-secondPageElement.onShow = function(searchData, referrerElement) {
-	if (searchData && (searchData === 'returnDialog')) {
+secondPageElement.onShow = function(queryData, referrerElement) {
+	if (queryData && (queryData === 'returnDialog')) {
 		window.location.hash = 'secondPage';
 	}
 };
-secondPageElement.onUpdateSearch = function(searchData) {
-	if (searchData && (searchData === 'returnDialog')) {
+secondPageElement.onUpdateQuery = function(queryData) {
+	if (queryData && (queryData === 'returnDialog')) {
 		window.location.hash = 'returnDialog';
 	}
 };
@@ -51,8 +51,8 @@ var returnButtonElement = document.getElementById('returnButton');
 returnDialogElement.onShow = function() {
 	returnButtonElement.focus();
 }
-returnDialogElement.onHide = function(nextSearchData, nextElement) {
-	if (nextSearchData && (nextSearchData === 'returnDialog')) {
+returnDialogElement.onHide = function(nextQueryData, nextElement) {
+	if (nextQueryData && (nextQueryData === 'returnDialog')) {
 		window.location.hash = nextElement.id;
 	}
 }
