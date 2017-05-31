@@ -219,7 +219,7 @@ firstPageElement.onShow = function(searchData, referrerElement) {
 	if (searchData && (searchData === 'returnDialog')) {
 		setTimeout(function() { // Timeout required to create history entry for WebKit browsers.
 			window.location.hash = 'firstPage';
-		}, 10);
+		}, 100);
 	}
 };
 firstPageElement.onHide = function(nextSearchData, nextElement) {
