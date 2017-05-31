@@ -311,20 +311,20 @@ WebApp.onResume = function() {
 
 // Set firstPage callbacks:
 var firstPageElement = document.getElementById('firstPage');
-firstPageElement.onShow = function(searchData, referrerElement) {
-	console.log('firstPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + '): ' + (new Date().toLocaleString()));
+firstPageElement.onShow = function(queryData, referrerElement) {
+	console.log('firstPageElement.onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + '): ' + (new Date().toLocaleString()));
 };
-firstPageElement.onHide = function(nextSearchData, nextElement) {
-	console.log('firstPageElement.onHide(' + nextSearchData + ', ' + nextElement.id + '): ' + (new Date().toLocaleString()));
+firstPageElement.onHide = function(nextQueryData, nextElement) {
+	console.log('firstPageElement.onHide(' + nextQueryData + ', ' + nextElement.id + '): ' + (new Date().toLocaleString()));
 };
 
 // Set secondPage callbacks:
 var secondPageElement = document.getElementById('secondPage');
-secondPageElement.onShow = function(searchData, referrerElement) {
-	console.log('secondPageElement.onShow(' + searchData + ', ' + (referrerElement? referrerElement.id: '') + '): ' + (new Date().toLocaleString()));
+secondPageElement.onShow = function(queryData, referrerElement) {
+	console.log('secondPageElement.onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + '): ' + (new Date().toLocaleString()));
 };
-secondPageElement.onHide = function(nextSearchData, nextElement) {
-	console.log('secondPageElement.onHide(' + nextSearchData + ', ' + nextElement.id + '): ' + (new Date().toLocaleString()));
+secondPageElement.onHide = function(nextQueryData, nextElement) {
+	console.log('secondPageElement.onHide(' + nextQueryData + ', ' + nextElement.id + '): ' + (new Date().toLocaleString()));
 };
 </script>
 ```
@@ -339,15 +339,15 @@ secondPageElement.onHide = function(nextSearchData, nextElement) {
 - WebApp.onSwitchPage(pageElement, referrerElement);
 - WebApp.onSwitchModal(booleanState, modalElement, referrerElement);
 - WebApp.onKeyDown(keyEvent, pageElement);
-- pageElement.onShow(searchData, referrerElement);
-- pageElement.onHide(nextSearchData, nextElement);
-- pageElement.onUpdateSearch(searchData);
-- modalElement.onShow(searchData, referrerElement);
-- modalElement.onHide(nextSearchData, nextElement);
-- modalElement.onUpdateSearch(searchData);
-- canvasPageElement.onShow(searchData, referrerElement);
-- canvasPageElement.onHide(nextSearchData, nextElement);
-- canvasPageElement.onUpdateSearch(searchData);
+- pageElement.onShow(queryData, referrerElement);
+- pageElement.onHide(nextQueryData, nextElement);
+- pageElement.onUpdateQuery(queryData);
+- modalElement.onShow(queryData, referrerElement);
+- modalElement.onHide(nextQueryData, nextElement);
+- modalElement.onUpdateQuery(queryData);
+- canvasPageElement.onShow(queryData, referrerElement);
+- canvasPageElement.onHide(nextQueryData, nextElement);
+- canvasPageElement.onUpdateQuery(queryData);
 - canvasPageElement.onDraw();
 - canvasPageElement.onUpdate();
 - canvasPageElement.onCanvasTouchableStart(touchEvent);
@@ -355,7 +355,7 @@ secondPageElement.onHide = function(nextSearchData, nextElement) {
 - canvasPageElement.onCanvasTouchableEnd(touchEvent);
 
 Where:
-- `searchData` is the URL hash content from the question mark (if present) to the end. For example, in case of `index.html#fistPage?foo=bar`, the searchData would be `foo=bar`.
+- `queryData` is the URL hash content from the question mark (if present) to the end. For example, in case of `index.html#fistPage?foo=bar`, the queryData would be `foo=bar`.
 - `referrerElement` is the previous displayed page element.
 - `nextElement` is the page element that will be displayed.
 
@@ -559,21 +559,21 @@ Another interesting use case for modal window pop-ups, is the "exit dialog" emul
 <script>
 // Set secondPage callbacks:
 var secondPageElement = document.getElementById('secondPage');
-secondPageElement.onShow = function(searchData, referrerElement) {
-	if (searchData && searchData === 'returnDialog') {
+secondPageElement.onShow = function(queryData, referrerElement) {
+	if (queryData && queryData === 'returnDialog') {
 		window.location.hash = 'secondPage';
 	}
 };
-secondPageElement.onUpdateSearch = function(searchData) {
-	if (searchData && searchData === 'returnDialog') {
+secondPageElement.onUpdateQuery = function(queryData) {
+	if (queryData && queryData === 'returnDialog') {
 		window.location.hash = 'returnDialog';
 	}
 };
 
 // Set returnDialog callbacks:
 var returnDialogElement = document.getElementById('returnDialog');
-returnDialogElement.onHide = function(nextSearchData, nextElement) {
-	if (nextSearchData && (nextSearchData === 'returnDialog')) {
+returnDialogElement.onHide = function(nextQueryData, nextElement) {
+	if (nextQueryData && (nextQueryData === 'returnDialog')) {
 		window.location.hash = nextElement.id;
 	}
 }
@@ -831,10 +831,10 @@ Get the currentPage HTML DOM element reference, which represents the currently d
 
 **Returns:** {HTML DOM element} The currentPage HTML DOM element reference.
 
-#### getCurrentSearch()
-Get the current searchData string value, which is the URL hash content from the question mark (if present) to the end.
+#### getCurrentQuery()
+Get the current queryData string value, which is the URL hash content from the question mark (if present) to the end.
 
-**Returns:** {string} The current searchData string value.
+**Returns:** {string} The current queryData string value.
 
 #### getDefaultPageId()
 Get the default page id string value, which must be shown in the first request to the basic URL (default value: the first body's child class page element id).
@@ -1137,12 +1137,12 @@ Set the history unique boolean state, which indicates if the page entries must b
 | booleanState | boolean | The history unique boolean state. |
 
 #### isRedirection()
-Returns the redirection boolean state, which indicates if the next updateHash event must be bypassed (useful to update searchData content without hash processing).
+Returns the redirection boolean state, which indicates if the next updateHash event must be bypassed (useful to update queryData content without hash processing).
 
 **Returns:** {boolean} The redirection boolean state.
 
 #### setRedirection(booleanState)
-Set the redirection boolean state, which indicates if the next updateHash event must be bypassed (useful to update searchData content without hash processing).
+Set the redirection boolean state, which indicates if the next updateHash event must be bypassed (useful to update queryData content without hash processing).
 
 **Parameters:**
 

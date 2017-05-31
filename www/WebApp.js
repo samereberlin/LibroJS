@@ -78,7 +78,7 @@ var WebAppClass = function() {
 	var pageIds = [];
 	var pageElements = {};
 	var currentPage = null;
-	var currentSearch = null;
+	var currentQuery = null;
 	var defaultPageId = null;
 
 	//################################################################################//
@@ -115,13 +115,13 @@ var WebAppClass = function() {
 	};
 
 	/**
-	 * Get the current searchData string value,
+	 * Get the current queryData string value,
 	 * which is the URL hash content from the question mark (if present) to the end.
 	 *
-	 * @return {string} The current searchData string value.
+	 * @return {string} The current queryData string value.
 	 */
-	this.getCurrentSearch = function() {
-		return currentSearch;
+	this.getCurrentQuery = function() {
+		return currentQuery;
 	};
 
 	/**
@@ -689,7 +689,7 @@ var WebAppClass = function() {
 	/**
 	 * Returns the redirection boolean state,
 	 * which indicates if the next updateHash event must be bypassed
-	 * (useful to update searchData content without hash processing).
+	 * (useful to update queryData content without hash processing).
 	 *
 	 * @return {boolean} The redirection boolean state.
 	 */
@@ -700,7 +700,7 @@ var WebAppClass = function() {
 	/**
 	 * Set the redirection boolean state,
 	 * which indicates if the next updateHash event must be bypassed
-	 * (useful to update searchData content without hash processing).
+	 * (useful to update queryData content without hash processing).
 	 *
 	 * @param {boolean} booleanState - The redirection boolean state.
 	 */
@@ -744,7 +744,7 @@ var WebAppClass = function() {
 		}
 
 		if (isLoaded) {
-			showElement(currentPage, currentSearch, currentPage);
+			showElement(currentPage, currentQuery, currentPage);
 		} else {
 			isLoaded = true;
 
@@ -906,9 +906,9 @@ var WebAppClass = function() {
 	}
 
 	function reset() {
-		hideElement(currentPage, currentSearch, currentPage);
+		hideElement(currentPage, currentQuery, currentPage);
 		currentPage = null;
-		currentSearch = null;
+		currentQuery = null;
 		historyStack = [];
 	}
 
@@ -980,9 +980,9 @@ var WebAppClass = function() {
 		if (isLogEnabled) console.log('WebApp.js: updateHash(hashChangeEvent)... newURL = ' + hashChangeEvent.newURL + ', oldURL = ' + hashChangeEvent.oldURL);
 
 		// Parse URL data:
-		var indexOfSearch = window.location.hash.indexOf('?');
-		var nextSearch = (indexOfSearch >= 0)? window.location.hash.substring(indexOfSearch + 1): '';
-		var nextHash = (window.location.hash.length > 1)? window.location.hash.substring(1, (nextSearch? indexOfSearch: window.location.hash.length)): null;
+		var indexOfQuery = window.location.hash.indexOf('?');
+		var nextQuery = (indexOfQuery >= 0)? window.location.hash.substring(indexOfQuery + 1): '';
+		var nextHash = (window.location.hash.length > 1)? window.location.hash.substring(1, (nextQuery? indexOfQuery: window.location.hash.length)): null;
 		var nextPage = (nextHash && pageElements[nextHash])? pageElements[nextHash]: null;
 		var nextModal = (!nextPage && nextHash && modalElements[nextHash])? modalElements[nextHash]: null;
 
@@ -993,9 +993,9 @@ var WebAppClass = function() {
 		// Else if current modal is shown, hide it:
 		} else if (currentModal) {
 			if (nextModal === currentModal) {
-				updateSearch(nextSearch, nextModal);
+				updateQuery(nextQuery, nextModal);
 			} else {
-				switchModal(false, currentModal, nextPage, nextSearch);
+				switchModal(false, currentModal, nextPage, nextQuery);
 				// If browser back key has not been pressed:
 				if (modalHistoryLength < window.history.length) {
 					// If nextPage is not the same as the currentPage:
@@ -1019,7 +1019,7 @@ var WebAppClass = function() {
 			if (isDefaultPageFirstly && (hashChangeEvent.newURL === null) && (hashChangeEvent.oldURL === null) && nextPage && (nextHash !== defaultPageId)) {
 				window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#' + defaultPageId);
 				setTimeout(function() { // Timeout required to create history entry for WebKit browsers.
-					window.location.hash = nextHash + (nextSearch? '?' + nextSearch: '');
+					window.location.hash = nextHash + (nextQuery? '?' + nextQuery: '');
 				}, HASH_DELAY);
 			} else {
 				if (nextPage) {
@@ -1050,13 +1050,13 @@ var WebAppClass = function() {
 
 					// Page update management:
 					if (nextPage === currentPage) {
-						updateSearch(nextSearch, nextPage);
+						updateQuery(nextQuery, nextPage);
 					} else {
-						switchPage(nextPage, nextSearch);
+						switchPage(nextPage, nextQuery);
 					}
 				} else if (currentPage) {
 					if (nextModal) {
-						switchModal(true, nextModal, nextPage, nextSearch);
+						switchModal(true, nextModal, nextPage, nextQuery);
 						modalHistoryLength = window.history.length;
 					} else {
 						isRedirection = true;
@@ -1065,7 +1065,7 @@ var WebAppClass = function() {
 				} else if (defaultPageId) {
 					window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#' + defaultPageId);
 				}
-				currentSearch = nextSearch;
+				currentQuery = nextQuery;
 			}
 		}
 		if (typeof WebApp.onUpdateHash === 'function') {
@@ -1073,15 +1073,15 @@ var WebAppClass = function() {
 		}
 	}
 
-	function updateSearch(searchData, element) {
-		if (isLogEnabled) console.log('WebApp.js: updateSearch(searchData, element)... searchData: ' + searchData + ', element.id: ' + (element? element.id: ''));
-		if (typeof element.onUpdateSearch === 'function') {
-			element.onUpdateSearch(searchData);
+	function updateQuery(queryData, element) {
+		if (isLogEnabled) console.log('WebApp.js: updateQuery(queryData, element)... queryData: ' + queryData + ', element.id: ' + (element? element.id: ''));
+		if (typeof element.onUpdateQuery === 'function') {
+			element.onUpdateQuery(queryData);
 		}
 	}
 
-	function switchPage(pageElement, searchData) {
-		if (isLogEnabled) console.log('WebApp.js: switchPage(pageElement, searchData)... pageElement.id = ' + (pageElement? pageElement.id: '') + ', searchData: ' + searchData + ', currentPage.id = ' + (currentPage? currentPage.id: ''));
+	function switchPage(pageElement, queryData) {
+		if (isLogEnabled) console.log('WebApp.js: switchPage(pageElement, queryData)... pageElement.id = ' + (pageElement? pageElement.id: '') + ', queryData: ' + queryData + ', currentPage.id = ' + (currentPage? currentPage.id: ''));
 		if (!nextPageTransition) {
 			nextPageTransition = pageElement.transitionType? pageElement.transitionType: defaultPageTransition;
 		}
@@ -1108,13 +1108,13 @@ var WebAppClass = function() {
 					pageElement.style.transform.lastIndexOf('(') + 1,
 					pageElement.style.transform.lastIndexOf('p')));
 			swipeElement(referrerElement, referrerFromPx, referrerToPx, 25, function() {
-				hideElement(referrerElement, searchData, pageElement);
+				hideElement(referrerElement, queryData, pageElement);
 			});
 			swipeElement(pageElement, pageFromPx, 0, 25, function() {
 				pageElement.style.position = '';
 				pageElement.style.top = '';
 				pageElement.style.width = ''; // Required to solve WebKit unstable width issue.
-				showElement(pageElement, searchData, referrerElement);
+				showElement(pageElement, queryData, referrerElement);
 				onSwitchPage(referrerElement);
 				setPage(pageElement, true);
 			});
@@ -1123,7 +1123,7 @@ var WebAppClass = function() {
 				animateElement(pageElement, nextPageTransition + 'in', function() {
 					setPage(pageElement, true);
 				});
-				showElement(pageElement, searchData, referrerElement);
+				showElement(pageElement, queryData, referrerElement);
 				onSwitchPage(referrerElement);
 			};
 			if (currentPage) {
@@ -1135,7 +1135,7 @@ var WebAppClass = function() {
 					pageElement.style.top = ((referrerElement.offsetTop - window.pageYOffset > 0)?
 							referrerElement.offsetTop - window.pageYOffset: 0) + 'px';
 					animateElement(referrerElement, nextPageTransition + 'out', function() {
-						hideElement(referrerElement, searchData, pageElement);
+						hideElement(referrerElement, queryData, pageElement);
 						pageElement.style.position = '';
 						pageElement.style.zIndex = '';
 						pageElement.style.top = '';
@@ -1143,7 +1143,7 @@ var WebAppClass = function() {
 					showNext(referrerElement);
 				} else {
 					animateElement(referrerElement, nextPageTransition + 'out', function() {
-						hideElement(referrerElement, searchData, pageElement);
+						hideElement(referrerElement, queryData, pageElement);
 						showNext(referrerElement);
 					});
 				}
@@ -1232,8 +1232,8 @@ var WebAppClass = function() {
 		}
 	}
 
-	function switchModal(booleanState, modalElement, nextElement, searchData) {
-		if (isLogEnabled) console.log('WebApp.js: switchModal(booleanState, modalElement, nextElement, searchData)... booleanState: ' + booleanState + ', modalElement.id: ' + (modalElement? modalElement.id: '') + ', nextElement.id = ' + (nextElement? nextElement.id: '') + ', searchData: ' + searchData + ', currentPage.id = ' + (currentPage? currentPage.id: ''));
+	function switchModal(booleanState, modalElement, nextElement, queryData) {
+		if (isLogEnabled) console.log('WebApp.js: switchModal(booleanState, modalElement, nextElement, queryData)... booleanState: ' + booleanState + ', modalElement.id: ' + (modalElement? modalElement.id: '') + ', nextElement.id = ' + (nextElement? nextElement.id: '') + ', queryData: ' + queryData + ', currentPage.id = ' + (currentPage? currentPage.id: ''));
 		if (!nextModalTransition) {
 			nextModalTransition = modalElement.transitionType? modalElement.transitionType: defaultModalTransition;
 		}
@@ -1257,7 +1257,7 @@ var WebAppClass = function() {
 		if (booleanState) {
 			animateElement(modalElement, 'fadein', null);
 			animateElement(modalElement.children[0], nextModalTransition + 'in', null);
-			showElement(modalElement, searchData, currentPage);
+			showElement(modalElement, queryData, currentPage);
 			currentModal = modalElement;
 			onSwitchModal();
 		} else {
@@ -1276,7 +1276,7 @@ var WebAppClass = function() {
 				animateElement(modalElement.children[0], nextModalTransition + 'out', null);
 			}
 			animateElement(modalElement, 'fadeout', function() {
-				hideElement(modalElement, searchData, nextElement);
+				hideElement(modalElement, queryData, nextElement);
 				onSwitchModal();
 			});
 			currentModal = null;
@@ -1304,19 +1304,19 @@ var WebAppClass = function() {
 		}
 	}
 
-	function showElement(element, searchData, referrerElement) {
-		if (isLogEnabled) console.log('WebApp.js: showElement(element, searchData, referrerElement)... element.id: ' + (element? element.id: '') + ', searchData: ' + searchData + ', referrerElement.id: ' + (referrerElement? referrerElement.id: ''));
+	function showElement(element, queryData, referrerElement) {
+		if (isLogEnabled) console.log('WebApp.js: showElement(element, queryData, referrerElement)... element.id: ' + (element? element.id: '') + ', queryData: ' + queryData + ', referrerElement.id: ' + (referrerElement? referrerElement.id: ''));
 		element.style.display = 'block';
 		if (typeof element.onShow === 'function') {
-			element.onShow(searchData, referrerElement);
+			element.onShow(queryData, referrerElement);
 		}
 	}
 
-	function hideElement(element, nextSearchData, nextElement) {
-		if (isLogEnabled) console.log('WebApp.js: hideElement(element, nextSearchData, nextElement)... element.id: ' + (element? element.id: '') + ', nextSearchData: ' + nextSearchData + ', nextElement.id: ' + (nextElement? nextElement.id: ''));
+	function hideElement(element, nextQueryData, nextElement) {
+		if (isLogEnabled) console.log('WebApp.js: hideElement(element, nextQueryData, nextElement)... element.id: ' + (element? element.id: '') + ', nextQueryData: ' + nextQueryData + ', nextElement.id: ' + (nextElement? nextElement.id: ''));
 		element.style.display = 'none';
 		if (typeof element.onHide === 'function') {
-			element.onHide(nextSearchData, nextElement);
+			element.onHide(nextQueryData, nextElement);
 		}
 	}
 
