@@ -60,7 +60,7 @@ secondPageElement.onCanvasTouchableMove = moveCircle;
 secondPageElement.onCanvasTouchableEnd = moveCircle;
 
 // Set global onResize callback:
-WebApp.onResize = function() {
+WebApp.onResize = function(pageElement) {
 	secondPageElement.width = window.innerWidth;
 	secondPageElement.height = window.innerHeight;
 };

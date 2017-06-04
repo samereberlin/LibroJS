@@ -920,7 +920,7 @@ var WebAppClass = function() {
 				setPage(currentPage, false);
 			}
 			if (typeof WebApp.onPause === 'function') {
-				WebApp.onPause();
+				WebApp.onPause(currentPage);
 			}
 		}
 	}
@@ -933,7 +933,7 @@ var WebAppClass = function() {
 				setPage(currentPage, true);
 			}
 			if (typeof WebApp.onResume === 'function') {
-				WebApp.onResume();
+				WebApp.onResume(currentPage);
 			}
 		}
 	}
@@ -969,7 +969,7 @@ var WebAppClass = function() {
 	function resize() {
 		if (isLogEnabled) console.log('WebApp.js: resize()');
 		if (typeof WebApp.onResize === 'function') {
-			WebApp.onResize();
+			WebApp.onResize(currentPage);
 		}
 	}
 
@@ -1670,12 +1670,21 @@ var WebAppClass = function() {
 
 	/**
 	 * Dispatch keyDown keyboard event.
-	 * It is called automatically on window keydown event,
+	 * It is called automatically on window.onkeydown event,
 	 * but it is useful to simulate keyDown keyboard event for testing.
 	 *
 	 * @param {KeyboardEvent} keyEvent - The keyDown keyboard event.
 	 */
 	this.keyDown = keyDown;
+
+	/**
+	 * Dispatch keyUp keyboard event.
+	 * It is called automatically on window.onkeydown event,
+	 * but it is useful to simulate keyUp keyboard event for testing.
+	 *
+	 * @param {KeyboardEvent} keyEvent - The keyUp keyboard event.
+	 */
+	this.keyUp = keyUp;
 
 	/**
 	 * Go to the next page (when available),

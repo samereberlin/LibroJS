@@ -246,7 +246,7 @@ If we need to set an specific page transition to be used once only (without modi
 
 
 ## Keyboard callbacks:
-Keyboard callbacks are useful to set page shortcut keys, for example if we want to navigate between the available pages using left/right keys, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex07.0_onKeyDown.html#firstPage" target="_blank">live preview</a>):
+Keyboard callbacks are useful to set page shortcut keys, for example if we want to navigate between the available pages using left/right keys, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex07.0_onKeyEvent.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -302,11 +302,11 @@ If you do not understand the above explanation, do not be afraid. The use of cal
 WebApp.onLoad = function() {
 	console.log('WebApp.onLoad(): ' + (new Date().toLocaleString()));
 }
-WebApp.onPause = function() {
-	console.log('WebApp.onPause(): ' + (new Date().toLocaleString()));
+WebApp.onPause = function(pageElement) {
+	console.log('WebApp.onPause(' + (pageElement? pageElement.id: '') + '): ' + (new Date().toLocaleString()));
 }
-WebApp.onResume = function() {
-	console.log('WebApp.onResume(): ' + (new Date().toLocaleString()));
+WebApp.onResume = function(pageElement) {
+	console.log('WebApp.onResume(' + (pageElement? pageElement.id: '') + '): ' + (new Date().toLocaleString()));
 }
 
 // Set firstPage callbacks:
@@ -332,13 +332,14 @@ secondPageElement.onHide = function(nextQueryData, nextElement) {
 **Important Note:** the available callbacks are:
 - WebApp.onLoad();
 - WebApp.onUnload();
-- WebApp.onPause();
-- WebApp.onResume();
-- WebApp.onResize();
+- WebApp.onPause(pageElement);
+- WebApp.onResume(pageElement);
+- WebApp.onResize(pageElement);
 - WebApp.onUpdateHash(hashChangeEvent);
 - WebApp.onSwitchPage(pageElement, referrerElement);
 - WebApp.onSwitchModal(booleanState, modalElement, referrerElement);
 - WebApp.onKeyDown(keyEvent, pageElement);
+- WebApp.onKeyUp(keyEvent, pageElement);
 - pageElement.onShow(queryData, referrerElement);
 - pageElement.onHide(nextQueryData, nextElement);
 - pageElement.onUpdateQuery(queryData);
@@ -618,7 +619,7 @@ secondPageElement.onDraw = function() {
 
 If we need to create another canvas page after application startup, or dynamically during execution (on run-time), we can use the same _WebApp.createPage('pageContent', 'insertBeforeId')_ public API, explained in the section "Dynamic page creation".
 
-As we can see in the above example, the context for 2D drawing can be accessed via canvas page's _canvasContext_ property (inside _canvasPageElement.onDraw()_ callback), which can be manipulated using standard HTML5 canvas drawing statements. And as we can also notice, the default HTML5 canvas element size is 300 x 150, which is not interesting to fit an application page, but we can get a full screen canvas page element by listening to the global _WebApp.onResize()_ callback, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.1_canvasFullScreen.html#firstPage" target="_blank">live preview</a>)
+As we can see in the above example, the context for 2D drawing can be accessed via canvas page's _canvasContext_ property (inside _canvasPageElement.onDraw()_ callback), which can be manipulated using standard HTML5 canvas drawing statements. And as we can also notice, the default HTML5 canvas element size is 300 x 150, which is not interesting to fit an application page, but we can get a full screen canvas page element by listening to the global _WebApp.onResize(pageElement)_ callback, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.1_canvasFullScreen.html#firstPage" target="_blank">live preview</a>)
 
 ```html
 <div class="page" id="firstPage">
@@ -651,8 +652,8 @@ secondPageElement.onDraw = function() {
 			secondPageElement.width + ' x ' + secondPageElement.height + ' px)', 10, 140);
 };
 
-//Set global onResize callback:
-WebApp.onResize = function() {
+// Set global onResize callback:
+WebApp.onResize = function(pageElement) {
 	secondPageElement.width = window.innerWidth;
 	secondPageElement.height = window.innerHeight;
 };
@@ -720,7 +721,7 @@ secondPageElement.onDraw = function() {
 };
 
 // Set global onResize callback:
-WebApp.onResize = function() {
+WebApp.onResize = function(pageElement) {
 	secondPageElement.width = window.innerWidth;
 	secondPageElement.height = window.innerHeight;
 };
@@ -779,7 +780,7 @@ secondPageElement.onCanvasTouchableMove = moveCircle;
 secondPageElement.onCanvasTouchableEnd = moveCircle;
 
 // Set global onResize callback:
-WebApp.onResize = function() {
+WebApp.onResize = function(pageElement) {
 	secondPageElement.width = window.innerWidth;
 	secondPageElement.height = window.innerHeight;
 };
@@ -1172,6 +1173,15 @@ Dispatch keyDown keyboard event. It is called automatically on window.onkeydown 
 | Name     | Type          | Description                 |
 |----------|---------------|-----------------------------|
 | keyEvent | KeyboardEvent | The keyDown keyboard event. |
+
+#### keyUp(keyEvent)
+Dispatch keyUp keyboard event. It is called automatically on window.onkeyup event, but it is useful to simulate keyUp keyboard event for testing.
+
+**Parameters:**
+
+| Name     | Type          | Description               |
+|----------|---------------|---------------------------|
+| keyEvent | KeyboardEvent | The keyUp keyboard event. |
 
 #### nextPage()
 Go to the next page (when available), according to the available pageIds (@see getPageIds).

@@ -32,11 +32,11 @@ var logMonitor = document.getElementById('logMonitor');
 WebApp.onLoad = function() {
 	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onLoad()</span>';
 }
-WebApp.onPause = function() {
-	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onPause()</span>';
+WebApp.onPause = function(pageElement) {
+	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onPause(' + (pageElement? pageElement.id: '') + ')</span>';
 }
-WebApp.onResume = function() {
-	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onResume()</span>';
+WebApp.onResume = function(pageElement) {
+	logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onResume(' + (pageElement? pageElement.id: '') + ')</span>';
 }
 
 // Set firstPage callbacks:

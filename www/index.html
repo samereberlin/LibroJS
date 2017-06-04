@@ -165,14 +165,14 @@ WebApp.onLoad = function() {
 WebApp.onUnload = function() {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onUnload()</span>';
 }
-WebApp.onPause = function() {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onPause()</span>';
+WebApp.onPause = function(pageElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onPause(' + (pageElement? pageElement.id: '') + ')</span>';
 }
-WebApp.onResume = function() {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onResume()</span>';
+WebApp.onResume = function(pageElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onResume(' + (pageElement? pageElement.id: '') + ')</span>';
 }
-WebApp.onResize = function() {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onResize()</span>';
+WebApp.onResize = function(pageElement) {
+	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onResize(' + (pageElement? pageElement.id: '') + ')</span>';
 }
 WebApp.onUpdateHash = function(hashChangeEvent) {
 	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onUpdateHash(hashChangeEvent)' +

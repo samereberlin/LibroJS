@@ -40,8 +40,8 @@ secondPageElement.onDraw = function() {
 			secondPageElement.width + ' x ' + secondPageElement.height + ' px)', 10, 140);
 };
 
-//Set global onResize callback:
-WebApp.onResize = function() {
+// Set global onResize callback:
+WebApp.onResize = function(pageElement) {
 	secondPageElement.width = window.innerWidth;
 	secondPageElement.height = window.innerHeight;
 };
