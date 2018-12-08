@@ -30,7 +30,7 @@ The following HTML crumb is the minimum startup code required to use WebApp fram
 	<a href="#firstPage">go to the first page</a>
 </div>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/samereberlin/WebApp/www/WebApp.js"></script>
 
 </body>
 ```
@@ -38,7 +38,7 @@ The following HTML crumb is the minimum startup code required to use WebApp fram
 Where:
 - `<div class="page" id="firstPage">` is the element required for page creation, which must have the class _page_, a unique _id_, and be placed as a _body's child_ element.
 - `<h1>First Page</h1>` and `<a href="#secondPage">go to the second page</a>` represent the content of the page _firstPage_ (notice that only the hash data is required to create a link to the secondPage).
-- `<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>` is the inclusion of WebApp framework library, which can be obtained remotely (as here it is, using GitHub _CDN_ URL) or locally (stored beside our _HTML_ file).
+- `<script src="https://cdn.jsdelivr.net/gh/samereberlin/WebApp/www/WebApp.js"></script>` is the inclusion of WebApp framework library, which can be obtained remotely (as here it is, using GitHub _CDN_ URL) or locally (stored beside our _HTML_ file).
 
 **Important Note:** for simplicity reasons, the above HTML code does not include any header definition, but it is strongly recommended to assure compatibility between different devices and platforms. Please include at least the _title_ and the basic _responsive_ meta tag `<meta name="viewport" content="width=device-width, initial-scale=1.0">`, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex01.1_responsive.html#firstPage" target="_blank">live preview</a>):
 
@@ -63,7 +63,7 @@ Where:
 	<a href="#firstPage">go to the first page</a>
 </div>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/samereberlin/WebApp/www/WebApp.js"></script>
 
 </body>
 
@@ -85,7 +85,7 @@ Another very common and interesting way to switch between the available pages is
 	<a href="#firstPage">go to the first page</a>
 </div>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/samereberlin/WebApp/www/WebApp.js"></script>
 
 <script>
 // Enable swipe page switch:
@@ -110,7 +110,7 @@ The default application page is the first _body's child_ class _page_ element, w
 	<a href="#firstPage">go to the first page</a>
 </div>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/samereberlin/WebApp/www/WebApp.js"></script>
 
 <script>
 // Set default application page id:
@@ -128,7 +128,7 @@ If we need to create another page after application startup, or dynamically duri
 	<a href="#secondPage">go to the second page</a>
 </div>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/samereberlin/WebApp/www/WebApp.js"></script>
 
 <script>
 // Create another page dynamically:
@@ -165,7 +165,7 @@ Global elements are components that must always be displayed (common between the
 	<br>displayed below every page.
 </div>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/samereberlin/WebApp/www/WebApp.js"></script>
 ```
 
 
@@ -209,7 +209,7 @@ The different page transition types can be observed/compared in the following ex
 	<a href="#firstPage">go to the first page</a>
 </div>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/samereberlin/WebApp/www/WebApp.js"></script>
 ```
 
 If we need to set an specific page transition to be used once only (without modify the default setting), we can use _WebApp.setNextPageTransition('transitionType')_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex06.1_setNextPageTransition.html#firstPage" target="_blank">live preview</a>):
@@ -241,7 +241,7 @@ If we need to set an specific page transition to be used once only (without modi
 	(<a href="#firstPage" onclick="WebApp.setNextPageTransition('none')">no transition</a>)
 </div>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/samereberlin/WebApp/www/WebApp.js"></script>
 ```
 
 
@@ -259,7 +259,7 @@ Keyboard callbacks are useful to set page shortcut keys, for example if we want 
 	<a href="#firstPage">go to the first page</a>
 </div>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/samereberlin/WebApp/www/WebApp.js"></script>
 
 <script>
 // Set key down callback action:
@@ -295,7 +295,7 @@ If you do not understand the above explanation, do not be afraid. The use of cal
 	<a href="#firstPage">go to the first page</a>
 </div>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/samereberlin/WebApp/www/WebApp.js"></script>
 
 <script>
 // Set global callbacks:
@@ -440,7 +440,7 @@ Modal windows are elements designed to appear over page elements. The primary pu
 <br>
 <a href="#modalWindow">(show modal)</a>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/samereberlin/WebApp/www/WebApp.js"></script>
 
 </body>
 ```
@@ -465,7 +465,7 @@ If we need to create another modal after application startup, or dynamically dur
 <br>
 <a href="#modalWindow">(show modal)</a>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/samereberlin/WebApp/www/WebApp.js"></script>
 
 <script>
 // Create modal dynamically:
@@ -496,7 +496,7 @@ The pop-up modal transition "pop" is enabled by default, and if we need to set a
 	</div>
 </div>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/samereberlin/WebApp/www/WebApp.js"></script>
 ```
 
 Swipe feature is also available over modal windows, but it only hides the current modal (instead of switch to the next/previous one). Swipe modal switch feature is disable by default, and to enable it, we can use _WebApp.setSwipeModalSwitch(true)_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.3_swipeModal.html#firstPage" target="_blank">live preview</a>):
@@ -526,7 +526,7 @@ Swipe feature is also available over modal windows, but it only hides the curren
 	</div>
 </div>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/samereberlin/WebApp/www/WebApp.js"></script>
 
 <script>
 // Enable swipe modal switch:
@@ -555,7 +555,7 @@ Another interesting use case for modal window pop-ups, is the "exit dialog" emul
 	</div>
 </div>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/samereberlin/WebApp/www/WebApp.js"></script>
 
 <script>
 // Set secondPage callbacks:
@@ -595,7 +595,7 @@ Canvas pages are elements designed to behave like regular pages, but instead of 
 	style="background-color: lightgray;">
 </canvas>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/samereberlin/WebApp/www/WebApp.js"></script>
 
 <script>
 // Set secondPage (canvas page) callbacks:
@@ -631,7 +631,7 @@ As we can see in the above example, the context for 2D drawing can be accessed v
 	style="background-color: lightgray; position: fixed; top: 0; left: 0;">
 </canvas>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/samereberlin/WebApp/www/WebApp.js"></script>
 
 <script>
 // Set secondPage (canvas page) callbacks:
@@ -672,7 +672,7 @@ For simplicity reasons, the above canvas page examples have static text contents
 	style="position: fixed; top: 0; left: 0;">
 </canvas>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/samereberlin/WebApp/www/WebApp.js"></script>
 
 <script>
 // Define drawing settings:
@@ -740,7 +740,7 @@ Another interesting canvas page feature is the "canvas touchable" engine, which 
 	style="position: fixed; top: 0; left: 0;">
 </canvas>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/samereberlin/WebApp/www/WebApp.js"></script>
 
 <script>
 // Define drawing settings:
