@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WebApp - tests</title>
+<title>LibroJS - tests</title>
 <!-- link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.0.1.css" -->
 <link rel="stylesheet" href="qunit-2.0.1.css">
 </head>
@@ -15,19 +15,19 @@
 </div>
 
 <div class="page" id="firstPage">
-	<h1>WebApp - <span style="color:#004;">First Page</span></h1>
+	<h1>LibroJS - <span style="color:#004;">First Page</span></h1>
 	<p>If you are viewing this page (firstPage), it means that the current browser URL ends with "#firstPage"</p>
 	#firstPage | <a href="#secondPage">#secondPage</a> | <a href="#thirdPage">#thirdPage</a> | <a href="#fourthPage">#fourthPage</a>
 </div>
 
 <div class="page" id="secondPage">
-	<h1>WebApp - <span style="color:#040;">Second Page</span></h1>
+	<h1>LibroJS - <span style="color:#040;">Second Page</span></h1>
 	<p>If you are viewing this page (secondPage), it means that the current browser URL ends with "#secondPage"</p>
 	<a href="#firstPage">#firstPage</a> | #secondPage | <a href="#thirdPage">#thirdPage</a> | <a href="#fourthPage">#fourthPage</a>
 </div>
 
 <div class="page" id="thirdPage">
-	<h1>WebApp - <span style="color:#400;">Third Page</span></h1>
+	<h1>LibroJS - <span style="color:#400;">Third Page</span></h1>
 	<p>If you are viewing this page (thirdPage), it means that the current browser URL ends with "#thirdPage"</p>
 	<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a> | #thirdPage | <a href="#fourthPage">#fourthPage</a>
 </div>
@@ -38,7 +38,7 @@
 
 <div class="modal" id="modalWindow">
 	<div style="padding: 0.5em;">
-		<h1>WebApp - <span style="color:#444;">Modal Window</span></h1>
+		<h1>LibroJS - <span style="color:#444;">Modal Window</span></h1>
 		<p>If you are viewing this modal (modalWindow), it means that the current browser URL ends with "#modalWindow"</p>
 		<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a> | <a href="#thirdPage">#thirdPage</a> | <a href="#fourthPage">#fourthPage</a>
 		<br><br>
@@ -53,8 +53,8 @@
 <div id="qunit"></div>
 <div id="qunit-fixture"></div>
 
-<!-- script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script -->
-<script src="../WebApp.js"></script>
+<!-- script src="https://raw.githack.com/samereberlin/LibroJS/master/www/libro.js"></script -->
+<script src="../libro.js"></script>
 
 <!-- script src="https://code.jquery.com/qunit/qunit-2.0.1.js"></script -->
 <script src="qunit-2.0.1.js"></script>
@@ -87,26 +87,26 @@ function startNext() {
 
 function testElements(assert, pageId, modalId, historyStackLength) {
 	assert.equal(window.location.hash, '#' + (modalId? modalId: pageId), '====> URL hash: #' + (modalId? modalId: pageId));
-	var pageElements = WebApp.getPageElements();
+	var pageElements = libro.getPageElements();
 	if (pageId) assert.equal(pageElements[pageId].style.display, 'block', pageId + ' page style display: ' + pageElements[pageId].style.display);
 	for (var pageElement in pageElements) {
 		if (pageElement !== pageId) assert.equal(pageElements[pageElement].style.display, 'none', pageElement + ' page style display: ' + pageElements[pageElement].style.display);
 	}
-	var modalElements = WebApp.getModalElements();
+	var modalElements = libro.getModalElements();
 	if (modalId) assert.equal(modalElements[modalId].style.display, 'block', modalId + ' modal style display: ' + modalElements[modalId].style.display);
 	for (var modalElement in modalElements) {
 		if (modalElement !== modalId) assert.equal(modalElements[modalElement].style.display, 'none', modalElement + ' modal style display: ' + modalElements[modalElement].style.display);
 	}
 	assert.equal(headerElement.style.display, '', 'Global header element visibility: ' + headerElement.style.display);
-	assert.equal(WebApp.getHistoryStack().length, historyStackLength, 'History stack length: ' + historyStackLength + ' <====');
+	assert.equal(libro.getHistoryStack().length, historyStackLength, 'History stack length: ' + historyStackLength + ' <====');
 }
 
 function testUnknownHash(assert, currentHash, callback) {
-	WebApp.onUpdateHash = function(hashChangeEvent) {
-		WebApp.onUpdateHash = function(hashChangeEvent) {
+	libro.onUpdateHash = function(hashChangeEvent) {
+		libro.onUpdateHash = function(hashChangeEvent) {
 			var newHash = hashChangeEvent.newURL.substr(hashChangeEvent.newURL.lastIndexOf('#'));
 			if (currentHash === hashChangeEvent.newURL.substr(hashChangeEvent.newURL.lastIndexOf('#') + 1)) {
-				WebApp.onUpdateHash = null;
+				libro.onUpdateHash = null;
 				assert.equal(hashChangeEvent.oldURL.substr(hashChangeEvent.oldURL.lastIndexOf('#') + 1), 'unknown', 'Test "unknown" hash, oldHash: #unknown');
 				assert.equal(hashChangeEvent.newURL.substr(hashChangeEvent.newURL.lastIndexOf('#') + 1), currentHash, 'Test "unknown" hash, newHash: #' + currentHash);
 				if (typeof callback === 'function') callback(assert);
@@ -119,7 +119,7 @@ function testUnknownHash(assert, currentHash, callback) {
 var testCases = [
 	function() {
 		var testEmptyStartupHash = window.location.hash;
-		var testEmptyHistoryStack = WebApp.getHistoryStack().length;
+		var testEmptyHistoryStack = libro.getHistoryStack().length;
 		QUnit.test('Startup verifications...', function(assert) {
 			assert.equal(testEmptyStartupHash, '', 'Empty URL hash.');
 			assert.equal(testEmptyHistoryStack, 0, 'Empty history stack.');
@@ -135,41 +135,41 @@ var testCases = [
 	function() {
 		QUnit.test('First page redirection, from unknown hash...', function(assert) {
 			var done = assert.async();
-			WebApp.onSwitchPage = function() {
-				WebApp.onSwitchPage = null;
+			libro.onSwitchPage = function() {
+				libro.onSwitchPage = null;
 				testElements(assert, 'firstPage', null, 1);
 				done();
 				startNext();
 			};
-			WebApp.reset();
+			libro.reset();
 			window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#unknown');
 		});
 	},
 	function() {
 		QUnit.test('Default page redirection, from empty hash...', function(assert) {
 			var done = assert.async();
-			WebApp.onSwitchPage = function() {
-				WebApp.onSwitchPage = null;
+			libro.onSwitchPage = function() {
+				libro.onSwitchPage = null;
 				testElements(assert, 'secondPage', null, 1);
 				done();
 				startNext();
 			};
-			WebApp.reset();
-			WebApp.setDefaultPageId('secondPage');
+			libro.reset();
+			libro.setDefaultPageId('secondPage');
 			window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#');
 		});
 	},
 	function() {
 		QUnit.test('Default page redirection, from unknown hash...', function(assert) {
 			var done = assert.async();
-			WebApp.onSwitchPage = function() {
-				WebApp.onSwitchPage = null;
+			libro.onSwitchPage = function() {
+				libro.onSwitchPage = null;
 				testElements(assert, 'firstPage', null, 1);
 				done();
 				startNext();
 			};
-			WebApp.setDefaultPageId('firstPage');
-			WebApp.reset();
+			libro.setDefaultPageId('firstPage');
+			libro.reset();
 			window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#unknown');
 		});
 	},
@@ -186,60 +186,60 @@ var testCases = [
 	function() {
 		QUnit.test('Dynamic page creation (create, switch, and delete)...', function(assert) {
 			var done = assert.async();
-			var getPageIdsLength = WebApp.getPageIds().length;
-			WebApp.onSwitchPage = function() {
-				WebApp.onSwitchPage = function() {
-					WebApp.onSwitchPage = function() {
-						WebApp.onSwitchPage = function() {
-							WebApp.onSwitchPage = null;
+			var getPageIdsLength = libro.getPageIds().length;
+			libro.onSwitchPage = function() {
+				libro.onSwitchPage = function() {
+					libro.onSwitchPage = function() {
+						libro.onSwitchPage = function() {
+							libro.onSwitchPage = null;
 							testElements(assert, 'firstPage', null, 1);
-							WebApp.deletePage(newPageElement.id);
-							WebApp.deletePage(newCanvasPageElement.id);
-							assert.equal(WebApp.getPageElements()[newPageElement.id], null, 'New page elements must be deleted.');
-							assert.equal(WebApp.getPageIds().length, getPageIdsLength, 'New page IDs must be removed.');
+							libro.deletePage(newPageElement.id);
+							libro.deletePage(newCanvasPageElement.id);
+							assert.equal(libro.getPageElements()[newPageElement.id], null, 'New page elements must be deleted.');
+							assert.equal(libro.getPageIds().length, getPageIdsLength, 'New page IDs must be removed.');
 							done();
 							startNext();
 						};
-						WebApp.previousPage();
+						libro.previousPage();
 					};
 					testElements(assert, newCanvasPageElement.id, null, 3);
-					WebApp.previousPage();
+					libro.previousPage();
 				};
 				testElements(assert, newPageElement.id, null, 2);
-				WebApp.nextPage();
+				libro.nextPage();
 			};
-			var newPageElement = WebApp.createPage('<div class="page" id="newPage"><h1>WebApp - <span style="color:#444;">New Page</span></h1></div>', 'secondPage');
-			var newCanvasPageElement = WebApp.createPage('<canvas class="page" id="newCanvasPage"></canvas>', 'secondPage');
-			assert.equal(WebApp.getPageElements()[newPageElement.id].id, newPageElement.id, 'New page element must be created.');
-			assert.equal(WebApp.getPageElements()[newCanvasPageElement.id].id, newCanvasPageElement.id, 'New canvas page element must be created.');
-			assert.equal(WebApp.getPageIds()[1], newPageElement.id, 'New page ID must be inserted before secondPage.');
-			assert.equal(WebApp.getPageIds()[2], newCanvasPageElement.id, 'New canvas page ID must be inserted before secondPage.');
-			WebApp.nextPage();
+			var newPageElement = libro.createPage('<div class="page" id="newPage"><h1>LibroJS - <span style="color:#444;">New Page</span></h1></div>', 'secondPage');
+			var newCanvasPageElement = libro.createPage('<canvas class="page" id="newCanvasPage"></canvas>', 'secondPage');
+			assert.equal(libro.getPageElements()[newPageElement.id].id, newPageElement.id, 'New page element must be created.');
+			assert.equal(libro.getPageElements()[newCanvasPageElement.id].id, newCanvasPageElement.id, 'New canvas page element must be created.');
+			assert.equal(libro.getPageIds()[1], newPageElement.id, 'New page ID must be inserted before secondPage.');
+			assert.equal(libro.getPageIds()[2], newCanvasPageElement.id, 'New canvas page ID must be inserted before secondPage.');
+			libro.nextPage();
 		});
 	},
 	function() {
 		QUnit.test('Page transitions (setDefault and setNext)...', function(assert) {
 			var done = assert.async();
-			WebApp.onUpdateHash = function() {
-				WebApp.onUpdateHash = function() {
-					WebApp.onUpdateHash = null;
-					assert.equal(WebApp.getDefaultPageTransition(), 'pop', 'Final default page transition must be "pop".');
-					assert.equal(WebApp.getNextPageTransition(), 'flip', 'Final next page transition must be "flip".');
+			libro.onUpdateHash = function() {
+				libro.onUpdateHash = function() {
+					libro.onUpdateHash = null;
+					assert.equal(libro.getDefaultPageTransition(), 'pop', 'Final default page transition must be "pop".');
+					assert.equal(libro.getNextPageTransition(), 'flip', 'Final next page transition must be "flip".');
 					setTimeout(function() { // Required to restore the initial state (#firstPage).
-						WebApp.setDefaultPageTransition('fade');
+						libro.setDefaultPageTransition('fade');
 						done();
 						startNext();
 					}, longDelay); // longDelay is required due to the onUpdateHash processing.
 				};
-				assert.equal(WebApp.getDefaultPageTransition(), 'pop', 'Intermediate default page transition must be "pop".');
-				assert.equal(WebApp.getNextPageTransition(), 'pop', 'Intermediate next page transition must be "pop".');
-				WebApp.setNextPageTransition('flip');
-				setTimeout(function() {WebApp.previousPage();}, shortDelay);
+				assert.equal(libro.getDefaultPageTransition(), 'pop', 'Intermediate default page transition must be "pop".');
+				assert.equal(libro.getNextPageTransition(), 'pop', 'Intermediate next page transition must be "pop".');
+				libro.setNextPageTransition('flip');
+				setTimeout(function() {libro.previousPage();}, shortDelay);
 			};
-			assert.equal(WebApp.getDefaultPageTransition(), 'fade', 'Initial default page transition must be "fade".');
-			assert.equal(WebApp.getNextPageTransition(), null, 'Initial next page transition must be null.');
-			WebApp.setDefaultPageTransition('pop');
-			setTimeout(function() {WebApp.nextPage();}, shortDelay);
+			assert.equal(libro.getDefaultPageTransition(), 'fade', 'Initial default page transition must be "fade".');
+			assert.equal(libro.getNextPageTransition(), null, 'Initial next page transition must be null.');
+			libro.setDefaultPageTransition('pop');
+			setTimeout(function() {libro.nextPage();}, shortDelay);
 		});
 	},
 	function() {
@@ -248,10 +248,10 @@ var testCases = [
 		//(1st)  2nd.
 		QUnit.test('History stack management (default firstly)...', function(assert) {
 			var done = assert.async();
-			WebApp.onSwitchPage = function() {
-				WebApp.onSwitchPage = function() {
-					WebApp.onSwitchPage = function() {
-						WebApp.onSwitchPage = null;
+			libro.onSwitchPage = function() {
+				libro.onSwitchPage = function() {
+					libro.onSwitchPage = function() {
+						libro.onSwitchPage = null;
 						testElements(assert, 'firstPage', null, 1);
 						done();
 						startNext();
@@ -261,10 +261,10 @@ var testCases = [
 				};
 				testElements(assert, 'firstPage', null, 1);
 			};
-			WebApp.unload();
-			WebApp.setRedirection(true);
+			libro.unload();
+			libro.setRedirection(true);
 			window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#secondPage');
-			setTimeout(function() {WebApp.load();}, shortDelay);
+			setTimeout(function() {libro.load();}, shortDelay);
 		});
 	},
 	function() {
@@ -283,17 +283,17 @@ var testCases = [
 			var done = assert.async();
 			testUnknownHash(assert, 'firstPage', function() { // Required to reset window.history.length
 				var historyLength = window.history.length;
-				WebApp.onSwitchPage = function() {
-					WebApp.onSwitchPage = function() {
-						WebApp.onSwitchPage = function() {
-							WebApp.onSwitchPage = function() {
-								WebApp.onSwitchPage = function() {
-									WebApp.onSwitchPage = function() {
-										WebApp.onSwitchPage = function() {
-											WebApp.onSwitchPage = function() {
-												WebApp.onSwitchPage = function() {
-													WebApp.onSwitchPage = function() {
-														WebApp.onSwitchPage = null;
+				libro.onSwitchPage = function() {
+					libro.onSwitchPage = function() {
+						libro.onSwitchPage = function() {
+							libro.onSwitchPage = function() {
+								libro.onSwitchPage = function() {
+									libro.onSwitchPage = function() {
+										libro.onSwitchPage = function() {
+											libro.onSwitchPage = function() {
+												libro.onSwitchPage = function() {
+													libro.onSwitchPage = function() {
+														libro.onSwitchPage = null;
 														testElements(assert, 'firstPage', null, 1);
 														assert.equal(window.history.length, historyLength + 2, 'window.history.length: ' + (historyLength + 2));
 														done();
@@ -335,10 +335,10 @@ var testCases = [
 			var done = assert.async();
 			testUnknownHash(assert, 'firstPage', function() { // Required to reset window.history.length
 				var historyLength = window.history.length;
-				WebApp.onSwitchPage = function() {
-					WebApp.onSwitchPage = function() {
-						WebApp.onSwitchPage = function() {
-							WebApp.onSwitchPage = null;
+				libro.onSwitchPage = function() {
+					libro.onSwitchPage = function() {
+						libro.onSwitchPage = function() {
+							libro.onSwitchPage = null;
 							testElements(assert, 'firstPage', null, 1);
 							assert.equal(window.history.length, historyLength + 2, 'window.history.length: ' + (historyLength + 2));
 							done();
@@ -361,25 +361,25 @@ var testCases = [
 		//(1st)  2nd.
 		QUnit.test('History stack management (default firstly FALSE)...', function(assert) {
 			var done = assert.async();
-			WebApp.setDefaultPageFirstly(false);
-			WebApp.onSwitchPage = function() {
-				WebApp.onSwitchPage = function() {
-					WebApp.onSwitchPage = null;
+			libro.setDefaultPageFirstly(false);
+			libro.onSwitchPage = function() {
+				libro.onSwitchPage = function() {
+					libro.onSwitchPage = null;
 					testElements(assert, 'firstPage', null, 1);
 					done();
 					startNext();
 				};
 				testElements(assert, 'secondPage', null, 1);
 				setTimeout(function() { // Required to restore the initial state (#firstPage).
-					WebApp.reset();
-					WebApp.setDefaultPageFirstly(true);
+					libro.reset();
+					libro.setDefaultPageFirstly(true);
 					window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#firstPage');
 				}, shortDelay);
 			};
-			WebApp.unload();
-			WebApp.setRedirection(true);
+			libro.unload();
+			libro.setRedirection(true);
 			window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#secondPage');
-			setTimeout(function() {WebApp.load();}, shortDelay);
+			setTimeout(function() {libro.load();}, shortDelay);
 		});
 	},
 	function() {
@@ -396,25 +396,25 @@ var testCases = [
 		// 1st
 		QUnit.test('History stack management (next/previous FALSE)...', function(assert) {
 			var done = assert.async();
-            WebApp.setHistoryManaged(false);
+            libro.setHistoryManaged(false);
 			testUnknownHash(assert, 'firstPage', function() { // Required to reset window.history.length
 				var historyLength = window.history.length;
-				WebApp.onSwitchPage = function() {
-					WebApp.onSwitchPage = function() {
-						WebApp.onSwitchPage = function() {
-							WebApp.onSwitchPage = function() {
-								WebApp.onSwitchPage = function() {
-									WebApp.onSwitchPage = function() {
-										WebApp.onSwitchPage = function() {
-											WebApp.onSwitchPage = function() {
-												WebApp.onSwitchPage = function() {
-													WebApp.onSwitchPage = function() {
-														WebApp.onSwitchPage = function() {
-															WebApp.onSwitchPage = function() {
-																WebApp.onSwitchPage = null;
+				libro.onSwitchPage = function() {
+					libro.onSwitchPage = function() {
+						libro.onSwitchPage = function() {
+							libro.onSwitchPage = function() {
+								libro.onSwitchPage = function() {
+									libro.onSwitchPage = function() {
+										libro.onSwitchPage = function() {
+											libro.onSwitchPage = function() {
+												libro.onSwitchPage = function() {
+													libro.onSwitchPage = function() {
+														libro.onSwitchPage = function() {
+															libro.onSwitchPage = function() {
+																libro.onSwitchPage = null;
 																testElements(assert, 'firstPage', null, 1);
 																assert.equal(window.history.length, historyLength + 4, 'window.history.length: ' + (historyLength + 4));
-																WebApp.setHistoryManaged(true); // Required to restore the initial state (#firstPage).
+																libro.setHistoryManaged(true); // Required to restore the initial state (#firstPage).
 																done();
 																startNext();
 															};
@@ -456,14 +456,14 @@ var testCases = [
 		// 1st  (2nd) (3rd) (1st).
 		QUnit.test('History stack management (unique entry FALSE)...', function(assert) {
 			var done = assert.async();
-			WebApp.setHistoryUnique(false);
+			libro.setHistoryUnique(false);
 			testUnknownHash(assert, 'firstPage', function() { // Required to reset window.history.length
 				var historyLength = window.history.length;
-				WebApp.onSwitchPage = function() {
-					WebApp.onSwitchPage = function() {
-						WebApp.onSwitchPage = function() {
-							WebApp.onSwitchPage = function() {
-								WebApp.onSwitchPage = null;
+				libro.onSwitchPage = function() {
+					libro.onSwitchPage = function() {
+						libro.onSwitchPage = function() {
+							libro.onSwitchPage = function() {
+								libro.onSwitchPage = null;
 								testElements(assert, 'firstPage', null, 1);
 								done();
 								startNext();
@@ -472,8 +472,8 @@ var testCases = [
 							assert.equal(window.history.length, historyLength + 2, 'window.history.length: ' + (historyLength + 2));
 							setTimeout(function() { // Required to restore the initial state (#firstPage).
 								window.history.go(-3);
-								WebApp.reset();
-								WebApp.setHistoryUnique(true);
+								libro.reset();
+								libro.setHistoryUnique(true);
 								window.location.replace(window.location.protocol + '//' + window.location.host + window.location.pathname + '#');
 							}, shortDelay);
 						};
@@ -498,13 +498,13 @@ var testCases = [
 		QUnit.test('Modal window (create, switch, transitions, and delete)...', function(assert) {
 			var done = assert.async();
 			var testModalRedirection = function(assert, modalId, currentPageId, nextPageId, callback) {
-				WebApp.onUpdateHash = function(hashChangeEvent) {
-					WebApp.onUpdateHash = function(hashChangeEvent) {
-						WebApp.onUpdateHash = function(hashChangeEvent) {
-							WebApp.onUpdateHash = function(hashChangeEvent) {
-								WebApp.onUpdateHash = null;
-								WebApp.onSwitchPage = function() {
-									WebApp.onSwitchPage = null;
+				libro.onUpdateHash = function(hashChangeEvent) {
+					libro.onUpdateHash = function(hashChangeEvent) {
+						libro.onUpdateHash = function(hashChangeEvent) {
+							libro.onUpdateHash = function(hashChangeEvent) {
+								libro.onUpdateHash = null;
+								libro.onSwitchPage = function() {
+									libro.onSwitchPage = null;
 									if (typeof callback === 'function') callback(assert);
 								};
 								assert.equal(hashChangeEvent.oldURL.substr(hashChangeEvent.oldURL.lastIndexOf('#') + 1), currentPageId, 'Next modal hash, oldHash: #' + currentPageId);
@@ -522,37 +522,37 @@ var testCases = [
 			}
 			testUnknownHash(assert, 'firstPage', function() { // Required to reset window.history.length
 				var historyLength = window.history.length;
-				var getModalIdsLength = WebApp.getModalIds().length;
+				var getModalIdsLength = libro.getModalIds().length;
 				var modalWindow = document.getElementById('modalWindow');
 				// Assert transition:
-				WebApp.onUpdateHash = function() {
-					WebApp.onUpdateHash = function() {
-						WebApp.onUpdateHash = null;
-						assert.equal(WebApp.getDefaultModalTransition(), 'pop', 'Final default modal transition must be "pop".');
-						assert.equal(WebApp.getNextModalTransition(), null, 'Final next modal transition must be null.');
+				libro.onUpdateHash = function() {
+					libro.onUpdateHash = function() {
+						libro.onUpdateHash = null;
+						assert.equal(libro.getDefaultModalTransition(), 'pop', 'Final default modal transition must be "pop".');
+						assert.equal(libro.getNextModalTransition(), null, 'Final next modal transition must be null.');
 					};
-					assert.equal(WebApp.getDefaultModalTransition(), 'slide', 'Intermediate default modal transition must be "slide".');
-					assert.equal(WebApp.getNextModalTransition(), 'flip', 'Intermediate next modal transition must be "flip".');
-					WebApp.setDefaultModalTransition('pop');
+					assert.equal(libro.getDefaultModalTransition(), 'slide', 'Intermediate default modal transition must be "slide".');
+					assert.equal(libro.getNextModalTransition(), 'flip', 'Intermediate next modal transition must be "flip".');
+					libro.setDefaultModalTransition('pop');
 				};
-				assert.equal(WebApp.getDefaultModalTransition(), 'pop', 'Initial default modal transition must be "pop".');
-				assert.equal(WebApp.getNextModalTransition(), null, 'Initial next modal transition must be null.');
-				WebApp.setDefaultModalTransition('slide');
-				WebApp.setNextModalTransition('flip');
+				assert.equal(libro.getDefaultModalTransition(), 'pop', 'Initial default modal transition must be "pop".');
+				assert.equal(libro.getNextModalTransition(), null, 'Initial next modal transition must be null.');
+				libro.setDefaultModalTransition('slide');
+				libro.setNextModalTransition('flip');
 				// Assert create, switch, and delete:
-				WebApp.onSwitchModal = function() {
-					WebApp.onSwitchModal = function() {
-						WebApp.onSwitchModal = function() {
-							WebApp.onSwitchModal = null;
+				libro.onSwitchModal = function() {
+					libro.onSwitchModal = function() {
+						libro.onSwitchModal = function() {
+							libro.onSwitchModal = null;
 							testModalRedirection(assert, 'modalWindow', 'firstPage', 'secondPage', function() {
-								WebApp.onSwitchModal = function() {
-									WebApp.onSwitchModal = null;
+								libro.onSwitchModal = function() {
+									libro.onSwitchModal = null;
 									testModalRedirection(assert, newModalElement.id, 'secondPage', 'firstPage', function() {
 										testElements(assert, 'firstPage', null, 1);
 										assert.equal(window.history.length, historyLength + 1, 'window.history.length: ' + (historyLength + 1));
-										WebApp.deleteModal(newModalElement.id);
-										assert.equal(WebApp.getModalElements()[newModalElement.id], null, 'New modal element must be deleted.');
-										assert.equal(WebApp.getModalIds().length, getModalIdsLength, 'New modal ID must be removed.');
+										libro.deleteModal(newModalElement.id);
+										assert.equal(libro.getModalElements()[newModalElement.id], null, 'New modal element must be deleted.');
+										assert.equal(libro.getModalIds().length, getModalIdsLength, 'New modal ID must be removed.');
 										done();
 										startNext();
 									});
@@ -560,9 +560,9 @@ var testCases = [
 									setTimeout(function() {window.location.hash = 'firstPage';}, longDelay); // longDelay is required due to the modal redirecting processing.
 								};
 								testElements(assert, 'secondPage', null, 2);
-								var newModalElement = WebApp.createModal('<div class="modal" id="newModal"><div style="padding: 0.5em;"><h1>New Modal Window</h1></div></div>');
-								assert.equal(WebApp.getModalElements()[newModalElement.id].id, newModalElement.id, 'New modal element must be created.');
-								assert.equal(WebApp.getModalIds()[WebApp.getModalIds().length - 1], newModalElement.id, 'New modal ID must be inserted at the end.');
+								var newModalElement = libro.createModal('<div class="modal" id="newModal"><div style="padding: 0.5em;"><h1>New Modal Window</h1></div></div>');
+								assert.equal(libro.getModalElements()[newModalElement.id].id, newModalElement.id, 'New modal element must be created.');
+								assert.equal(libro.getModalIds()[libro.getModalIds().length - 1], newModalElement.id, 'New modal ID must be inserted at the end.');
 								window.location.hash = newModalElement.id;
 							});
 							testElements(assert, 'firstPage', 'modalWindow', 1);

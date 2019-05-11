@@ -3,101 +3,101 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WebApp - ex06.1_setNextTransition</title>
+<title>LibroJS - ex06.1_setNextTransition</title>
 </head>
 
 <body>
 
 <div class="page" id="firstPage">
-	<h1>WebApp - <span style="color:#004;">First Page</span></h1>
+	<h1>LibroJS - <span style="color:#004;">First Page</span></h1>
 	<p>If you are viewing this page (firstPage), it means that the current browser URL ends with "#firstPage"</p>
 
 	<!-- uses soft/fade default page transition -->
 	<a href="#secondPage">go to the second page</a><br>
 
 	<!-- uses Pop transition -->
-	(<a href="#secondPage" onclick="WebApp.setNextPageTransition('pop')">using Pop</a>)<br>
+	(<a href="#secondPage" onclick="libro.setNextPageTransition('pop')">using Pop</a>)<br>
 
 	<!-- uses Flip transition -->
-	(<a href="#secondPage" onclick="WebApp.setNextPageTransition('flip')">using Flip</a>)<br>
+	(<a href="#secondPage" onclick="libro.setNextPageTransition('flip')">using Flip</a>)<br>
 
 	<!-- uses Flip Reverse transition -->
-	(<a href="#secondPage" onclick="WebApp.setNextPageTransition('fliprev')">Flip Reverse</a>)<br>
+	(<a href="#secondPage" onclick="libro.setNextPageTransition('fliprev')">Flip Reverse</a>)<br>
 
 	<!-- uses Flip Order transition -->
-	(<a href="#secondPage" onclick="WebApp.setNextPageTransition('fliporder')">Flip order</a>)<br>
+	(<a href="#secondPage" onclick="libro.setNextPageTransition('fliporder')">Flip order</a>)<br>
 
 	<!-- uses Slide transition -->
-	(<a href="#secondPage" onclick="WebApp.setNextPageTransition('slide')">using Slide</a>)<br>
+	(<a href="#secondPage" onclick="libro.setNextPageTransition('slide')">using Slide</a>)<br>
 
 	<!-- uses Slide Reverse transition -->
-	(<a href="#secondPage" onclick="WebApp.setNextPageTransition('sliderev')">Slide Reverse</a>)<br>
+	(<a href="#secondPage" onclick="libro.setNextPageTransition('sliderev')">Slide Reverse</a>)<br>
 
 	<!-- uses Slide Order transition -->
-	(<a href="#secondPage" onclick="WebApp.setNextPageTransition('slideorder')">Slide order</a>)<br>
+	(<a href="#secondPage" onclick="libro.setNextPageTransition('slideorder')">Slide order</a>)<br>
 
 	<!-- uses Drawer Top transition -->
-	(<a href="#secondPage" onclick="WebApp.setNextPageTransition('drawertop')">Drawer Top</a>)<br>
+	(<a href="#secondPage" onclick="libro.setNextPageTransition('drawertop')">Drawer Top</a>)<br>
 
 	<!-- uses Drawer Bottom transition -->
-	(<a href="#secondPage" onclick="WebApp.setNextPageTransition('drawerbottom')">Drawer Bottom</a>)<br>
+	(<a href="#secondPage" onclick="libro.setNextPageTransition('drawerbottom')">Drawer Bottom</a>)<br>
 
 	<!-- uses Drawer Left transition -->
-	(<a href="#secondPage" onclick="WebApp.setNextPageTransition('drawerleft')">Drawer Left</a>)<br>
+	(<a href="#secondPage" onclick="libro.setNextPageTransition('drawerleft')">Drawer Left</a>)<br>
 
 	<!-- uses Drawer Right transition -->
-	(<a href="#secondPage" onclick="WebApp.setNextPageTransition('drawerright')">Drawer Right</a>)<br>
+	(<a href="#secondPage" onclick="libro.setNextPageTransition('drawerright')">Drawer Right</a>)<br>
 
 	<!-- uses no transition -->
-	(<a href="#secondPage" onclick="WebApp.setNextPageTransition('none')">no transition</a>)
+	(<a href="#secondPage" onclick="libro.setNextPageTransition('none')">no transition</a>)
 </div>
 
 <div class="page" id="secondPage">
-	<h1>WebApp - <span style="color:#040;">Second Page</span></h1>
+	<h1>LibroJS - <span style="color:#040;">Second Page</span></h1>
 	<p>If you are viewing this page (secondPage), it means that the current browser URL ends with "#secondPage"</p>
 
 	<!-- uses soft/fade default transition -->
 	<a href="#firstPage">go to the first page</a><br>
 
 	<!-- uses Pop transition -->
-	(<a href="#firstPage" onclick="WebApp.setNextPageTransition('pop')">using Pop</a>)<br>
+	(<a href="#firstPage" onclick="libro.setNextPageTransition('pop')">using Pop</a>)<br>
 
 	<!-- uses Flip transition -->
-	(<a href="#firstPage" onclick="WebApp.setNextPageTransition('flip')">using Flip</a>)<br>
+	(<a href="#firstPage" onclick="libro.setNextPageTransition('flip')">using Flip</a>)<br>
 
 	<!-- uses Flip Reverse transition -->
-	(<a href="#firstPage" onclick="WebApp.setNextPageTransition('fliprev')">Flip Reverse</a>)<br>
+	(<a href="#firstPage" onclick="libro.setNextPageTransition('fliprev')">Flip Reverse</a>)<br>
 
 	<!-- uses Flip Order transition -->
-	(<a href="#firstPage" onclick="WebApp.setNextPageTransition('fliporder')">Flip order</a>)<br>
+	(<a href="#firstPage" onclick="libro.setNextPageTransition('fliporder')">Flip order</a>)<br>
 
 	<!-- uses Slide transition -->
-	(<a href="#firstPage" onclick="WebApp.setNextPageTransition('slide')">using Slide</a>)<br>
+	(<a href="#firstPage" onclick="libro.setNextPageTransition('slide')">using Slide</a>)<br>
 
 	<!-- uses Slide Reverse transition -->
-	(<a href="#firstPage" onclick="WebApp.setNextPageTransition('sliderev')">Slide Reverse</a>)<br>
+	(<a href="#firstPage" onclick="libro.setNextPageTransition('sliderev')">Slide Reverse</a>)<br>
 
 	<!-- uses Slide Order transition -->
-	(<a href="#firstPage" onclick="WebApp.setNextPageTransition('slideorder')">Slide order</a>)<br>
+	(<a href="#firstPage" onclick="libro.setNextPageTransition('slideorder')">Slide order</a>)<br>
 
 	<!-- uses Drawer Top transition -->
-	(<a href="#firstPage" onclick="WebApp.setNextPageTransition('drawertop')">Drawer Top</a>)<br>
+	(<a href="#firstPage" onclick="libro.setNextPageTransition('drawertop')">Drawer Top</a>)<br>
 
 	<!-- uses Drawer Bottom transition -->
-	(<a href="#firstPage" onclick="WebApp.setNextPageTransition('drawerbottom')">Drawer Bottom</a>)<br>
+	(<a href="#firstPage" onclick="libro.setNextPageTransition('drawerbottom')">Drawer Bottom</a>)<br>
 
 	<!-- uses Drawer Left transition -->
-	(<a href="#firstPage" onclick="WebApp.setNextPageTransition('drawerleft')">Drawer Left</a>)<br>
+	(<a href="#firstPage" onclick="libro.setNextPageTransition('drawerleft')">Drawer Left</a>)<br>
 
 	<!-- uses Drawer Right transition -->
-	(<a href="#firstPage" onclick="WebApp.setNextPageTransition('drawerright')">Drawer Right</a>)<br>
+	(<a href="#firstPage" onclick="libro.setNextPageTransition('drawerright')">Drawer Right</a>)<br>
 
 	<!-- uses no transition -->
-	(<a href="#firstPage" onclick="WebApp.setNextPageTransition('none')">no transition</a>)
+	(<a href="#firstPage" onclick="libro.setNextPageTransition('none')">no transition</a>)
 </div>
 
-<!-- script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script -->
-<script src="../WebApp.js"></script>
+<!-- script src="https://raw.githack.com/samereberlin/LibroJS/master/www/libro.js"></script -->
+<script src="../libro.js"></script>
 
 </body>
 

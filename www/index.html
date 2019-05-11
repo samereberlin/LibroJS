@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="WebApp.css">
-<title>WebApp</title>
+<link rel="stylesheet" href="libro.css">
+<title>LibroJS</title>
 </head>
 
 <body>
 
 <div style="border: 1px solid gray; padding: .4em; text-align: center;">
-	<button onclick="WebApp.previousPage()" style="float:left">&lt;&lt;</button>
-	<button onclick="WebApp.nextPage()" style="float:right">&gt;&gt;</button>
+	<button onclick="libro.previousPage()" style="float:left">&lt;&lt;</button>
+	<button onclick="libro.nextPage()" style="float:right">&gt;&gt;</button>
 	<button onclick="window.location.hash = 'modalSideMenu'">⇄</button>
 	<button onclick="window.location.hash = 'modalWindow'">modal</button>
 	<button onclick="window.location.hash = 'modalTopMenu'">⇅</button>
@@ -26,32 +26,32 @@
 </div>
 
 <div class="page" id="firstPage">
-	<h1>WebApp - <span style="color:#004;">First Page</span></h1>
+	<h1>LibroJS - <span style="color:#004;">First Page</span></h1>
 	<p>If you are viewing this page (firstPage), it means that the current browser URL ends with "#firstPage"</p>
 	#firstPage | <a href="#secondPage">#secondPage</a> | <a href="#thirdPage">#thirdPage</a> | <a href="#fourthPage">#fourthPage</a>
 </div>
 
 <div class="page" id="secondPage">
-	<h1>WebApp - <span style="color:#040;">Second Page</span></h1>
+	<h1>LibroJS - <span style="color:#040;">Second Page</span></h1>
 	<p>If you are viewing this page (secondPage), it means that the current browser URL ends with "#secondPage"</p>
 	<a href="#firstPage">#firstPage</a> | #secondPage | <a href="#thirdPage">#thirdPage</a> | <a href="#fourthPage">#fourthPage</a>
 </div>
 
 <div class="page" id="thirdPage">
-	<h1>WebApp - <span style="color:#400;">Third Page</span></h1>
+	<h1>LibroJS - <span style="color:#400;">Third Page</span></h1>
 	<p>If you are viewing this page (thirdPage), it means that the current browser URL ends with "#thirdPage"</p>
 	<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a> | #thirdPage | <a href="#fourthPage">#fourthPage</a>
 </div>
 
 <div class="page" id="fourthPage">
-	<h1>WebApp - <span style="color:#440;">Fourth Page</span></h1>
+	<h1>LibroJS - <span style="color:#440;">Fourth Page</span></h1>
 	<p>If you are viewing this page (fourthPage), it means that the current browser URL ends with "#fourthPage"</p>
 	<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a> | <a href="#thirdPage">#thirdPage</a> | #fourthPage
 </div>
 
 <div class="modal" id="modalWindow">
 	<div style="padding: 0.5em;">
-		<h1>WebApp - <span style="color:#444;">Modal Window</span></h1>
+		<h1>LibroJS - <span style="color:#444;">Modal Window</span></h1>
 		<p>If you are viewing this modal (modalWindow), it means that the current browser URL ends with "#modalWindow"</p>
 		<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a> | <a href="#thirdPage">#thirdPage</a> | <a href="#fourthPage">#fourthPage</a>
 		<br><br>
@@ -66,7 +66,7 @@
 		<p>If you are viewing this modal (modalSideMenu), it means that the current browser URL ends with "#modalSideMenu"</p>
 		<label style="white-space:nowrap;">
 			Page transition
-			<select onchange="WebApp.setDefaultPageTransition(this.value);">
+			<select onchange="libro.setDefaultPageTransition(this.value);">
 				<option value="none">None</option>
 				<option value="fade" selected>Fade (default)</option>
 				<option value="pop">Pop</option>
@@ -86,7 +86,7 @@
 		<br>
 		<label style="white-space:nowrap;">
 			Modal transition
-			<select onchange="WebApp.setDefaultModalTransition(this.value);">
+			<select onchange="libro.setDefaultModalTransition(this.value);">
 				<option value="none">None</option>
 				<option value="fade">Fade</option>
 				<option value="pop" selected>Pop (default)</option>
@@ -102,13 +102,13 @@
 		</label>
 		<br>
 		<br>
-		<label style="white-space:nowrap;"><input style="vertical-align: middle;" type="checkbox" onchange="WebApp.setSwipePageSwitch(this.checked);" checked> WebApp.setSwipePageSwitch</label>
+		<label style="white-space:nowrap;"><input style="vertical-align: middle;" type="checkbox" onchange="libro.setSwipePageSwitch(this.checked);" checked> libro.setSwipePageSwitch</label>
 		<br>
 		<br>
-		<label style="white-space:nowrap;"><input style="vertical-align: middle;" type="checkbox" onchange="WebApp.setSwipeModalSwitch(this.checked);" checked> WebApp.setSwipeModalSwitch</label>
+		<label style="white-space:nowrap;"><input style="vertical-align: middle;" type="checkbox" onchange="libro.setSwipeModalSwitch(this.checked);" checked> libro.setSwipeModalSwitch</label>
 		<br>
 		<br>
-		<label style="white-space:nowrap;"><input style="vertical-align: middle;" type="checkbox" onchange="WebApp.setCanvasTouchable(this.checked);" checked> WebApp.setCanvasTouchable</label>
+		<label style="white-space:nowrap;"><input style="vertical-align: middle;" type="checkbox" onchange="libro.setCanvasTouchable(this.checked);" checked> libro.setCanvasTouchable</label>
 		<br>
 		<br>
 		<a href="javascript:window.history.back();">(hide modal)</a>
@@ -132,22 +132,22 @@
 </div>
 
 <br>
-<label style="white-space:nowrap;"><input style="vertical-align: middle;" type="checkbox" onchange="WebApp.setLogEnabled(this.checked);" checked> Enable log</label>
+<label style="white-space:nowrap;"><input style="vertical-align: middle;" type="checkbox" onchange="libro.setLogEnabled(this.checked);" checked> Enable log</label>
 <button style="margin-left: .5em;" onclick="logMonitor.innerHTML = '';">Clear log</button>
 <button style="margin-left: .5em;" onclick="executeCommand();">Command</button>
 
 <div id="logMonitor" style="font-family: monospace; color: darkgray;"></div>
 
-<script src="WebApp.js"></script>
+<script src="libro.js"></script>
 
 <script>
 var logMonitor = document.getElementById('logMonitor');
 
 // Enable swipe page switch:
-WebApp.setSwipePageSwitch(true);
+libro.setSwipePageSwitch(true);
 
 // Enable swipe modal switch:
-WebApp.setSwipeModalSwitch(true);
+libro.setSwipeModalSwitch(true);
 
 // Set browser error callback:
 window.onerror = function (msg, url, lineNo, columnNo, error) {
@@ -159,63 +159,63 @@ window.onerror = function (msg, url, lineNo, columnNo, error) {
 };
 
 // Set global callbacks:
-WebApp.onLoad = function() {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onLoad()</span>';
+libro.onLoad = function() {
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">libro.onLoad()</span>';
 }
-WebApp.onUnload = function() {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onUnload()</span>';
+libro.onUnload = function() {
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">libro.onUnload()</span>';
 }
-WebApp.onPause = function(pageElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onPause(' + (pageElement? pageElement.id: '') + ')</span>';
+libro.onPause = function(pageElement) {
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">libro.onPause(' + (pageElement? pageElement.id: '') + ')</span>';
 }
-WebApp.onResume = function(pageElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onResume(' + (pageElement? pageElement.id: '') + ')</span>';
+libro.onResume = function(pageElement) {
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">libro.onResume(' + (pageElement? pageElement.id: '') + ')</span>';
 }
-WebApp.onResize = function(pageElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onResize(' + (pageElement? pageElement.id: '') + ')</span>';
+libro.onResize = function(pageElement) {
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">libro.onResize(' + (pageElement? pageElement.id: '') + ')</span>';
 }
-WebApp.onUpdateHash = function(hashChangeEvent) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onUpdateHash(hashChangeEvent)' +
+libro.onUpdateHash = function(hashChangeEvent) {
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">libro.onUpdateHash(hashChangeEvent)' +
 		'<br>&nbsp;&nbsp;&nbsp;&nbsp; hashChangeEvent.newURL: ..' + (hashChangeEvent.newURL? hashChangeEvent.newURL.substring(hashChangeEvent.newURL.lastIndexOf('/')): '') +
 		'<br>&nbsp;&nbsp;&nbsp;&nbsp; hashChangeEvent.oldURL: ..' + (hashChangeEvent.oldURL? hashChangeEvent.oldURL.substring(hashChangeEvent.oldURL.lastIndexOf('/')): '') + '</span>';
 }
-WebApp.onSwitchPage = function(pageElement, referrerElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onSwitchPage(' + pageElement.id + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+libro.onSwitchPage = function(pageElement, referrerElement) {
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">libro.onSwitchPage(' + pageElement.id + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 }
-WebApp.onSwitchModal = function(booleanState, modalElement, referrerElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onSwitchModal(' + booleanState + ', ' + modalElement.id + ', ' + referrerElement.id + ')</span>';
+libro.onSwitchModal = function(booleanState, modalElement, referrerElement) {
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">libro.onSwitchModal(' + booleanState + ', ' + modalElement.id + ', ' + referrerElement.id + ')</span>';
 	if (referrerElement.id === 'canvasPage' && (modalElement.id === 'returnDialog' || modalElement.id === 'modalWindow')) {
-		WebApp.setRunning(!booleanState); // Pause while returnDialog or modalWindow appears over canvasPage.
+		libro.setRunning(!booleanState); // Pause while returnDialog or modalWindow appears over canvasPage.
 	}
 }
-WebApp.onKeyDown = function(keyEvent, pageElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onKeyDown(' + keyEvent.keyCode + ', ' + pageElement.id + ')</span>';
+libro.onKeyDown = function(keyEvent, pageElement) {
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">libro.onKeyDown(' + keyEvent.keyCode + ', ' + pageElement.id + ')</span>';
 };
-WebApp.onKeyUp = function(keyEvent, pageElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">WebApp.onKeyUp(' + keyEvent.keyCode + ', ' + pageElement.id + ')</span>';
+libro.onKeyUp = function(keyEvent, pageElement) {
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:gray;">libro.onKeyUp(' + keyEvent.keyCode + ', ' + pageElement.id + ')</span>';
 };
 
 // Set returnDialog callbacks:
 var returnDialogElement = document.getElementById('returnDialog');
 var returnButtonElement = document.getElementById('returnButton');
 returnDialogElement.onShow = function(queryData, referrerElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">returnDialogElement.onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">returnDialogElement.onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 	returnButtonElement.focus();
 };
 returnDialogElement.onHide = function(nextQueryData, nextElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">returnDialogElement.onHide(' + nextQueryData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">returnDialogElement.onHide(' + nextQueryData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
 	if (nextQueryData && (nextQueryData === 'returnDialog')) {
 		window.location.hash = nextElement.id;
 	}
 };
 returnDialogElement.onUpdateQuery = function(queryData) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">returnDialogElement.onUpdateQuery(' + queryData + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">returnDialogElement.onUpdateQuery(' + queryData + ')</span>';
 };
 
 // Set firstPage callbacks:
 var firstPageElement = document.getElementById('firstPage');
 firstPageElement.onShow = function(queryData, referrerElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#004;">firstPageElement.onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#004;">firstPageElement.onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 	if (queryData && (queryData === 'returnDialog')) {
 		setTimeout(function() { // Timeout required to create history entry for WebKit browsers.
 			window.location.hash = 'firstPage';
@@ -223,10 +223,10 @@ firstPageElement.onShow = function(queryData, referrerElement) {
 	}
 };
 firstPageElement.onHide = function(nextQueryData, nextElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#004;">firstPageElement.onHide(' + nextQueryData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#004;">firstPageElement.onHide(' + nextQueryData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
 };
 firstPageElement.onUpdateQuery = function(queryData) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#004;">firstPageElement.onUpdateQuery(' + queryData + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#004;">firstPageElement.onUpdateQuery(' + queryData + ')</span>';
 	if (queryData && (queryData === 'returnDialog')) {
 		window.location.hash = 'returnDialog';
 	}
@@ -235,73 +235,73 @@ firstPageElement.onUpdateQuery = function(queryData) {
 // Set secondPage callbacks:
 var secondPageElement = document.getElementById('secondPage');
 secondPageElement.onShow = function(queryData, referrerElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#040;">secondPageElement.onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#040;">secondPageElement.onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
 secondPageElement.onHide = function(nextQueryData, nextElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#040;">secondPageElement.onHide(' + nextQueryData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#040;">secondPageElement.onHide(' + nextQueryData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
 };
 secondPageElement.onUpdateQuery = function(queryData) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#040;">secondPageElement.onUpdateQuery(' + queryData + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#040;">secondPageElement.onUpdateQuery(' + queryData + ')</span>';
 };
 
 // Set thirdPage callbacks:
 var thirdPageElement = document.getElementById('thirdPage');
 thirdPageElement.onShow = function(queryData, referrerElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">thirdPageElement.onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">thirdPageElement.onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
 thirdPageElement.onHide = function(nextQueryData, nextElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">thirdPageElement.onHide(' + nextQueryData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">thirdPageElement.onHide(' + nextQueryData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
 };
 thirdPageElement.onUpdateQuery = function(queryData) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">thirdPageElement.onUpdateQuery(' + queryData + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#400;">thirdPageElement.onUpdateQuery(' + queryData + ')</span>';
 };
 
 // Set fourthPage callbacks:
 var fourthPageElement = document.getElementById('fourthPage');
 fourthPageElement.onShow = function(queryData, referrerElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#440;">fourthPageElement.onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#440;">fourthPageElement.onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
 fourthPageElement.onHide = function(nextQueryData, nextElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#440;">fourthPageElement.onHide(' + nextQueryData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#440;">fourthPageElement.onHide(' + nextQueryData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
 };
 fourthPageElement.onUpdateQuery = function(queryData) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#440;">fourthPageElement.onUpdateQuery(' + queryData + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#440;">fourthPageElement.onUpdateQuery(' + queryData + ')</span>';
 };
 
 // Set modalWindow callbacks:
 var modalWindowElement = document.getElementById('modalWindow');
 modalWindowElement.onShow = function(queryData, referrerElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">modalWindowElement.onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">modalWindowElement.onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
 modalWindowElement.onHide = function(nextQueryData, nextElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">modalWindowElement.onHide(' + nextQueryData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">modalWindowElement.onHide(' + nextQueryData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
 };
 modalWindowElement.onUpdateQuery = function(queryData) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">modalWindowElement.onUpdateQuery(' + queryData + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">modalWindowElement.onUpdateQuery(' + queryData + ')</span>';
 };
 
 // Set modalSideMenu callbacks:
 var modalSideMenuElement = document.getElementById('modalSideMenu');
 modalSideMenuElement.onShow = function(queryData, referrerElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">modalSideMenuElement.onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">modalSideMenuElement.onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
 modalSideMenuElement.onHide = function(nextQueryData, nextElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">modalSideMenuElement.onHide(' + nextQueryData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">modalSideMenuElement.onHide(' + nextQueryData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
 };
 modalSideMenuElement.onUpdateQuery = function(queryData) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">modalSideMenuElement.onUpdateQuery(' + queryData + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">modalSideMenuElement.onUpdateQuery(' + queryData + ')</span>';
 };
 
 // Set modalTopMenu callbacks:
 var modalTopMenuElement = document.getElementById('modalTopMenu');
 modalTopMenuElement.onShow = function(queryData, referrerElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">modalTopMenuElement.onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">modalTopMenuElement.onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 };
 modalTopMenuElement.onHide = function(nextQueryData, nextElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">modalTopMenuElement.onHide(' + nextQueryData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">modalTopMenuElement.onHide(' + nextQueryData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
 };
 modalTopMenuElement.onUpdateQuery = function(queryData) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">modalTopMenuElement.onUpdateQuery(' + queryData + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">modalTopMenuElement.onUpdateQuery(' + queryData + ')</span>';
 };
 
 // Create Canvas Page and set its callbacks/functions/variables:
@@ -312,7 +312,7 @@ var xGrow = yGrow = true;
 var canvasPageElement = null;
 function createCanvasPage() {
 	// Create a new page element:
-	canvasPageElement = WebApp.createPage('<canvas class="page" id="canvasPage"></canvas>', 'modalWindow');
+	canvasPageElement = libro.createPage('<canvas class="page" id="canvasPage"></canvas>', 'modalWindow');
 	canvasPageElement.width = 320;
 	// Set the new created page callbacks:
 	canvasPageElement.onShow = canvasOnShow;
@@ -326,19 +326,19 @@ function createCanvasPage() {
 	window.location.hash = 'canvasPage?returnDialog';
 }
 function canvasOnShow(queryData, referrerElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">canvasPageElement.onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">canvasPageElement.onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 	if (queryData && (queryData === 'returnDialog')) {
 		window.location.hash = 'canvasPage';
 	}
 };
 function canvasOnHide(nextQueryData, nextElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">canvasPageElement.onHide(' + nextQueryData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">canvasPageElement.onHide(' + nextQueryData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
 	if (nextElement) {
-		WebApp.deletePage('canvasPage');
+		libro.deletePage('canvasPage');
 	}
 };
 function canvasOnUpdateQuery(queryData) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">canvasPageElement.onUpdateQuery(' + queryData + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">canvasPageElement.onUpdateQuery(' + queryData + ')</span>';
 	if (queryData && (queryData === 'returnDialog')) {
 		window.location.hash = 'returnDialog';
 	}
@@ -386,14 +386,14 @@ function canvasOnDraw() {
 var dynamicPagesIds = [];
 function createDynamicPages() {
 	// Create a new page element:
-	var dynamicPageElement = WebApp.createPage('<div class="page" id="1">' +
-			'<h1>WebApp - Page 1</h1>' +
+	var dynamicPageElement = libro.createPage('<div class="page" id="1">' +
+			'<h1>LibroJS - Page 1</h1>' +
 			'<p> This is the "replace next" dynamic page creation example, which never reaches the first/last application page.</p>' +
 			'<p>This page has been created/replaced dynamically, without any previous HTML code declaration.</p>' +
 			'<a href="#0">previous page</a> | <a href="#2">next page</a></div>', 'modalWindow');
 	// Set the new created page callbacks:
 	dynamicPageElement.onShow = function(queryData, referrerElement) {
-		if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">"dynamicPage:' + dynamicPageElement.id + '".onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+		if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">"dynamicPage:' + dynamicPageElement.id + '".onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 		createNextPage(dynamicPageElement);
 		createPreviousPage(dynamicPageElement);
 		dynamicPagesIds = ["0", "1", "2"];
@@ -403,10 +403,10 @@ function createDynamicPages() {
 	window.location.hash = dynamicPageElement.id;
 }
 function dynamicOnHide(nextQueryData, nextElement) {
-	if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">"dynamicPage:' + this.id + '".onHide(' + nextQueryData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
+	if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">"dynamicPage:' + this.id + '".onHide(' + nextQueryData + ', ' + (nextElement? nextElement.id: '') + ')</span>';
 	if (nextElement && isNaN(nextElement.id)) {
 		dynamicPagesIds.forEach(function(item, index) {
-			WebApp.deletePage(item);
+			libro.deletePage(item);
 		})
 		dynamicPagesIds = [];
 	}
@@ -416,19 +416,19 @@ function createNextPage(currentPageElement) {
 	var nextPageId = (currentIdIntValue + 1).toString();
 	var nextPageElement = document.getElementById(nextPageId);
 	if (!nextPageElement) {
-		nextPageElement = WebApp.createPage('<div class="page" id="' + nextPageId + '">' +
-				'<h1>WebApp - Page ' + nextPageId + '</h1>' +
+		nextPageElement = libro.createPage('<div class="page" id="' + nextPageId + '">' +
+				'<h1>LibroJS - Page ' + nextPageId + '</h1>' +
 				'<p>This is the "replace next" dynamic page creation example, which never reaches the first/last application page.</p>' +
 				'<p>This page has been created/replaced dynamically, without any previous HTML code declaration.</p>' +
 				'<a href="#' + currentPageElement.id + '">previous page</a> | ' +
 				'<a href="#' + (currentIdIntValue + 2).toString() + '">next page</a></div>', 'modalWindow');
 	}
 	nextPageElement.onShow = function(queryData, referrerElement) {
-		if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">"dynamicPage:' + this.id + '".onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+		if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">"dynamicPage:' + this.id + '".onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 		createNextPage(nextPageElement);
 		createPreviousPage(nextPageElement);
 		dynamicPagesIds = [currentIdIntValue.toString(), nextPageId, (currentIdIntValue + 2).toString()];
-		WebApp.deletePage((currentIdIntValue - 1).toString());
+		libro.deletePage((currentIdIntValue - 1).toString());
 		this.onHide = dynamicOnHide;
 	};
 }
@@ -437,19 +437,19 @@ function createPreviousPage(currentPageElement) {
 	var previousPageId = (currentIdIntValue - 1).toString();
 	var previousPageElement = document.getElementById(previousPageId);
 	if (!previousPageElement) {
-		previousPageElement = WebApp.createPage('<div class="page" id="' + previousPageId + '">' +
-				'<h1>WebApp - Page ' + previousPageId + '</h1>' +
+		previousPageElement = libro.createPage('<div class="page" id="' + previousPageId + '">' +
+				'<h1>LibroJS - Page ' + previousPageId + '</h1>' +
 				'<p>This is the "replace next" dynamic page creation example, which never reaches the first/last application page.</p>' +
 				'<p>This page has been created/replaced dynamically, without any previous HTML code declaration.</p>' +
 				'<a href="#' + (currentIdIntValue - 2).toString() + '">previous page</a> | ' +
 				'<a href="#' + currentPageElement.id + '">next page</a></div>', currentPageElement.id);
 	}
 	previousPageElement.onShow = function(queryData, referrerElement) {
-		if (WebApp.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">"dynamicPage:' + this.id + '".onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
+		if (libro.isLogEnabled()) logMonitor.innerHTML = logMonitor.innerHTML + '<br>' + (new Date().toLocaleString()) + ': <span style="color:#444;">"dynamicPage:' + this.id + '".onShow(' + queryData + ', ' + (referrerElement? referrerElement.id: '') + ')</span>';
 		createPreviousPage(previousPageElement);
 		createNextPage(previousPageElement);
 		dynamicPagesIds = [(currentIdIntValue - 2).toString(), previousPageId, currentIdIntValue.toString()];
-		WebApp.deletePage((currentIdIntValue + 1).toString());
+		libro.deletePage((currentIdIntValue + 1).toString());
 		this.onHide = dynamicOnHide;
 	};
 }

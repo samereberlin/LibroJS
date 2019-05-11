@@ -1,5 +1,5 @@
-# WebApp
-WebApp is a lightweight (simple and efficient) WEB application framework (library for HTML5 projects), which allow us to fit multiple pages into a single HTML file (following the "single-page application" concept, <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/index.html#firstPage?returnDialog" target="_blank">live preview</a>), and also provides a rich set of facilities like:
+# LibroJS
+LibroJS is a lightweight (simple and efficient) WEB application framework (library for HTML5 projects), which allow us to fit multiple pages into a single HTML file (following the "single-page application" concept, <a href="https://raw.githack.com/samereberlin/LibroJS/master/www/index.html#firstPage?returnDialog" target="_blank">live preview</a>), and also provides a rich set of facilities like:
 - [Minimum startup code](#minimum-startup-code);
 - [Swipe page switch](#swipe-page-switch);
 - [Default application page](#default-application-page);
@@ -15,7 +15,7 @@ WebApp is a lightweight (simple and efficient) WEB application framework (librar
 
 
 ## Minimum startup code:
-The following HTML crumb is the minimum startup code required to use WebApp framework. As we can easily guess, it creates an application composed by two simple pages (_firstPage_ and _secondPage_), accessible through the corresponding file URLs _../index.html#firstPage_ and _../index.html#secondPage_ (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex01.0_minimum.html#firstPage" target="_blank">live preview</a>):
+The following HTML crumb is the minimum startup code required to use LibroJS framework. As we can easily guess, it creates an application composed by two simple pages (_firstPage_ and _secondPage_), accessible through the corresponding file URLs _../index.html#firstPage_ and _../index.html#secondPage_ (<a href="https://raw.githack.com/samereberlin/LibroJS/master/www/examples/ex01.0_minimum.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <body>
@@ -30,7 +30,7 @@ The following HTML crumb is the minimum startup code required to use WebApp fram
 	<a href="#firstPage">go to the first page</a>
 </div>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://raw.githack.com/samereberlin/LibroJS/master/www/libro.js"></script>
 
 </body>
 ```
@@ -38,9 +38,9 @@ The following HTML crumb is the minimum startup code required to use WebApp fram
 Where:
 - `<div class="page" id="firstPage">` is the element required for page creation, which must have the class _page_, a unique _id_, and be placed as a _body's child_ element.
 - `<h1>First Page</h1>` and `<a href="#secondPage">go to the second page</a>` represent the content of the page _firstPage_ (notice that only the hash data is required to create a link to the secondPage).
-- `<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>` is the inclusion of WebApp framework library, which can be obtained remotely (as here it is, using GitHub _CDN_ URL) or locally (stored beside our _HTML_ file).
+- `<script src="https://raw.githack.com/samereberlin/LibroJS/master/www/libro.js"></script>` is the inclusion of LibroJS framework library, which can be obtained remotely (as here it is, using GitHub _CDN_ URL) or locally (stored beside our _HTML_ file).
 
-**Important Note:** for simplicity reasons, the above HTML code does not include any header definition, but it is strongly recommended to assure compatibility between different devices and platforms. Please include at least the _title_ and the basic _responsive_ meta tag `<meta name="viewport" content="width=device-width, initial-scale=1.0">`, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex01.1_responsive.html#firstPage" target="_blank">live preview</a>):
+**Important Note:** for simplicity reasons, the above HTML code does not include any header definition, but it is strongly recommended to assure compatibility between different devices and platforms. Please include at least the _title_ and the basic _responsive_ meta tag `<meta name="viewport" content="width=device-width, initial-scale=1.0">`, as demonstrated in the following example (<a href="https://raw.githack.com/samereberlin/LibroJS/master/www/examples/ex01.1_responsive.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <!DOCTYPE html>
@@ -48,7 +48,7 @@ Where:
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WebApp</title>
+<title>LibroJS</title>
 </head>
 
 <body>
@@ -63,7 +63,7 @@ Where:
 	<a href="#firstPage">go to the first page</a>
 </div>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://raw.githack.com/samereberlin/LibroJS/master/www/libro.js"></script>
 
 </body>
 
@@ -72,7 +72,7 @@ Where:
 
 
 ## Swipe page switch:
-Another very common and interesting way to switch between the available pages is "swiping" over them, and WebApp also offers that possibility. Swipe page switch feature is disable by default, and to enable it, we can use _WebApp.setSwipePageSwitch(true)_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex02.0_enableSwipe.html#firstPage" target="_blank">live preview</a>):
+Another very common and interesting way to switch between the available pages is "swiping" over them, and LibroJS also offers that possibility. Swipe page switch feature is disable by default, and to enable it, we can use _libro.setSwipePageSwitch(true)_ public API, as demonstrated in the following example (<a href="https://raw.githack.com/samereberlin/LibroJS/master/www/examples/ex02.0_enableSwipe.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -85,19 +85,19 @@ Another very common and interesting way to switch between the available pages is
 	<a href="#firstPage">go to the first page</a>
 </div>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://raw.githack.com/samereberlin/LibroJS/master/www/libro.js"></script>
 
 <script>
 // Enable swipe page switch:
-WebApp.setSwipePageSwitch(true);
+libro.setSwipePageSwitch(true);
 </script>
 ```
 
-**Important Note:** WebApp public APIs must be called after the inclusion of WebApp framework library.
+**Important Note:** LibroJS public APIs must be called after the inclusion of LibroJS framework library.
 
 
 ## Default application page:
-The default application page is the first _body's child_ class _page_ element, which means that the first request to the basic URL _../index.html_ (without page specification) will be redirected to _../index.html#firstPage_. If we need to set any other element, we can use _WebApp.setDefaultPageId('pageId')_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex03.0_setDefaultPageId.html#secondPage" target="_blank">live preview</a>):
+The default application page is the first _body's child_ class _page_ element, which means that the first request to the basic URL _../index.html_ (without page specification) will be redirected to _../index.html#firstPage_. If we need to set any other element, we can use _libro.setDefaultPageId('pageId')_ public API, as demonstrated in the following example (<a href="https://raw.githack.com/samereberlin/LibroJS/master/www/examples/ex03.0_setDefaultPageId.html#secondPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -110,17 +110,17 @@ The default application page is the first _body's child_ class _page_ element, w
 	<a href="#firstPage">go to the first page</a>
 </div>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://raw.githack.com/samereberlin/LibroJS/master/www/libro.js"></script>
 
 <script>
 // Set default application page id:
-WebApp.setDefaultPageId('secondPage');
+libro.setDefaultPageId('secondPage');
 </script>
 ```
 
 
 ## Dynamic page creation:
-If we need to create another page after application startup, or dynamically during execution (on run-time), we can use _WebApp.createPage('pageContent', 'insertBeforeId')_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex04.0_createPage.html#firstPage" target="_blank">live preview</a>):
+If we need to create another page after application startup, or dynamically during execution (on run-time), we can use _libro.createPage('pageContent', 'insertBeforeId')_ public API, as demonstrated in the following example (<a href="https://raw.githack.com/samereberlin/LibroJS/master/www/examples/ex04.0_createPage.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -128,22 +128,22 @@ If we need to create another page after application startup, or dynamically duri
 	<a href="#secondPage">go to the second page</a>
 </div>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://raw.githack.com/samereberlin/LibroJS/master/www/libro.js"></script>
 
 <script>
 // Create another page dynamically:
-WebApp.createPage('<div class="page" id="secondPage">' +
+libro.createPage('<div class="page" id="secondPage">' +
 		'<h1>Second Page</h1>' +
 		'<a href="#firstPage">go to the first page</a>' +
 		'</div>', null);
 </script>
 ```
 
-And _WebApp.deletePage('pageId')_ public API can be used to remove pages (useful to release memory resources). Checkout these other dynamic page creation examples, which demonstrate better some practical utilization cases: <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex04.1_deleteOnHide.html#firstPage" target="_blank">ex04.1_deleteOnHide.html</a>, <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex04.2_insertNextPage.html#1" target="_blank">ex04.2_insertNextPage.html</a>, <a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex04.3_replaceNextPages.html#1" target="_blank">ex04.3_replaceNextPages.html</a>. Note that these additional examples use _onShow_ / _onHide_ "life cycle callbacks", which were not presented yet, but are explained in the next sections.
+And _libro.deletePage('pageId')_ public API can be used to remove pages (useful to release memory resources). Checkout these other dynamic page creation examples, which demonstrate better some practical utilization cases: <a href="https://raw.githack.com/samereberlin/LibroJS/master/www/examples/ex04.1_deleteOnHide.html#firstPage" target="_blank">ex04.1_deleteOnHide.html</a>, <a href="https://raw.githack.com/samereberlin/LibroJS/master/www/examples/ex04.2_insertNextPage.html#1" target="_blank">ex04.2_insertNextPage.html</a>, <a href="https://raw.githack.com/samereberlin/LibroJS/master/www/examples/ex04.3_replaceNextPages.html#1" target="_blank">ex04.3_replaceNextPages.html</a>. Note that these additional examples use _onShow_ / _onHide_ "life cycle callbacks", which were not presented yet, but are explained in the next sections.
 
 
 ## Global elements:
-Global elements are components that must always be displayed (common between the pages, e.g.: toolbar, statusbar, menus, etc). To define an element as global, place it as a _body's child_ element (exactly as a regular page), but without the class _page_, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex05.0_globalElement.html#firstPage" target="_blank">live preview</a>):
+Global elements are components that must always be displayed (common between the pages, e.g.: toolbar, statusbar, menus, etc). To define an element as global, place it as a _body's child_ element (exactly as a regular page), but without the class _page_, as demonstrated in the following example (<a href="https://raw.githack.com/samereberlin/LibroJS/master/www/examples/ex05.0_globalElement.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div style="border: 1px solid gray; padding: .4em;">
@@ -165,12 +165,12 @@ Global elements are components that must always be displayed (common between the
 	<br>displayed below every page.
 </div>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://raw.githack.com/samereberlin/LibroJS/master/www/libro.js"></script>
 ```
 
 
 ## Page transitions:
-The soft/basic page transition "fade" is enabled by default, and if we need to set a different one, we can use _WebApp.setDefaultPageTransition('transitionType')_ public API. But if we need to set a different transition for an specific page only, we just need to set the _transition="transitionType"_ attribute into the corresponding HTML DOM element (or use _WebApp.setPageTransition('pageId', 'transitionType')_ public API). The available transition types are:
+The soft/basic page transition "fade" is enabled by default, and if we need to set a different one, we can use _libro.setDefaultPageTransition('transitionType')_ public API. But if we need to set a different transition for an specific page only, we just need to set the _transition="transitionType"_ attribute into the corresponding HTML DOM element (or use _libro.setPageTransition('pageId', 'transitionType')_ public API). The available transition types are:
 - 'fade' (which is the soft/basic default page transition);
 - 'pop' (which simulates the "pop" appearing effect);
 - 'flip' (which simulates the "flip" forward effect);
@@ -185,13 +185,13 @@ The soft/basic page transition "fade" is enabled by default, and if we need to s
 - 'drawerright' (which slides the pages "in" from the right, and slides it "out" also to the right, simulating a kind of drawer in the right);
 - 'none' (which disables page transition).
 
-The different page transition types can be observed/compared in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex06.0_setDefaultPageTransition.html#firstPage" target="_blank">live preview</a>):
+The different page transition types can be observed/compared in the following example (<a href="https://raw.githack.com/samereberlin/LibroJS/master/www/examples/ex06.0_setDefaultPageTransition.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div style="border: 1px solid gray; padding: .4em;">
 	<label style="padding-left: 1em; white-space:nowrap;">
 		Page transition
-		<select onchange="WebApp.setDefaultPageTransition(this.value);">
+		<select onchange="libro.setDefaultPageTransition(this.value);">
 			<option value="none">None</option>
 			<option value="fade" selected>Fade</option>
 			<option value="pop">Pop</option>
@@ -209,10 +209,10 @@ The different page transition types can be observed/compared in the following ex
 	<a href="#firstPage">go to the first page</a>
 </div>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://raw.githack.com/samereberlin/LibroJS/master/www/libro.js"></script>
 ```
 
-If we need to set an specific page transition to be used once only (without modify the default setting), we can use _WebApp.setNextPageTransition('transitionType')_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex06.1_setNextPageTransition.html#firstPage" target="_blank">live preview</a>):
+If we need to set an specific page transition to be used once only (without modify the default setting), we can use _libro.setNextPageTransition('transitionType')_ public API, as demonstrated in the following example (<a href="https://raw.githack.com/samereberlin/LibroJS/master/www/examples/ex06.1_setNextPageTransition.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -222,10 +222,10 @@ If we need to set an specific page transition to be used once only (without modi
 	<a href="#secondPage">go to the second page</a><br>
 
 	<!-- uses Pop transition -->
-	(<a href="#secondPage" onclick="WebApp.setNextPageTransition('pop')">using Pop</a>)<br>
+	(<a href="#secondPage" onclick="libro.setNextPageTransition('pop')">using Pop</a>)<br>
 
 	<!-- uses no transition -->
-	(<a href="#secondPage" onclick="WebApp.setNextPageTransition('none')">no transition</a>)
+	(<a href="#secondPage" onclick="libro.setNextPageTransition('none')">no transition</a>)
 </div>
 
 <div class="page" id="secondPage">
@@ -235,18 +235,18 @@ If we need to set an specific page transition to be used once only (without modi
 	<a href="#firstPage">go to the first page</a><br>
 
 	<!-- uses Pop transition -->
-	(<a href="#firstPage" onclick="WebApp.setNextPageTransition('pop')">using Pop</a>)<br>
+	(<a href="#firstPage" onclick="libro.setNextPageTransition('pop')">using Pop</a>)<br>
 
 	<!-- uses no transition -->
-	(<a href="#firstPage" onclick="WebApp.setNextPageTransition('none')">no transition</a>)
+	(<a href="#firstPage" onclick="libro.setNextPageTransition('none')">no transition</a>)
 </div>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://raw.githack.com/samereberlin/LibroJS/master/www/libro.js"></script>
 ```
 
 
 ## Keyboard callbacks:
-Keyboard callbacks are useful to set page shortcut keys, for example if we want to navigate between the available pages using left/right keys, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex07.0_onKeyEvent.html#firstPage" target="_blank">live preview</a>):
+Keyboard callbacks are useful to set page shortcut keys, for example if we want to navigate between the available pages using left/right keys, as demonstrated in the following example (<a href="https://raw.githack.com/samereberlin/LibroJS/master/www/examples/ex07.0_onKeyEvent.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -259,30 +259,30 @@ Keyboard callbacks are useful to set page shortcut keys, for example if we want 
 	<a href="#firstPage">go to the first page</a>
 </div>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://raw.githack.com/samereberlin/LibroJS/master/www/libro.js"></script>
 
 <script>
 // Set key down callback action:
-WebApp.onKeyDown = function(keyEvent, pageElement) {
+libro.onKeyDown = function(keyEvent, pageElement) {
 	if (keyEvent.keyCode === 39 /*39 = right arrow*/) {
-		WebApp.nextPage();
+		libro.nextPage();
 	} else if (keyEvent.keyCode === 37 /*37 = left arrow*/) {
-		WebApp.previousPage();
+		libro.previousPage();
 	}
 };
-WebApp.onKeyUp = function(keyEvent, pageElement) {
+libro.onKeyUp = function(keyEvent, pageElement) {
 	console.log('onKeyUp is called when we release the key: ' + keyEvent.keyCode);
 }
 </script>
 ```
 
-And as we can see in the above example, onKeyDown and onKeyUp events are dispatched globally to the WebApp object, but it can be distinguished/filtered according to the pageElement argument.
+And as we can see in the above example, onKeyDown and onKeyUp events are dispatched globally to the LibroJS object, but it can be distinguished/filtered according to the pageElement argument.
 
 
 ## Life cycle callbacks:
 Application life cycle process is a set of pre-defined events that occurs during the application execution, which must be monitored (through callbacks) in order to execute the appropriate actions. For example, if we are developing a game, we need to know when the user minimizes the application (in order to pause the game execution, timers, etc.), and we also need to know when the user returns to the application (in order to resume the game from the point where it was paused). That is why the process callbacks are so relevant.
 
-If you do not understand the above explanation, do not be afraid. The use of callbacks is much easier than the explanation by itself :) To implement an application callback, we just need to get the _page_ element reference (or WebApp object for global callbacks), and implement the desired function, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex08.0_callbacks.html#firstPage" target="_blank">live preview</a>):
+If you do not understand the above explanation, do not be afraid. The use of callbacks is much easier than the explanation by itself :) To implement an application callback, we just need to get the _page_ element reference (or LibroJS object for global callbacks), and implement the desired function, as demonstrated in the following example (<a href="https://raw.githack.com/samereberlin/LibroJS/master/www/examples/ex08.0_callbacks.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -295,18 +295,18 @@ If you do not understand the above explanation, do not be afraid. The use of cal
 	<a href="#firstPage">go to the first page</a>
 </div>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://raw.githack.com/samereberlin/LibroJS/master/www/libro.js"></script>
 
 <script>
 // Set global callbacks:
-WebApp.onLoad = function() {
-	console.log('WebApp.onLoad(): ' + (new Date().toLocaleString()));
+libro.onLoad = function() {
+	console.log('libro.onLoad(): ' + (new Date().toLocaleString()));
 }
-WebApp.onPause = function(pageElement) {
-	console.log('WebApp.onPause(' + (pageElement? pageElement.id: '') + '): ' + (new Date().toLocaleString()));
+libro.onPause = function(pageElement) {
+	console.log('libro.onPause(' + (pageElement? pageElement.id: '') + '): ' + (new Date().toLocaleString()));
 }
-WebApp.onResume = function(pageElement) {
-	console.log('WebApp.onResume(' + (pageElement? pageElement.id: '') + '): ' + (new Date().toLocaleString()));
+libro.onResume = function(pageElement) {
+	console.log('libro.onResume(' + (pageElement? pageElement.id: '') + '): ' + (new Date().toLocaleString()));
 }
 
 // Set firstPage callbacks:
@@ -330,16 +330,16 @@ secondPageElement.onHide = function(nextQueryData, nextElement) {
 ```
 
 **Important Note:** the available callbacks are:
-- WebApp.onLoad();
-- WebApp.onUnload();
-- WebApp.onPause(pageElement);
-- WebApp.onResume(pageElement);
-- WebApp.onResize(pageElement);
-- WebApp.onUpdateHash(hashChangeEvent);
-- WebApp.onSwitchPage(pageElement, referrerElement);
-- WebApp.onSwitchModal(booleanState, modalElement, referrerElement);
-- WebApp.onKeyDown(keyEvent, pageElement);
-- WebApp.onKeyUp(keyEvent, pageElement);
+- libro.onLoad();
+- libro.onUnload();
+- libro.onPause(pageElement);
+- libro.onResume(pageElement);
+- libro.onResize(pageElement);
+- libro.onUpdateHash(hashChangeEvent);
+- libro.onSwitchPage(pageElement, referrerElement);
+- libro.onSwitchModal(booleanState, modalElement, referrerElement);
+- libro.onKeyDown(keyEvent, pageElement);
+- libro.onKeyUp(keyEvent, pageElement);
 - pageElement.onShow(queryData, referrerElement);
 - pageElement.onHide(nextQueryData, nextElement);
 - pageElement.onUpdateQuery(queryData);
@@ -362,7 +362,7 @@ Where:
 
 
 ## History stack management:
-The primary purpose of WebApp history stack management engine is to emulate "back key" event when the subsequent page is the same of the previous visited one, in order to keep the Internet browser history stack compliant with the user navigation flow (this feature is activated by default, but if we need to disable it, we can use _WebApp.setHistoryManaged(false)_ public API).
+The primary purpose of LibroJS history stack management engine is to emulate "back key" event when the subsequent page is the same of the previous visited one, in order to keep the Internet browser history stack compliant with the user navigation flow (this feature is activated by default, but if we need to disable it, we can use _libro.setHistoryManaged(false)_ public API).
 
 ** User navigation example:**
 ```
@@ -377,7 +377,7 @@ loading     history     history
  #pg1        #pg1
 ```
 
-As a similar feature, this history management engine presents the "unique entry" stack concept, which compares the subsequent page with all previous visited ones, and emulates "back key" event(s) up to reach the matched instance (this feature is also activated by default, but if we need to disable it, we can use _WebApp.setHistoryUnique(false)_ public API).
+As a similar feature, this history management engine presents the "unique entry" stack concept, which compares the subsequent page with all previous visited ones, and emulates "back key" event(s) up to reach the matched instance (this feature is also activated by default, but if we need to disable it, we can use _libro.setHistoryUnique(false)_ public API).
 
 ** User navigation example:**
 ```
@@ -395,7 +395,7 @@ loading     history     (unique false)     (unique true)
  #pg1        #pg1            #pg1
 ```
 
-And another interesting behavior, is the "default page firstly" feature, which inserts the default page at the beginning of the history stack when any other page is explicitly requested firstly. (this feature is also activated by default, but if we need to disable it, we can use _WebApp.setDefaultPageFirstly(false)_ public API).
+And another interesting behavior, is the "default page firstly" feature, which inserts the default page at the beginning of the history stack when any other page is explicitly requested firstly. (this feature is also activated by default, but if we need to disable it, we can use _libro.setDefaultPageFirstly(false)_ public API).
 
 ** User navigation example:**
 ```
@@ -413,7 +413,7 @@ back key    back key ^             back key ^
 
 
 ## Modal window support:
-Modal windows are elements designed to appear over page elements. The primary purpose is to display pop-up dialogs, but it can also be customized to display smaller components, like a simple menu, for example. Similar to page elements, modal windows visibility is also controlled by the file URL hash data, which must contain the corresponding element "id". And this mechanism is interesting because it allows us to hide/close the modal by pressing the browser back key. Also similar to page nodes, the code required to use modal elements must be placed as a _body's child_ element, an it also must have the class _modal_, and a unique _id_, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.0_modalWindow.html#firstPage" target="_blank">live preview</a>):
+Modal windows are elements designed to appear over page elements. The primary purpose is to display pop-up dialogs, but it can also be customized to display smaller components, like a simple menu, for example. Similar to page elements, modal windows visibility is also controlled by the file URL hash data, which must contain the corresponding element "id". And this mechanism is interesting because it allows us to hide/close the modal by pressing the browser back key. Also similar to page nodes, the code required to use modal elements must be placed as a _body's child_ element, an it also must have the class _modal_, and a unique _id_, as demonstrated in the following example (<a href="https://raw.githack.com/samereberlin/LibroJS/master/www/examples/ex10.0_modalWindow.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <body>
@@ -440,14 +440,14 @@ Modal windows are elements designed to appear over page elements. The primary pu
 <br>
 <a href="#modalWindow">(show modal)</a>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://raw.githack.com/samereberlin/LibroJS/master/www/libro.js"></script>
 
 </body>
 ```
 
-**Important Note:** the whole modal content must be inside another single element, in order to generate a single pop-up dialog (which in this case is using style padding: 0.5em). And notice also that these default pop-ups have rounded corners and dark background overlays (if we need different decorations, we can declare the appropriate CSS rules, as it is presented in the _WebApp.css_ style sheet file).
+**Important Note:** the whole modal content must be inside another single element, in order to generate a single pop-up dialog (which in this case is using style padding: 0.5em). And notice also that these default pop-ups have rounded corners and dark background overlays (if we need different decorations, we can declare the appropriate CSS rules, as it is presented in the _libro.css_ style sheet file).
 
-If we need to create another modal after application startup, or dynamically during execution (on run-time), we can use _WebApp.createModal('modalContent')_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.1_createModal.html#firstPage" target="_blank">live preview</a>), and _WebApp.deleteModal('modalId')_ public API can be used to remove modals (useful to release memory resources):
+If we need to create another modal after application startup, or dynamically during execution (on run-time), we can use _libro.createModal('modalContent')_ public API, as demonstrated in the following example (<a href="https://raw.githack.com/samereberlin/LibroJS/master/www/examples/ex10.1_createModal.html#firstPage" target="_blank">live preview</a>), and _libro.deleteModal('modalId')_ public API can be used to remove modals (useful to release memory resources):
 
 ```html
 <body>
@@ -465,11 +465,11 @@ If we need to create another modal after application startup, or dynamically dur
 <br>
 <a href="#modalWindow">(show modal)</a>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://raw.githack.com/samereberlin/LibroJS/master/www/libro.js"></script>
 
 <script>
 // Create modal dynamically:
-WebApp.createModal('<div class="modal" id="modalWindow"><div style="padding: 0.5em;">' +
+libro.createModal('<div class="modal" id="modalWindow"><div style="padding: 0.5em;">' +
 		'<h1>Modal Window</h1>' +
 		'<a href="#firstPage">#firstPage</a> | <a href="#secondPage">#secondPage</a>' +
 		'<br><br>' +
@@ -480,7 +480,7 @@ WebApp.createModal('<div class="modal" id="modalWindow"><div style="padding: 0.5
 </body>
 ```
 
-The pop-up modal transition "pop" is enabled by default, and if we need to set a different one, we can use _WebApp.setDefaultModalTransition('transitionType')_ public API. But if we need to set a different transition for an specific modal only, we just need to set the _transition="transitionType"_ attribute into the corresponding HTML DOM element (or use _WebApp.setModalTransition('modalId', 'transitionType')_ public API). And if we need to set an specific modal transition to be used once only (without modify the default setting), we can use _WebApp.setNextModalTransition('transitionType')_ public API, similar as described in the "page transitions" section. The following example demonstrates how to create a modal customized to appears like a top menu (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.2_modalTopMenu.html#firstPage" target="_blank">live preview</a>):
+The pop-up modal transition "pop" is enabled by default, and if we need to set a different one, we can use _libro.setDefaultModalTransition('transitionType')_ public API. But if we need to set a different transition for an specific modal only, we just need to set the _transition="transitionType"_ attribute into the corresponding HTML DOM element (or use _libro.setModalTransition('modalId', 'transitionType')_ public API). And if we need to set an specific modal transition to be used once only (without modify the default setting), we can use _libro.setNextModalTransition('transitionType')_ public API, similar as described in the "page transitions" section. The following example demonstrates how to create a modal customized to appears like a top menu (<a href="https://raw.githack.com/samereberlin/LibroJS/master/www/examples/ex10.2_modalTopMenu.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -496,10 +496,10 @@ The pop-up modal transition "pop" is enabled by default, and if we need to set a
 	</div>
 </div>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://raw.githack.com/samereberlin/LibroJS/master/www/libro.js"></script>
 ```
 
-Swipe feature is also available over modal windows, but it only hides the current modal (instead of switch to the next/previous one). Swipe modal switch feature is disable by default, and to enable it, we can use _WebApp.setSwipeModalSwitch(true)_ public API, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.3_swipeModal.html#firstPage" target="_blank">live preview</a>):
+Swipe feature is also available over modal windows, but it only hides the current modal (instead of switch to the next/previous one). Swipe modal switch feature is disable by default, and to enable it, we can use _libro.setSwipeModalSwitch(true)_ public API, as demonstrated in the following example (<a href="https://raw.githack.com/samereberlin/LibroJS/master/www/examples/ex10.3_swipeModal.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -526,15 +526,15 @@ Swipe feature is also available over modal windows, but it only hides the curren
 	</div>
 </div>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://raw.githack.com/samereberlin/LibroJS/master/www/libro.js"></script>
 
 <script>
 // Enable swipe modal switch:
-WebApp.setSwipeModalSwitch(true);
+libro.setSwipeModalSwitch(true);
 </script>
 ```
 
-Another interesting use case for modal window pop-ups, is the "exit dialog" emulation possibility, which alerts the user when returning, in order to prevent data loss. The following example demonstrates how to create a simple "exit dialog" confirmation, which alerts the user when returning from the second to the first page (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.4_exitDialog.html#firstPage" target="_blank">live preview</a>):
+Another interesting use case for modal window pop-ups, is the "exit dialog" emulation possibility, which alerts the user when returning, in order to prevent data loss. The following example demonstrates how to create a simple "exit dialog" confirmation, which alerts the user when returning from the second to the first page (<a href="https://raw.githack.com/samereberlin/LibroJS/master/www/examples/ex10.4_exitDialog.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -555,7 +555,7 @@ Another interesting use case for modal window pop-ups, is the "exit dialog" emul
 	</div>
 </div>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://raw.githack.com/samereberlin/LibroJS/master/www/libro.js"></script>
 
 <script>
 // Set secondPage callbacks:
@@ -583,7 +583,7 @@ returnDialogElement.onHide = function(nextQueryData, nextElement) {
 
 
 ## Canvas page support:
-Canvas pages are elements designed to behave like regular pages, but instead of displays their inner HTML DOM elements, it renders drawing statements programmatically, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.0_canvasPage.html#firstPage" target="_blank">live preview</a>):
+Canvas pages are elements designed to behave like regular pages, but instead of displays their inner HTML DOM elements, it renders drawing statements programmatically, as demonstrated in the following example (<a href="https://raw.githack.com/samereberlin/LibroJS/master/www/examples/ex10.0_canvasPage.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -595,7 +595,7 @@ Canvas pages are elements designed to behave like regular pages, but instead of 
 	style="background-color: lightgray;">
 </canvas>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://raw.githack.com/samereberlin/LibroJS/master/www/libro.js"></script>
 
 <script>
 // Set secondPage (canvas page) callbacks:
@@ -617,9 +617,9 @@ secondPageElement.onDraw = function() {
 </script>
 ```
 
-If we need to create another canvas page after application startup, or dynamically during execution (on run-time), we can use the same _WebApp.createPage('pageContent', 'insertBeforeId')_ public API, explained in the section "Dynamic page creation".
+If we need to create another canvas page after application startup, or dynamically during execution (on run-time), we can use the same _libro.createPage('pageContent', 'insertBeforeId')_ public API, explained in the section "Dynamic page creation".
 
-As we can see in the above example, the context for 2D drawing can be accessed via canvas page's _canvasContext_ property (inside _canvasPageElement.onDraw()_ callback), which can be manipulated using standard HTML5 canvas drawing statements. And as we can also notice, the default HTML5 canvas element size is 300 x 150, which is not interesting to fit an application page, but we can get a full screen canvas page element by listening to the global _WebApp.onResize(pageElement)_ callback, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.1_canvasFullScreen.html#firstPage" target="_blank">live preview</a>)
+As we can see in the above example, the context for 2D drawing can be accessed via canvas page's _canvasContext_ property (inside _canvasPageElement.onDraw()_ callback), which can be manipulated using standard HTML5 canvas drawing statements. And as we can also notice, the default HTML5 canvas element size is 300 x 150, which is not interesting to fit an application page, but we can get a full screen canvas page element by listening to the global _libro.onResize(pageElement)_ callback, as demonstrated in the following example (<a href="https://raw.githack.com/samereberlin/LibroJS/master/www/examples/ex10.1_canvasFullScreen.html#firstPage" target="_blank">live preview</a>)
 
 ```html
 <div class="page" id="firstPage">
@@ -631,7 +631,7 @@ As we can see in the above example, the context for 2D drawing can be accessed v
 	style="background-color: lightgray; position: fixed; top: 0; left: 0;">
 </canvas>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://raw.githack.com/samereberlin/LibroJS/master/www/libro.js"></script>
 
 <script>
 // Set secondPage (canvas page) callbacks:
@@ -653,14 +653,14 @@ secondPageElement.onDraw = function() {
 };
 
 // Set global onResize callback:
-WebApp.onResize = function(pageElement) {
+libro.onResize = function(pageElement) {
 	secondPageElement.width = window.innerWidth;
 	secondPageElement.height = window.innerHeight;
 };
 </script>
 ```
 
-For simplicity reasons, the above canvas page examples have static text contents only, but the _canvasPageElement.onDraw()_ callback is called repetitively several times per second (about ~60 times, using requestAnimationFrame polyfill techniques), which makes it useful to animate the canvas content. And there is also another very useful callback, _canvasPageElement.onUpdate()_, which runs asynchronously (24 times per second by default, and if we need to set a different frame rate, we can use _WebApp.setFps(fpsRate)_ public API), and can be used to update the drawing settings/coordinates, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.2_canvasAnimation.html#firstPage" target="_blank">live preview</a>):
+For simplicity reasons, the above canvas page examples have static text contents only, but the _canvasPageElement.onDraw()_ callback is called repetitively several times per second (about ~60 times, using requestAnimationFrame polyfill techniques), which makes it useful to animate the canvas content. And there is also another very useful callback, _canvasPageElement.onUpdate()_, which runs asynchronously (24 times per second by default, and if we need to set a different frame rate, we can use _libro.setFps(fpsRate)_ public API), and can be used to update the drawing settings/coordinates, as demonstrated in the following example (<a href="https://raw.githack.com/samereberlin/LibroJS/master/www/examples/ex10.2_canvasAnimation.html#firstPage" target="_blank">live preview</a>):
 
 ```html
 <div class="page" id="firstPage">
@@ -672,7 +672,7 @@ For simplicity reasons, the above canvas page examples have static text contents
 	style="position: fixed; top: 0; left: 0;">
 </canvas>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://raw.githack.com/samereberlin/LibroJS/master/www/libro.js"></script>
 
 <script>
 // Define drawing settings:
@@ -721,14 +721,14 @@ secondPageElement.onDraw = function() {
 };
 
 // Set global onResize callback:
-WebApp.onResize = function(pageElement) {
+libro.onResize = function(pageElement) {
 	secondPageElement.width = window.innerWidth;
 	secondPageElement.height = window.innerHeight;
 };
 </script>
 ```
 
-Another interesting canvas page feature is the "canvas touchable" engine, which offers three additional callbacks (onCanvasTouchableStart, onCanvasTouchableMove, and onCanvasTouchableEnd), useful to handle with mouse/touch events. The interesting point here is that "canvas touch" engine converts all mouse detected actions into equivalent touch events, which allow us to process pointer events easily at once, as demonstrated in the following example (<a href="https://cdn.rawgit.com/samereberlin/WebApp/master/www/examples/ex10.3_canvasTouch.html#firstPage" target="_blank">live preview</a>), and _setCanvasTouchable(false)_ public API can be used when we prefer to handle pointer events by our selves:
+Another interesting canvas page feature is the "canvas touchable" engine, which offers three additional callbacks (onCanvasTouchableStart, onCanvasTouchableMove, and onCanvasTouchableEnd), useful to handle with mouse/touch events. The interesting point here is that "canvas touch" engine converts all mouse detected actions into equivalent touch events, which allow us to process pointer events easily at once, as demonstrated in the following example (<a href="https://raw.githack.com/samereberlin/LibroJS/master/www/examples/ex10.3_canvasTouch.html#firstPage" target="_blank">live preview</a>), and _setCanvasTouchable(false)_ public API can be used when we prefer to handle pointer events by our selves:
 
 ```html
 <div class="page" id="firstPage">
@@ -740,7 +740,7 @@ Another interesting canvas page feature is the "canvas touchable" engine, which 
 	style="position: fixed; top: 0; left: 0;">
 </canvas>
 
-<script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script>
+<script src="https://raw.githack.com/samereberlin/LibroJS/master/www/libro.js"></script>
 
 <script>
 // Define drawing settings:
@@ -780,7 +780,7 @@ secondPageElement.onCanvasTouchableMove = moveCircle;
 secondPageElement.onCanvasTouchableEnd = moveCircle;
 
 // Set global onResize callback:
-WebApp.onResize = function(pageElement) {
+libro.onResize = function(pageElement) {
 	secondPageElement.width = window.innerWidth;
 	secondPageElement.height = window.innerHeight;
 };
@@ -790,12 +790,12 @@ WebApp.onResize = function(pageElement) {
 ## Extensive public API:
 
 #### isLogEnabled()
-Returns the log enabled boolean state, which is responsible to show/hide WebApp console.log messages.
+Returns the log enabled boolean state, which is responsible to show/hide LibroJS console.log messages.
 
 **Returns:** {boolean} The log enabled boolean state.
 
 #### setLogEnabled(booleanState)
-Set the log enabled boolean state, which is responsible to show/hide WebApp console.log messages.
+Set the log enabled boolean state, which is responsible to show/hide LibroJS console.log messages.
 
 **Parameters:**
 
@@ -804,12 +804,12 @@ Set the log enabled boolean state, which is responsible to show/hide WebApp cons
 | booleanState | boolean | The log enabled boolean state. |
 
 #### isRunning()
-Returns the running boolean state, which represents the current status of WebApp.
+Returns the running boolean state, which represents the current status of libro.
 
 **Returns:** {boolean} The running boolean state.
 
 #### setRunning(booleanState)
-Set the running boolean state, which represents the current status of WebApp.
+Set the running boolean state, which represents the current status of libro.
 
 **Parameters:**
 
@@ -922,12 +922,12 @@ Set the "frames per second" canvas page update rate (default value: 24), which i
 | fpsRate | number | The "frames per second" canvas page update rate. |
 
 #### isCanvasTouchable()
-Returns the isCanvasTouchable boolean state, which indicates if the WebApp manages canvas page touch/mouse events.
+Returns the isCanvasTouchable boolean state, which indicates if the LibroJS manages canvas page touch/mouse events.
 
 **Returns:** {boolean} The isCanvasTouchable boolean state.
 
 #### setCanvasTouchable(booleanState)
-Set the isCanvasTouchable boolean state, which indicates if the WebApp manages canvas page touch/mouse events.
+Set the isCanvasTouchable boolean state, which indicates if the LibroJS manages canvas page touch/mouse events.
 
 **Parameters:**
 
@@ -1110,12 +1110,12 @@ Set the default page firstly boolean state, which indicates if the default page 
 | booleanState | boolean | The default page firstly boolean state. |
 
 #### isHistoryManaged()
-Returns the history managed boolean state, which indicates if the stack must be manipulate by WebApp.
+Returns the history managed boolean state, which indicates if the stack must be manipulate by libro.
 
 **Returns:** {boolean} The history managed boolean state.
 
 #### setHistoryManaged(booleanState)
-Set the history managed boolean state, which indicates if the stack must be manipulate by WebApp.
+Set the history managed boolean state, which indicates if the stack must be manipulate by libro.
 
 **Parameters:**
 
@@ -1157,13 +1157,13 @@ Get the historyStack array values, which contains the href historyStack, accordi
 **Returns:** {array} The href historyStack, according to the history stack management.
 
 #### load()
-Load the WebApp framework library. It is called automatically after DOMContentLoaded event, but it is useful to reset/reload page elements (according to the current body's children nodes).
+Load the LibroJS framework library. It is called automatically after DOMContentLoaded event, but it is useful to reset/reload page elements (according to the current body's children nodes).
 
 #### unload()
-Unload the WebApp framework library. It is called automatically after window.onunload event, but it is useful to simulate unload event for testing.
+Unload the LibroJS framework library. It is called automatically after window.onunload event, but it is useful to simulate unload event for testing.
 
 #### reset()
-Reset the WebApp framework library. It is called automatically after window.onunload event, but it is useful to simulate reset event for testing.
+Reset the LibroJS framework library. It is called automatically after window.onunload event, but it is useful to simulate reset event for testing.
 
 #### keyDown(keyEvent)
 Dispatch keyDown keyboard event. It is called automatically on window.onkeydown event, but it is useful to simulate keyDown keyboard event for testing.

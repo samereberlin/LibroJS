@@ -13,8 +13,8 @@
  */
 
 'use strict';
-var WebApp = null;
-var WebAppClass = function() {
+var libro = null;
+var LibroClass = function() {
 
 	//################################################################################//
 	// Application settings:
@@ -30,7 +30,7 @@ var WebAppClass = function() {
 
 	/**
 	 * Returns the log enabled boolean state,
-	 * which is responsible to show/hide WebApp console.log messages.
+	 * which is responsible to show/hide LibroJS console.log messages.
 	 *
 	 * @return {boolean} The log enabled boolean state.
 	 */
@@ -40,7 +40,7 @@ var WebAppClass = function() {
 
 	/**
 	 * Set the log enabled boolean state,
-	 * which is responsible to show/hide WebApp console.log messages.
+	 * which is responsible to show/hide LibroJS console.log messages.
 	 *
 	 * @param {boolean} booleanState - The log enabled boolean state.
 	 */
@@ -50,7 +50,7 @@ var WebAppClass = function() {
 
 	/**
 	 * Returns the running boolean state,
-	 * which represents the current status of WebApp.
+	 * which represents the current status of LibroJS.
 	 *
 	 * @return {boolean} The running boolean state.
 	 */
@@ -60,7 +60,7 @@ var WebAppClass = function() {
 
 	/**
 	 * Set the running boolean state,
-	 * which represents the current status of WebApp.
+	 * which represents the current status of LibroJS.
 	 *
 	 * @param {boolean} booleanState - The running boolean state.
 	 */
@@ -156,7 +156,7 @@ var WebAppClass = function() {
 	 * @param {string} extraClass - Extra class which must be assigned.
 	 * @param {string} insertBeforeId - The existent page id to be the next.
 	 * @param {string} pageContent - The new page content string value.
-	 * 
+	 *
 	 * @return {node} The new page node element.
 	 */
 	this.createPage = function(pageContent, insertBeforeId) {
@@ -182,7 +182,7 @@ var WebAppClass = function() {
 	/**
 	 * Delete page dynamically,
 	 * and unload it, in order to release memory resources.
-	 * 
+	 *
 	 * @param {string} pageId - The page id string value.
 	 */
 	this.deletePage = function(pageId) {
@@ -243,7 +243,7 @@ var WebAppClass = function() {
 	 * @param {string} modalId - The new modal id string value.
 	 * @param {string} extraClass - Extra class which must be assigned.
 	 * @param {string} modalContent - The new modal content string value.
-	 * 
+	 *
 	 * @return {node} The new modal node element.
 	 */
 	this.createModal = function(modalContent) {
@@ -264,7 +264,7 @@ var WebAppClass = function() {
 	/**
 	 * Delete modal dynamically,
 	 * and unload it, in order to release memory resources.
-	 * 
+	 *
 	 * @param {string} modalId - The modal id string value.
 	 */
 	this.deleteModal = function(modalId) {
@@ -323,7 +323,7 @@ var WebAppClass = function() {
 
 	/**
 	 * Returns the isCanvasTouchable boolean state,
-	 * which indicates if the WebApp manages canvas page touch/mouse events.
+	 * which indicates if the LibroJS manages canvas page touch/mouse events.
 	 *
 	 * @return {boolean} The isCanvasTouchable boolean state.
 	 */
@@ -333,7 +333,7 @@ var WebAppClass = function() {
 
 	/**
 	 * Set the isCanvasTouchable boolean state,
-	 * which indicates if the WebApp manages canvas page touch/mouse events.
+	 * which indicates if the LibroJS manages canvas page touch/mouse events.
 	 *
 	 * @param {boolean} booleanState - The isCanvasTouchable boolean state.
 	 */
@@ -648,7 +648,7 @@ var WebAppClass = function() {
 
 	/**
 	 * Returns the history managed boolean state,
-	 * which indicates if the stack must be manipulate by WebApp.
+	 * which indicates if the stack must be manipulate by LibroJS.
 	 *
 	 * @return {boolean} The history managed boolean state.
 	 */
@@ -658,7 +658,7 @@ var WebAppClass = function() {
 
 	/**
 	 * Set the history managed boolean state,
-	 * which indicates if the stack must be manipulate by WebApp.
+	 * which indicates if the stack must be manipulate by LibroJS.
 	 *
 	 * @param {boolean} booleanState - The history managed boolean state.
 	 */
@@ -722,9 +722,9 @@ var WebAppClass = function() {
 	// Functions related to application life cycle:
 
 	function load() {
-		if (isLogEnabled) console.log('WebApp.js: load()');
-		if (typeof WebApp.onLoad === 'function') {
-			WebApp.onLoad();
+		if (isLogEnabled) console.log('libro.js: load()');
+		if (typeof libro.onLoad === 'function') {
+			libro.onLoad();
 		}
 
 		// Load body elements:
@@ -818,7 +818,7 @@ var WebAppClass = function() {
 				'.drawerleftout {animation-name: drawerleftout; transform: translateX(-100%); -webkit-animation-name: drawerleftout; -webkit-transform: translateX(-100%);}' +
 				'.drawerrightin {animation-name: drawerrightin; transform: translateX(0); -webkit-animation-name: drawerrightin; -webkit-transform: translateX(0);}' +
 				'.drawerrightout {animation-name: drawerrightout; transform: translateX(100%); -webkit-animation-name: drawerrightout; -webkit-transform: translateX(100%);}' +
-				'/* WebApp basic/required CSS rules. */' +
+				'/* LibroJS basic/required CSS rules. */' +
 				'.modal {background-color: rgba(0,0,0,0.5); position: fixed; top: 0; right: 0; bottom: 0; left: 0; overflow: auto; z-index: 3}' +
 				'.modal > * {background-color: white; border-radius: 0.3125em; box-shadow: 0 2px 6px rgba(0,0,0,0.6); margin: 10% auto 1em; max-width: 600px; width: 80%; overflow: hidden}' +
 				'.page {background-color: white; overflow: auto; width: 100%;} canvas.page {width: auto;}'
@@ -894,12 +894,12 @@ var WebAppClass = function() {
 	}
 
 	function unload() {
-		if (isLogEnabled) console.log('WebApp.js: unload()');
+		if (isLogEnabled) console.log('libro.js: unload()');
 		if (isRunning) {
 			pause();
 		}
-		if (typeof WebApp.onUnload === 'function') {
-			WebApp.onUnload();
+		if (typeof libro.onUnload === 'function') {
+			libro.onUnload();
 		}
 		isLoaded = false;
 		reset();
@@ -913,27 +913,27 @@ var WebAppClass = function() {
 	}
 
 	function pause() {
-		if (isLogEnabled) console.log('WebApp.js: pause()... isRunning: ' + isRunning);
+		if (isLogEnabled) console.log('libro.js: pause()... isRunning: ' + isRunning);
 		if (isRunning) {
 			isRunning = false;
 			if (currentPage) {
 				setPage(currentPage, false);
 			}
-			if (typeof WebApp.onPause === 'function') {
-				WebApp.onPause(currentPage);
+			if (typeof libro.onPause === 'function') {
+				libro.onPause(currentPage);
 			}
 		}
 	}
 
 	function resume() {
-		if (isLogEnabled) console.log('WebApp.js: resume()... isRunning: ' + isRunning);
+		if (isLogEnabled) console.log('libro.js: resume()... isRunning: ' + isRunning);
 		if (!isRunning) {
 			isRunning = true;
 			if (currentPage) {
 				setPage(currentPage, true);
 			}
-			if (typeof WebApp.onResume === 'function') {
-				WebApp.onResume(currentPage);
+			if (typeof libro.onResume === 'function') {
+				libro.onResume(currentPage);
 			}
 		}
 	}
@@ -942,7 +942,7 @@ var WebAppClass = function() {
 	// Application life cycle API:
 
 	/**
-	 * Load the WebApp framework library.
+	 * Load the LibroJS framework library.
 	 * It is called automatically after DOMContentLoaded event,
 	 * but it is useful to reset/reload page elements
 	 * (according to the current body's children nodes).
@@ -950,14 +950,14 @@ var WebAppClass = function() {
 	this.load = load;
 
 	/**
-	 * Unload the WebApp framework library.
+	 * Unload the LibroJS framework library.
 	 * It is called automatically on window unload event,
 	 * but it is useful to simulate unload event for testing.
 	 */
 	this.unload = unload;
 
 	/**
-	 * Reset the WebApp framework library.
+	 * Reset the LibroJS framework library.
 	 * It is called automatically after window unload event,
 	 * but it is useful to simulate reset event for testing.
 	 */
@@ -967,9 +967,9 @@ var WebAppClass = function() {
 	// Functions related to application settings:
 
 	function resize() {
-		if (isLogEnabled) console.log('WebApp.js: resize()');
-		if (typeof WebApp.onResize === 'function') {
-			WebApp.onResize(currentPage);
+		if (isLogEnabled) console.log('libro.js: resize()');
+		if (typeof libro.onResize === 'function') {
+			libro.onResize(currentPage);
 		}
 	}
 
@@ -977,7 +977,7 @@ var WebAppClass = function() {
 	// Functions related to internal actions:
 
 	function updateHash(hashChangeEvent) {
-		if (isLogEnabled) console.log('WebApp.js: updateHash(hashChangeEvent)... newURL = ' + hashChangeEvent.newURL + ', oldURL = ' + hashChangeEvent.oldURL);
+		if (isLogEnabled) console.log('libro.js: updateHash(hashChangeEvent)... newURL = ' + hashChangeEvent.newURL + ', oldURL = ' + hashChangeEvent.oldURL);
 
 		// Parse URL data:
 		var indexOfQuery = window.location.hash.indexOf('?');
@@ -1068,20 +1068,20 @@ var WebAppClass = function() {
 				currentQuery = nextQuery;
 			}
 		}
-		if (typeof WebApp.onUpdateHash === 'function') {
-			WebApp.onUpdateHash(hashChangeEvent);
+		if (typeof libro.onUpdateHash === 'function') {
+			libro.onUpdateHash(hashChangeEvent);
 		}
 	}
 
 	function updateQuery(queryData, element) {
-		if (isLogEnabled) console.log('WebApp.js: updateQuery(queryData, element)... queryData: ' + queryData + ', element.id: ' + (element? element.id: ''));
+		if (isLogEnabled) console.log('libro.js: updateQuery(queryData, element)... queryData: ' + queryData + ', element.id: ' + (element? element.id: ''));
 		if (typeof element.onUpdateQuery === 'function') {
 			element.onUpdateQuery(queryData);
 		}
 	}
 
 	function switchPage(pageElement, queryData) {
-		if (isLogEnabled) console.log('WebApp.js: switchPage(pageElement, queryData)... pageElement.id = ' + (pageElement? pageElement.id: '') + ', queryData: ' + queryData + ', currentPage.id = ' + (currentPage? currentPage.id: ''));
+		if (isLogEnabled) console.log('libro.js: switchPage(pageElement, queryData)... pageElement.id = ' + (pageElement? pageElement.id: '') + ', queryData: ' + queryData + ', currentPage.id = ' + (currentPage? currentPage.id: ''));
 		if (!nextPageTransition) {
 			nextPageTransition = pageElement.transitionType? pageElement.transitionType: defaultPageTransition;
 		}
@@ -1092,8 +1092,8 @@ var WebAppClass = function() {
 
 		var onSwitchPage = function(referrerElement) {
 			nextPageTransition = null;
-			if (typeof WebApp.onSwitchPage === 'function') {
-				WebApp.onSwitchPage(pageElement, referrerElement);
+			if (typeof libro.onSwitchPage === 'function') {
+				libro.onSwitchPage(pageElement, referrerElement);
 			}
 		};
 
@@ -1233,7 +1233,7 @@ var WebAppClass = function() {
 	}
 
 	function switchModal(booleanState, modalElement, nextElement, queryData) {
-		if (isLogEnabled) console.log('WebApp.js: switchModal(booleanState, modalElement, nextElement, queryData)... booleanState: ' + booleanState + ', modalElement.id: ' + (modalElement? modalElement.id: '') + ', nextElement.id = ' + (nextElement? nextElement.id: '') + ', queryData: ' + queryData + ', currentPage.id = ' + (currentPage? currentPage.id: ''));
+		if (isLogEnabled) console.log('libro.js: switchModal(booleanState, modalElement, nextElement, queryData)... booleanState: ' + booleanState + ', modalElement.id: ' + (modalElement? modalElement.id: '') + ', nextElement.id = ' + (nextElement? nextElement.id: '') + ', queryData: ' + queryData + ', currentPage.id = ' + (currentPage? currentPage.id: ''));
 		if (!nextModalTransition) {
 			nextModalTransition = modalElement.transitionType? modalElement.transitionType: defaultModalTransition;
 		}
@@ -1242,8 +1242,8 @@ var WebAppClass = function() {
 		}
 
 		var onSwitchModal = function() {
-			if (typeof WebApp.onSwitchModal === 'function') {
-				WebApp.onSwitchModal(booleanState, modalElement, currentPage);
+			if (typeof libro.onSwitchModal === 'function') {
+				libro.onSwitchModal(booleanState, modalElement, currentPage);
 			}
 		};
 
@@ -1305,7 +1305,7 @@ var WebAppClass = function() {
 	}
 
 	function showElement(element, queryData, referrerElement) {
-		if (isLogEnabled) console.log('WebApp.js: showElement(element, queryData, referrerElement)... element.id: ' + (element? element.id: '') + ', queryData: ' + queryData + ', referrerElement.id: ' + (referrerElement? referrerElement.id: ''));
+		if (isLogEnabled) console.log('libro.js: showElement(element, queryData, referrerElement)... element.id: ' + (element? element.id: '') + ', queryData: ' + queryData + ', referrerElement.id: ' + (referrerElement? referrerElement.id: ''));
 		element.style.display = 'block';
 		if (typeof element.onShow === 'function') {
 			element.onShow(queryData, referrerElement);
@@ -1313,7 +1313,7 @@ var WebAppClass = function() {
 	}
 
 	function hideElement(element, nextQueryData, nextElement) {
-		if (isLogEnabled) console.log('WebApp.js: hideElement(element, nextQueryData, nextElement)... element.id: ' + (element? element.id: '') + ', nextQueryData: ' + nextQueryData + ', nextElement.id: ' + (nextElement? nextElement.id: ''));
+		if (isLogEnabled) console.log('libro.js: hideElement(element, nextQueryData, nextElement)... element.id: ' + (element? element.id: '') + ', nextQueryData: ' + nextQueryData + ', nextElement.id: ' + (nextElement? nextElement.id: ''));
 		element.style.display = 'none';
 		if (typeof element.onHide === 'function') {
 			element.onHide(nextQueryData, nextElement);
@@ -1326,7 +1326,7 @@ var WebAppClass = function() {
 	function canvasMouseDown(touchEvent) {
 		if (touchEvent.button === 0) {
 			if (!isTouchSupported || (Date.now() > canvasTouchLastTime + CANVAS_TOUCH_DELAY)) { // Required to solve touchEvent.preventDefault() issue.
-				if (isLogEnabled) console.log('WebApp.js: canvasMouseDown(touchEvent)... X = ' + touchEvent.clientX + ', Y = ' + touchEvent.clientY);
+				if (isLogEnabled) console.log('libro.js: canvasMouseDown(touchEvent)... X = ' + touchEvent.clientX + ', Y = ' + touchEvent.clientY);
 				touchEvent.stopPropagation();
 				touchEvent.preventDefault();
 				isCanvasMouseDown = true;
@@ -1359,7 +1359,7 @@ var WebAppClass = function() {
 	function canvasMouseUp(touchEvent) {
 		if (isCanvasMouseDown && (touchEvent.button === 0)) {
 			if (isLogEnabled) {
-				console.log('WebApp.js: canvasMouseUp(touchEvent)... X = ' + touchEvent.clientX + ', Y = ' + touchEvent.clientY + ', canvasDebugTouch = ' + canvasDebugTouch);
+				console.log('libro.js: canvasMouseUp(touchEvent)... X = ' + touchEvent.clientX + ', Y = ' + touchEvent.clientY + ', canvasDebugTouch = ' + canvasDebugTouch);
 				canvasDebugTouch = '';
 			}
 			touchEvent.stopPropagation();
@@ -1377,7 +1377,7 @@ var WebAppClass = function() {
 	}
 
 	function canvasTouchStart(touchEvent) {
-		if (isLogEnabled) console.log('WebApp.js: canvasTouchStart(touchEvent)... X = ' + touchEvent.changedTouches[0].clientX + ', Y = ' + touchEvent.changedTouches[0].clientY);
+		if (isLogEnabled) console.log('libro.js: canvasTouchStart(touchEvent)... X = ' + touchEvent.changedTouches[0].clientX + ', Y = ' + touchEvent.changedTouches[0].clientY);
 		touchEvent.stopPropagation();
 		touchEvent.preventDefault();
 		canvasTouchLastTime = Date.now(); // Required to solve touchEvent.preventDefault() issue.
@@ -1391,7 +1391,7 @@ var WebAppClass = function() {
 	}
 	function canvasTouchEnd(touchEvent) {
 		if (isLogEnabled) {
-			console.log('WebApp.js: canvasTouchEnd(touchEvent)... X = ' + touchEvent.changedTouches[0].clientX + ', Y = ' + touchEvent.changedTouches[0].clientY + ', canvasDebugTouch = ' + canvasDebugTouch);
+			console.log('libro.js: canvasTouchEnd(touchEvent)... X = ' + touchEvent.changedTouches[0].clientX + ', Y = ' + touchEvent.changedTouches[0].clientY + ', canvasDebugTouch = ' + canvasDebugTouch);
 			canvasDebugTouch = '';
 		}
 		touchEvent.stopPropagation();
@@ -1406,7 +1406,7 @@ var WebAppClass = function() {
 	function swipeMouseDown(touchEvent) {
 		if (touchEvent.button === 0) {
 			if (!isTouchSupported || (Date.now() > swipeTouchLastTime + SWIPE_TOUCH_DELAY)) { // Required to emulate touchEvent.preventDefault().
-				if (isLogEnabled) console.log('WebApp.js: swipeMouseDown(touchEvent)... X = ' + touchEvent.clientX + ', Y = ' + touchEvent.clientY);
+				if (isLogEnabled) console.log('libro.js: swipeMouseDown(touchEvent)... X = ' + touchEvent.clientX + ', Y = ' + touchEvent.clientY);
 				isSwipeMouseDown = true;
 				touchEvent.changedTouches = [{
 					identifier: -1,
@@ -1435,7 +1435,7 @@ var WebAppClass = function() {
 	function swipeMouseUp(touchEvent) {
 		if (isSwipeMouseDown && (touchEvent.button === 0)) {
 			if (isLogEnabled) {
-				console.log('WebApp.js: swipeMouseUp(touchEvent)... X = ' + touchEvent.clientX + ', Y = ' + touchEvent.clientY + ', swipeDebugTouch = ' + swipeDebugTouch);
+				console.log('libro.js: swipeMouseUp(touchEvent)... X = ' + touchEvent.clientX + ', Y = ' + touchEvent.clientY + ', swipeDebugTouch = ' + swipeDebugTouch);
 				swipeDebugTouch = '';
 			}
 			isSwipeMouseDown = false;
@@ -1451,7 +1451,7 @@ var WebAppClass = function() {
 	}
 
 	function swipeTouchStart(touchEvent) {
-		if (isLogEnabled) console.log('WebApp.js: swipeTouchStart(touchEvent)... X = ' + touchEvent.changedTouches[0].clientX + ', Y = ' + touchEvent.changedTouches[0].clientY);
+		if (isLogEnabled) console.log('libro.js: swipeTouchStart(touchEvent)... X = ' + touchEvent.changedTouches[0].clientX + ', Y = ' + touchEvent.changedTouches[0].clientY);
 		swipeTouchLastTime = Date.now(); // Required to emulate touchEvent.preventDefault().
 		swipeActionStart(touchEvent);
 	}
@@ -1461,7 +1461,7 @@ var WebAppClass = function() {
 	}
 	function swipeTouchEnd(touchEvent) {
 		if (isLogEnabled) {
-			console.log('WebApp.js: swipeTouchEnd(touchEvent)... X = ' + touchEvent.changedTouches[0].clientX + ', Y = ' + touchEvent.changedTouches[0].clientY + ', swipeDebugTouch = ' + swipeDebugTouch);
+			console.log('libro.js: swipeTouchEnd(touchEvent)... X = ' + touchEvent.changedTouches[0].clientX + ', Y = ' + touchEvent.changedTouches[0].clientY + ', swipeDebugTouch = ' + swipeDebugTouch);
 			swipeDebugTouch = '';
 		}
 		swipeTouchLastTime = Date.now(); // Required to emulate touchEvent.preventDefault().
@@ -1646,22 +1646,22 @@ var WebAppClass = function() {
 	// Functions related to user interaction:
 
 	function keyDown(keyEvent) {
-		if (isLogEnabled) console.log('WebApp.js: keyDown(keyEvent)... keyEvent.keyCode: ' + keyEvent.keyCode + ', currentPage.id: ' + (currentPage? currentPage.id: ''));
+		if (isLogEnabled) console.log('libro.js: keyDown(keyEvent)... keyEvent.keyCode: ' + keyEvent.keyCode + ', currentPage.id: ' + (currentPage? currentPage.id: ''));
 		if ((keyEvent.keyCode === 13) && keyEvent.target.onclick) {
 			keyEvent.target.onclick();
 		} else if ((keyEvent.keyCode === 27) && currentModal) {
 			window.history.back();
 		} else {
-			if (typeof WebApp.onKeyDown === 'function') {
-				WebApp.onKeyDown(keyEvent, currentPage);
+			if (typeof libro.onKeyDown === 'function') {
+				libro.onKeyDown(keyEvent, currentPage);
 			}
 		}
 	}
 
 	function keyUp(keyEvent) {
-		if (isLogEnabled) console.log('WebApp.js: keyUp(keyEvent)... keyEvent.keyCode: ' + keyEvent.keyCode + ', currentPage.id: ' + (currentPage? currentPage.id: ''));
-		if (typeof WebApp.onKeyUp === 'function') {
-			WebApp.onKeyUp(keyEvent, currentPage);
+		if (isLogEnabled) console.log('libro.js: keyUp(keyEvent)... keyEvent.keyCode: ' + keyEvent.keyCode + ', currentPage.id: ' + (currentPage? currentPage.id: ''));
+		if (typeof libro.onKeyUp === 'function') {
+			libro.onKeyUp(keyEvent, currentPage);
 		}
 	}
 
@@ -1709,5 +1709,5 @@ var WebAppClass = function() {
 	};
 
 };
-WebApp = new WebAppClass();
-document.addEventListener('DOMContentLoaded', function() {WebApp.load();});
+libro = new LibroClass();
+document.addEventListener('DOMContentLoaded', function() {libro.load();});

@@ -3,19 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WebApp - ex04.3_replaceNextPages</title>
+<title>LibroJS - ex04.3_replaceNextPages</title>
 </head>
 
 <body>
 
 <div class="page" id="1">
-	<h1>WebApp - Page 1</h1>
+	<h1>LibroJS - Page 1</h1>
 	<p>This is the "replace next" dynamic page creation example, which never reaches the first/last application page.</p>
 	<a href="#0">previous page</a> | <a href="#2">next page</a>
 </div>
 
-<!-- script src="https://cdn.rawgit.com/samereberlin/WebApp/master/www/WebApp.js"></script -->
-<script src="../WebApp.js"></script>
+<!-- script src="https://raw.githack.com/samereberlin/LibroJS/master/www/libro.js"></script -->
+<script src="../libro.js"></script>
 
 <script>
 // Set firstPage callbacks:
@@ -32,8 +32,8 @@ function createNextPage(currentPageElement) {
 	var nextPageId = (currentIdIntValue + 1).toString();
 	var nextPageElement = document.getElementById(nextPageId);
 	if (!nextPageElement) {
-		nextPageElement = WebApp.createPage('<div class="page" id="' + nextPageId + '">' +
-				'<h1>WebApp - Page ' + nextPageId + '</h1>' +
+		nextPageElement = libro.createPage('<div class="page" id="' + nextPageId + '">' +
+				'<h1>LibroJS - Page ' + nextPageId + '</h1>' +
 				'<p>This is the "replace next" dynamic page creation example, which never reaches the first/last application page.</p>' +
 				'<p>This page has been created/replaced dynamically, without any previous HTML code declaration.</p>' +
 				'<a href="#' + currentPageElement.id + '">previous page</a> | ' +
@@ -43,7 +43,7 @@ function createNextPage(currentPageElement) {
 	nextPageElement.onShow = function() {
 		createNextPage(nextPageElement);
 		createPreviousPage(nextPageElement);
-		WebApp.deletePage((currentIdIntValue - 1).toString());
+		libro.deletePage((currentIdIntValue - 1).toString());
 	};
 }
 
@@ -54,8 +54,8 @@ function createPreviousPage(currentPageElement) {
 	var previousPageId = (currentIdIntValue - 1).toString();
 	var previousPageElement = document.getElementById(previousPageId);
 	if (!previousPageElement) {
-		previousPageElement = WebApp.createPage('<div class="page" id="' + previousPageId + '">' +
-				'<h1>WebApp - Page ' + previousPageId + '</h1>' +
+		previousPageElement = libro.createPage('<div class="page" id="' + previousPageId + '">' +
+				'<h1>LibroJS - Page ' + previousPageId + '</h1>' +
 				'<p>This is the "replace next" dynamic page creation example, which never reaches the first/last application page.</p>' +
 				'<p>This page has been created/replaced dynamically, without any previous HTML code declaration.</p>' +
 				'<a href="#' + (currentIdIntValue - 2).toString() + '">previous page</a> | ' +
@@ -65,7 +65,7 @@ function createPreviousPage(currentPageElement) {
 	previousPageElement.onShow = function() {
 		createPreviousPage(previousPageElement);
 		createNextPage(previousPageElement);
-		WebApp.deletePage((currentIdIntValue + 1).toString());
+		libro.deletePage((currentIdIntValue + 1).toString());
 	};
 }
 
